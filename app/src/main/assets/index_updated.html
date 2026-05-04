@@ -1,1 +1,789 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>МедШкалы СМП</title>
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --surface: #111827;
+    --surface2: #1a2235;
+    --border: #1e2d47;
+    --accent: #00d4ff;
+    --accent2: #7c3aed;
+    --green: #10b981;
+    --yellow: #f59e0b;
+    --red: #ef4444;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --mono: 'Courier New', monospace;
+    --sans: -apple-system, 'Segoe UI', Roboto, sans-serif;
+  }
 
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+    background-size: 36px 36px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px 16px 40px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 28px;
+    padding-top: env(safe-area-inset-top, 16px);
+  }
+
+  .header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(0,212,255,0.08);
+    border: 1px solid rgba(0,212,255,0.2);
+    border-radius: 100px;
+    padding: 5px 14px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .header-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  h1 {
+    font-size: 26px;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #ffffff 0%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 6px;
+  }
+
+  .header-sub {
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 6px;
+  }
+
+  .tab {
+    flex: 1;
+    padding: 9px 4px;
+    border: none;
+    border-radius: 9px;
+    background: transparent;
+    color: var(--muted);
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    text-align: center;
+    letter-spacing: 0.01em;
+  }
+
+  .tab:active { opacity: 0.7; }
+  .tab.active {
+    background: linear-gradient(135deg, var(--accent2), var(--accent));
+    color: white;
+  }
+
+  /* Cards */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 22px 18px;
+    display: none;
+    animation: fadeIn 0.25s ease;
+  }
+
+  .card.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .card-title {
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    color: white;
+  }
+
+  .card-desc {
+    color: var(--muted);
+    font-size: 12px;
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  /* Criteria */
+  .criteria-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .criterion {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+  }
+
+  .criterion:active { transform: scale(0.98); }
+
+  .criterion.checked {
+    border-color: var(--accent);
+    background: rgba(0,212,255,0.07);
+  }
+
+  .criterion-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .checkbox {
+    width: 24px; height: 24px;
+    border: 2px solid var(--border);
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.15s;
+    font-size: 14px;
+    color: #000;
+    font-weight: 900;
+  }
+
+  .criterion.checked .checkbox {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #000;
+  }
+
+  .check-icon { opacity: 0; transition: opacity 0.15s; }
+  .criterion.checked .check-icon { opacity: 1; }
+
+  .criterion-text {
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.35;
+    color: var(--text);
+  }
+
+  .criterion-hint {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 3px;
+    line-height: 1.3;
+  }
+
+  .criterion-badge {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accent);
+    background: rgba(0,212,255,0.1);
+    border: 1px solid rgba(0,212,255,0.2);
+    border-radius: 7px;
+    padding: 4px 9px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* Number inputs */
+  .inputs-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .input-group {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 14px;
+    transition: border-color 0.2s;
+  }
+
+  .input-group:focus-within { border-color: var(--accent); }
+
+  .input-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .input-unit {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: rgba(100,116,139,0.55);
+    font-weight: 400;
+  }
+
+  .input-field {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: white;
+    font-family: var(--mono);
+    font-size: 24px;
+    font-weight: 700;
+    padding: 0;
+  }
+
+  .input-field::placeholder { color: rgba(30,45,71,0.9); }
+
+  .input-score {
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 4px;
+    font-family: var(--mono);
+    min-height: 14px;
+    transition: color 0.2s;
+  }
+
+  /* Consciousness */
+  .conscious-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 8px;
+  }
+
+  .consciousness-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .consciousness-btn {
+    padding: 11px 8px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface2);
+    color: var(--muted);
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: center;
+    touch-action: manipulation;
+  }
+
+  .consciousness-btn:active { transform: scale(0.97); }
+  .consciousness-btn.selected {
+    background: rgba(0,212,255,0.1);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* Result */
+  .result-block {
+    background: var(--surface2);
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    padding: 22px 16px;
+    text-align: center;
+    transition: all 0.35s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .result-block.low   { border-color: var(--green); }
+  .result-block.medium { border-color: var(--yellow); }
+  .result-block.high  { border-color: var(--red); }
+
+  .result-score {
+    font-family: var(--mono);
+    font-size: 58px;
+    font-weight: 700;
+    line-height: 1;
+    transition: color 0.35s;
+    color: var(--muted);
+  }
+
+  .result-block.low    .result-score { color: var(--green); }
+  .result-block.medium .result-score { color: var(--yellow); }
+  .result-block.high   .result-score { color: var(--red); }
+
+  .result-label {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 8px;
+    margin-bottom: 10px;
+    color: var(--muted);
+    transition: color 0.35s;
+  }
+
+  .result-block.low    .result-label { color: var(--green); }
+  .result-block.medium .result-label { color: var(--yellow); }
+  .result-block.high   .result-label { color: var(--red); }
+
+  .result-action {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+
+  /* GCS sections */
+  .gcs-section {
+    background: rgba(124,58,237,0.08);
+    border: 1px solid rgba(124,58,237,0.2);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 10px;
+  }
+
+  .gcs-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: #a78bfa;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+  }
+
+  .gcs-select {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    color: white;
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 10px 12px;
+    cursor: pointer;
+    outline: none;
+    appearance: auto;
+  }
+
+  /* Wells pills */
+  .wells-pills {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+
+  .wells-pill {
+    padding: 5px 13px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 700;
+    font-family: var(--mono);
+    opacity: 0.4;
+    border: 1px solid transparent;
+    transition: all 0.3s;
+  }
+
+  .wells-pill.active { opacity: 1; }
+  .wells-pill.unlikely { background: rgba(16,185,129,0.1); border-color: var(--green); color: var(--green); }
+  .wells-pill.likely   { background: rgba(239,68,68,0.1);  border-color: var(--red);   color: var(--red); }
+
+  /* Reset btn */
+  .reset-btn {
+    display: block;
+    width: 100%;
+    margin-top: 14px;
+    padding: 12px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    color: var(--muted);
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    touch-action: manipulation;
+  }
+
+  .reset-btn:active { background: rgba(0,212,255,0.05); color: var(--accent); border-color: var(--accent); }
+
+  /* Infusomat styles */
+  .drug-selector {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .drug-btn {
+    padding: 14px 8px;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface2);
+    color: var(--muted);
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    touch-action: manipulation;
+  }
+
+  .drug-btn .drug-name { font-size: 15px; color: var(--text); display: block; margin-bottom: 3px; }
+  .drug-btn .drug-conc { font-size: 10px; font-family: var(--mono); }
+
+  .drug-btn.selected-dopa {
+    border-color: #f59e0b;
+    background: rgba(245,158,11,0.08);
+    color: #f59e0b;
+  }
+  .drug-btn.selected-dopa .drug-name { color: #f59e0b; }
+
+  .drug-btn.selected-norepi {
+    border-color: #ef4444;
+    background: rgba(239,68,68,0.08);
+    color: #ef4444;
+  }
+  .drug-btn.selected-norepi .drug-name { color: #ef4444; }
+
+  .weight-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .weight-input-wrap {
+    flex: 1;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 16px;
+  }
+
+  .weight-input-wrap:focus-within { border-color: var(--accent); }
+
+  .weight-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 4px;
+  }
+
+  .weight-field {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: white;
+    font-family: var(--mono);
+    font-size: 28px;
+    font-weight: 700;
+  }
+
+  .weight-field::placeholder { color: var(--border); }
+
+  .dose-section {
+    margin-bottom: 20px;
+  }
+
+  .dose-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .dose-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+  }
+
+  .dose-value {
+    font-family: var(--mono);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .dose-slider {
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: var(--border);
+    outline: none;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+    margin-bottom: 8px;
+  }
+
+  .dose-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    border: 3px solid var(--bg);
+    box-shadow: 0 0 0 2px var(--accent);
+  }
+
+  .dose-slider.dopa::-webkit-slider-thumb { background: #f59e0b; box-shadow: 0 0 0 2px #f59e0b; }
+  .dose-slider.norepi::-webkit-slider-thumb { background: #ef4444; box-shadow: 0 0 0 2px #ef4444; }
+
+  .dose-range {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: var(--muted);
+    font-family: var(--mono);
+  }
+
+  .effect-badge {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-top: 8px;
+    transition: all 0.3s;
+  }
+
+  .effect-renal    { background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid #10b981; }
+  .effect-cardiac  { background: rgba(245,158,11,0.15); color: #f59e0b; border: 1px solid #f59e0b; }
+  .effect-vaso     { background: rgba(239,68,68,0.15);  color: #ef4444; border: 1px solid #ef4444; }
+  .effect-pressor  { background: rgba(239,68,68,0.15);  color: #ef4444; border: 1px solid #ef4444; }
+
+  .result-infusomat {
+    background: var(--surface2);
+    border: 2px solid var(--accent);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    margin-top: 4px;
+  }
+
+  .result-infusomat.dopa-color { border-color: #f59e0b; }
+  .result-infusomat.norepi-color { border-color: #ef4444; }
+
+  .inf-rate {
+    font-family: var(--mono);
+    font-size: 56px;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+    transition: all 0.2s;
+  }
+
+  .inf-rate.dopa-color { color: #f59e0b; }
+  .inf-rate.norepi-color { color: #ef4444; }
+
+  .inf-unit {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--muted);
+    margin-top: 4px;
+    font-family: var(--mono);
+  }
+
+  .inf-formula {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 10px;
+    font-family: var(--mono);
+    line-height: 1.6;
+    background: rgba(0,0,0,0.2);
+    border-radius: 8px;
+    padding: 8px;
+  }
+
+  .inf-warning {
+    margin-top: 12px;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  ::-webkit-scrollbar { width: 3px; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="header-badge">СМП · Клинические шкалы</div>
+    <h1>Прогностические шкалы</h1>
+    <p class="header-sub">qSOFA · NEWS2 · Wells · GCS · Инфузомат</p>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('qsofa')">qSOFA</button>
+    <button class="tab" onclick="switchTab('news')">NEWS2</button>
+    <button class="tab" onclick="switchTab('wells')">Wells</button>
+    <button class="tab" onclick="switchTab('gcs')">GCS</button>
+    <button class="tab" onclick="switchTab('infusomat')">Инфузомат</button>
+  </div>
+
+  <!-- qSOFA -->
+  <div class="card active" id="tab-qsofa">
+    <div class="card-title">qSOFA — Экспресс-сепсис</div>
+    <div class="card-desc">Три критерия по 1 баллу. ≥2 баллов → высокий риск сепсиса. Считается за 30 секунд.</div>
+    <div class="criteria-list">
+      <div class="criterion" id="qsofa-1" onclick="toggleCrit('qsofa-1',1,'qsofa')">
+        <div class="criterion-left">
+          <div class="checkbox"><span class="check-icon">✓</span></div>
+          <div>
+            <div class="criterion-text">ЧДД ≥ 22 в минуту</div>
+            <div class="criterion-hint">Считать 30 сек × 2</div>
+          </div>
+        </div>
+        <div class="criterion-badge">+1</div>
+      </div>
+      <div class="criterion" id="qsofa-2" onclick="toggleCrit('qsofa-2',1,'qsofa')">
+        <div class="criterion-left">
+          <div class="checkbox"><span class="check-icon">✓</span></div>
+          <div>
+            <div class="criterion-text">АД систолическое ≤ 100 мм рт.ст.</div>
+            <div class="criterion-hint">По тонометру, любая рука</div>
+          </div>
+        </div>
+        <div class="criterion-badge">+1</div>
+      </div>
+      <div class="criterion" id="qsofa-3" onclick="toggleCrit('qsofa-3',1,'qsofa')">
+        <div class="criterion-left">
+          <div class="checkbox"><span class="check-icon">✓</span></div>
+          <div>
+            <div class="criterion-text">Нарушение сознания (GCS &lt; 15)</div>
+            <div class="criterion-hint">Дезориентация, заторможенность, без сознания</div>
+          </div>
+        </div>
+        <div class="criterion-badge">+1</div>
+      </div>
+    </div>
+    <div class="result-block" id="qsofa-result">
+      <div class="result-score" id="qsofa-score">0</div>
+      <div class="result-label" id="qsofa-label">Баллов</div>
+      <div class="result-action" id="qsofa-action">Отметьте критерии выше</div>
+    </div>
+    <button class="reset-btn" onclick="resetGroup('qsofa')">↺ Сбросить</button>
+  </div>
+
+  <!-- NEWS2 -->
+  <div class="card" id="tab-news">
+    <div class="card-title">NEWS2 — Раннее предупреждение</div>
+    <div class="card-desc">Введите показатели. Каждый параметр пересчитывается мгновенно.</div>
+    <div class="inputs-grid">
+      <div class="input-group">
+        <div class="input-label">ЧДД <span class="input-unit">в мин</span></div>
+        <input class="input-field" type="number" id="news-rr" placeholder="16" inputmode="numeric" oninput="calcNEWS()">
+        <div class="input-score" id="news-rr-s"></div>
+      </div>
+      <div class="input-group">
+        <div class="input-label">SpO₂ <span class="input-unit">%</span></div>
+        <input class="input-field" type="number" id="news-spo2" placeholder="98" inputmode="numeric" oninput="calcNEWS()">
+        <div class="input-score" id="news-spo2-s"></div>
+      </div>
+      <div class="input-group">
+        <div class="input-label">АД сист. <span class="input-unit">мм рт.ст.</span></div>
+        <input class="input-field" type="number" id="news-sbp" placeholder="120" inputmode="numeric" oninput="calcNEWS()">
+        <div class="input-score" id="news-sbp-s"></div>
+      </div>
+      <div class="input-group">
+        <div class="input-label">ЧСС <span class="input-unit">уд/мин</span></div>
+        <input class="input-field" type="number" id="news-hr" placeholder="80" inputmode="numeric" oninput="calcNEWS()">
+        <div class="input-score" id="news-hr-s"></div>
+      </div>
+      <div class="input-group">
+        <div class="input-label">Температура <span class="input-unit">°C</span></div>
+        <input class="input-field" type="number" id="news-temp" placeholder="36.6" inputmode="decimal" step="0.1" oninput="calcNEWS()">
+        <div class="input-score" id="news-temp-s"></div>
+      </div>
+    </div>
+    <div class="conscious-label">Сознание (AVPU)</div>
+    <div class="consciousness-grid">
+      <button class="consciousness-btn selected" id="btn-alert" onclick="setConsciousness('alert')">A — Ясное</butto
