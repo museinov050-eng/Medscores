@@ -3,787 +3,600 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>МедШкалы СМП</title>
+<title>MedScores</title>
 <style>
-  :root {
-    --bg: #0a0e1a;
-    --surface: #111827;
-    --surface2: #1a2235;
-    --border: #1e2d47;
-    --accent: #00d4ff;
-    --accent2: #7c3aed;
-    --green: #10b981;
-    --yellow: #f59e0b;
-    --red: #ef4444;
-    --text: #e2e8f0;
-    --muted: #64748b;
-    --mono: 'Courier New', monospace;
-    --sans: -apple-system, 'Segoe UI', Roboto, sans-serif;
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-
-  html, body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--sans);
-    min-height: 100vh;
-    overflow-x: hidden;
-    -webkit-text-size-adjust: 100%;
-  }
-
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
-    background-size: 36px 36px;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px 16px 40px;
-    position: relative;
-    z-index: 1;
-  }
-
-  /* Header */
-  .header {
-    text-align: center;
-    margin-bottom: 28px;
-    padding-top: env(safe-area-inset-top, 16px);
-  }
-
-  .header-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    background: rgba(0,212,255,0.08);
-    border: 1px solid rgba(0,212,255,0.2);
-    border-radius: 100px;
-    padding: 5px 14px;
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--accent);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-bottom: 14px;
-  }
-
-  .header-badge::before {
-    content: '';
-    width: 6px; height: 6px;
-    background: var(--accent);
-    border-radius: 50%;
-    animation: pulse 2s infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-  }
-
-  h1 {
-    font-size: 26px;
-    font-weight: 800;
-    line-height: 1.15;
-    letter-spacing: -0.02em;
-    background: linear-gradient(135deg, #ffffff 0%, var(--accent) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: 6px;
-  }
-
-  .header-sub {
-    color: var(--muted);
-    font-size: 13px;
-  }
-
-  /* Tabs */
-  .tabs {
-    display: flex;
-    gap: 6px;
-    margin-bottom: 20px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 6px;
-  }
-
-  .tab {
-    flex: 1;
-    padding: 9px 4px;
-    border: none;
-    border-radius: 9px;
-    background: transparent;
-    color: var(--muted);
-    font-family: var(--sans);
-    font-size: 12px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s;
-    white-space: nowrap;
-    text-align: center;
-    letter-spacing: 0.01em;
-  }
-
-  .tab:active { opacity: 0.7; }
-  .tab.active {
-    background: linear-gradient(135deg, var(--accent2), var(--accent));
-    color: white;
-  }
-
-  /* Cards */
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    padding: 22px 18px;
-    display: none;
-    animation: fadeIn 0.25s ease;
-  }
-
-  .card.active { display: block; }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(6px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .card-title {
-    font-size: 17px;
-    font-weight: 700;
-    margin-bottom: 5px;
-    color: white;
-  }
-
-  .card-desc {
-    color: var(--muted);
-    font-size: 12px;
-    margin-bottom: 20px;
-    line-height: 1.5;
-  }
-
-  /* Criteria */
-  .criteria-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-
-  .criterion {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 14px 14px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    cursor: pointer;
-    transition: all 0.15s;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-  }
-
-  .criterion:active { transform: scale(0.98); }
-
-  .criterion.checked {
-    border-color: var(--accent);
-    background: rgba(0,212,255,0.07);
-  }
-
-  .criterion-left {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex: 1;
-    min-width: 0;
-  }
-
-  .checkbox {
-    width: 24px; height: 24px;
-    border: 2px solid var(--border);
-    border-radius: 7px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    transition: all 0.15s;
-    font-size: 14px;
-    color: #000;
-    font-weight: 900;
-  }
-
-  .criterion.checked .checkbox {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: #000;
-  }
-
-  .check-icon { opacity: 0; transition: opacity 0.15s; }
-  .criterion.checked .check-icon { opacity: 1; }
-
-  .criterion-text {
-    font-size: 13px;
-    font-weight: 600;
-    line-height: 1.35;
-    color: var(--text);
-  }
-
-  .criterion-hint {
-    font-size: 11px;
-    color: var(--muted);
-    margin-top: 3px;
-    line-height: 1.3;
-  }
-
-  .criterion-badge {
-    font-family: var(--mono);
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--accent);
-    background: rgba(0,212,255,0.1);
-    border: 1px solid rgba(0,212,255,0.2);
-    border-radius: 7px;
-    padding: 4px 9px;
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-
-  /* Number inputs */
-  .inputs-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 12px;
-  }
-
-  .input-group {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 12px 14px;
-    transition: border-color 0.2s;
-  }
-
-  .input-group:focus-within { border-color: var(--accent); }
-
-  .input-label {
-    font-size: 10px;
-    font-weight: 700;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.07em;
-    margin-bottom: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .input-unit {
-    font-family: var(--mono);
-    font-size: 9px;
-    color: rgba(100,116,139,0.55);
-    font-weight: 400;
-  }
-
-  .input-field {
-    width: 100%;
-    background: transparent;
-    border: none;
-    outline: none;
-    color: white;
-    font-family: var(--mono);
-    font-size: 24px;
-    font-weight: 700;
-    padding: 0;
-  }
-
-  .input-field::placeholder { color: rgba(30,45,71,0.9); }
-
-  .input-score {
-    font-size: 10px;
-    color: var(--muted);
-    margin-top: 4px;
-    font-family: var(--mono);
-    min-height: 14px;
-    transition: color 0.2s;
-  }
-
-  /* Consciousness */
-  .conscious-label {
-    font-size: 10px;
-    font-weight: 700;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.07em;
-    margin-bottom: 8px;
-  }
-
-  .consciousness-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    margin-bottom: 20px;
-  }
-
-  .consciousness-btn {
-    padding: 11px 8px;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    background: var(--surface2);
-    color: var(--muted);
-    font-family: var(--sans);
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.15s;
-    text-align: center;
-    touch-action: manipulation;
-  }
-
-  .consciousness-btn:active { transform: scale(0.97); }
-  .consciousness-btn.selected {
-    background: rgba(0,212,255,0.1);
-    border-color: var(--accent);
-    color: var(--accent);
-  }
-
-  /* Result */
-  .result-block {
-    background: var(--surface2);
-    border: 2px solid var(--border);
-    border-radius: 14px;
-    padding: 22px 16px;
-    text-align: center;
-    transition: all 0.35s;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .result-block.low   { border-color: var(--green); }
-  .result-block.medium { border-color: var(--yellow); }
-  .result-block.high  { border-color: var(--red); }
-
-  .result-score {
-    font-family: var(--mono);
-    font-size: 58px;
-    font-weight: 700;
-    line-height: 1;
-    transition: color 0.35s;
-    color: var(--muted);
-  }
-
-  .result-block.low    .result-score { color: var(--green); }
-  .result-block.medium .result-score { color: var(--yellow); }
-  .result-block.high   .result-score { color: var(--red); }
-
-  .result-label {
-    font-size: 12px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-top: 8px;
-    margin-bottom: 10px;
-    color: var(--muted);
-    transition: color 0.35s;
-  }
-
-  .result-block.low    .result-label { color: var(--green); }
-  .result-block.medium .result-label { color: var(--yellow); }
-  .result-block.high   .result-label { color: var(--red); }
-
-  .result-action {
-    font-size: 12px;
-    color: var(--muted);
-    line-height: 1.55;
-  }
-
-  /* GCS sections */
-  .gcs-section {
-    background: rgba(124,58,237,0.08);
-    border: 1px solid rgba(124,58,237,0.2);
-    border-radius: 12px;
-    padding: 14px;
-    margin-bottom: 10px;
-  }
-
-  .gcs-title {
-    font-size: 11px;
-    font-weight: 700;
-    color: #a78bfa;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-bottom: 10px;
-  }
-
-  .gcs-select {
-    width: 100%;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 9px;
-    color: white;
-    font-family: var(--sans);
-    font-size: 13px;
-    font-weight: 500;
-    padding: 10px 12px;
-    cursor: pointer;
-    outline: none;
-    appearance: auto;
-  }
-
-  /* Wells pills */
-  .wells-pills {
-    display: flex;
-    gap: 8px;
-    justify-content: center;
-    margin-top: 12px;
-    flex-wrap: wrap;
-  }
-
-  .wells-pill {
-    padding: 5px 13px;
-    border-radius: 100px;
-    font-size: 11px;
-    font-weight: 700;
-    font-family: var(--mono);
-    opacity: 0.4;
-    border: 1px solid transparent;
-    transition: all 0.3s;
-  }
-
-  .wells-pill.active { opacity: 1; }
-  .wells-pill.unlikely { background: rgba(16,185,129,0.1); border-color: var(--green); color: var(--green); }
-  .wells-pill.likely   { background: rgba(239,68,68,0.1);  border-color: var(--red);   color: var(--red); }
-
-  /* Reset btn */
-  .reset-btn {
-    display: block;
-    width: 100%;
-    margin-top: 14px;
-    padding: 12px;
-    background: transparent;
-    border: 1px solid var(--border);
-    border-radius: 11px;
-    color: var(--muted);
-    font-family: var(--sans);
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    touch-action: manipulation;
-  }
-
-  .reset-btn:active { background: rgba(0,212,255,0.05); color: var(--accent); border-color: var(--accent); }
-
-  /* Infusomat styles */
-  .drug-selector {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    margin-bottom: 20px;
-  }
-
-  .drug-btn {
-    padding: 14px 8px;
-    border: 2px solid var(--border);
-    border-radius: 12px;
-    background: var(--surface2);
-    color: var(--muted);
-    font-family: var(--sans);
-    font-size: 13px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-align: center;
-    touch-action: manipulation;
-  }
-
-  .drug-btn .drug-name { font-size: 15px; color: var(--text); display: block; margin-bottom: 3px; }
-  .drug-btn .drug-conc { font-size: 10px; font-family: var(--mono); }
-
-  .drug-btn.selected-dopa {
-    border-color: #f59e0b;
-    background: rgba(245,158,11,0.08);
-    color: #f59e0b;
-  }
-  .drug-btn.selected-dopa .drug-name { color: #f59e0b; }
-
-  .drug-btn.selected-norepi {
-    border-color: #ef4444;
-    background: rgba(239,68,68,0.08);
-    color: #ef4444;
-  }
-  .drug-btn.selected-norepi .drug-name { color: #ef4444; }
-
-  .weight-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 20px;
-  }
-
-  .weight-input-wrap {
-    flex: 1;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 12px 16px;
-  }
-
-  .weight-input-wrap:focus-within { border-color: var(--accent); }
-
-  .weight-label {
-    font-size: 10px;
-    font-weight: 700;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.07em;
-    margin-bottom: 4px;
-  }
-
-  .weight-field {
-    width: 100%;
-    background: transparent;
-    border: none;
-    outline: none;
-    color: white;
-    font-family: var(--mono);
-    font-size: 28px;
-    font-weight: 700;
-  }
-
-  .weight-field::placeholder { color: var(--border); }
-
-  .dose-section {
-    margin-bottom: 20px;
-  }
-
-  .dose-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-
-  .dose-label {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.07em;
-  }
-
-  .dose-value {
-    font-family: var(--mono);
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--accent);
-  }
-
-  .dose-slider {
-    width: 100%;
-    height: 6px;
-    border-radius: 3px;
-    background: var(--border);
-    outline: none;
-    cursor: pointer;
-    -webkit-appearance: none;
-    appearance: none;
-    margin-bottom: 8px;
-  }
-
-  .dose-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 24px; height: 24px;
-    border-radius: 50%;
-    background: var(--accent);
-    cursor: pointer;
-    border: 3px solid var(--bg);
-    box-shadow: 0 0 0 2px var(--accent);
-  }
-
-  .dose-slider.dopa::-webkit-slider-thumb { background: #f59e0b; box-shadow: 0 0 0 2px #f59e0b; }
-  .dose-slider.norepi::-webkit-slider-thumb { background: #ef4444; box-shadow: 0 0 0 2px #ef4444; }
-
-  .dose-range {
-    display: flex;
-    justify-content: space-between;
-    font-size: 10px;
-    color: var(--muted);
-    font-family: var(--mono);
-  }
-
-  .effect-badge {
-    display: inline-block;
-    padding: 5px 12px;
-    border-radius: 100px;
-    font-size: 12px;
-    font-weight: 700;
-    margin-top: 8px;
-    transition: all 0.3s;
-  }
-
-  .effect-renal    { background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid #10b981; }
-  .effect-cardiac  { background: rgba(245,158,11,0.15); color: #f59e0b; border: 1px solid #f59e0b; }
-  .effect-vaso     { background: rgba(239,68,68,0.15);  color: #ef4444; border: 1px solid #ef4444; }
-  .effect-pressor  { background: rgba(239,68,68,0.15);  color: #ef4444; border: 1px solid #ef4444; }
-
-  .result-infusomat {
-    background: var(--surface2);
-    border: 2px solid var(--accent);
-    border-radius: 16px;
-    padding: 20px;
-    text-align: center;
-    margin-top: 4px;
-  }
-
-  .result-infusomat.dopa-color { border-color: #f59e0b; }
-  .result-infusomat.norepi-color { border-color: #ef4444; }
-
-  .inf-rate {
-    font-family: var(--mono);
-    font-size: 56px;
-    font-weight: 700;
-    color: var(--accent);
-    line-height: 1;
-    transition: all 0.2s;
-  }
-
-  .inf-rate.dopa-color { color: #f59e0b; }
-  .inf-rate.norepi-color { color: #ef4444; }
-
-  .inf-unit {
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--muted);
-    margin-top: 4px;
-    font-family: var(--mono);
-  }
-
-  .inf-formula {
-    font-size: 11px;
-    color: var(--muted);
-    margin-top: 10px;
-    font-family: var(--mono);
-    line-height: 1.6;
-    background: rgba(0,0,0,0.2);
-    border-radius: 8px;
-    padding: 8px;
-  }
-
-  .inf-warning {
-    margin-top: 12px;
-    font-size: 12px;
-    color: var(--muted);
-    line-height: 1.5;
-  }
-
-  ::-webkit-scrollbar { width: 3px; }
-  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+:root {
+  --bg: #0a0e1a;
+  --surface: #111827;
+  --s2: #1a2235;
+  --border: #1e2d47;
+  --accent: #00d4ff;
+  --purple: #7c3aed;
+  --green: #10b981;
+  --yellow: #f59e0b;
+  --red: #ef4444;
+  --text: #e2e8f0;
+  --muted: #64748b;
+  --mono: 'Courier New', monospace;
+  --sans: -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+}
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+  background-size: 36px 36px;
+  pointer-events: none;
+  z-index: 0;
+}
+.wrap { max-width: 600px; margin: 0 auto; padding: 20px 16px 60px; position: relative; z-index: 1; }
+
+/* Header */
+.hdr { text-align: center; margin-bottom: 24px; padding-top: 12px; }
+.badge {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: rgba(0,212,255,0.08); border: 1px solid rgba(0,212,255,0.2);
+  border-radius: 100px; padding: 5px 14px;
+  font-family: var(--mono); font-size: 10px; color: var(--accent);
+  letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px;
+}
+.badge::before { content: ''; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+h1 {
+  font-size: 26px; font-weight: 800; letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; margin-bottom: 6px;
+}
+.sub { color: var(--muted); font-size: 13px; }
+
+/* Tabs */
+.tabs { display: flex; gap: 5px; margin-bottom: 18px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 6px; overflow-x: auto; }
+.tab { flex: 1; min-width: 52px; padding: 9px 4px; border: none; border-radius: 9px; background: transparent; color: var(--muted); font-family: var(--sans); font-size: 11px; font-weight: 700; cursor: pointer; transition: all 0.2s; text-align: center; }
+.tab.active { background: linear-gradient(135deg, var(--purple), var(--accent)); color: white; }
+
+/* Cards */
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 20px 16px; display: none; animation: fi 0.25s ease; }
+.card.active { display: block; }
+@keyframes fi { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+.card-title { font-size: 17px; font-weight: 700; margin-bottom: 5px; color: white; }
+.card-desc { color: var(--muted); font-size: 12px; margin-bottom: 18px; line-height: 1.5; }
+
+/* Criteria */
+.crit-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
+.crit {
+  background: var(--s2); border: 1px solid var(--border); border-radius: 12px;
+  padding: 13px 14px; display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; cursor: pointer; transition: all 0.15s; user-select: none; -webkit-user-select: none;
+}
+.crit.on { border-color: var(--accent); background: rgba(0,212,255,0.07); }
+.crit-l { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
+.chk { width: 24px; height: 24px; border: 2px solid var(--border); border-radius: 7px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.15s; font-size: 14px; color: #000; font-weight: 900; }
+.crit.on .chk { background: var(--accent); border-color: var(--accent); }
+.chk-i { opacity: 0; transition: opacity 0.15s; }
+.crit.on .chk-i { opacity: 1; }
+.crit-txt { font-size: 13px; font-weight: 600; line-height: 1.35; color: var(--text); }
+.crit-hint { font-size: 11px; color: var(--muted); margin-top: 3px; line-height: 1.3; }
+.cbadge { font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--accent); background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.2); border-radius: 7px; padding: 4px 9px; white-space: nowrap; flex-shrink: 0; }
+
+/* Inputs */
+.inp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+.inp-grp { background: var(--s2); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; transition: border-color 0.2s; }
+.inp-grp:focus-within { border-color: var(--accent); }
+.inp-lbl { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between; }
+.inp-unit { font-family: var(--mono); font-size: 9px; color: rgba(100,116,139,0.55); font-weight: 400; }
+.inp-f { width: 100%; background: transparent; border: none; outline: none; color: white; font-family: var(--mono); font-size: 24px; font-weight: 700; padding: 0; }
+.inp-f::placeholder { color: var(--border); }
+.inp-sc { font-size: 10px; color: var(--muted); margin-top: 4px; font-family: var(--mono); min-height: 14px; transition: color 0.2s; }
+.con-lbl { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 8px; }
+.con-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 18px; }
+.con-btn { padding: 11px 8px; border: 1px solid var(--border); border-radius: 10px; background: var(--s2); color: var(--muted); font-family: var(--sans); font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.15s; text-align: center; }
+.con-btn.on { background: rgba(0,212,255,0.1); border-color: var(--accent); color: var(--accent); }
+
+/* Result */
+.res { background: var(--s2); border: 2px solid var(--border); border-radius: 14px; padding: 20px 16px; text-align: center; transition: all 0.35s; }
+.res.low { border-color: var(--green); }
+.res.med { border-color: var(--yellow); }
+.res.hi  { border-color: var(--red); }
+.res-score { font-family: var(--mono); font-size: 56px; font-weight: 700; line-height: 1; color: var(--muted); transition: color 0.35s; }
+.res.low .res-score { color: var(--green); }
+.res.med .res-score { color: var(--yellow); }
+.res.hi  .res-score { color: var(--red); }
+.res-lbl { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 8px; margin-bottom: 10px; color: var(--muted); transition: color 0.35s; }
+.res.low .res-lbl { color: var(--green); }
+.res.med .res-lbl { color: var(--yellow); }
+.res.hi  .res-lbl { color: var(--red); }
+.res-act { font-size: 12px; color: var(--muted); line-height: 1.55; }
+
+/* GCS */
+.gcs-sec { background: rgba(124,58,237,0.08); border: 1px solid rgba(124,58,237,0.2); border-radius: 12px; padding: 14px; margin-bottom: 10px; }
+.gcs-ttl { font-size: 11px; font-weight: 700; color: #a78bfa; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
+.gcs-sel { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 9px; color: white; font-family: var(--sans); font-size: 13px; font-weight: 500; padding: 10px 12px; cursor: pointer; outline: none; appearance: auto; }
+
+/* Wells pills */
+.w-pills { display: flex; gap: 8px; justify-content: center; margin-top: 12px; flex-wrap: wrap; }
+.w-pill { padding: 5px 13px; border-radius: 100px; font-size: 11px; font-weight: 700; font-family: var(--mono); opacity: 0.4; border: 1px solid transparent; transition: all 0.3s; }
+.w-pill.on { opacity: 1; }
+.w-pill.unlikely { background: rgba(16,185,129,0.1); border-color: var(--green); color: var(--green); }
+.w-pill.likely   { background: rgba(239,68,68,0.1);  border-color: var(--red);   color: var(--red); }
+
+/* Reset */
+.reset { display: block; width: 100%; margin-top: 14px; padding: 12px; background: transparent; border: 1px solid var(--border); border-radius: 11px; color: var(--muted); font-family: var(--sans); font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+.reset:active { background: rgba(0,212,255,0.05); color: var(--accent); border-color: var(--accent); }
+
+/* Infusomat */
+.drug-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 18px; }
+.drug-btn { padding: 14px 8px; border: 2px solid var(--border); border-radius: 12px; background: var(--s2); color: var(--muted); font-family: var(--sans); font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.2s; text-align: center; }
+.drug-btn .dn { font-size: 15px; color: var(--text); display: block; margin-bottom: 3px; }
+.drug-btn .dc { font-size: 10px; font-family: var(--mono); }
+.drug-btn.sel-d { border-color: var(--yellow); background: rgba(245,158,11,0.08); }
+.drug-btn.sel-d .dn { color: var(--yellow); }
+.drug-btn.sel-n { border-color: var(--red); background: rgba(239,68,68,0.08); }
+.drug-btn.sel-n .dn { color: var(--red); }
+
+.w-inp { background: var(--s2); border: 1px solid var(--border); border-radius: 12px; padding: 12px 16px; margin-bottom: 18px; transition: border-color 0.2s; }
+.w-inp:focus-within { border-color: var(--accent); }
+.w-lbl { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 4px; }
+.w-field { width: 100%; background: transparent; border: none; outline: none; color: white; font-family: var(--mono); font-size: 28px; font-weight: 700; }
+.w-field::placeholder { color: var(--border); }
+
+.dose-hdr { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.dose-lbl { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; }
+.dose-val { font-family: var(--mono); font-size: 18px; font-weight: 700; color: var(--accent); }
+
+.slider { width: 100%; height: 6px; border-radius: 3px; background: var(--border); outline: none; cursor: pointer; -webkit-appearance: none; appearance: none; margin-bottom: 8px; }
+.slider::-webkit-slider-thumb { -webkit-appearance: none; width: 26px; height: 26px; border-radius: 50%; background: var(--yellow); cursor: pointer; border: 3px solid var(--bg); box-shadow: 0 0 0 2px var(--yellow); }
+.slider.nr::-webkit-slider-thumb { background: var(--red); box-shadow: 0 0 0 2px var(--red); }
+
+.dose-range { display: flex; justify-content: space-between; font-size: 10px; color: var(--muted); font-family: var(--mono); }
+.eff { margin-top: 8px; min-height: 28px; }
+.eff-badge { display: inline-block; padding: 5px 12px; border-radius: 100px; font-size: 12px; font-weight: 700; transition: all 0.3s; }
+.e-g { background: rgba(16,185,129,0.15); color: var(--green); border: 1px solid var(--green); }
+.e-y { background: rgba(245,158,11,0.15); color: var(--yellow); border: 1px solid var(--yellow); }
+.e-r { background: rgba(239,68,68,0.15); color: var(--red); border: 1px solid var(--red); }
+
+.inf-res { background: var(--s2); border: 2px solid var(--yellow); border-radius: 16px; padding: 20px; text-align: center; margin-top: 4px; transition: border-color 0.3s; }
+.inf-res.nr { border-color: var(--red); }
+.inf-rate { font-family: var(--mono); font-size: 56px; font-weight: 700; color: var(--yellow); line-height: 1; transition: color 0.3s; }
+.inf-res.nr .inf-rate { color: var(--red); }
+.inf-unit-lbl { font-size: 16px; font-weight: 600; color: var(--muted); margin-top: 4px; font-family: var(--mono); }
+.inf-formula { font-size: 11px; color: var(--muted); margin-top: 10px; font-family: var(--mono); line-height: 1.6; background: rgba(0,0,0,0.2); border-radius: 8px; padding: 8px; }
+.inf-warn { margin-top: 10px; font-size: 11px; color: var(--muted); line-height: 1.5; white-space: pre-line; }
 </style>
 </head>
 <body>
-<div class="container">
+<div class="wrap">
 
-  <div class="header">
-    <div class="header-badge">СМП · Клинические шкалы</div>
-    <h1>Прогностические шкалы</h1>
-    <p class="header-sub">qSOFA · NEWS2 · Wells · GCS · Инфузомат</p>
+<div class="hdr">
+  <div class="badge">СМП · Клинические шкалы</div>
+  <h1>Прогностические шкалы</h1>
+  <p class="sub">qSOFA · NEWS2 · Wells · GCS · Инфузомат</p>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="goTab('qsofa')">qSOFA</button>
+  <button class="tab" onclick="goTab('news')">NEWS2</button>
+  <button class="tab" onclick="goTab('wells')">Wells</button>
+  <button class="tab" onclick="goTab('gcs')">GCS</button>
+  <button class="tab" onclick="goTab('inf')">Инфузомат</button>
+</div>
+
+<!-- qSOFA -->
+<div class="card active" id="tab-qsofa">
+  <div class="card-title">qSOFA — Экспресс-сепсис</div>
+  <div class="card-desc">Три критерия по 1 баллу. ≥2 баллов — высокий риск сепсиса.</div>
+  <div class="crit-list">
+    <div class="crit" id="q1" onclick="tog('q1',1,'q')">
+      <div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">ЧДД ≥ 22 в минуту</div><div class="crit-hint">Считать 30 сек × 2</div></div></div>
+      <div class="cbadge">+1</div>
+    </div>
+    <div class="crit" id="q2" onclick="tog('q2',1,'q')">
+      <div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">АД систолическое ≤ 100 мм рт.ст.</div><div class="crit-hint">По тонометру, любая рука</div></div></div>
+      <div class="cbadge">+1</div>
+    </div>
+    <div class="crit" id="q3" onclick="tog('q3',1,'q')">
+      <div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Нарушение сознания (GCS &lt; 15)</div><div class="crit-hint">Дезориентация, заторможенность</div></div></div>
+      <div class="cbadge">+1</div>
+    </div>
+  </div>
+  <div class="res" id="q-res">
+    <div class="res-score" id="q-sc">0</div>
+    <div class="res-lbl" id="q-lb">Баллов</div>
+    <div class="res-act" id="q-ac">Отметьте критерии выше</div>
+  </div>
+  <button class="reset" onclick="resetGrp('q')">Сбросить</button>
+</div>
+
+<!-- NEWS2 -->
+<div class="card" id="tab-news">
+  <div class="card-title">NEWS2 — Раннее предупреждение</div>
+  <div class="card-desc">Введите показатели. Результат пересчитывается мгновенно.</div>
+  <div class="inp-grid">
+    <div class="inp-grp">
+      <div class="inp-lbl">ЧДД <span class="inp-unit">в мин</span></div>
+      <input class="inp-f" type="number" id="n-rr" placeholder="16" inputmode="numeric" oninput="calcNEWS()">
+      <div class="inp-sc" id="n-rr-s"></div>
+    </div>
+    <div class="inp-grp">
+      <div class="inp-lbl">SpO2 <span class="inp-unit">%</span></div>
+      <input class="inp-f" type="number" id="n-sp" placeholder="98" inputmode="numeric" oninput="calcNEWS()">
+      <div class="inp-sc" id="n-sp-s"></div>
+    </div>
+    <div class="inp-grp">
+      <div class="inp-lbl">АД сист. <span class="inp-unit">мм рт.ст.</span></div>
+      <input class="inp-f" type="number" id="n-sb" placeholder="120" inputmode="numeric" oninput="calcNEWS()">
+      <div class="inp-sc" id="n-sb-s"></div>
+    </div>
+    <div class="inp-grp">
+      <div class="inp-lbl">ЧСС <span class="inp-unit">уд/мин</span></div>
+      <input class="inp-f" type="number" id="n-hr" placeholder="80" inputmode="numeric" oninput="calcNEWS()">
+      <div class="inp-sc" id="n-hr-s"></div>
+    </div>
+    <div class="inp-grp">
+      <div class="inp-lbl">Температура <span class="inp-unit">°C</span></div>
+      <input class="inp-f" type="number" id="n-tm" placeholder="36.6" inputmode="decimal" step="0.1" oninput="calcNEWS()">
+      <div class="inp-sc" id="n-tm-s"></div>
+    </div>
+  </div>
+  <div class="con-lbl">Сознание (AVPU)</div>
+  <div class="con-grid">
+    <button class="con-btn on" id="btn-a" onclick="setCon('a')">A — Ясное</button>
+    <button class="con-btn" id="btn-v" onclick="setCon('v')">V/P/U — Нарушено</button>
+  </div>
+  <div class="res" id="news-res">
+    <div class="res-score" id="news-sc">—</div>
+    <div class="res-lbl" id="news-lb">Введите данные</div>
+    <div class="res-act" id="news-ac">Заполните поля выше</div>
+  </div>
+  <button class="reset" onclick="resetNEWS()">Сбросить</button>
+</div>
+
+<!-- Wells -->
+<div class="card" id="tab-wells">
+  <div class="card-title">Wells — Вероятность ТЭЛА</div>
+  <div class="card-desc">Предтестовая вероятность тромбоэмболии лёгочной артерии. Макс. 12.5 баллов.</div>
+  <div class="crit-list">
+    <div class="crit" id="w1" onclick="tog('w1',3,'w')">
+      <div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Признаки ТГВ</div><div class="crit-hint">Отёк, боль, покраснение голени/бедра</div></div></div>
+      <div class="cbadge">+3</div>
+    </div>
+    <div class="crit" id="w2" onclick="tog('w2',3,'w')">
+      <div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Альтернативный диагноз маловероятен</div><div class="crit-hint">ТЭЛА — лучшее объяснение симптомов</div></div></div>
+      <div class="cbadge">+3</div>
+    </div>
+    <div class="crit" id="w3" onclick="tog('w3',1.5,'w')">
+      <div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">ЧСС &gt; 100 уд/мин</div><div class="crit-hint">Тахикардия на момент осмотра</div></div></div>
+      <div class="cbadge">+1.5</div>
+    </div>
+    <div class="crit" id="w4" onclick="tog('w4',1.5,'w')">
+      <div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Иммобилизация / операция &lt; 4 недель</div><div class="crit-hint">Постельный режим 3+ суток или хирургия</div></div></div>
+      <div class="cbadge">+1.5</div>
+    </div>
+    <div class="crit" id="w5" onclick="tog('w5',1.5,'w')">
+      <div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">ТГВ / ТЭЛА в анамнезе</div><div class="crit-hint">Ранее подтверждённый эпизод</div></div></div>
+      <div class="cbadge">+1.5</div>
+    </div>
+    <div class="crit" id="w6" onclick="tog('w6',1,'w')">
+      <div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Кровохарканье</div><div class="crit-hint">Кровь в мокроте, прожилки или более</div></div></div>
+      <div class="cbadge">+1</div>
+    </div>
+    <div class="crit" id="w7" onclick="tog('w7',1,'w')">
+      <div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Активная онкология</div><div class="crit-hint">Лечение за 6 мес или паллиатив</div></div></div>
+      <div class="cbadge">+1</div>
+    </div>
+  </div>
+  <div class="res" id="w-res">
+    <div class="res-score" id="w-sc">0</div>
+    <div class="res-lbl" id="w-lb">Баллов</div>
+    <div class="res-act" id="w-ac">Отметьте имеющиеся критерии</div>
+    <div class="w-pills">
+      <div class="w-pill unlikely on" id="wp-no">4 и менее — маловероятна</div>
+      <div class="w-pill likely" id="wp-yes">Более 4 — КТ-ангиография</div>
+    </div>
+  </div>
+  <button class="reset" onclick="resetGrp('w')">Сбросить</button>
+</div>
+
+<!-- GCS -->
+<div class="card" id="tab-gcs">
+  <div class="card-title">GCS — Шкала комы Глазго</div>
+  <div class="card-desc">Оценка сознания по трём компонентам. Норма = 15. GCS 8 и менее — показание к интубации.</div>
+  <div class="gcs-sec">
+    <div class="gcs-ttl">E — Открывание глаз</div>
+    <select class="gcs-sel" id="g-e" onchange="calcGCS()">
+      <option value="4">4 — Спонтанное</option>
+      <option value="3">3 — На голос</option>
+      <option value="2">2 — На боль</option>
+      <option value="1">1 — Отсутствует</option>
+    </select>
+  </div>
+  <div class="gcs-sec">
+    <div class="gcs-ttl">V — Речевая реакция</div>
+    <select class="gcs-sel" id="g-v" onchange="calcGCS()">
+      <option value="5">5 — Ориентирован</option>
+      <option value="4">4 — Спутанная речь</option>
+      <option value="3">3 — Отдельные слова</option>
+      <option value="2">2 — Нечленораздельно</option>
+      <option value="1">1 — Отсутствует</option>
+    </select>
+  </div>
+  <div class="gcs-sec">
+    <div class="gcs-ttl">M — Двигательная реакция</div>
+    <select class="gcs-sel" id="g-m" onchange="calcGCS()">
+      <option value="6">6 — Выполняет команды</option>
+      <option value="5">5 — Локализует боль</option>
+      <option value="4">4 — Отдёргивает</option>
+      <option value="3">3 — Патол. сгибание</option>
+      <option value="2">2 — Патол. разгибание</option>
+      <option value="1">1 — Отсутствует</option>
+    </select>
+  </div>
+  <div class="res" id="gcs-res" style="margin-top:16px;">
+    <div class="res-score" id="gcs-sc">15</div>
+    <div class="res-lbl" id="gcs-lb">E4 + V5 + M6</div>
+    <div class="res-act" id="gcs-ac">Сознание ясное — норма</div>
+  </div>
+  <button class="reset" onclick="resetGCS()">Сбросить</button>
+</div>
+
+<!-- Infusomat -->
+<div class="card" id="tab-inf">
+  <div class="card-title">Инфузомат — Скорость подачи</div>
+  <div class="card-desc">Infusia SP7S. Шприц 20 мл. Разведение в 250 мл NaCl 0.9%.</div>
+
+  <div class="drug-grid">
+    <button class="drug-btn sel-d" id="ibtn-d" onclick="selDrug('d')">
+      <span class="dn">Допамин</span>
+      <span class="dc">1 амп 200 мг / 250 мл<br>= 800 мкг/мл</span>
+    </button>
+    <button class="drug-btn" id="ibtn-n" onclick="selDrug('n')">
+      <span class="dn">Норэпинефрин</span>
+      <span class="dc">1 амп 8 мг / 250 мл<br>= 32 мкг/мл</span>
+    </button>
   </div>
 
-  <div class="tabs">
-    <button class="tab active" onclick="switchTab('qsofa')">qSOFA</button>
-    <button class="tab" onclick="switchTab('news')">NEWS2</button>
-    <button class="tab" onclick="switchTab('wells')">Wells</button>
-    <button class="tab" onclick="switchTab('gcs')">GCS</button>
-    <button class="tab" onclick="switchTab('infusomat')">Инфузомат</button>
+  <div class="w-inp">
+    <div class="w-lbl">Вес пациента (кг)</div>
+    <input class="w-field" type="number" id="i-wt" placeholder="80" inputmode="numeric" oninput="calcInf()">
   </div>
 
-  <!-- qSOFA -->
-  <div class="card active" id="tab-qsofa">
-    <div class="card-title">qSOFA — Экспресс-сепсис</div>
-    <div class="card-desc">Три критерия по 1 баллу. ≥2 баллов → высокий риск сепсиса. Считается за 30 секунд.</div>
-    <div class="criteria-list">
-      <div class="criterion" id="qsofa-1" onclick="toggleCrit('qsofa-1',1,'qsofa')">
-        <div class="criterion-left">
-          <div class="checkbox"><span class="check-icon">✓</span></div>
-          <div>
-            <div class="criterion-text">ЧДД ≥ 22 в минуту</div>
-            <div class="criterion-hint">Считать 30 сек × 2</div>
-          </div>
-        </div>
-        <div class="criterion-badge">+1</div>
-      </div>
-      <div class="criterion" id="qsofa-2" onclick="toggleCrit('qsofa-2',1,'qsofa')">
-        <div class="criterion-left">
-          <div class="checkbox"><span class="check-icon">✓</span></div>
-          <div>
-            <div class="criterion-text">АД систолическое ≤ 100 мм рт.ст.</div>
-            <div class="criterion-hint">По тонометру, любая рука</div>
-          </div>
-        </div>
-        <div class="criterion-badge">+1</div>
-      </div>
-      <div class="criterion" id="qsofa-3" onclick="toggleCrit('qsofa-3',1,'qsofa')">
-        <div class="criterion-left">
-          <div class="checkbox"><span class="check-icon">✓</span></div>
-          <div>
-            <div class="criterion-text">Нарушение сознания (GCS &lt; 15)</div>
-            <div class="criterion-hint">Дезориентация, заторможенность, без сознания</div>
-          </div>
-        </div>
-        <div class="criterion-badge">+1</div>
-      </div>
+  <div style="margin-bottom:18px;">
+    <div class="dose-hdr">
+      <div class="dose-lbl">Доза</div>
+      <div class="dose-val" id="i-dv">5.0 мкг/кг/мин</div>
     </div>
-    <div class="result-block" id="qsofa-result">
-      <div class="result-score" id="qsofa-score">0</div>
-      <div class="result-label" id="qsofa-label">Баллов</div>
-      <div class="result-action" id="qsofa-action">Отметьте критерии выше</div>
+    <input class="slider" type="range" id="i-sl" min="2" max="20" step="0.5" value="5" oninput="calcInf()">
+    <div class="dose-range">
+      <span id="i-mn">2 мкг/кг/мин</span>
+      <span id="i-mx">20 мкг/кг/мин</span>
     </div>
-    <button class="reset-btn" onclick="resetGroup('qsofa')">↺ Сбросить</button>
+    <div class="eff" id="i-eff"></div>
   </div>
 
-  <!-- NEWS2 -->
-  <div class="card" id="tab-news">
-    <div class="card-title">NEWS2 — Раннее предупреждение</div>
-    <div class="card-desc">Введите показатели. Каждый параметр пересчитывается мгновенно.</div>
-    <div class="inputs-grid">
-      <div class="input-group">
-        <div class="input-label">ЧДД <span class="input-unit">в мин</span></div>
-        <input class="input-field" type="number" id="news-rr" placeholder="16" inputmode="numeric" oninput="calcNEWS()">
-        <div class="input-score" id="news-rr-s"></div>
-      </div>
-      <div class="input-group">
-        <div class="input-label">SpO₂ <span class="input-unit">%</span></div>
-        <input class="input-field" type="number" id="news-spo2" placeholder="98" inputmode="numeric" oninput="calcNEWS()">
-        <div class="input-score" id="news-spo2-s"></div>
-      </div>
-      <div class="input-group">
-        <div class="input-label">АД сист. <span class="input-unit">мм рт.ст.</span></div>
-        <input class="input-field" type="number" id="news-sbp" placeholder="120" inputmode="numeric" oninput="calcNEWS()">
-        <div class="input-score" id="news-sbp-s"></div>
-      </div>
-      <div class="input-group">
-        <div class="input-label">ЧСС <span class="input-unit">уд/мин</span></div>
-        <input class="input-field" type="number" id="news-hr" placeholder="80" inputmode="numeric" oninput="calcNEWS()">
-        <div class="input-score" id="news-hr-s"></div>
-      </div>
-      <div class="input-group">
-        <div class="input-label">Температура <span class="input-unit">°C</span></div>
-        <input class="input-field" type="number" id="news-temp" placeholder="36.6" inputmode="decimal" step="0.1" oninput="calcNEWS()">
-        <div class="input-score" id="news-temp-s"></div>
-      </div>
-    </div>
-    <div class="conscious-label">Сознание (AVPU)</div>
-    <div class="consciousness-grid">
-      <button class="consciousness-btn selected" id="btn-alert" onclick="setConsciousness('alert')">A — Ясное</butto
+  <div class="inf-res" id="i-res">
+    <div class="inf-rate" id="i-rate">—</div>
+    <div class="inf-unit-lbl">мл / час</div>
+    <div class="inf-formula" id="i-form">Введите вес пациента</div>
+    <div class="inf-warn" id="i-warn">Разведение: 1 амп (5 мл, 200 мг) + 245 мл NaCl 0.9%
+Концентрация = 800 мкг/мл</div>
+  </div>
+  <button class="reset" onclick="resetInf()">Сбросить</button>
+</div>
+
+</div>
+<script>
+var TABS = ['qsofa','news','wells','gcs','inf'];
+var grpScores = {q:{}, w:{}};
+var conScore = 0;
+var curDrug = 'd';
+
+var DRUGS = {
+  d: { conc: 800, min: 2,    max: 20,  step: 0.5,  def: 5,   unit: 'мкг/кг/мин', warn: 'Разведение: 1 амп (5 мл, 200 мг) + 245 мл NaCl 0.9%\nКонцентрация = 800 мкг/мл' },
+  n: { conc: 32,  min: 0.05, max: 2,   step: 0.05, def: 0.1, unit: 'мкг/кг/мин', warn: 'Разведение: 1 амп (4 мл, 8 мг) + 246 мл NaCl 0.9%\nКонцентрация = 32 мкг/мл' }
+};
+
+function goTab(name) {
+  var tabs = document.querySelectorAll('.tab');
+  for (var i = 0; i < TABS.length; i++) {
+    tabs[i].classList.toggle('active', TABS[i] === name);
+  }
+  var cards = document.querySelectorAll('.card');
+  for (var j = 0; j < cards.length; j++) {
+    cards[j].classList.remove('active');
+  }
+  document.getElementById('tab-' + name).classList.add('active');
+}
+
+function tog(id, val, grp) {
+  var el = document.getElementById(id);
+  el.classList.toggle('on');
+  grpScores[grp][id] = el.classList.contains('on') ? val : 0;
+  renderGrp(grp);
+}
+
+function resetGrp(grp) {
+  grpScores[grp] = {};
+  var crits = document.querySelectorAll('.crit[id^="' + grp + '"]');
+  for (var i = 0; i < crits.length; i++) { crits[i].classList.remove('on'); }
+  renderGrp(grp);
+}
+
+function total(grp) {
+  var t = 0;
+  var vals = Object.values(grpScores[grp]);
+  for (var i = 0; i < vals.length; i++) { t += vals[i]; }
+  return t;
+}
+
+function setRes(id, sc, cls, lb, ac) {
+  var r = document.getElementById(id + '-res');
+  r.className = 'res' + (cls ? ' ' + cls : '');
+  document.getElementById(id + '-sc').textContent = sc;
+  document.getElementById(id + '-lb').textContent = lb;
+  document.getElementById(id + '-ac').textContent = ac;
+}
+
+function renderGrp(grp) {
+  var t = total(grp);
+  if (grp === 'q') {
+    if (t === 0)      setRes('q', 0, 'low', 'Баллов', 'Низкий риск — продолжить оценку');
+    else if (t === 1) setRes('q', 1, 'med', 'Балл', 'Наблюдение, переоценка через 30-60 мин');
+    else              setRes('q', t, 'hi',  'Балла — ТРЕВОГА', 'Высокий риск сепсиса! Госпитализация. Антибиотики, инфузия.');
+  }
+  if (grp === 'w') {
+    var d = t % 1 === 0 ? t : t.toFixed(1);
+    var pno = document.getElementById('wp-no');
+    var pyes = document.getElementById('wp-yes');
+    if (t <= 4) {
+      setRes('w', d, 'low', 'Баллов', 'ТЭЛА маловероятна — D-димер для исключения');
+      pno.classList.add('on'); pyes.classList.remove('on');
+    } else {
+      setRes('w', d, 'hi', 'Баллов', 'ТЭЛА вероятна! КТ-ангиография. Антикоагуляция.');
+      pyes.classList.add('on'); pno.classList.remove('on');
+    }
+  }
+}
+
+function setCon(s) {
+  document.getElementById('btn-a').classList.toggle('on', s === 'a');
+  document.getElementById('btn-v').classList.toggle('on', s === 'v');
+  conScore = s === 'v' ? 3 : 0;
+  calcNEWS();
+}
+
+function sRR(v)  { return v<=8?3 : v<=11?1 : v<=20?0 : v<=24?2 : 3; }
+function sSP(v)  { return v<=91?3 : v<=93?2 : v<=95?1 : 0; }
+function sSB(v)  { return v<=90?3 : v<=100?2 : v<=110?1 : v<=219?0 : 3; }
+function sHR(v)  { return v<=40?3 : v<=50?1 : v<=90?0 : v<=110?1 : v<=130?2 : 3; }
+function sTM(v)  { return v<=35?3 : v<=36?1 : v<=38?0 : v<=39?1 : 2; }
+var SC = {0:'#10b981', 1:'#f59e0b', 2:'#ef4444', 3:'#ef4444'};
+
+function calcNEWS() {
+  var fs = [
+    {id:'n-rr', fn:sRR, sid:'n-rr-s'},
+    {id:'n-sp', fn:sSP, sid:'n-sp-s'},
+    {id:'n-sb', fn:sSB, sid:'n-sb-s'},
+    {id:'n-hr', fn:sHR, sid:'n-hr-s'},
+    {id:'n-tm', fn:sTM, sid:'n-tm-s'}
+  ];
+  var tot = conScore;
+  var any = conScore > 0;
+  for (var i = 0; i < fs.length; i++) {
+    var v = parseFloat(document.getElementById(fs[i].id).value);
+    var lbl = document.getElementById(fs[i].sid);
+    if (!isNaN(v)) {
+      any = true;
+      var s = fs[i].fn(v);
+      tot += s;
+      lbl.textContent = s === 0 ? '0 — норма' : '+' + s + ' балл(а)';
+      lbl.style.color = SC[Math.min(s, 3)];
+    } else {
+      lbl.textContent = '';
+    }
+  }
+  if (!any) { setRes('news', '—', '', 'Введите данные', 'Заполните поля выше'); return; }
+  if (tot <= 4)      setRes('news', tot, 'low', 'Низкий риск', 'Мониторинг каждые 12 часов.');
+  else if (tot <= 6) setRes('news', tot, 'med', 'Средний риск', 'Срочная оценка врача. Мониторинг каждый час.');
+  else               setRes('news', tot, 'hi',  'ВЫСОКИЙ РИСК', 'Реанимационная бригада! Непрерывный мониторинг.');
+}
+
+function resetNEWS() {
+  var ids = ['n-rr','n-sp','n-sb','n-hr','n-tm'];
+  for (var i = 0; i < ids.length; i++) {
+    document.getElementById(ids[i]).value = '';
+    document.getElementById(ids[i] + '-s').textContent = '';
+  }
+  setCon('a');
+}
+
+function calcGCS() {
+  var e = +document.getElementById('g-e').value;
+  var v = +document.getElementById('g-v').value;
+  var m = +document.getElementById('g-m').value;
+  var t = e + v + m;
+  var lb = 'E' + e + ' + V' + v + ' + M' + m;
+  var cls, ac;
+  if      (t >= 13) { cls = 'low'; ac = 'Сознание ясное или минимальные нарушения'; }
+  else if (t >= 9)  { cls = 'med'; ac = 'Умеренное нарушение. Риск аспирации. Боковое положение.'; }
+  else if (t >= 5)  { cls = 'hi';  ac = 'Тяжёлое нарушение сознания. Готовность к интубации.'; }
+  else              { cls = 'hi';  ac = 'КОМА. GCS 8 и менее — показание к интубации трахеи!'; }
+  setRes('gcs', t, cls, lb, ac);
+}
+
+function resetGCS() {
+  document.getElementById('g-e').value = '4';
+  document.getElementById('g-v').value = '5';
+  document.getElementById('g-m').value = '6';
+  calcGCS();
+}
+
+function selDrug(drug) {
+  curDrug = drug;
+  var d = DRUGS[drug];
+  document.getElementById('ibtn-d').className = 'drug-btn' + (drug === 'd' ? ' sel-d' : '');
+  document.getElementById('ibtn-n').className = 'drug-btn' + (drug === 'n' ? ' sel-n' : '');
+  var sl = document.getElementById('i-sl');
+  sl.min = d.min; sl.max = d.max; sl.step = d.step; sl.value = d.def;
+  sl.className = 'slider' + (drug === 'n' ? ' nr' : '');
+  document.getElementById('i-mn').textContent = d.min + ' ' + d.unit;
+  document.getElementById('i-mx').textContent = d.max + ' ' + d.unit;
+  var res = document.getElementById('i-res');
+  res.className = 'inf-res' + (drug === 'n' ? ' nr' : '');
+  document.getElementById('i-warn').textContent = d.warn;
+  calcInf();
+}
+
+function calcInf() {
+  var d = DRUGS[curDrug];
+  var wt = parseFloat(document.getElementById('i-wt').value);
+  var dose = parseFloat(document.getElementById('i-sl').value);
+  var dstr = dose < 1 ? dose.toFixed(2) : dose.toFixed(1);
+  document.getElementById('i-dv').textContent = dstr + ' мкг/кг/мин';
+
+  var effEl = document.getElementById('i-eff');
+  if (curDrug === 'd') {
+    var eff, ecls;
+    if (dose <= 4)  { eff = 'Допаминергический — расширение сосудов почек'; ecls = 'e-g'; }
+    else if (dose <= 10) { eff = 'B1-эффект — инотропный, хронотропный'; ecls = 'e-y'; }
+    else            { eff = 'A1-эффект — вазоконстрикция, рост АД'; ecls = 'e-r'; }
+    effEl.innerHTML = '<span class="eff-badge ' + ecls + '">' + eff + '</span>';
+  } else {
+    var neff, necls;
+    if (dose <= 0.2)     { neff = 'Начальная доза — мягкая вазоконстрикция'; necls = 'e-y'; }
+    else if (dose <= 0.5){ neff = 'Средняя доза — вазопрессорный эффект'; necls = 'e-r'; }
+    else                 { neff = 'Высокая доза — рефрактерный шок'; necls = 'e-r'; }
+    effEl.innerHTML = '<span class="eff-badge ' + necls + '">' + neff + '</span>';
+  }
+
+  var rateEl = document.getElementById('i-rate');
+  var formEl = document.getElementById('i-form');
+  if (isNaN(wt) || wt <= 0) {
+    rateEl.textContent = '—';
+    formEl.textContent = 'Введите вес пациента';
+    return;
+  }
+  var rate = (dose * wt * 60) / d.conc;
+  rateEl.textContent = rate.toFixed(1);
+  formEl.textContent = dstr + ' x ' + wt + ' x 60 / ' + d.conc + ' = ' + rate.toFixed(1) + ' мл/час';
+}
+
+function resetInf() {
+  document.getElementById('i-wt').value = '';
+  selDrug('d');
+}
+
+renderGrp('q');
+renderGrp('w');
+calcGCS();
+</script>
+</body>
+</html>
