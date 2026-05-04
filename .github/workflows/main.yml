@@ -16,6 +16,11 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Fix Gradle Wrapper
+        run: |
+          curl -o gradle/wrapper/gradle-wrapper.jar \
+            https://raw.githubusercontent.com/gradle/gradle/v8.4.0/gradle/wrapper/gradle-wrapper.jar
+
       - uses: android-actions/setup-android@v3
 
       - name: Build APK
