@@ -10,14 +10,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
+
+      - name: Fix Gradle Wrapper
+        run: |
+          curl -o gradle/wrapper/gradle-wrapper.jar \
+            https://raw.githubusercontent.com/gradle/gradle/v8.4.0/gradle/wrapper/gradle-wrapper.jar
+
       - uses: android-actions/setup-android@v3
-      - uses: gradle/actions/setup-gradle@v3
-      - run: chmod +x ./gradlew
-      - run: ./gradlew assembleDebug --no-daemon
+
+      - name: Build APK
+        run: |
+          chmod +x ./gradlew
+          ./gradlew assembleDebug --no-daemon --no-build-cache
+
       - uses: actions/upload-artifact@v4
         with:
           name: MedScores-APK
