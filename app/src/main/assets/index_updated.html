@@ -485,7 +485,209 @@
 
   .reset-btn:active { background: rgba(0,212,255,0.05); color: var(--accent); border-color: var(--accent); }
 
-  /* Scrollbar */
+  /* Infusomat styles */
+  .drug-selector {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .drug-btn {
+    padding: 14px 8px;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface2);
+    color: var(--muted);
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    touch-action: manipulation;
+  }
+
+  .drug-btn .drug-name { font-size: 15px; color: var(--text); display: block; margin-bottom: 3px; }
+  .drug-btn .drug-conc { font-size: 10px; font-family: var(--mono); }
+
+  .drug-btn.selected-dopa {
+    border-color: #f59e0b;
+    background: rgba(245,158,11,0.08);
+    color: #f59e0b;
+  }
+  .drug-btn.selected-dopa .drug-name { color: #f59e0b; }
+
+  .drug-btn.selected-norepi {
+    border-color: #ef4444;
+    background: rgba(239,68,68,0.08);
+    color: #ef4444;
+  }
+  .drug-btn.selected-norepi .drug-name { color: #ef4444; }
+
+  .weight-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .weight-input-wrap {
+    flex: 1;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 16px;
+  }
+
+  .weight-input-wrap:focus-within { border-color: var(--accent); }
+
+  .weight-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 4px;
+  }
+
+  .weight-field {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: white;
+    font-family: var(--mono);
+    font-size: 28px;
+    font-weight: 700;
+  }
+
+  .weight-field::placeholder { color: var(--border); }
+
+  .dose-section {
+    margin-bottom: 20px;
+  }
+
+  .dose-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .dose-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+  }
+
+  .dose-value {
+    font-family: var(--mono);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .dose-slider {
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: var(--border);
+    outline: none;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+    margin-bottom: 8px;
+  }
+
+  .dose-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    border: 3px solid var(--bg);
+    box-shadow: 0 0 0 2px var(--accent);
+  }
+
+  .dose-slider.dopa::-webkit-slider-thumb { background: #f59e0b; box-shadow: 0 0 0 2px #f59e0b; }
+  .dose-slider.norepi::-webkit-slider-thumb { background: #ef4444; box-shadow: 0 0 0 2px #ef4444; }
+
+  .dose-range {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: var(--muted);
+    font-family: var(--mono);
+  }
+
+  .effect-badge {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-top: 8px;
+    transition: all 0.3s;
+  }
+
+  .effect-renal    { background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid #10b981; }
+  .effect-cardiac  { background: rgba(245,158,11,0.15); color: #f59e0b; border: 1px solid #f59e0b; }
+  .effect-vaso     { background: rgba(239,68,68,0.15);  color: #ef4444; border: 1px solid #ef4444; }
+  .effect-pressor  { background: rgba(239,68,68,0.15);  color: #ef4444; border: 1px solid #ef4444; }
+
+  .result-infusomat {
+    background: var(--surface2);
+    border: 2px solid var(--accent);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    margin-top: 4px;
+  }
+
+  .result-infusomat.dopa-color { border-color: #f59e0b; }
+  .result-infusomat.norepi-color { border-color: #ef4444; }
+
+  .inf-rate {
+    font-family: var(--mono);
+    font-size: 56px;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+    transition: all 0.2s;
+  }
+
+  .inf-rate.dopa-color { color: #f59e0b; }
+  .inf-rate.norepi-color { color: #ef4444; }
+
+  .inf-unit {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--muted);
+    margin-top: 4px;
+    font-family: var(--mono);
+  }
+
+  .inf-formula {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 10px;
+    font-family: var(--mono);
+    line-height: 1.6;
+    background: rgba(0,0,0,0.2);
+    border-radius: 8px;
+    padding: 8px;
+  }
+
+  .inf-warning {
+    margin-top: 12px;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
   ::-webkit-scrollbar { width: 3px; }
   ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 </style>
@@ -496,7 +698,7 @@
   <div class="header">
     <div class="header-badge">СМП · Клинические шкалы</div>
     <h1>Прогностические шкалы</h1>
-    <p class="header-sub">qSOFA · NEWS2 · Wells ТЭЛА · GCS</p>
+    <p class="header-sub">qSOFA · NEWS2 · Wells · GCS · Инфузомат</p>
   </div>
 
   <div class="tabs">
@@ -504,6 +706,7 @@
     <button class="tab" onclick="switchTab('news')">NEWS2</button>
     <button class="tab" onclick="switchTab('wells')">Wells</button>
     <button class="tab" onclick="switchTab('gcs')">GCS</button>
+    <button class="tab" onclick="switchTab('infusomat')">Инфузомат</button>
   </div>
 
   <!-- qSOFA -->
@@ -728,11 +931,59 @@
     <button class="reset-btn" onclick="resetGCS()">↺ Сбросить</button>
   </div>
 
-</div>
+  <!-- Инфузомат -->
+  <div class="card" id="tab-infusomat">
+    <div class="card-title">Инфузомат — Скорость подачи</div>
+    <div class="card-desc">Расчёт для Infusia SP7S. Шприц 20 мл. Разведение в 250 мл NaCl 0.9%.</div>
 
-<script>
+    <!-- Выбор препарата -->
+    <div class="drug-selector">
+      <button class="drug-btn selected-dopa" id="btn-dopa" onclick="selectDrug('dopa')">
+        <span class="drug-name">Допамин</span>
+        <span class="drug-conc">1 амп · 200 мг/250 мл<br>= 800 мкг/мл</span>
+      </button>
+      <button class="drug-btn" id="btn-norepi" onclick="selectDrug('norepi')">
+        <span class="drug-name">Норэпинефрин</span>
+        <span class="drug-conc">1 амп · 8 мг/250 мл<br>= 32 мкг/мл</span>
+      </button>
+    </div>
+
+    <!-- Вес пациента -->
+    <div class="weight-input-wrap" style="margin-bottom:20px;">
+      <div class="weight-label">Вес пациента <span style="font-family:var(--mono);font-size:9px;color:rgba(100,116,139,0.55);">кг</span></div>
+      <input class="weight-field" type="number" id="inf-weight" placeholder="80" inputmode="numeric" oninput="calcInfusomat()">
+    </div>
+
+    <!-- Ползунок дозы -->
+    <div class="dose-section">
+      <div class="dose-header">
+        <div class="dose-label" id="inf-dose-label">Доза</div>
+        <div class="dose-value" id="inf-dose-display">5.0 мкг/кг/мин</div>
+      </div>
+      <input class="dose-slider dopa" type="range" id="inf-slider"
+        min="2" max="20" step="0.5" value="5"
+        oninput="calcInfusomat()">
+      <div class="dose-range">
+        <span id="inf-min">2 мкг/кг/мин</span>
+        <span id="inf-max">20 мкг/кг/мин</span>
+      </div>
+      <div id="inf-effect"></div>
+    </div>
+
+    <!-- Результат -->
+    <div class="result-infusomat dopa-color" id="inf-result">
+      <div class="inf-rate dopa-color" id="inf-rate">—</div>
+      <div class="inf-unit">мл / час</div>
+      <div class="inf-formula" id="inf-formula">Введите вес пациента</div>
+      <div class="inf-warning" id="inf-warning"></div>
+    </div>
+
+    <button class="reset-btn" onclick="resetInfusomat()">↺ Сбросить</button>
+  </div>
+
+</div>
   // Tab switching
-  const TAB_NAMES = ['qsofa','news','wells','gcs'];
+  const TAB_NAMES = ['qsofa','news','wells','gcs','infusomat'];
   function switchTab(name) {
     document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', TAB_NAMES[i] === name));
     document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
@@ -869,7 +1120,110 @@
     calcGCS();
   }
 
-  // Init
+  // ========== ИНФУЗОМАТ ==========
+  const DRUGS = {
+    dopa: {
+      name: 'Допамин',
+      concUgml: 800,   // 200мг / 250мл = 0.8мг/мл = 800мкг/мл
+      min: 2, max: 20, step: 0.5, def: 5,
+      color: 'dopa-color',
+      sliderClass: 'dopa',
+      unit: 'мкг/кг/мин',
+      effects: [
+        { max: 4,  cls: 'effect-renal',   text: '💧 Допаминергический — расширение сосудов почек' },
+        { max: 10, cls: 'effect-cardiac', text: '❤️ β1-эффект — инотропный, хронотропный' },
+        { max: 20, cls: 'effect-vaso',    text: '⚠️ α1-эффект — вазоконстрикция, рост АД' },
+      ],
+      warning: 'Разведение: 1 амп (5 мл, 200 мг) + 245 мл NaCl 0.9% = 250 мл\nКонц. = 800 мкг/мл'
+    },
+    norepi: {
+      name: 'Норэпинефрин',
+      concUgml: 32,    // 8мг / 250мл = 0.032мг/мл = 32мкг/мл
+      min: 0.05, max: 2, step: 0.05, def: 0.1,
+      color: 'norepi-color',
+      sliderClass: 'norepi',
+      unit: 'мкг/кг/мин',
+      effects: [
+        { max: 0.2, cls: 'effect-cardiac', text: '🟡 Начальная доза — мягкая вазоконстрикция' },
+        { max: 0.5, cls: 'effect-vaso',    text: '🔴 Средняя доза — выраженный вазопрессорный эффект' },
+        { max: 2,   cls: 'effect-pressor', text: '🚨 Высокая доза — рефрактерный шок' },
+      ],
+      warning: 'Разведение: 1 амп (4 мл, 8 мг) + 246 мл NaCl 0.9% = 250 мл\nКонц. = 32 мкг/мл'
+    }
+  };
+
+  let currentDrug = 'dopa';
+
+  function selectDrug(drug) {
+    currentDrug = drug;
+    const d = DRUGS[drug];
+
+    // Кнопки
+    document.getElementById('btn-dopa').className  = 'drug-btn' + (drug==='dopa'  ? ' selected-dopa'  : '');
+    document.getElementById('btn-norepi').className = 'drug-btn' + (drug==='norepi'? ' selected-norepi' : '');
+
+    // Ползунок
+    const slider = document.getElementById('inf-slider');
+    slider.min   = d.min;
+    slider.max   = d.max;
+    slider.step  = d.step;
+    slider.value = d.def;
+    slider.className = 'dose-slider ' + d.sliderClass;
+
+    document.getElementById('inf-min').textContent = d.min + ' ' + d.unit;
+    document.getElementById('inf-max').textContent = d.max + ' ' + d.unit;
+
+    // Цвет результата
+    document.getElementById('inf-result').className = 'result-infusomat ' + d.color;
+    document.getElementById('inf-rate').className   = 'inf-rate ' + d.color;
+
+    calcInfusomat();
+  }
+
+  function calcInfusomat() {
+    const d     = DRUGS[currentDrug];
+    const weight = parseFloat(document.getElementById('inf-weight').value);
+    const dose   = parseFloat(document.getElementById('inf-slider').value);
+
+    // Доза на дисплей
+    document.getElementById('inf-dose-display').textContent = dose.toFixed(dose < 1 ? 2 : 1) + ' ' + d.unit;
+
+    // Эффект (только допамин)
+    const effectEl = document.getElementById('inf-effect');
+    if (currentDrug === 'dopa') {
+      const ef = d.effects.find(e => dose <= e.max) || d.effects[d.effects.length-1];
+      effectEl.innerHTML = '<span class="effect-badge ' + ef.cls + '">' + ef.text + '</span>';
+    } else {
+      const ef = d.effects.find(e => dose <= e.max) || d.effects[d.effects.length-1];
+      effectEl.innerHTML = '<span class="effect-badge ' + ef.cls + '">' + ef.text + '</span>';
+    }
+
+    const rateEl   = document.getElementById('inf-rate');
+    const formulaEl = document.getElementById('inf-formula');
+    const warningEl = document.getElementById('inf-warning');
+
+    warningEl.textContent = d.warning;
+
+    if (isNaN(weight) || weight <= 0) {
+      rateEl.textContent = '—';
+      formulaEl.textContent = 'Введите вес пациента';
+      return;
+    }
+
+    // Формула: мл/час = доза(мкг/кг/мин) × вес(кг) × 60 / конц(мкг/мл)
+    const rate = (dose * weight * 60) / d.concUgml;
+
+    rateEl.textContent = rate.toFixed(1);
+    formulaEl.textContent =
+      dose.toFixed(dose < 1 ? 2 : 1) + ' × ' + weight + ' × 60 ÷ ' + d.concUgml + ' = ' + rate.toFixed(1) + ' мл/час';
+  }
+
+  function resetInfusomat() {
+    document.getElementById('inf-weight').value = '';
+    selectDrug('dopa');
+  }
+
+  // ========== INIT ==========
   renderGroup('qsofa');
   renderGroup('wells');
   calcGCS();
