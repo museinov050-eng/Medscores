@@ -60,8 +60,8 @@ h1 {
 .sub { color: var(--muted); font-size: 13px; }
 
 /* Tabs */
-.tabs { display: flex; gap: 5px; margin-bottom: 18px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 6px; overflow-x: auto; }
-.tab { flex: 1; min-width: 52px; padding: 9px 4px; border: none; border-radius: 9px; background: transparent; color: var(--muted); font-family: var(--sans); font-size: 11px; font-weight: 700; cursor: pointer; transition: all 0.2s; text-align: center; }
+.tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-bottom: 18px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 6px; }
+.tab { padding: 10px 4px; border: none; border-radius: 9px; background: transparent; color: var(--muted); font-family: var(--sans); font-size: 12px; font-weight: 700; cursor: pointer; transition: all 0.2s; text-align: center; }
 .tab.active { background: linear-gradient(135deg, var(--purple), var(--accent)); color: white; }
 
 /* Cards */
@@ -171,6 +171,47 @@ h1 {
 .inf-unit-lbl { font-size: 16px; font-weight: 600; color: var(--muted); margin-top: 4px; font-family: var(--mono); }
 .inf-formula { font-size: 11px; color: var(--muted); margin-top: 10px; font-family: var(--mono); line-height: 1.6; background: rgba(0,0,0,0.2); border-radius: 8px; padding: 8px; }
 .inf-warn { margin-top: 10px; font-size: 11px; color: var(--muted); line-height: 1.5; white-space: pre-line; }
+
+/* Peds */
+.ped-drug-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+.ped-drug-btn { padding: 12px 14px; border: 2px solid var(--border); border-radius: 12px; background: var(--s2); color: var(--muted); font-family: var(--sans); font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.2s; text-align: left; display: flex; justify-content: space-between; align-items: center; }
+.ped-drug-btn .pdn { font-size: 14px; color: var(--text); }
+.ped-drug-btn .pdc { font-size: 10px; font-family: var(--mono); color: var(--muted); }
+.ped-drug-btn.psel { border-color: #a78bfa; background: rgba(167,139,250,0.08); }
+.ped-drug-btn.psel .pdn { color: #a78bfa; }
+.ped-result-card { background: var(--s2); border: 2px solid #a78bfa; border-radius: 16px; padding: 20px; margin-top: 4px; }
+.ped-drug-name { font-size: 13px; font-weight: 700; color: #a78bfa; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 14px; }
+.ped-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); }
+.ped-row:last-child { border-bottom: none; }
+.ped-row-lbl { font-size: 13px; color: var(--muted); }
+.ped-row-val { font-family: var(--mono); font-size: 20px; font-weight: 700; color: white; }
+.ped-row-unit { font-size: 11px; color: var(--muted); font-family: var(--mono); }
+.ped-warn { margin-top: 12px; padding: 10px; background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2); border-radius: 8px; font-size: 11px; color: #ef4444; line-height: 1.5; }
+.ped-ok { margin-top: 12px; padding: 10px; background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.2); border-radius: 8px; font-size: 11px; color: var(--green); line-height: 1.5; }
+
+
+.ch-row { background:var(--s2); border:1px solid var(--border); border-radius:12px; padding:12px 14px; display:flex; justify-content:space-between; align-items:center; transition:border-color 0.2s; }
+.ch-row.norm  { border-color: #10b981; }
+.ch-row.warn  { border-color: #f59e0b; }
+.ch-row.crit  { border-color: #ef4444; }
+.ch-row-left  { flex:1; }
+.ch-row-name  { font-size:13px; font-weight:700; color:var(--text); }
+.ch-row-norm  { font-size:11px; color:var(--muted); margin-top:2px; font-family:var(--mono); }
+.ch-row-right { text-align:right; }
+.ch-row-val   { font-family:var(--mono); font-size:20px; font-weight:700; color:white; }
+.ch-row-badge { font-size:10px; font-weight:700; margin-top:2px; }
+.ch-row-badge.norm { color:#10b981; }
+.ch-row-badge.warn { color:#f59e0b; }
+.ch-row-badge.crit { color:#ef4444; }
+.ch-row-badge.none { color:var(--muted); }
+
+
+.nav-menu { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 12px; margin-bottom: 18px; display: flex; flex-direction: column; gap: 10px; }
+.nav-cat-label { font-size: 9px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 6px; padding-left: 2px; }
+.nav-row { display: flex; gap: 5px; flex-wrap: wrap; }
+.nav-row .tab { flex: none; padding: 8px 12px; font-size: 12px; white-space: nowrap; }
+.nav-divider { height: 1px; background: var(--border); margin: 0 2px; }
+
 </style>
 </head>
 <body>
@@ -182,12 +223,42 @@ h1 {
   <p class="sub">qSOFA · NEWS2 · Wells · GCS · Инфузомат</p>
 </div>
 
-<div class="tabs">
-  <button class="tab active" onclick="goTab('qsofa')">qSOFA</button>
-  <button class="tab" onclick="goTab('news')">NEWS2</button>
-  <button class="tab" onclick="goTab('wells')">Wells</button>
-  <button class="tab" onclick="goTab('gcs')">GCS</button>
-  <button class="tab" onclick="goTab('inf')">Инфузомат</button>
+<div class="nav-menu">
+  <div class="nav-cat">
+    <div class="nav-cat-label">Оценка тяжести</div>
+    <div class="nav-row">
+      <button class="tab active" onclick="goTab('qsofa')">qSOFA</button>
+      <button class="tab" onclick="goTab('news')">NEWS2</button>
+      <button class="tab" onclick="goTab('gcs')">GCS</button>
+      <button class="tab" onclick="goTab('rass')">RASS</button>
+    </div>
+  </div>
+  <div class="nav-divider"></div>
+  <div class="nav-cat">
+    <div class="nav-cat-label">Диагностика</div>
+    <div class="nav-row">
+      <button class="tab" onclick="goTab('wells')">Wells ТЭЛА</button>
+      <button class="tab" onclick="goTab('alg')">Альговер</button>
+      <button class="tab" onclick="goTab('cpss')">Инсульт</button>
+    </div>
+  </div>
+  <div class="nav-divider"></div>
+  <div class="nav-cat">
+    <div class="nav-cat-label">Лечение и расчёты</div>
+    <div class="nav-row">
+      <button class="tab" onclick="goTab('inf')">Инфузомат</button>
+      <button class="tab" onclick="goTab('ped')">Педиатрия</button>
+      <button class="tab" onclick="goTab('ivl')">ИВЛ 4/40</button>
+    </div>
+  </div>
+  <div class="nav-divider"></div>
+  <div class="nav-cat">
+    <div class="nav-cat-label">Антропометрия</div>
+    <div class="nav-row">
+      <button class="tab" onclick="goTab('imt')">ИМТ</button>
+      <button class="tab" onclick="goTab('ped2')">Нормы детей</button>
+    </div>
+  </div>
 </div>
 
 <!-- qSOFA -->
@@ -392,9 +463,499 @@ h1 {
   <button class="reset" onclick="resetInf()">Сбросить</button>
 </div>
 
+
+<!-- Педиатрия -->
+<div class="card" id="tab-ped">
+  <div class="card-title">Педиатрия — Дозировки</div>
+  <div class="card-desc">Введите вес ребёнка, выберите препарат — получите мл для набора в шприц.</div>
+
+  <div class="w-inp">
+    <div class="w-lbl">Вес ребёнка (кг)</div>
+    <input class="w-field" type="number" id="p-wt" placeholder="20" inputmode="decimal" step="0.1" oninput="calcPed()">
+  </div>
+
+  <div class="ped-drug-list">
+    <button class="ped-drug-btn psel" id="pb-an" onclick="selPed('an')">
+      <div><div class="pdn">Анальгин</div><div class="pdc">50% · 500 мг/мл</div></div>
+      <div class="pdc">10 мг/кг</div>
+    </button>
+    <button class="ped-drug-btn" id="pb-dr" onclick="selPed('dr')">
+      <div><div class="pdn">Дротаверин</div><div class="pdc">2% · 20 мг/мл</div></div>
+      <div class="pdc">0.1–0.2 мл/кг</div>
+    </button>
+    <button class="ped-drug-btn" id="pb-dx" onclick="selPed('dx')">
+      <div><div class="pdn">Дексаметазон</div><div class="pdc">4 мг/мл</div></div>
+      <div class="pdc">0.3–0.5 мг/кг</div>
+    </button>
+    <button class="ped-drug-btn" id="pb-pr" onclick="selPed('pr')">
+      <div><div class="pdn">Преднизолон</div><div class="pdc">30 мг/мл</div></div>
+      <div class="pdc">1–2 мг/кг</div>
+    </button>
+    <button class="ped-drug-btn" id="pb-su" onclick="selPed('su')">
+      <div><div class="pdn">Супрастин</div><div class="pdc">20 мг/мл · хлоропирамин</div></div>
+      <div class="pdc">0.1 мл/кг</div>
+    </button>
+    <button class="ped-drug-btn" id="pb-mt" onclick="selPed('mt')">
+      <div><div class="pdn">Метоклопрамид</div><div class="pdc">5 мг/мл · с 2 лет</div></div>
+      <div class="pdc">0.1 мг/кг</div>
+    </button>
+  </div>
+
+  <div class="ped-result-card" id="p-res">
+    <div class="ped-drug-name" id="p-dname">Анальгин 50%</div>
+    <div class="ped-row">
+      <div class="ped-row-lbl">Доза</div>
+      <div><span class="ped-row-val" id="p-dose-mg">—</span> <span class="ped-row-unit">мг</span></div>
+    </div>
+    <div class="ped-row">
+      <div class="ped-row-lbl">Набрать в шприц</div>
+      <div><span class="ped-row-val" id="p-dose-ml">—</span> <span class="ped-row-unit">мл</span></div>
+    </div>
+    <div class="ped-row">
+      <div class="ped-row-lbl">Максимум</div>
+      <div><span class="ped-row-val" id="p-dose-max">—</span> <span class="ped-row-unit" id="p-max-unit">мл</span></div>
+    </div>
+    <div id="p-note"></div>
+  </div>
+  <button class="reset" onclick="resetPed()">Сбросить</button>
 </div>
+
+<!-- RASS -->
+<div class="card" id="tab-rass">
+  <div class="card-title">RASS — Седация и возбуждение</div>
+  <div class="card-desc">Richmond Agitation-Sedation Scale. Выберите описание, которое подходит пациенту.</div>
+  <div class="crit-list" style="gap:6px;">
+    <div class="crit" id="rass_p4" onclick="setRASS(4)"><div class="crit-l"><div style="font-size:13px;font-weight:700;color:#ef4444;min-width:32px;">+4</div><div><div class="crit-txt">Агрессивный</div><div class="crit-hint">Явно агрессивен, опасен для персонала</div></div></div></div>
+    <div class="crit" id="rass_p3" onclick="setRASS(3)"><div class="crit-l"><div style="font-size:13px;font-weight:700;color:#ef4444;min-width:32px;">+3</div><div><div class="crit-txt">Очень возбуждён</div><div class="crit-hint">Вырывает трубки и катетеры</div></div></div></div>
+    <div class="crit" id="rass_p2" onclick="setRASS(2)"><div class="crit-l"><div style="font-size:13px;font-weight:700;color:#f59e0b;min-width:32px;">+2</div><div><div class="crit-txt">Возбуждён</div><div class="crit-hint">Частые нецеленаправленные движения</div></div></div></div>
+    <div class="crit" id="rass_p1" onclick="setRASS(1)"><div class="crit-l"><div style="font-size:13px;font-weight:700;color:#f59e0b;min-width:32px;">+1</div><div><div class="crit-txt">Беспокойный</div><div class="crit-hint">Тревожен, движения не агрессивны</div></div></div></div>
+    <div class="crit" id="rass_0" onclick="setRASS(0)"><div class="crit-l"><div style="font-size:13px;font-weight:700;color:#10b981;min-width:32px;">0</div><div><div class="crit-txt">Бодрствует и спокоен</div><div class="crit-hint">Норма</div></div></div></div>
+    <div class="crit" id="rass_m1" onclick="setRASS(-1)"><div class="crit-l"><div style="font-size:13px;font-weight:700;color:#10b981;min-width:32px;">-1</div><div><div class="crit-txt">Сонливый</div><div class="crit-hint">Держит глаза открытыми более 10 сек на голос</div></div></div></div>
+    <div class="crit" id="rass_m2" onclick="setRASS(-2)"><div class="crit-l"><div style="font-size:13px;font-weight:700;color:#f59e0b;min-width:32px;">-2</div><div><div class="crit-txt">Лёгкая седация</div><div class="crit-hint">Открывает глаза на голос менее 10 сек</div></div></div></div>
+    <div class="crit" id="rass_m3" onclick="setRASS(-3)"><div class="crit-l"><div style="font-size:13px;font-weight:700;color:#f59e0b;min-width:32px;">-3</div><div><div class="crit-txt">Умеренная седация</div><div class="crit-hint">Открывает глаза на голос, без контакта</div></div></div></div>
+    <div class="crit" id="rass_m4" onclick="setRASS(-4)"><div class="crit-l"><div style="font-size:13px;font-weight:700;color:#ef4444;min-width:32px;">-4</div><div><div class="crit-txt">Глубокая седация</div><div class="crit-hint">Не реагирует на голос, реагирует на боль</div></div></div></div>
+    <div class="crit" id="rass_m5" onclick="setRASS(-5)"><div class="crit-l"><div style="font-size:13px;font-weight:700;color:#ef4444;min-width:32px;">-5</div><div><div class="crit-txt">Без сознания</div><div class="crit-hint">Не реагирует ни на голос, ни на боль</div></div></div></div>
+  </div>
+  <div class="res" id="rass-res">
+    <div class="res-score" id="rass-sc">—</div>
+    <div class="res-lbl" id="rass-lb">Выберите уровень</div>
+    <div class="res-act" id="rass-ac">Нажмите на подходящее описание выше</div>
+  </div>
+  <button class="reset" onclick="resetRASS()">Сбросить</button>
+</div>
+
+<!-- Альговер -->
+<div class="card" id="tab-alg">
+  <div class="card-title">Индекс Альговера</div>
+  <div class="card-desc">Шоковый индекс = ЧСС / АД систолическое. Быстрая оценка степени шока.</div>
+  <div class="inp-grid">
+    <div class="inp-grp">
+      <div class="inp-lbl">ЧСС <span class="inp-unit">уд/мин</span></div>
+      <input class="inp-f" type="number" id="alg-hr" placeholder="80" inputmode="numeric" oninput="calcAlg()">
+    </div>
+    <div class="inp-grp">
+      <div class="inp-lbl">АД сист. <span class="inp-unit">мм рт.ст.</span></div>
+      <input class="inp-f" type="number" id="alg-sb" placeholder="120" inputmode="numeric" oninput="calcAlg()">
+    </div>
+  </div>
+  <div class="res" id="alg-res">
+    <div class="res-score" id="alg-sc">—</div>
+    <div class="res-lbl" id="alg-lb">Введите данные</div>
+    <div class="res-act" id="alg-ac">Нормальное значение менее 1.0</div>
+  </div>
+  <div style="margin-top:14px;background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:14px;">
+    <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:10px;">Интерпретация</div>
+    <div style="display:flex;flex-direction:column;gap:7px;">
+      <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:#10b981;font-weight:700;">менее 1.0</span><span style="color:var(--muted);">Норма</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:#f59e0b;font-weight:700;">1.0 – 1.5</span><span style="color:var(--muted);">Шок I–II ст. (~20–30% ОЦК)</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:#ef4444;font-weight:700;">1.5 – 2.0</span><span style="color:var(--muted);">Шок III ст. (~30–40% ОЦК)</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:#ef4444;font-weight:700;">более 2.0</span><span style="color:var(--muted);">Шок IV ст. (более 40% ОЦК)</span></div>
+    </div>
+  </div>
+  <button class="reset" onclick="resetAlg()">Сбросить</button>
+</div>
+
+<!-- ИВЛ 4/40 -->
+<div class="card" id="tab-ivl">
+  <div class="card-title">ИВЛ — Медпром 4/40</div>
+  <div class="card-desc">Расчёт параметров для А-ИВЛ/ВВЛ/ВЧп-4/40. Введите данные пациента.</div>
+
+  <div class="inp-grid">
+    <div class="inp-grp">
+      <div class="inp-lbl">Вес <span class="inp-unit">кг</span></div>
+      <input class="inp-f" type="number" id="ivl-wt" placeholder="80" inputmode="numeric" oninput="calcIVL()">
+    </div>
+    <div class="inp-grp">
+      <div class="inp-lbl">Рост <span class="inp-unit">см</span></div>
+      <input class="inp-f" type="number" id="ivl-ht" placeholder="175" inputmode="numeric" oninput="calcIVL()">
+    </div>
+  </div>
+
+  <!-- Пол -->
+  <div class="con-lbl">Пол пациента</div>
+  <div class="con-grid" style="margin-bottom:16px;">
+    <button class="con-btn on" id="ivl-male" onclick="setIVLsex('m')">Мужской</button>
+    <button class="con-btn" id="ivl-female" onclick="setIVLsex('f')">Женский</button>
+  </div>
+
+  <!-- Режим -->
+  <div class="con-lbl">Режим вентиляции</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:16px;">
+    <button class="con-btn on" id="ivl-ippv" onclick="setIVLmode('ippv')" style="font-size:11px;">ИВЛ (IPPV)</button>
+    <button class="con-btn" id="ivl-vvl" onclick="setIVLmode('vvl')" style="font-size:11px;">ВВЛ</button>
+    <button class="con-btn" id="ivl-hfv" onclick="setIVLmode('hfv')" style="font-size:11px;">ВЧ-ИВЛ</button>
+  </div>
+
+  <!-- Результаты -->
+  <div id="ivl-results" style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px;">
+
+    <!-- ДО -->
+    <div style="background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:14px;">
+      <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px;">Дыхательный объём (ДО / Vt)</div>
+      <div style="display:flex;justify-content:space-between;align-items:baseline;">
+        <div><span style="font-family:var(--mono);font-size:28px;font-weight:700;color:#00d4ff;" id="ivl-vt-min">—</span><span style="font-size:12px;color:var(--muted);margin-left:4px;">–</span><span style="font-family:var(--mono);font-size:28px;font-weight:700;color:#00d4ff;" id="ivl-vt-max">—</span><span style="font-size:12px;color:var(--muted);margin-left:4px;">мл</span></div>
+        <div style="font-size:11px;color:var(--muted);text-align:right;" id="ivl-vt-hint">6–8 мл/кг ИМТ</div>
+      </div>
+    </div>
+
+    <!-- МОД и ЧД -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div style="background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:14px;">
+        <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:6px;">ЧД</div>
+        <div style="font-family:var(--mono);font-size:28px;font-weight:700;color:#10b981;" id="ivl-rr">12</div>
+        <div style="font-size:11px;color:var(--muted);">в мин</div>
+      </div>
+      <div style="background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:14px;">
+        <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:6px;">МОД</div>
+        <div style="font-family:var(--mono);font-size:28px;font-weight:700;color:#10b981;" id="ivl-mod">—</div>
+        <div style="font-size:11px;color:var(--muted);">л/мин</div>
+      </div>
+    </div>
+
+    <!-- FiO2 и I:E -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div style="background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:14px;">
+        <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:6px;">FiO2 старт</div>
+        <div style="font-family:var(--mono);font-size:28px;font-weight:700;color:#f59e0b;">100%</div>
+        <div style="font-size:11px;color:var(--muted);">снизить до 50% при SpO2 95+</div>
+      </div>
+      <div style="background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:14px;">
+        <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:6px;">I:E</div>
+        <div style="font-family:var(--mono);font-size:28px;font-weight:700;color:#a78bfa;" id="ivl-ie">1:2</div>
+        <div style="font-size:11px;color:var(--muted);" id="ivl-ie-hint">стандарт</div>
+      </div>
+    </div>
+
+    <!-- Давление -->
+    <div style="background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:14px;">
+      <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px;">Контроль давления (на аппарате)</div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;">
+        <span style="color:var(--muted);">Ограничение по давлению</span>
+        <span style="font-family:var(--mono);font-weight:700;color:white;" id="ivl-plim">20–30 см вод.ст.</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;">
+        <span style="color:var(--muted);">Макс. безопасное (клапан)</span>
+        <span style="font-family:var(--mono);font-weight:700;color:#ef4444;">80 см вод.ст.</span>
+      </div>
+    </div>
+
+    <!-- Режим-специфичные подсказки -->
+    <div id="ivl-mode-hint" style="background:rgba(167,139,250,0.08);border:1px solid rgba(167,139,250,0.2);border-radius:12px;padding:14px;font-size:12px;color:#a78bfa;line-height:1.6;"></div>
+
+  </div>
+
+  <!-- ИМТ -->
+  <div style="background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:12px;font-size:11px;color:var(--muted);line-height:1.6;">
+    <span style="font-weight:700;color:var(--text);">Идеальная масса тела:</span> <span id="ivl-imt">введите рост</span><br>
+    <span style="font-weight:700;color:var(--text);">Формула:</span> Мужчины: 50 + 0.91 × (рост − 152.4) / Женщины: 45.5 + 0.91 × (рост − 152.4)
+  </div>
+
+  <button class="reset" onclick="resetIVL()">Сбросить</button>
+</div>
+
+<!-- ИМТ -->
+<div class="card" id="tab-imt">
+  <div class="card-title">ИМТ — Индекс массы тела</div>
+  <div class="card-desc">Введите рост и вес для расчёта индекса массы тела и идеальной массы тела.</div>
+
+  <div class="inp-grid">
+    <div class="inp-grp">
+      <div class="inp-lbl">Рост <span class="inp-unit">см</span></div>
+      <input class="inp-f" type="number" id="imt-ht" placeholder="175" inputmode="numeric" oninput="calcIMT()">
+    </div>
+    <div class="inp-grp">
+      <div class="inp-lbl">Вес <span class="inp-unit">кг</span></div>
+      <input class="inp-f" type="number" id="imt-wt" placeholder="75" inputmode="decimal" step="0.1" oninput="calcIMT()">
+    </div>
+  </div>
+
+  <div class="con-lbl">Пол</div>
+  <div class="con-grid" style="margin-bottom:18px;">
+    <button class="con-btn on" id="imt-m" onclick="setIMTsex('m')">Мужской</button>
+    <button class="con-btn" id="imt-f" onclick="setIMTsex('f')">Женский</button>
+  </div>
+
+  <!-- ИМТ результат -->
+  <div class="res" id="imt-res" style="margin-bottom:14px;">
+    <div class="res-score" id="imt-val">—</div>
+    <div class="res-lbl" id="imt-lbl">Введите данные</div>
+    <div class="res-act" id="imt-act">кг / м²</div>
+  </div>
+
+  <!-- Доп данные -->
+  <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px;">
+    <div style="background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:14px;display:flex;justify-content:space-between;align-items:center;">
+      <div>
+        <div style="font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:0.07em;">Идеальная масса тела</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px;" id="imt-ideal-formula">Формула Devine</div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-family:var(--mono);font-size:24px;font-weight:700;color:#00d4ff;" id="imt-ideal">—</div>
+        <div style="font-size:11px;color:var(--muted);">кг</div>
+      </div>
+    </div>
+    <div style="background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:14px;display:flex;justify-content:space-between;align-items:center;">
+      <div>
+        <div style="font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:0.07em;">Избыток / дефицит</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px;">от идеальной массы</div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-family:var(--mono);font-size:24px;font-weight:700;" id="imt-diff">—</div>
+        <div style="font-size:11px;color:var(--muted);">кг</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Таблица категорий -->
+  <div style="background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:14px;">
+    <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:10px;">Классификация ВОЗ</div>
+    <div style="display:flex;flex-direction:column;gap:5px;">
+      <div class="imt-row" id="imt-r1" style="display:flex;justify-content:space-between;font-size:12px;padding:6px 8px;border-radius:7px;"><span style="color:#00d4ff;font-weight:700;">менее 16</span><span style="color:var(--muted);">Выраженный дефицит</span></div>
+      <div class="imt-row" id="imt-r2" style="display:flex;justify-content:space-between;font-size:12px;padding:6px 8px;border-radius:7px;"><span style="color:#f59e0b;font-weight:700;">16 - 17</span><span style="color:var(--muted);">Дефицит средний</span></div>
+      <div class="imt-row" id="imt-r3" style="display:flex;justify-content:space-between;font-size:12px;padding:6px 8px;border-radius:7px;"><span style="color:#f59e0b;font-weight:700;">17 - 18.5</span><span style="color:var(--muted);">Дефицит лёгкий</span></div>
+      <div class="imt-row" id="imt-r4" style="display:flex;justify-content:space-between;font-size:12px;padding:6px 8px;border-radius:7px;"><span style="color:#10b981;font-weight:700;">18.5 - 25</span><span style="color:var(--muted);">Норма</span></div>
+      <div class="imt-row" id="imt-r5" style="display:flex;justify-content:space-between;font-size:12px;padding:6px 8px;border-radius:7px;"><span style="color:#f59e0b;font-weight:700;">25 - 30</span><span style="color:var(--muted);">Избыточная масса</span></div>
+      <div class="imt-row" id="imt-r6" style="display:flex;justify-content:space-between;font-size:12px;padding:6px 8px;border-radius:7px;"><span style="color:#ef4444;font-weight:700;">30 - 35</span><span style="color:var(--muted);">Ожирение I</span></div>
+      <div class="imt-row" id="imt-r7" style="display:flex;justify-content:space-between;font-size:12px;padding:6px 8px;border-radius:7px;"><span style="color:#ef4444;font-weight:700;">35 - 40</span><span style="color:var(--muted);">Ожирение II</span></div>
+      <div class="imt-row" id="imt-r8" style="display:flex;justify-content:space-between;font-size:12px;padding:6px 8px;border-radius:7px;"><span style="color:#ef4444;font-weight:700;">более 40</span><span style="color:var(--muted);">Ожирение III (морбидное)</span></div>
+    </div>
+  </div>
+
+  <button class="reset" onclick="resetIMT()">Сбросить</button>
+</div>
+
+<!-- Нормы детей -->
+<div class="card" id="tab-ped2">
+  <div class="card-title">Нормы детей по возрасту</div>
+  <div class="card-desc">Введите возраст — получите нормы. Введите реальные данные — получите оценку по центилям.</div>
+
+  <!-- Возраст + антропометрия -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+    <div class="inp-grp">
+      <div class="inp-lbl">Возраст <span class="inp-unit">лет</span></div>
+      <input class="inp-f" type="number" id="ch-age" placeholder="5" inputmode="decimal" step="0.5" oninput="calcChild()">
+    </div>
+    <div class="inp-grp">
+      <div class="inp-lbl">Месяцев <span class="inp-unit">если до 1 года</span></div>
+      <input class="inp-f" type="number" id="ch-mo" placeholder="0" inputmode="numeric" oninput="calcChild()">
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
+    <div class="inp-grp">
+      <div class="inp-lbl">Вес <span class="inp-unit">кг (необяз.)</span></div>
+      <input class="inp-f" type="number" id="ch-wt-in" placeholder="—" inputmode="decimal" step="0.1" oninput="calcChild()" style="font-size:20px;">
+    </div>
+    <div class="inp-grp">
+      <div class="inp-lbl">Рост <span class="inp-unit">см (необяз.)</span></div>
+      <input class="inp-f" type="number" id="ch-ht-in" placeholder="—" inputmode="numeric" oninput="calcChild()" style="font-size:20px;">
+    </div>
+  </div>
+
+  <!-- Реальные показатели (опционально) -->
+  <div style="background:rgba(0,212,255,0.04);border:1px solid rgba(0,212,255,0.15);border-radius:12px;padding:14px;margin-bottom:16px;">
+    <div style="font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:12px;">Данные пациента (необязательно)</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+      <div class="inp-grp" style="background:var(--bg);">
+        <div class="inp-lbl">ЧСС <span class="inp-unit">уд/мин</span></div>
+        <input class="inp-f" type="number" id="ch-hr" placeholder="—" inputmode="numeric" oninput="calcChild()" style="font-size:20px;">
+      </div>
+      <div class="inp-grp" style="background:var(--bg);">
+        <div class="inp-lbl">ЧДД <span class="inp-unit">в мин</span></div>
+        <input class="inp-f" type="number" id="ch-rr" placeholder="—" inputmode="numeric" oninput="calcChild()" style="font-size:20px;">
+      </div>
+      <div class="inp-grp" style="background:var(--bg);">
+        <div class="inp-lbl">АД сист. <span class="inp-unit">мм рт.ст.</span></div>
+        <input class="inp-f" type="number" id="ch-sbp" placeholder="—" inputmode="numeric" oninput="calcChild()" style="font-size:20px;">
+      </div>
+      <div class="inp-grp" style="background:var(--bg);">
+        <div class="inp-lbl">АД диаст. <span class="inp-unit">мм рт.ст.</span></div>
+        <input class="inp-f" type="number" id="ch-dbp" placeholder="—" inputmode="numeric" oninput="calcChild()" style="font-size:20px;">
+      </div>
+      <div class="inp-grp" style="background:var(--bg);">
+        <div class="inp-lbl">SpO2 <span class="inp-unit">%</span></div>
+        <input class="inp-f" type="number" id="ch-spo" placeholder="—" inputmode="numeric" oninput="calcChild()" style="font-size:20px;">
+      </div>
+      <div class="inp-grp" style="background:var(--bg);">
+        <div class="inp-lbl">Температура <span class="inp-unit">°C</span></div>
+        <input class="inp-f" type="number" id="ch-tmp" placeholder="—" inputmode="decimal" step="0.1" oninput="calcChild()" style="font-size:20px;">
+      </div>
+    </div>
+  </div>
+
+  <!-- Результаты -->
+  <div id="ch-results" style="display:none;flex-direction:column;gap:8px;">
+    <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:4px;" id="ch-age-label"></div>
+
+    <div id="ch-hr-row" class="ch-row">
+      <div class="ch-row-left"><div class="ch-row-name">ЧСС</div><div class="ch-row-norm" id="ch-hr-norm"></div></div>
+      <div class="ch-row-right"><div class="ch-row-val" id="ch-hr-val"></div><div class="ch-row-badge" id="ch-hr-badge"></div></div>
+    </div>
+    <div id="ch-rr-row" class="ch-row">
+      <div class="ch-row-left"><div class="ch-row-name">ЧДД</div><div class="ch-row-norm" id="ch-rr-norm"></div></div>
+      <div class="ch-row-right"><div class="ch-row-val" id="ch-rr-val"></div><div class="ch-row-badge" id="ch-rr-badge"></div></div>
+    </div>
+    <div id="ch-sbp-row" class="ch-row">
+      <div class="ch-row-left"><div class="ch-row-name">АД сист.</div><div class="ch-row-norm" id="ch-sbp-norm"></div></div>
+      <div class="ch-row-right"><div class="ch-row-val" id="ch-sbp-val"></div><div class="ch-row-badge" id="ch-sbp-badge"></div></div>
+    </div>
+    <div id="ch-dbp-row" class="ch-row">
+      <div class="ch-row-left"><div class="ch-row-name">АД диаст.</div><div class="ch-row-norm" id="ch-dbp-norm"></div></div>
+      <div class="ch-row-right"><div class="ch-row-val" id="ch-dbp-val"></div><div class="ch-row-badge" id="ch-dbp-badge"></div></div>
+    </div>
+    <div id="ch-spo-row" class="ch-row">
+      <div class="ch-row-left"><div class="ch-row-name">SpO2</div><div class="ch-row-norm" id="ch-spo-norm"></div></div>
+      <div class="ch-row-right"><div class="ch-row-val" id="ch-spo-val"></div><div class="ch-row-badge" id="ch-spo-badge"></div></div>
+    </div>
+    <div id="ch-tmp-row" class="ch-row">
+      <div class="ch-row-left"><div class="ch-row-name">Температура</div><div class="ch-row-norm" id="ch-tmp-norm"></div></div>
+      <div class="ch-row-right"><div class="ch-row-val" id="ch-tmp-val"></div><div class="ch-row-badge" id="ch-tmp-badge"></div></div>
+    </div>
+
+    <!-- Вес и рост -->
+    <div style="background:rgba(124,58,237,0.08);border:1px solid rgba(124,58,237,0.2);border-radius:12px;padding:12px;margin-top:4px;">
+      <div style="font-size:11px;font-weight:700;color:#a78bfa;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px;">Антропометрия</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:6px;">
+        <span style="color:var(--muted);">Норма веса (по возрасту)</span>
+        <span style="font-family:var(--mono);font-weight:700;color:white;" id="ch-wt"></span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:6px;">
+        <span style="color:var(--muted);">Норма роста (50 центиль)</span>
+        <span style="font-family:var(--mono);font-weight:700;color:white;" id="ch-ht"></span>
+      </div>
+      <div id="ch-wt-assess" style="display:none;padding-top:8px;border-top:1px solid rgba(124,58,237,0.2);">
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:4px;">
+          <span style="color:var(--muted);">Вес пациента</span>
+          <span style="font-family:var(--mono);font-weight:700;" id="ch-wt-val"></span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:4px;">
+          <span style="color:var(--muted);">Рост пациента</span>
+          <span style="font-family:var(--mono);font-weight:700;" id="ch-ht-val"></span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;">
+          <span style="color:var(--muted);">ИМТ (для возраста)</span>
+          <span style="font-family:var(--mono);font-weight:700;" id="ch-imt-val"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="ch-empty" style="text-align:center;padding:30px;color:var(--muted);font-size:13px;">Введите возраст ребёнка</div>
+
+  <button class="reset" onclick="resetChild()" style="margin-top:14px;">Сбросить</button>
+</div>
+
+<!-- CPSS Инсульт -->
+<div class="card" id="tab-cpss">
+  <div class="card-title">Инсульт — Экспресс-скрининг</div>
+  <div class="card-desc">CPSS + FAST + время. Три шкалы для быстрой оценки на вызове.</div>
+
+  <!-- Время появления симптомов -->
+  <div style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.25);border-radius:12px;padding:14px;margin-bottom:16px;">
+    <div style="font-size:11px;font-weight:700;color:#ef4444;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:10px;">Время появления симптомов</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+      <div class="inp-grp" style="background:var(--bg);">
+        <div class="inp-lbl">Часов назад</div>
+        <input class="inp-f" type="number" id="st-h" placeholder="0" inputmode="numeric" oninput="calcStroke()" style="font-size:24px;">
+      </div>
+      <div class="inp-grp" style="background:var(--bg);">
+        <div class="inp-lbl">Минут назад</div>
+        <input class="inp-f" type="number" id="st-m" placeholder="0" inputmode="numeric" oninput="calcStroke()" style="font-size:24px;">
+      </div>
+    </div>
+    <div id="st-time-res" style="margin-top:10px;font-size:13px;font-weight:700;color:var(--muted);text-align:center;"></div>
+  </div>
+
+  <!-- CPSS -->
+  <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px;">CPSS — Cincinnati Prehospital Stroke Scale</div>
+  <div class="crit-list" style="gap:8px;margin-bottom:16px;">
+
+    <div style="background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:14px;">
+      <div style="font-size:13px;font-weight:700;color:white;margin-bottom:10px;">Асимметрия лица</div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:10px;">Попросить улыбнуться или показать зубы</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+        <button class="con-btn on" id="face-n" onclick="setStroke('face','n')">Симметрично</button>
+        <button class="con-btn" id="face-y" onclick="setStroke('face','y')" style="border-color:transparent;">Асимметрия</button>
+      </div>
+    </div>
+
+    <div style="background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:14px;">
+      <div style="font-size:13px;font-weight:700;color:white;margin-bottom:10px;">Слабость руки</div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:10px;">Вытянуть обе руки вперёд на 10 сек с закрытыми глазами</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+        <button class="con-btn on" id="arm-n" onclick="setStroke('arm','n')">Держат одинаково</button>
+        <button class="con-btn" id="arm-y" onclick="setStroke('arm','y')" style="border-color:transparent;">Одна опускается</button>
+      </div>
+    </div>
+
+    <div style="background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:14px;">
+      <div style="font-size:13px;font-weight:700;color:white;margin-bottom:10px;">Нарушение речи</div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:10px;">Попросить повторить: "Небо ясное, солнце светит ярко"</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+        <button class="con-btn on" id="speech-n" onclick="setStroke('speech','n')">Речь нормальная</button>
+        <button class="con-btn" id="speech-y" onclick="setStroke('speech','y')" style="border-color:transparent;">Нарушена / отсутствует</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CPSS результат -->
+  <div class="res" id="cpss-res" style="margin-bottom:16px;">
+    <div class="res-score" id="cpss-sc">0</div>
+    <div class="res-lbl" id="cpss-lb">CPSS — нет признаков</div>
+    <div class="res-act" id="cpss-ac">Оцените три признака выше</div>
+  </div>
+
+  <!-- Дополнительные симптомы -->
+  <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px;">Дополнительные признаки</div>
+  <div class="crit-list" style="gap:6px;margin-bottom:16px;">
+    <div class="crit" id="sx-eye" onclick="togSx('sx-eye')">
+      <div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Девиация взора / нистагм</div><div class="crit-hint">Глаза повёрнуты в сторону</div></div></div>
+    </div>
+    <div class="crit" id="sx-head" onclick="togSx('sx-head')">
+      <div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Внезапная сильная головная боль</div><div class="crit-hint">Пациент описывает как "худшую в жизни"</div></div></div>
+    </div>
+    <div class="crit" id="sx-atax" onclick="togSx('sx-atax')">
+      <div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Атаксия / нарушение координации</div><div class="crit-hint">Шаткость, промахивается при касании носа</div></div></div>
+    </div>
+    <div class="crit" id="sx-sens" onclick="togSx('sx-sens')">
+      <div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Онемение / нарушение чувствительности</div><div class="crit-hint">Одностороннее онемение лица, руки, ноги</div></div></div>
+    </div>
+    <div class="crit" id="sx-vis" onclick="togSx('sx-vis')">
+      <div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Нарушение зрения</div><div class="crit-hint">Выпадение полей зрения, двоение</div></div></div>
+    </div>
+  </div>
+
+  <!-- Тактика -->
+  <div id="st-tactic" style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);border-radius:12px;padding:14px;display:none;">
+    <div style="font-size:11px;font-weight:700;color:#ef4444;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px;">Тактика СМП</div>
+    <div id="st-tactic-text" style="font-size:13px;color:var(--text);line-height:1.6;"></div>
+  </div>
+
+  <button class="reset" onclick="resetStroke()" style="margin-top:14px;">Сбросить</button>
+</div>
+
 <script>
-var TABS = ['qsofa','news','wells','gcs','inf'];
+var TABS = ['qsofa','news','wells','gcs','inf','ped','rass','alg','ivl','imt','ped2','cpss'];
 var grpScores = {q:{}, w:{}};
 var conScore = 0;
 var curDrug = 'd';
@@ -406,8 +967,8 @@ var DRUGS = {
 
 function goTab(name) {
   var tabs = document.querySelectorAll('.tab');
-  for (var i = 0; i < TABS.length; i++) {
-    tabs[i].classList.toggle('active', TABS[i] === name);
+  for (var i = 0; i < tabs.length; i++) {
+    tabs[i].classList.toggle('active', tabs[i].getAttribute('onclick') === "goTab('" + name + "')");
   }
   var cards = document.querySelectorAll('.card');
   for (var j = 0; j < cards.length; j++) {
@@ -448,16 +1009,16 @@ function setRes(id, sc, cls, lb, ac) {
 function renderGrp(grp) {
   var t = total(grp);
   if (grp === 'q') {
-    if (t === 0)      setRes('q', 0, 'low', 'Баллов', 'Низкий риск — продолжить оценку');
+    if (t === 0)      setRes('q', 0, 'low', 'Баллов', 'Низкий риск -- продолжить оценку');
     else if (t === 1) setRes('q', 1, 'med', 'Балл', 'Наблюдение, переоценка через 30-60 мин');
-    else              setRes('q', t, 'hi',  'Балла — ТРЕВОГА', 'Высокий риск сепсиса! Госпитализация. Антибиотики, инфузия.');
+    else              setRes('q', t, 'hi',  'Балла -- ТРЕВОГА', 'Высокий риск сепсиса! Госпитализация. Антибиотики, инфузия.');
   }
   if (grp === 'w') {
     var d = t % 1 === 0 ? t : t.toFixed(1);
     var pno = document.getElementById('wp-no');
     var pyes = document.getElementById('wp-yes');
     if (t <= 4) {
-      setRes('w', d, 'low', 'Баллов', 'ТЭЛА маловероятна — D-димер для исключения');
+      setRes('w', d, 'low', 'Баллов', 'ТЭЛА маловероятна -- D-димер для исключения');
       pno.classList.add('on'); pyes.classList.remove('on');
     } else {
       setRes('w', d, 'hi', 'Баллов', 'ТЭЛА вероятна! КТ-ангиография. Антикоагуляция.');
@@ -497,13 +1058,13 @@ function calcNEWS() {
       any = true;
       var s = fs[i].fn(v);
       tot += s;
-      lbl.textContent = s === 0 ? '0 — норма' : '+' + s + ' балл(а)';
+      lbl.textContent = s === 0 ? '0 -- норма' : '+' + s + ' балл(а)';
       lbl.style.color = SC[Math.min(s, 3)];
     } else {
       lbl.textContent = '';
     }
   }
-  if (!any) { setRes('news', '—', '', 'Введите данные', 'Заполните поля выше'); return; }
+  if (!any) { setRes('news', '--', '', 'Введите данные', 'Заполните поля выше'); return; }
   if (tot <= 4)      setRes('news', tot, 'low', 'Низкий риск', 'Мониторинг каждые 12 часов.');
   else if (tot <= 6) setRes('news', tot, 'med', 'Средний риск', 'Срочная оценка врача. Мониторинг каждый час.');
   else               setRes('news', tot, 'hi',  'ВЫСОКИЙ РИСК', 'Реанимационная бригада! Непрерывный мониторинг.');
@@ -528,7 +1089,7 @@ function calcGCS() {
   if      (t >= 13) { cls = 'low'; ac = 'Сознание ясное или минимальные нарушения'; }
   else if (t >= 9)  { cls = 'med'; ac = 'Умеренное нарушение. Риск аспирации. Боковое положение.'; }
   else if (t >= 5)  { cls = 'hi';  ac = 'Тяжёлое нарушение сознания. Готовность к интубации.'; }
-  else              { cls = 'hi';  ac = 'КОМА. GCS 8 и менее — показание к интубации трахеи!'; }
+  else              { cls = 'hi';  ac = 'КОМА. GCS 8 и менее -- показание к интубации трахеи!'; }
   setRes('gcs', t, cls, lb, ac);
 }
 
@@ -565,22 +1126,22 @@ function calcInf() {
   var effEl = document.getElementById('i-eff');
   if (curDrug === 'd') {
     var eff, ecls;
-    if (dose <= 4)  { eff = 'Допаминергический — расширение сосудов почек'; ecls = 'e-g'; }
-    else if (dose <= 10) { eff = 'B1-эффект — инотропный, хронотропный'; ecls = 'e-y'; }
-    else            { eff = 'A1-эффект — вазоконстрикция, рост АД'; ecls = 'e-r'; }
+    if (dose <= 4)  { eff = 'Допаминергический -- расширение сосудов почек'; ecls = 'e-g'; }
+    else if (dose <= 10) { eff = 'B1-эффект -- инотропный, хронотропный'; ecls = 'e-y'; }
+    else            { eff = 'A1-эффект -- вазоконстрикция, рост АД'; ecls = 'e-r'; }
     effEl.innerHTML = '<span class="eff-badge ' + ecls + '">' + eff + '</span>';
   } else {
     var neff, necls;
-    if (dose <= 0.2)     { neff = 'Начальная доза — мягкая вазоконстрикция'; necls = 'e-y'; }
-    else if (dose <= 0.5){ neff = 'Средняя доза — вазопрессорный эффект'; necls = 'e-r'; }
-    else                 { neff = 'Высокая доза — рефрактерный шок'; necls = 'e-r'; }
+    if (dose <= 0.2)     { neff = 'Начальная доза -- мягкая вазоконстрикция'; necls = 'e-y'; }
+    else if (dose <= 0.5){ neff = 'Средняя доза -- вазопрессорный эффект'; necls = 'e-r'; }
+    else                 { neff = 'Высокая доза -- рефрактерный шок'; necls = 'e-r'; }
     effEl.innerHTML = '<span class="eff-badge ' + necls + '">' + neff + '</span>';
   }
 
   var rateEl = document.getElementById('i-rate');
   var formEl = document.getElementById('i-form');
   if (isNaN(wt) || wt <= 0) {
-    rateEl.textContent = '—';
+    rateEl.textContent = '--';
     formEl.textContent = 'Введите вес пациента';
     return;
   }
@@ -592,6 +1153,748 @@ function calcInf() {
 function resetInf() {
   document.getElementById('i-wt').value = '';
   selDrug('d');
+}
+
+
+var curPed = 'an';
+var PEDS = {
+  an: {
+    name: 'Анальгин 50%',
+    conc: 500,
+    dosePerKg: 10,
+    minAge: 0,
+    maxMl: 2.0,
+    maxMlLabel: '2.0 мл',
+    note: 'В/м или в/в медленно. До 1 года с осторожностью. Противопоказан до 3 мес.',
+    noteType: 'warn',
+    showMg: true
+  },
+  dr: {
+    name: 'Дротаверин 2%',
+    conc: 20,
+    dosePerKgMl: 0.1,
+    dosePerKgMlMax: 0.2,
+    minAge: 0,
+    maxMl: 2.0,
+    maxMlLabel: '2.0 мл',
+    note: 'В/м. Расслабляет гладкую мускулатуру. Спазмолитик.',
+    noteType: 'ok',
+    showMg: true,
+    rangeDose: true
+  },
+  dx: {
+    name: 'Дексаметазон 4 мг/мл',
+    conc: 4,
+    dosePerKg: 0.3,
+    dosePerKgMax: 0.5,
+    minAge: 0,
+    maxMl: 4.0,
+    maxMlLabel: '4.0 мл',
+    note: 'В/м или в/в. При крупе, аллергии, отёке. Стартовая доза 0.3 мг/кг.',
+    noteType: 'ok',
+    showMg: true,
+    rangeDose: true
+  },
+  pr: {
+    name: 'Преднизолон 30 мг/мл',
+    conc: 30,
+    dosePerKg: 1,
+    dosePerKgMax: 2,
+    minAge: 0,
+    maxMl: 3.0,
+    maxMlLabel: '3.0 мл (90 мг)',
+    note: 'В/м или в/в. При анафилаксии, астма-статусе, крупе. Стартовая 1 мг/кг.',
+    noteType: 'ok',
+    showMg: true,
+    rangeDose: true
+  },
+  su: {
+    name: 'Супрастин 20 мг/мл',
+    conc: 20,
+    dosePerKgMl: 0.1,
+    minAge: 0,
+    maxMl: 1.0,
+    maxMlLabel: '1.0 мл',
+    note: 'В/м. При аллергических реакциях. До 1 года -- с осторожностью.',
+    noteType: 'warn',
+    showMg: true
+  },
+  mt: {
+    name: 'Метоклопрамид 5 мг/мл',
+    conc: 5,
+    dosePerKg: 0.1,
+    minAge: 2,
+    maxMl: 2.0,
+    maxMlLabel: '2.0 мл (10 мг)',
+    note: 'В/м или в/в. ПРОТИВОПОКАЗАН до 2 лет! При рвоте, тошноте.',
+    noteType: 'warn',
+    showMg: true
+  }
+};
+
+function selPed(drug) {
+  curPed = drug;
+  var btns = ['an','dr','dx','pr','su','mt'];
+  for (var i = 0; i < btns.length; i++) {
+    document.getElementById('pb-' + btns[i]).classList.toggle('psel', btns[i] === drug);
+  }
+  calcPed();
+}
+
+function calcPed() {
+  var wt = parseFloat(document.getElementById('p-wt').value);
+  var d = PEDS[curPed];
+  document.getElementById('p-dname').textContent = d.name;
+  document.getElementById('p-dose-max').textContent = d.maxMlLabel;
+  document.getElementById('p-max-unit').textContent = '';
+
+  var noteEl = document.getElementById('p-note');
+  noteEl.innerHTML = '<div class="' + (d.noteType === 'warn' ? 'ped-warn' : 'ped-ok') + '">' + d.note + '</div>';
+
+  if (isNaN(wt) || wt <= 0) {
+    document.getElementById('p-dose-mg').textContent = '--';
+    document.getElementById('p-dose-ml').textContent = '--';
+    return;
+  }
+
+  var ml, mg, mlMax, mgMax;
+
+  if (d.rangeDose && d.dosePerKgMl) {
+    ml = (d.dosePerKgMl * wt).toFixed(2);
+    mlMax = (d.dosePerKgMlMax * wt).toFixed(2);
+    mg = (parseFloat(ml) * d.conc).toFixed(1);
+    mgMax = (parseFloat(mlMax) * d.conc).toFixed(1);
+    if (parseFloat(ml) > d.maxMl) ml = d.maxMl.toFixed(2);
+    if (parseFloat(mlMax) > d.maxMl) mlMax = d.maxMl.toFixed(2);
+    document.getElementById('p-dose-mg').textContent = mg + '-' + mgMax;
+    document.getElementById('p-dose-ml').textContent = ml + '-' + mlMax;
+  } else if (d.dosePerKgMl) {
+    ml = (d.dosePerKgMl * wt).toFixed(2);
+    if (parseFloat(ml) > d.maxMl) ml = d.maxMl.toFixed(2);
+    mg = (parseFloat(ml) * d.conc).toFixed(1);
+    document.getElementById('p-dose-mg').textContent = mg;
+    document.getElementById('p-dose-ml').textContent = ml;
+  } else if (d.rangeDose) {
+    mg = (d.dosePerKg * wt).toFixed(1);
+    mgMax = (d.dosePerKgMax * wt).toFixed(1);
+    ml = (parseFloat(mg) / d.conc).toFixed(2);
+    mlMax = (parseFloat(mgMax) / d.conc).toFixed(2);
+    if (parseFloat(ml) > d.maxMl) { ml = d.maxMl.toFixed(2); mg = (d.maxMl * d.conc).toFixed(1); }
+    if (parseFloat(mlMax) > d.maxMl) { mlMax = d.maxMl.toFixed(2); mgMax = (d.maxMl * d.conc).toFixed(1); }
+    document.getElementById('p-dose-mg').textContent = mg + '-' + mgMax;
+    document.getElementById('p-dose-ml').textContent = ml + '-' + mlMax;
+  } else {
+    mg = (d.dosePerKg * wt).toFixed(1);
+    ml = (parseFloat(mg) / d.conc).toFixed(2);
+    if (parseFloat(ml) > d.maxMl) { ml = d.maxMl.toFixed(2); mg = (d.maxMl * d.conc).toFixed(1); }
+    document.getElementById('p-dose-mg').textContent = mg;
+    document.getElementById('p-dose-ml').textContent = ml;
+  }
+}
+
+function resetPed() {
+  document.getElementById('p-wt').value = '';
+  selPed('an');
+}
+
+
+// RASS
+var rassVal = null;
+function setRASS(v) {
+  rassVal = v;
+  var ids = ['+4','+3','+2','+1','0','-1','-2','-3','-4','-5'];
+  for (var i = 0; i < ids.length; i++) {
+    var el = document.getElementById('rass' + ids[i]);
+    el.classList.toggle('on', parseInt(ids[i]) === v);
+  }
+  var r = document.getElementById('rass-res');
+  var sc = document.getElementById('rass-sc');
+  var lb = document.getElementById('rass-lb');
+  var ac = document.getElementById('rass-ac');
+  sc.textContent = v > 0 ? '+' + v : v;
+  if (v >= 2)       { r.className='res hi';  lb.textContent='Возбуждение'; ac.textContent='Требуется седация. Риск самоэкстубации и травм.'; }
+  else if (v === 1) { r.className='res med'; lb.textContent='Беспокойство'; ac.textContent='Наблюдение. Возможна лёгкая седация.'; }
+  else if (v === 0) { r.className='res low'; lb.textContent='Норма'; ac.textContent='Пациент спокоен и бодрствует.'; }
+  else if (v === -1){ r.className='res low'; lb.textContent='Сонливость'; ac.textContent='Лёгкая седация -- целевой уровень в ОРИТ.'; }
+  else if (v >= -3) { r.className='res med'; lb.textContent='Седация'; ac.textContent='Умеренная седация. Контроль дыхания.'; }
+  else              { r.className='res hi';  lb.textContent='Глубокая седация'; ac.textContent='Глубокая седация или кома. Контроль ИВЛ.'; }
+}
+function resetRASS() {
+  rassVal = null;
+  var ids = ['+4','+3','+2','+1','0','-1','-2','-3','-4','-5'];
+  for (var i = 0; i < ids.length; i++) {
+    document.getElementById('rass' + ids[i]).classList.remove('on');
+  }
+  var r = document.getElementById('rass-res');
+  r.className = 'res';
+  document.getElementById('rass-sc').textContent = '--';
+  document.getElementById('rass-lb').textContent = 'Выберите уровень';
+  document.getElementById('rass-ac').textContent = 'Нажмите на подходящее описание выше';
+}
+
+// Альговер
+function calcAlg() {
+  var hr = parseFloat(document.getElementById('alg-hr').value);
+  var sb = parseFloat(document.getElementById('alg-sb').value);
+  var r = document.getElementById('alg-res');
+  if (isNaN(hr) || isNaN(sb) || sb === 0) {
+    r.className = 'res';
+    document.getElementById('alg-sc').textContent = '--';
+    document.getElementById('alg-lb').textContent = 'Введите данные';
+    document.getElementById('alg-ac').textContent = 'Нормальное значение менее 1.0';
+    return;
+  }
+  var idx = hr / sb;
+  var disp = idx.toFixed(2);
+  document.getElementById('alg-sc').textContent = disp;
+  if (idx < 1.0) {
+    r.className = 'res low';
+    document.getElementById('alg-lb').textContent = 'Норма';
+    document.getElementById('alg-ac').textContent = 'Шок маловероятен. Продолжить мониторинг.';
+  } else if (idx < 1.5) {
+    r.className = 'res med';
+    document.getElementById('alg-lb').textContent = 'Шок I-II степени';
+    document.getElementById('alg-ac').textContent = 'Потеря около 20-30% ОЦК. Инфузионная терапия.';
+  } else if (idx < 2.0) {
+    r.className = 'res hi';
+    document.getElementById('alg-lb').textContent = 'Шок III степени';
+    document.getElementById('alg-ac').textContent = 'Потеря около 30-40% ОЦК. Срочная инфузия, гемостаз!';
+  } else {
+    r.className = 'res hi';
+    document.getElementById('alg-lb').textContent = 'Шок IV степени';
+    document.getElementById('alg-ac').textContent = 'Потеря более 40% ОЦК. Критическое состояние!';
+  }
+}
+function resetAlg() {
+  document.getElementById('alg-hr').value = '';
+  document.getElementById('alg-sb').value = '';
+  calcAlg();
+}
+
+
+// RASS
+var rassVal = null;
+var RASS_IDS = ['rass_p4','rass_p3','rass_p2','rass_p1','rass_0','rass_m1','rass_m2','rass_m3','rass_m4','rass_m5'];
+var RASS_VALS = [4,3,2,1,0,-1,-2,-3,-4,-5];
+function setRASS(v) {
+  rassVal = v;
+  for (var i = 0; i < RASS_IDS.length; i++) {
+    document.getElementById(RASS_IDS[i]).classList.toggle('on', RASS_VALS[i] === v);
+  }
+  var r = document.getElementById('rass-res');
+  var sc = document.getElementById('rass-sc');
+  var lb = document.getElementById('rass-lb');
+  var ac = document.getElementById('rass-ac');
+  sc.textContent = v > 0 ? '+' + v : '' + v;
+  if (v >= 2)       { r.className='res hi';  lb.textContent='Возбуждение'; ac.textContent='Требуется седация. Риск самоэкстубации и травм.'; }
+  else if (v === 1) { r.className='res med'; lb.textContent='Беспокойство'; ac.textContent='Наблюдение. Возможна лёгкая седация.'; }
+  else if (v === 0) { r.className='res low'; lb.textContent='Норма'; ac.textContent='Пациент спокоен и бодрствует.'; }
+  else if (v === -1){ r.className='res low'; lb.textContent='Сонливость'; ac.textContent='Лёгкая седация. Целевой уровень в ОРИТ.'; }
+  else if (v >= -3) { r.className='res med'; lb.textContent='Седация'; ac.textContent='Умеренная седация. Контроль дыхания.'; }
+  else              { r.className='res hi';  lb.textContent='Глубокая седация / кома'; ac.textContent='Контроль ИВЛ. Оценка необходимости пробуждения.'; }
+}
+function resetRASS() {
+  rassVal = null;
+  for (var i = 0; i < RASS_IDS.length; i++) {
+    document.getElementById(RASS_IDS[i]).classList.remove('on');
+  }
+  var r = document.getElementById('rass-res');
+  r.className = 'res';
+  document.getElementById('rass-sc').textContent = '--';
+  document.getElementById('rass-lb').textContent = 'Выберите уровень';
+  document.getElementById('rass-ac').textContent = 'Нажмите на подходящее описание выше';
+}
+
+// Альговер
+function calcAlg() {
+  var hr = parseFloat(document.getElementById('alg-hr').value);
+  var sb = parseFloat(document.getElementById('alg-sb').value);
+  var r = document.getElementById('alg-res');
+  if (isNaN(hr) || isNaN(sb) || sb === 0) {
+    r.className = 'res';
+    document.getElementById('alg-sc').textContent = '--';
+    document.getElementById('alg-lb').textContent = 'Введите данные';
+    document.getElementById('alg-ac').textContent = 'Нормальное значение менее 1.0';
+    return;
+  }
+  var idx = hr / sb;
+  document.getElementById('alg-sc').textContent = idx.toFixed(2);
+  if (idx < 1.0) {
+    r.className = 'res low';
+    document.getElementById('alg-lb').textContent = 'Норма';
+    document.getElementById('alg-ac').textContent = 'Шок маловероятен. Продолжить наблюдение.';
+  } else if (idx < 1.5) {
+    r.className = 'res med';
+    document.getElementById('alg-lb').textContent = 'Шок I-II степени';
+    document.getElementById('alg-ac').textContent = 'Потеря около 20-30% ОЦК. Инфузионная терапия.';
+  } else if (idx < 2.0) {
+    r.className = 'res hi';
+    document.getElementById('alg-lb').textContent = 'Шок III степени';
+    document.getElementById('alg-ac').textContent = 'Потеря около 30-40% ОЦК. Срочная инфузия, гемостаз!';
+  } else {
+    r.className = 'res hi';
+    document.getElementById('alg-lb').textContent = 'Шок IV степени';
+    document.getElementById('alg-ac').textContent = 'Потеря более 40% ОЦК. Критическое состояние!';
+  }
+}
+function resetAlg() {
+  document.getElementById('alg-hr').value = '';
+  document.getElementById('alg-sb').value = '';
+  calcAlg();
+}
+
+
+var ivlSex = 'm';
+var ivlMode = 'ippv';
+
+function setIVLsex(s) {
+  ivlSex = s;
+  document.getElementById('ivl-male').classList.toggle('on', s === 'm');
+  document.getElementById('ivl-female').classList.toggle('on', s === 'f');
+  calcIVL();
+}
+
+function setIVLmode(m) {
+  ivlMode = m;
+  document.getElementById('ivl-ippv').classList.toggle('on', m === 'ippv');
+  document.getElementById('ivl-vvl').classList.toggle('on', m === 'vvl');
+  document.getElementById('ivl-hfv').classList.toggle('on', m === 'hfv');
+  calcIVL();
+}
+
+function calcIVL() {
+  var ht = parseFloat(document.getElementById('ivl-ht').value);
+  var wt = parseFloat(document.getElementById('ivl-wt').value);
+
+  // Ideal body weight
+  var imt;
+  if (!isNaN(ht)) {
+    imt = ivlSex === 'm' ? 50 + 0.91 * (ht - 152.4) : 45.5 + 0.91 * (ht - 152.4);
+    if (imt < 10) imt = 10;
+    document.getElementById('ivl-imt').textContent = imt.toFixed(1) + ' кг';
+  } else {
+    imt = null;
+    document.getElementById('ivl-imt').textContent = 'введите рост';
+  }
+
+  // Use actual weight if no height
+  var baseWt = imt !== null ? imt : (!isNaN(wt) ? wt : null);
+
+  if (baseWt === null) {
+    document.getElementById('ivl-vt-min').textContent = '--';
+    document.getElementById('ivl-vt-max').textContent = '--';
+    document.getElementById('ivl-mod').textContent = '--';
+    return;
+  }
+
+  var vtMin, vtMax, rr, ie, ieHint, modeHint, plim;
+
+  if (ivlMode === 'ippv') {
+    vtMin = Math.round(baseWt * 6);
+    vtMax = Math.round(baseWt * 8);
+    rr = 12;
+    ie = '1:2';
+    ieHint = 'стандарт';
+    plim = '20-30 см вод.ст.';
+    modeHint = 'Режим ИВЛ (управляемая вентиляция): -- Начать с ДО 6 мл/кг ИМТ -- ЧД 12/мин, при ЧМТ увеличить до 14-16 -- FiO2 100% на старте, снизить до 50% при SpO2 95+ -- I:E 1:2 стандарт. При бронхоспазме 1:3 -- Синхронизация с пациентом -- включить если есть попытки вдоха';
+    document.getElementById('ivl-vt-hint').textContent = '6-8 мл/кг ИМТ';
+  } else if (ivlMode === 'vvl') {
+    vtMin = Math.round(baseWt * 5);
+    vtMax = Math.round(baseWt * 8);
+    rr = '--';
+    ie = 'авто';
+    ieHint = 'по пациенту';
+    plim = '15-30 см вод.ст.';
+    modeHint = 'Режим ВВЛ (вспомогательная вентиляция): -- Аппарат ждёт попытку вдоха пациента -- Время ожидания: 2-4 сек (настроить на аппарате) -- Длительность вдоха: 0.8-1.2 сек -- Применять при сохранённом дыхательном драйве -- Не применять при апноэ -- переключить в ИВЛ';
+    document.getElementById('ivl-vt-hint').textContent = '5-8 мл/кг ИМТ';
+  } else {
+    vtMin = Math.round(baseWt * 2);
+    vtMax = Math.round(baseWt * 4);
+    rr = '90-360';
+    ie = '1:1';
+    ieHint = 'фиксировано';
+    plim = '15-25 см вод.ст.';
+    modeHint = 'Режим ВЧ-ИВЛ. Частота 90-360 в мин. МОД 10-20 л/мин взрослые. Применять при ТЭЛА, тяжёлой ДН. Газообмен малыми объёмами. Пауза на выдох 0.5-1 сек при необходимости.';
+    document.getElementById('ivl-vt-hint').textContent = '2-4 мл/кг (ВЧ)';
+  }
+
+  var modMl = ivlMode !== 'hfv' ? ((vtMin + vtMax) / 2 * rr / 1000).toFixed(1) : '10-20';
+  if (ivlMode === 'vvl') modMl = '--';
+
+  document.getElementById('ivl-vt-min').textContent = vtMin;
+  document.getElementById('ivl-vt-max').textContent = vtMax;
+  document.getElementById('ivl-rr').textContent = rr;
+  document.getElementById('ivl-mod').textContent = modMl;
+  document.getElementById('ivl-ie').textContent = ie;
+  document.getElementById('ivl-ie-hint').textContent = ieHint;
+  document.getElementById('ivl-plim').textContent = plim;
+  document.getElementById('ivl-mode-hint').textContent = modeHint;
+  
+}
+
+function resetIVL() {
+  document.getElementById('ivl-wt').value = '';
+  document.getElementById('ivl-ht').value = '';
+  ivlSex = 'm';
+  ivlMode = 'ippv';
+  setIVLsex('m');
+  setIVLmode('ippv');
+}
+
+
+var imtSex = 'm';
+
+function setIMTsex(s) {
+  imtSex = s;
+  document.getElementById('imt-m').classList.toggle('on', s === 'm');
+  document.getElementById('imt-f').classList.toggle('on', s === 'f');
+  calcIMT();
+}
+
+function calcIMT() {
+  var ht = parseFloat(document.getElementById('imt-ht').value);
+  var wt = parseFloat(document.getElementById('imt-wt').value);
+  var r = document.getElementById('imt-res');
+  var rows = ['imt-r1','imt-r2','imt-r3','imt-r4','imt-r5','imt-r6','imt-r7','imt-r8'];
+
+  // Reset highlights
+  for (var i = 0; i < rows.length; i++) {
+    document.getElementById(rows[i]).style.background = 'transparent';
+  }
+
+  if (isNaN(ht) || isNaN(wt) || ht <= 0 || wt <= 0) {
+    r.className = 'res';
+    document.getElementById('imt-val').textContent = '--';
+    document.getElementById('imt-lbl').textContent = 'Введите данные';
+    document.getElementById('imt-act').textContent = 'кг / м2';
+    document.getElementById('imt-ideal').textContent = '--';
+    document.getElementById('imt-diff').textContent = '--';
+    document.getElementById('imt-diff').style.color = 'white';
+    return;
+  }
+
+  var htM = ht / 100;
+  var imt = wt / (htM * htM);
+
+  // Ideal body weight (Devine)
+  var ideal = imtSex === 'm' ? 50 + 0.91 * (ht - 152.4) : 45.5 + 0.91 * (ht - 152.4);
+  if (ideal < 0) ideal = 0;
+  document.getElementById('imt-ideal').textContent = ideal.toFixed(1);
+  document.getElementById('imt-ideal-formula').textContent = imtSex === 'm' ? 'Devine: 50 + 0.91 x (рост - 152.4)' : 'Devine: 45.5 + 0.91 x (рост - 152.4)';
+
+  var diff = wt - ideal;
+  var diffEl = document.getElementById('imt-diff');
+  diffEl.textContent = (diff >= 0 ? '+' : '') + diff.toFixed(1);
+  diffEl.style.color = diff > 5 ? '#ef4444' : diff < -5 ? '#f59e0b' : '#10b981';
+
+  document.getElementById('imt-val').textContent = imt.toFixed(1);
+  document.getElementById('imt-act').textContent = 'кг / м2';
+
+  var cls, lbl, ac, rowId;
+  if (imt < 16)       { cls='hi';  lbl='Выраженный дефицит'; ac='Критически низкая масса тела'; rowId='imt-r1'; }
+  else if (imt < 17)  { cls='med'; lbl='Дефицит средней степени'; ac='Требуется коррекция питания'; rowId='imt-r2'; }
+  else if (imt < 18.5){ cls='med'; lbl='Дефицит лёгкой степени'; ac='Недостаточная масса тела'; rowId='imt-r3'; }
+  else if (imt < 25)  { cls='low'; lbl='Норма'; ac='Нормальная масса тела по ВОЗ'; rowId='imt-r4'; }
+  else if (imt < 30)  { cls='med'; lbl='Избыточная масса'; ac='Повышен риск сердечно-сосудистых заболеваний'; rowId='imt-r5'; }
+  else if (imt < 35)  { cls='hi';  lbl='Ожирение I степени'; ac='Умеренно высокий риск осложнений'; rowId='imt-r6'; }
+  else if (imt < 40)  { cls='hi';  lbl='Ожирение II степени'; ac='Высокий риск осложнений'; rowId='imt-r7'; }
+  else                { cls='hi';  lbl='Ожирение III степени'; ac='Очень высокий риск. Морбидное ожирение.'; rowId='imt-r8'; }
+
+  r.className = 'res ' + cls;
+  document.getElementById('imt-lbl').textContent = lbl;
+  document.getElementById('imt-act').textContent = ac;
+  document.getElementById(rowId).style.background = 'rgba(255,255,255,0.06)';
+  document.getElementById(rowId).style.borderRadius = '7px';
+}
+
+function resetIMT() {
+  document.getElementById('imt-ht').value = '';
+  document.getElementById('imt-wt').value = '';
+  imtSex = 'm';
+  setIMTsex('m');
+}
+
+
+// Pediatric norms database (centile-based, WHO/Russian clinical guidelines)
+// [ageMonthsMin, ageMonthsMax, hrLow, hrHigh, rrLow, rrHigh, sbpLow, sbpHigh, dbpLow, dbpHigh]
+var CHILD_NORMS = [
+  // Нормы по российским клин.рекомендациям (Шабалов 2019, Баранов 2020, ВОЗ)
+  // mn/mx в месяцах, hr=ЧСС, rr=ЧДД, sbp/dbp=АД, wt=вес, ht=рост
+  {mn:0,  mx:1,  hr:[110,180], rr:[40,60], sbp:[60,90],  dbp:[30,55],  wt:'3.0-4.0 кг', ht:'48-55 см'},
+  {mn:1,  mx:3,  hr:[110,175], rr:[35,55], sbp:[65,95],  dbp:[35,60],  wt:'4.0-6.5 кг', ht:'54-62 см'},
+  {mn:3,  mx:6,  hr:[100,170], rr:[30,50], sbp:[70,100], dbp:[40,65],  wt:'6.0-8.5 кг', ht:'61-69 см'},
+  {mn:6,  mx:12, hr:[90,160],  rr:[25,45], sbp:[75,105], dbp:[40,70],  wt:'8.0-11.0 кг', ht:'68-76 см'},
+  {mn:12, mx:24, hr:[80,155],  rr:[25,40], sbp:[80,110], dbp:[45,75],  wt:'10-13 кг',   ht:'75-90 см'},
+  {mn:24, mx:36, hr:[75,145],  rr:[25,35], sbp:[85,112], dbp:[45,75],  wt:'12-16 кг',   ht:'88-100 см'},
+  {mn:36, mx:60, hr:[70,135],  rr:[22,30], sbp:[86,114], dbp:[48,76],  wt:'14-21 кг',   ht:'95-112 см'},
+  {mn:60, mx:84, hr:[65,125],  rr:[20,25], sbp:[88,116], dbp:[50,78],  wt:'18-27 кг',   ht:'108-125 см'},
+  {mn:84, mx:120,hr:[60,115],  rr:[18,25], sbp:[90,122], dbp:[52,80],  wt:'24-38 кг',   ht:'120-140 см'},
+  {mn:120,mx:156,hr:[55,110],  rr:[16,22], sbp:[95,128], dbp:[55,82],  wt:'30-52 кг',   ht:'135-160 см'},
+  {mn:156,mx:216,hr:[50,100],  rr:[14,20], sbp:[100,135],dbp:[58,85],  wt:'45-75 кг',   ht:'150-178 см'}
+];
+
+var AGE_LABELS = [
+  'Новорождённый (0-1 мес)',
+  'Грудной (1-3 мес)',
+  'Грудной (3-6 мес)',
+  'Грудной (6-12 мес)',
+  'Ранний возраст (1-2 года)',
+  'Ранний возраст (2-3 года)',
+  'Дошкольный (3-5 лет)',
+  'Младший школьный (5-7 лет)',
+  'Школьный (7-10 лет)',
+  'Подростковый (10-13 лет)',
+  'Подростковый (13-18 лет)'
+];
+
+function getChildNorm(totalMonths) {
+  for (var i = 0; i < CHILD_NORMS.length; i++) {
+    if (totalMonths >= CHILD_NORMS[i].mn && totalMonths < CHILD_NORMS[i].mx) {
+      return {norm: CHILD_NORMS[i], label: AGE_LABELS[i]};
+    }
+  }
+  return null;
+}
+
+function assessParam(val, low, high) {
+  if (isNaN(val)) return {cls:'none', txt:'нет данных'};
+  if (val < low * 0.8 || val > high * 1.2) return {cls:'crit', txt:'критично'};
+  if (val < low || val > high) return {cls:'warn', txt:'вне нормы'};
+  return {cls:'norm', txt:'норма'};
+}
+
+function setChRow(id, normStr, val, low, high, unit) {
+  var row = document.getElementById(id + '-row');
+  var normEl = document.getElementById(id + '-norm');
+  var valEl = document.getElementById(id + '-val');
+  var badgeEl = document.getElementById(id + '-badge');
+
+  normEl.textContent = normStr;
+
+  if (isNaN(val)) {
+    valEl.textContent = '--';
+    badgeEl.textContent = '';
+    badgeEl.className = 'ch-row-badge none';
+    row.className = 'ch-row';
+    return;
+  }
+
+  var a = assessParam(val, low, high);
+  valEl.textContent = val + ' ' + unit;
+  badgeEl.textContent = a.txt;
+  badgeEl.className = 'ch-row-badge ' + a.cls;
+  row.className = 'ch-row ' + a.cls;
+}
+
+function calcChild() {
+  var ageY = parseFloat(document.getElementById('ch-age').value) || 0;
+  var ageMo = parseFloat(document.getElementById('ch-mo').value) || 0;
+  var totalMo = Math.round(ageY * 12 + ageMo);
+
+  var hr   = parseFloat(document.getElementById('ch-hr').value);
+  var rr   = parseFloat(document.getElementById('ch-rr').value);
+  var sbp  = parseFloat(document.getElementById('ch-sbp').value);
+  var dbp  = parseFloat(document.getElementById('ch-dbp').value);
+  var spo  = parseFloat(document.getElementById('ch-spo').value);
+  var tmp  = parseFloat(document.getElementById('ch-tmp').value);
+  var wtIn = parseFloat(document.getElementById('ch-wt-in').value);
+  var htIn = parseFloat(document.getElementById('ch-ht-in').value);
+
+  if (totalMo <= 0 && ageY <= 0) {
+    document.getElementById('ch-results').style.display = 'none';
+    document.getElementById('ch-empty').style.display = 'block';
+    return;
+  }
+
+  var nd = getChildNorm(totalMo);
+  if (!nd) {
+    document.getElementById('ch-results').style.display = 'none';
+    document.getElementById('ch-empty').style.display = 'block';
+    document.getElementById('ch-empty').textContent = 'Введите возраст до 18 лет';
+    return;
+  }
+
+  document.getElementById('ch-results').style.display = 'flex';
+  document.getElementById('ch-empty').style.display = 'none';
+  document.getElementById('ch-age-label').textContent = nd.label;
+
+  var n = nd.norm;
+
+  setChRow('ch-hr',  n.hr[0]+'-'+n.hr[1]+' уд/мин',   hr,  n.hr[0],  n.hr[1],  'уд/мин');
+  setChRow('ch-rr',  n.rr[0]+'-'+n.rr[1]+' в мин',    rr,  n.rr[0],  n.rr[1],  'в мин');
+  setChRow('ch-sbp', n.sbp[0]+'-'+n.sbp[1]+' мм рт.ст.', sbp, n.sbp[0], n.sbp[1], 'мм');
+  setChRow('ch-dbp', n.dbp[0]+'-'+n.dbp[1]+' мм рт.ст.', dbp, n.dbp[0], n.dbp[1], 'мм');
+  setChRow('ch-spo', '95-100%', spo, 95, 100, '%');
+  setChRow('ch-tmp', '36.0-37.5 C', tmp, 36.0, 37.5, 'C');
+
+  document.getElementById('ch-wt').textContent = n.wt;
+  document.getElementById('ch-ht').textContent = n.ht;
+
+  // Weight and height assessment
+  var wtAssess = document.getElementById('ch-wt-assess');
+  if (!isNaN(wtIn) || !isNaN(htIn)) {
+    wtAssess.style.display = 'block';
+
+    // Parse norm range for weight comparison
+    var wtEl = document.getElementById('ch-wt-val');
+    var htEl = document.getElementById('ch-ht-val');
+    var imtEl = document.getElementById('ch-imt-val');
+
+    if (!isNaN(wtIn)) {
+      var wtCls = wtIn < n.wtL ? '#f59e0b' : wtIn > n.wtH ? '#ef4444' : '#10b981';
+      var wtTxt = wtIn < n.wtL ? ' (дефицит, <3 центиль)' : wtIn > n.wtH ? ' (избыток, >97 центиль)' : ' (норма, 3-97 центиль)';
+      wtEl.textContent = wtIn + ' кг' + wtTxt;
+      wtEl.style.color = wtCls;
+    } else {
+      wtEl.textContent = 'не введён';
+      wtEl.style.color = 'var(--muted)';
+    }
+
+    if (!isNaN(htIn)) {
+      var htCls2 = htIn < n.htL ? '#f59e0b' : htIn > n.htH ? '#10b981' : '#10b981';
+      var htTxt = htIn < n.htL ? ' (ниже 3 центиля)' : htIn > n.htH ? ' (выше 97 центиля)' : ' (норма, 3-97 центиль)';
+      htEl.textContent = htIn + ' см' + htTxt;
+      htEl.style.color = htIn < n.htL ? '#f59e0b' : '#10b981';
+    } else {
+      htEl.textContent = 'не введён';
+      htEl.style.color = 'var(--muted)';
+    }
+
+    // IMT for age
+    if (!isNaN(wtIn) && !isNaN(htIn) && htIn > 0) {
+      var htM = htIn / 100;
+      var imt = wtIn / (htM * htM);
+      // IMT norms for children differ by age - simplified
+      var imtNorm = totalMo < 24 ? [14,18] : totalMo < 60 ? [13.5,17.5] : totalMo < 120 ? [14,19] : [15,21];
+      var imtCls = imt < imtNorm[0] ? '#f59e0b' : imt > imtNorm[1] ? '#ef4444' : '#10b981';
+      imtEl.textContent = imt.toFixed(1) + ' кг/м2';
+      imtEl.style.color = imtCls;
+    } else {
+      imtEl.textContent = 'нужны вес и рост';
+      imtEl.style.color = 'var(--muted)';
+    }
+  } else {
+    wtAssess.style.display = 'none';
+  }
+}
+
+function resetChild() {
+  ['ch-age','ch-mo','ch-wt-in','ch-ht-in','ch-hr','ch-rr','ch-sbp','ch-dbp','ch-spo','ch-tmp'].forEach(function(id) {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('ch-results').style.display = 'none';
+  document.getElementById('ch-empty').style.display = 'block';
+  document.getElementById('ch-empty').textContent = 'Введите возраст ребёнка';
+}
+
+
+var strokeData = {face:'n', arm:'n', speech:'n'};
+
+function setStroke(param, val) {
+  strokeData[param] = val;
+  var params = ['face','arm','speech'];
+  for (var i = 0; i < params.length; i++) {
+    var p = params[i];
+    document.getElementById(p+'-n').classList.toggle('on', strokeData[p] === 'n');
+    var yBtn = document.getElementById(p+'-y');
+    yBtn.classList.toggle('on', strokeData[p] === 'y');
+    if (strokeData[p] === 'y') {
+      yBtn.style.borderColor = '#ef4444';
+      yBtn.style.background = 'rgba(239,68,68,0.1)';
+      yBtn.style.color = '#ef4444';
+    } else {
+      yBtn.style.borderColor = 'transparent';
+      yBtn.style.background = '';
+      yBtn.style.color = '';
+    }
+  }
+  calcStroke();
+}
+
+function togSx(id) {
+  document.getElementById(id).classList.toggle('on');
+  calcStroke();
+}
+
+function calcStroke() {
+  var score = 0;
+  if (strokeData.face === 'y') score++;
+  if (strokeData.arm === 'y') score++;
+  if (strokeData.speech === 'y') score++;
+
+  var sc = document.getElementById('cpss-sc');
+  var lb = document.getElementById('cpss-lb');
+  var ac = document.getElementById('cpss-ac');
+  var r  = document.getElementById('cpss-res');
+  var tactic = document.getElementById('st-tactic');
+  var tacticText = document.getElementById('st-tactic-text');
+
+  sc.textContent = score;
+
+  if (score === 0) {
+    r.className = 'res low';
+    lb.textContent = 'CPSS: 0 — признаков нет';
+    ac.textContent = 'Инсульт маловероятен по CPSS. Оценить доп. симптомы.';
+    tactic.style.display = 'none';
+  } else if (score === 1) {
+    r.className = 'res med';
+    lb.textContent = 'CPSS: 1 — возможен инсульт';
+    ac.textContent = '72% вероятность инсульта. Госпитализация в сосудистый центр.';
+    tactic.style.display = 'block';
+    tacticText.textContent = 'Транспортировка в региональный сосудистый центр. Положение 30 градусов. Мониторинг АД, SpO2, ЭКГ. Не давать есть и пить. АД не снижать если менее 220/120.';
+  } else {
+    r.className = 'res hi';
+    lb.textContent = 'CPSS: ' + score + ' — ИНСУЛЬТ';
+    ac.textContent = '85% вероятность инсульта при 2 признаках, 100% при 3.';
+    tactic.style.display = 'block';
+    tacticText.textContent = 'СРОЧНАЯ транспортировка в первичный сосудистый центр! Положение 30 градусов. Венозный доступ. Мониторинг. АД не снижать если менее 220/120. Глюкоза крови обязательно. Не давать есть и пить.';
+  }
+
+  // Time assessment
+  var h = parseFloat(document.getElementById('st-h').value) || 0;
+  var m = parseFloat(document.getElementById('st-m').value) || 0;
+  var totalMin = h * 60 + m;
+  var timeEl = document.getElementById('st-time-res');
+
+  if (h > 0 || m > 0) {
+    if (totalMin <= 270) {
+      timeEl.textContent = 'Окно тромболизиса ОТКРЫТО (' + Math.round(270 - totalMin) + ' мин осталось)';
+      timeEl.style.color = '#10b981';
+    } else if (totalMin <= 360) {
+      timeEl.textContent = 'Окно тромболизиса ЗАКРЫТО. Возможна тромбэктомия (до 6 часов).';
+      timeEl.style.color = '#f59e0b';
+    } else if (totalMin <= 1440) {
+      timeEl.textContent = 'Более 6 часов. Тромбэктомия возможна до 24 ч при отборе.';
+      timeEl.style.color = '#f59e0b';
+    } else {
+      timeEl.textContent = 'Более 24 часов от начала симптомов.';
+      timeEl.style.color = '#ef4444';
+    }
+  } else {
+    timeEl.textContent = '';
+  }
+}
+
+function resetStroke() {
+  strokeData = {face:'n', arm:'n', speech:'n'};
+  var params = ['face','arm','speech'];
+  for (var i = 0; i < params.length; i++) {
+    document.getElementById(params[i]+'-n').classList.add('on');
+    var yBtn = document.getElementById(params[i]+'-y');
+    yBtn.classList.remove('on');
+    yBtn.style.borderColor = 'transparent';
+    yBtn.style.background = '';
+    yBtn.style.color = '';
+  }
+  var sxIds = ['sx-eye','sx-head','sx-atax','sx-sens','sx-vis'];
+  for (var j = 0; j < sxIds.length; j++) {
+    document.getElementById(sxIds[j]).classList.remove('on');
+  }
+  document.getElementById('st-h').value = '';
+  document.getElementById('st-m').value = '';
+  document.getElementById('st-time-res').textContent = '';
+  document.getElementById('st-tactic').style.display = 'none';
+  calcStroke();
 }
 
 renderGrp('q');
