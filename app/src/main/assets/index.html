@@ -2,225 +2,589 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>MedScores</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#000008">
+<title>МедШкалы СМП</title>
 <style>
 :root {
-  --bg: #0a0e1a;
-  --surface: #111827;
-  --s2: #1a2235;
-  --border: #1e2d47;
-  --accent: #00d4ff;
-  --purple: #7c3aed;
-  --green: #10b981;
-  --yellow: #f59e0b;
-  --red: #ef4444;
-  --text: #e2e8f0;
-  --muted: #64748b;
-  --mono: 'Courier New', monospace;
-  --sans: -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --bg: #000008;
+  --glass: rgba(255,255,255,0.06);
+  --glass-border: rgba(255,255,255,0.12);
+  --glass-hover: rgba(255,255,255,0.10);
+  --glass-active: rgba(255,255,255,0.16);
+  --accent: #0a84ff;
+  --accent2: #5e5ce6;
+  --green: #30d158;
+  --yellow: #ffd60a;
+  --orange: #ff9f0a;
+  --red: #ff453a;
+  --text: rgba(255,255,255,0.95);
+  --text2: rgba(255,255,255,0.60);
+  --text3: rgba(255,255,255,0.30);
+  --divider: rgba(255,255,255,0.08);
+  --mono: 'SF Mono', 'Courier New', monospace;
+  --sans: -apple-system, 'SF Pro Display', 'Helvetica Neue', sans-serif;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --blur: blur(40px) saturate(180%);
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bot: env(safe-area-inset-bottom, 0px);
 }
+
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-html, body {
-  background: var(--bg);
+
+html { background: var(--bg); }
+
+body {
+  background: 
+    radial-gradient(ellipse at 20% 10%, rgba(10,132,255,0.18) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 30%, rgba(94,92,230,0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 80%, rgba(48,209,88,0.08) 0%, transparent 50%),
+    #000008;
   color: var(--text);
   font-family: var(--sans);
   min-height: 100vh;
+  min-height: -webkit-fill-available;
   overflow-x: hidden;
   -webkit-text-size-adjust: 100%;
+  padding-bottom: calc(24px + var(--safe-bot));
 }
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image: linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
-  background-size: 36px 36px;
-  pointer-events: none;
-  z-index: 0;
-}
-.wrap { max-width: 600px; margin: 0 auto; padding: 20px 16px 60px; position: relative; z-index: 1; }
 
-/* Header */
-.hdr { text-align: center; margin-bottom: 24px; padding-top: 12px; }
+/* ===== HEADER ===== */
+.hdr {
+  padding: calc(var(--safe-top) + 56px) 20px 24px;
+  text-align: center;
+  position: relative;
+}
+
 .badge {
-  display: inline-flex; align-items: center; gap: 7px;
-  background: rgba(0,212,255,0.08); border: 1px solid rgba(0,212,255,0.2);
-  border-radius: 100px; padding: 5px 14px;
-  font-family: var(--mono); font-size: 10px; color: var(--accent);
-  letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 100px;
+  padding: 5px 14px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur);
 }
-.badge::before { content: ''; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: pulse 2s infinite; }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+.badge::before {
+  content: '';
+  width: 6px; height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.8)} }
+
 h1 {
-  font-size: 26px; font-weight: 800; letter-spacing: -0.02em;
-  background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text; margin-bottom: 6px;
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  background: linear-gradient(160deg, #ffffff 0%, rgba(255,255,255,0.7) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 6px;
 }
-.sub { color: var(--muted); font-size: 13px; }
 
-/* Tabs */
-.tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-bottom: 18px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 6px; }
-.tab { padding: 10px 4px; border: none; border-radius: 9px; background: transparent; color: var(--muted); font-family: var(--sans); font-size: 12px; font-weight: 700; cursor: pointer; transition: all 0.2s; text-align: center; }
-.tab.active { background: linear-gradient(135deg, var(--purple), var(--accent)); color: white; }
+.sub {
+  color: var(--text3);
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
 
-/* Cards */
-.card { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 20px 16px; display: none; animation: fi 0.25s ease; }
+/* ===== WRAP ===== */
+.wrap { max-width: 560px; margin: 0 auto; padding: 0 16px; }
+
+/* ===== NAVIGATION ===== */
+.nav-menu {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 14px;
+  margin-bottom: 16px;
+  backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur);
+}
+
+.nav-cat { margin-bottom: 12px; }
+.nav-cat:last-child { margin-bottom: 0; }
+
+.nav-cat-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+  padding-left: 4px;
+}
+
+.nav-row { display: flex; gap: 6px; flex-wrap: wrap; }
+
+.tab {
+  padding: 8px 14px;
+  border: 1px solid var(--glass-border);
+  border-radius: 100px;
+  background: var(--glass);
+  color: var(--text2);
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur);
+}
+
+.tab:active { transform: scale(0.95); }
+
+.tab.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+  font-weight: 600;
+  box-shadow: 0 4px 20px rgba(10,132,255,0.4);
+}
+
+.nav-divider {
+  height: 1px;
+  background: var(--divider);
+  margin: 10px 0;
+}
+
+/* ===== CARDS ===== */
+.card {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 20px;
+  display: none;
+  animation: fi 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur);
+}
+
 .card.active { display: block; }
-@keyframes fi { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
-.card-title { font-size: 17px; font-weight: 700; margin-bottom: 5px; color: white; }
-.card-desc { color: var(--muted); font-size: 12px; margin-bottom: 18px; line-height: 1.5; }
 
-/* Criteria */
-.crit-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
-.crit {
-  background: var(--s2); border: 1px solid var(--border); border-radius: 12px;
-  padding: 13px 14px; display: flex; align-items: center; justify-content: space-between;
-  gap: 12px; cursor: pointer; transition: all 0.15s; user-select: none; -webkit-user-select: none;
+@keyframes fi {
+  from { opacity:0; transform:translateY(12px) scale(0.98); }
+  to   { opacity:1; transform:translateY(0) scale(1); }
 }
-.crit.on { border-color: var(--accent); background: rgba(0,212,255,0.07); }
+
+.card-title {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: white;
+  margin-bottom: 5px;
+}
+
+.card-desc {
+  color: var(--text3);
+  font-size: 13px;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+/* ===== CRITERIA ===== */
+.crit-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+
+.crit {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.crit:active { transform: scale(0.98); }
+
+.crit.on {
+  border-color: var(--accent);
+  background: rgba(10,132,255,0.12);
+}
+
 .crit-l { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
-.chk { width: 24px; height: 24px; border: 2px solid var(--border); border-radius: 7px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.15s; font-size: 14px; color: #000; font-weight: 900; }
+
+.chk {
+  width: 26px; height: 26px;
+  border: 2px solid var(--glass-border);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s;
+  font-size: 14px;
+  color: white;
+  font-weight: 900;
+}
+
 .crit.on .chk { background: var(--accent); border-color: var(--accent); }
 .chk-i { opacity: 0; transition: opacity 0.15s; }
 .crit.on .chk-i { opacity: 1; }
-.crit-txt { font-size: 13px; font-weight: 600; line-height: 1.35; color: var(--text); }
-.crit-hint { font-size: 11px; color: var(--muted); margin-top: 3px; line-height: 1.3; }
-.cbadge { font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--accent); background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.2); border-radius: 7px; padding: 4px 9px; white-space: nowrap; flex-shrink: 0; }
 
-/* Inputs */
+.crit-txt { font-size: 14px; font-weight: 600; line-height: 1.35; color: var(--text); }
+.crit-hint { font-size: 11px; color: var(--text3); margin-top: 2px; line-height: 1.3; }
+
+.cbadge {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent);
+  background: rgba(10,132,255,0.15);
+  border: 1px solid rgba(10,132,255,0.25);
+  border-radius: 8px;
+  padding: 4px 10px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ===== INPUTS ===== */
 .inp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
-.inp-grp { background: var(--s2); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; transition: border-color 0.2s; }
+
+.inp-grp {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  transition: border-color 0.2s;
+}
+
 .inp-grp:focus-within { border-color: var(--accent); }
-.inp-lbl { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between; }
-.inp-unit { font-family: var(--mono); font-size: 9px; color: rgba(100,116,139,0.55); font-weight: 400; }
-.inp-f { width: 100%; background: transparent; border: none; outline: none; color: white; font-family: var(--mono); font-size: 24px; font-weight: 700; padding: 0; }
-.inp-f::placeholder { color: var(--border); }
-.inp-sc { font-size: 10px; color: var(--muted); margin-top: 4px; font-family: var(--mono); min-height: 14px; transition: color 0.2s; }
-.con-lbl { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 8px; }
-.con-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 18px; }
-.con-btn { padding: 11px 8px; border: 1px solid var(--border); border-radius: 10px; background: var(--s2); color: var(--muted); font-family: var(--sans); font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.15s; text-align: center; }
-.con-btn.on { background: rgba(0,212,255,0.1); border-color: var(--accent); color: var(--accent); }
 
-/* Result */
-.res { background: var(--s2); border: 2px solid var(--border); border-radius: 14px; padding: 20px 16px; text-align: center; transition: all 0.35s; }
-.res.low { border-color: var(--green); }
-.res.med { border-color: var(--yellow); }
-.res.hi  { border-color: var(--red); }
-.res-score { font-family: var(--mono); font-size: 56px; font-weight: 700; line-height: 1; color: var(--muted); transition: color 0.35s; }
+.inp-lbl {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.inp-unit { font-family: var(--mono); font-size: 9px; color: var(--text3); font-weight: 400; }
+
+.inp-f {
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: white;
+  font-family: var(--mono);
+  font-size: 24px;
+  font-weight: 700;
+  padding: 0;
+}
+
+.inp-f::placeholder { color: rgba(255,255,255,0.1); }
+.inp-sc { font-size: 10px; color: var(--text3); margin-top: 4px; font-family: var(--mono); min-height: 14px; }
+
+/* ===== CONSCIOUSNESS / BUTTONS ===== */
+.con-lbl {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+}
+
+.con-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 16px; }
+
+.con-btn {
+  padding: 11px 8px;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  background: rgba(255,255,255,0.04);
+  color: var(--text2);
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.con-btn:active { transform: scale(0.96); }
+.con-btn.on { background: rgba(10,132,255,0.18); border-color: var(--accent); color: var(--accent); font-weight: 600; }
+
+/* ===== RESULT ===== */
+.res {
+  border-radius: var(--radius);
+  padding: 22px 16px;
+  text-align: center;
+  transition: all 0.35s;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--glass-border);
+  position: relative;
+  overflow: hidden;
+}
+
+.res::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.35s;
+  background: radial-gradient(circle at 50% 0%, currentColor 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.res.low   { border-color: var(--green); }
+.res.low::before   { color: rgba(48,209,88,0.12); opacity: 1; }
+.res.med   { border-color: var(--orange); }
+.res.med::before   { color: rgba(255,159,10,0.12); opacity: 1; }
+.res.hi    { border-color: var(--red); }
+.res.hi::before    { color: rgba(255,69,58,0.12); opacity: 1; }
+
+.res-score {
+  font-family: var(--mono);
+  font-size: 60px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--text2);
+  transition: color 0.35s;
+  position: relative;
+}
+
 .res.low .res-score { color: var(--green); }
-.res.med .res-score { color: var(--yellow); }
+.res.med .res-score { color: var(--orange); }
 .res.hi  .res-score { color: var(--red); }
-.res-lbl { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 8px; margin-bottom: 10px; color: var(--muted); transition: color 0.35s; }
+
+.res-lbl {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 8px;
+  margin-bottom: 10px;
+  color: var(--text2);
+  transition: color 0.35s;
+  position: relative;
+}
+
 .res.low .res-lbl { color: var(--green); }
-.res.med .res-lbl { color: var(--yellow); }
+.res.med .res-lbl { color: var(--orange); }
 .res.hi  .res-lbl { color: var(--red); }
-.res-act { font-size: 12px; color: var(--muted); line-height: 1.55; }
 
-/* GCS */
-.gcs-sec { background: rgba(124,58,237,0.08); border: 1px solid rgba(124,58,237,0.2); border-radius: 12px; padding: 14px; margin-bottom: 10px; }
-.gcs-ttl { font-size: 11px; font-weight: 700; color: #a78bfa; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
-.gcs-sel { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 9px; color: white; font-family: var(--sans); font-size: 13px; font-weight: 500; padding: 10px 12px; cursor: pointer; outline: none; appearance: auto; }
+.res-act { font-size: 12px; color: var(--text3); line-height: 1.55; position: relative; }
 
-/* Wells pills */
+/* ===== GCS ===== */
+.gcs-sec {
+  background: rgba(94,92,230,0.08);
+  border: 1px solid rgba(94,92,230,0.2);
+  border-radius: var(--radius);
+  padding: 14px;
+  margin-bottom: 10px;
+}
+
+.gcs-ttl {
+  font-size: 11px;
+  font-weight: 700;
+  color: #a78bfa;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 10px;
+}
+
+.gcs-sel {
+  width: 100%;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  color: white;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 10px 12px;
+  cursor: pointer;
+  outline: none;
+  appearance: auto;
+}
+
+/* ===== WELLS PILLS ===== */
 .w-pills { display: flex; gap: 8px; justify-content: center; margin-top: 12px; flex-wrap: wrap; }
-.w-pill { padding: 5px 13px; border-radius: 100px; font-size: 11px; font-weight: 700; font-family: var(--mono); opacity: 0.4; border: 1px solid transparent; transition: all 0.3s; }
+.w-pill { padding: 5px 13px; border-radius: 100px; font-size: 11px; font-weight: 700; font-family: var(--mono); opacity: 0.35; border: 1px solid transparent; transition: all 0.3s; }
 .w-pill.on { opacity: 1; }
-.w-pill.unlikely { background: rgba(16,185,129,0.1); border-color: var(--green); color: var(--green); }
-.w-pill.likely   { background: rgba(239,68,68,0.1);  border-color: var(--red);   color: var(--red); }
+.w-pill.unlikely { background: rgba(48,209,88,0.1); border-color: var(--green); color: var(--green); }
+.w-pill.likely   { background: rgba(255,69,58,0.1); border-color: var(--red); color: var(--red); }
 
-/* Reset */
-.reset { display: block; width: 100%; margin-top: 14px; padding: 12px; background: transparent; border: 1px solid var(--border); border-radius: 11px; color: var(--muted); font-family: var(--sans); font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-.reset:active { background: rgba(0,212,255,0.05); color: var(--accent); border-color: var(--accent); }
+/* ===== RESET ===== */
+.reset {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  padding: 13px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  color: var(--text3);
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
 
-/* Infusomat */
-.drug-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 18px; }
-.drug-btn { padding: 14px 8px; border: 2px solid var(--border); border-radius: 12px; background: var(--s2); color: var(--muted); font-family: var(--sans); font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.2s; text-align: center; }
+.reset:active { background: rgba(255,255,255,0.08); color: var(--text); }
+
+/* ===== INFUSOMAT ===== */
+.drug-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+
+.drug-btn {
+  padding: 14px 10px;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  background: rgba(255,255,255,0.04);
+  color: var(--text2);
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+
 .drug-btn .dn { font-size: 15px; color: var(--text); display: block; margin-bottom: 3px; }
-.drug-btn .dc { font-size: 10px; font-family: var(--mono); }
-.drug-btn.sel-d { border-color: var(--yellow); background: rgba(245,158,11,0.08); }
+.drug-btn .dc { font-size: 10px; font-family: var(--mono); color: var(--text3); }
+.drug-btn.sel-d { border-color: var(--yellow); background: rgba(255,214,10,0.08); }
 .drug-btn.sel-d .dn { color: var(--yellow); }
-.drug-btn.sel-n { border-color: var(--red); background: rgba(239,68,68,0.08); }
+.drug-btn.sel-n { border-color: var(--red); background: rgba(255,69,58,0.08); }
 .drug-btn.sel-n .dn { color: var(--red); }
 
-.w-inp { background: var(--s2); border: 1px solid var(--border); border-radius: 12px; padding: 12px 16px; margin-bottom: 18px; transition: border-color 0.2s; }
+.w-inp {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  transition: border-color 0.2s;
+}
+
 .w-inp:focus-within { border-color: var(--accent); }
-.w-lbl { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 4px; }
+.w-lbl { font-size: 10px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
 .w-field { width: 100%; background: transparent; border: none; outline: none; color: white; font-family: var(--mono); font-size: 28px; font-weight: 700; }
-.w-field::placeholder { color: var(--border); }
+.w-field::placeholder { color: rgba(255,255,255,0.1); }
 
 .dose-hdr { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-.dose-lbl { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; }
+.dose-lbl { font-size: 11px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.07em; }
 .dose-val { font-family: var(--mono); font-size: 18px; font-weight: 700; color: var(--accent); }
 
-.slider { width: 100%; height: 6px; border-radius: 3px; background: var(--border); outline: none; cursor: pointer; -webkit-appearance: none; appearance: none; margin-bottom: 8px; }
-.slider::-webkit-slider-thumb { -webkit-appearance: none; width: 26px; height: 26px; border-radius: 50%; background: var(--yellow); cursor: pointer; border: 3px solid var(--bg); box-shadow: 0 0 0 2px var(--yellow); }
-.slider.nr::-webkit-slider-thumb { background: var(--red); box-shadow: 0 0 0 2px var(--red); }
+.slider {
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(255,255,255,0.12);
+  outline: none;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  margin-bottom: 8px;
+}
 
-.dose-range { display: flex; justify-content: space-between; font-size: 10px; color: var(--muted); font-family: var(--mono); }
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--yellow);
+  cursor: pointer;
+  border: 3px solid rgba(0,0,0,0.3);
+  box-shadow: 0 4px 12px rgba(255,214,10,0.4);
+}
+
+.slider.nr::-webkit-slider-thumb { background: var(--red); box-shadow: 0 4px 12px rgba(255,69,58,0.4); }
+
+.dose-range { display: flex; justify-content: space-between; font-size: 10px; color: var(--text3); font-family: var(--mono); }
 .eff { margin-top: 8px; min-height: 28px; }
-.eff-badge { display: inline-block; padding: 5px 12px; border-radius: 100px; font-size: 12px; font-weight: 700; transition: all 0.3s; }
-.e-g { background: rgba(16,185,129,0.15); color: var(--green); border: 1px solid var(--green); }
-.e-y { background: rgba(245,158,11,0.15); color: var(--yellow); border: 1px solid var(--yellow); }
-.e-r { background: rgba(239,68,68,0.15); color: var(--red); border: 1px solid var(--red); }
+.eff-badge { display: inline-block; padding: 5px 12px; border-radius: 100px; font-size: 12px; font-weight: 600; transition: all 0.3s; }
+.e-g { background: rgba(48,209,88,0.12); color: var(--green); border: 1px solid var(--green); }
+.e-y { background: rgba(255,214,10,0.12); color: var(--yellow); border: 1px solid var(--yellow); }
+.e-r { background: rgba(255,69,58,0.12); color: var(--red); border: 1px solid var(--red); }
 
-.inf-res { background: var(--s2); border: 2px solid var(--yellow); border-radius: 16px; padding: 20px; text-align: center; margin-top: 4px; transition: border-color 0.3s; }
-.inf-res.nr { border-color: var(--red); }
+.inf-res {
+  background: rgba(255,214,10,0.06);
+  border: 1px solid var(--yellow);
+  border-radius: var(--radius);
+  padding: 20px;
+  text-align: center;
+  margin-top: 4px;
+  transition: border-color 0.3s, background 0.3s;
+}
+
+.inf-res.nr { border-color: var(--red); background: rgba(255,69,58,0.06); }
 .inf-rate { font-family: var(--mono); font-size: 56px; font-weight: 700; color: var(--yellow); line-height: 1; transition: color 0.3s; }
 .inf-res.nr .inf-rate { color: var(--red); }
-.inf-unit-lbl { font-size: 16px; font-weight: 600; color: var(--muted); margin-top: 4px; font-family: var(--mono); }
-.inf-formula { font-size: 11px; color: var(--muted); margin-top: 10px; font-family: var(--mono); line-height: 1.6; background: rgba(0,0,0,0.2); border-radius: 8px; padding: 8px; }
-.inf-warn { margin-top: 10px; font-size: 11px; color: var(--muted); line-height: 1.5; white-space: pre-line; }
+.inf-unit-lbl { font-size: 16px; font-weight: 500; color: var(--text3); margin-top: 4px; font-family: var(--mono); }
+.inf-formula { font-size: 11px; color: var(--text3); margin-top: 10px; font-family: var(--mono); line-height: 1.6; background: rgba(0,0,0,0.15); border-radius: 8px; padding: 8px; }
+.inf-warn { margin-top: 10px; font-size: 11px; color: var(--text3); line-height: 1.5; white-space: pre-line; }
 
-/* Peds */
-.ped-drug-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
-.ped-drug-btn { padding: 12px 14px; border: 2px solid var(--border); border-radius: 12px; background: var(--s2); color: var(--muted); font-family: var(--sans); font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.2s; text-align: left; display: flex; justify-content: space-between; align-items: center; }
+/* ===== PEDS ===== */
+.ped-drug-list { display: flex; flex-direction: column; gap: 7px; margin-bottom: 16px; }
+.ped-drug-btn { padding: 12px 14px; border: 1px solid var(--glass-border); border-radius: var(--radius); background: rgba(255,255,255,0.04); color: var(--text2); font-family: var(--sans); font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; text-align: left; display: flex; justify-content: space-between; align-items: center; }
 .ped-drug-btn .pdn { font-size: 14px; color: var(--text); }
-.ped-drug-btn .pdc { font-size: 10px; font-family: var(--mono); color: var(--muted); }
-.ped-drug-btn.psel { border-color: #a78bfa; background: rgba(167,139,250,0.08); }
+.ped-drug-btn .pdc { font-size: 10px; font-family: var(--mono); color: var(--text3); }
+.ped-drug-btn.psel { border-color: #a78bfa; background: rgba(167,139,250,0.1); }
 .ped-drug-btn.psel .pdn { color: #a78bfa; }
-.ped-result-card { background: var(--s2); border: 2px solid #a78bfa; border-radius: 16px; padding: 20px; margin-top: 4px; }
-.ped-drug-name { font-size: 13px; font-weight: 700; color: #a78bfa; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 14px; }
-.ped-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); }
+.ped-result-card { background: rgba(167,139,250,0.06); border: 1px solid rgba(167,139,250,0.25); border-radius: var(--radius); padding: 18px; margin-top: 4px; }
+.ped-drug-name { font-size: 12px; font-weight: 700; color: #a78bfa; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 12px; }
+.ped-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--divider); }
 .ped-row:last-child { border-bottom: none; }
-.ped-row-lbl { font-size: 13px; color: var(--muted); }
+.ped-row-lbl { font-size: 13px; color: var(--text2); }
 .ped-row-val { font-family: var(--mono); font-size: 20px; font-weight: 700; color: white; }
-.ped-row-unit { font-size: 11px; color: var(--muted); font-family: var(--mono); }
-.ped-warn { margin-top: 12px; padding: 10px; background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2); border-radius: 8px; font-size: 11px; color: #ef4444; line-height: 1.5; }
-.ped-ok { margin-top: 12px; padding: 10px; background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.2); border-radius: 8px; font-size: 11px; color: var(--green); line-height: 1.5; }
+.ped-row-unit { font-size: 11px; color: var(--text3); font-family: var(--mono); }
+.ped-warn { margin-top: 10px; padding: 10px; background: rgba(255,69,58,0.08); border: 1px solid rgba(255,69,58,0.2); border-radius: 8px; font-size: 11px; color: var(--red); line-height: 1.5; }
+.ped-ok { margin-top: 10px; padding: 10px; background: rgba(48,209,88,0.08); border: 1px solid rgba(48,209,88,0.2); border-radius: 8px; font-size: 11px; color: var(--green); line-height: 1.5; }
 
-
-.ch-row { background:var(--s2); border:1px solid var(--border); border-radius:12px; padding:12px 14px; display:flex; justify-content:space-between; align-items:center; transition:border-color 0.2s; }
-.ch-row.norm  { border-color: #10b981; }
-.ch-row.warn  { border-color: #f59e0b; }
-.ch-row.crit  { border-color: #ef4444; }
-.ch-row-left  { flex:1; }
-.ch-row-name  { font-size:13px; font-weight:700; color:var(--text); }
-.ch-row-norm  { font-size:11px; color:var(--muted); margin-top:2px; font-family:var(--mono); }
-.ch-row-right { text-align:right; }
-.ch-row-val   { font-family:var(--mono); font-size:20px; font-weight:700; color:white; }
-.ch-row-badge { font-size:10px; font-weight:700; margin-top:2px; }
-.ch-row-badge.norm { color:#10b981; }
-.ch-row-badge.warn { color:#f59e0b; }
-.ch-row-badge.crit { color:#ef4444; }
-.ch-row-badge.none { color:var(--muted); }
-
-
-.nav-menu { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 12px; margin-bottom: 18px; display: flex; flex-direction: column; gap: 10px; }
-.nav-cat-label { font-size: 9px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 6px; padding-left: 2px; }
-.nav-row { display: flex; gap: 5px; flex-wrap: wrap; }
-.nav-row .tab { flex: none; padding: 8px 12px; font-size: 12px; white-space: nowrap; }
-.nav-divider { height: 1px; background: var(--border); margin: 0 2px; }
-
+/* ===== CHILD NORMS ===== */
+.ch-row { background: rgba(255,255,255,0.04); border: 1px solid var(--glass-border); border-radius: var(--radius); padding: 12px 14px; display: flex; justify-content: space-between; align-items: center; transition: border-color 0.2s; }
+.ch-row.norm { border-color: var(--green); }
+.ch-row.warn { border-color: var(--orange); }
+.ch-row.crit { border-color: var(--red); }
+.ch-row-left { flex: 1; }
+.ch-row-name { font-size: 13px; font-weight: 700; color: var(--text); }
+.ch-row-norm { font-size: 11px; color: var(--text3); margin-top: 2px; font-family: var(--mono); }
+.ch-row-right { text-align: right; }
+.ch-row-val { font-family: var(--mono); font-size: 20px; font-weight: 700; color: white; }
+.ch-row-badge { font-size: 10px; font-weight: 700; margin-top: 2px; }
+.ch-row-badge.norm { color: var(--green); }
+.ch-row-badge.warn { color: var(--orange); }
+.ch-row-badge.crit { color: var(--red); }
+.ch-row-badge.none { color: var(--text3); }
 </style>
 </head>
 <body>
+
 <div class="wrap">
+
 
 <div class="hdr">
   <div class="badge">СМП · Клинические шкалы</div>
-  <h1>Прогностические шкалы</h1>
-  <p class="sub">qSOFA · NEWS2 · Wells · GCS · Инфузомат</p>
+  <h1>МедШкалы СМП</h1>
+  <p class="sub">Прогностические шкалы · Расчёты · Нормы</p>
 </div>
 
 <div class="nav-menu">
@@ -240,6 +604,8 @@ h1 {
       <button class="tab" onclick="goTab('wells')">Wells ТЭЛА</button>
       <button class="tab" onclick="goTab('alg')">Альговер</button>
       <button class="tab" onclick="goTab('cpss')">Инсульт</button>
+      <button class="tab" onclick="goTab('grace')">GRACE</button>
+      <button class="tab" onclick="goTab('alvarado')">Альварадо</button>
     </div>
   </div>
   <div class="nav-divider"></div>
@@ -249,6 +615,8 @@ h1 {
       <button class="tab" onclick="goTab('inf')">Инфузомат</button>
       <button class="tab" onclick="goTab('ped')">Педиатрия</button>
       <button class="tab" onclick="goTab('ivl')">ИВЛ 4/40</button>
+      <button class="tab" onclick="goTab('defib')">Дефиб/Интуб</button>
+      <button class="tab" onclick="goTab('cpr')">СЛР Таймер</button>
     </div>
   </div>
   <div class="nav-divider"></div>
@@ -265,6 +633,10 @@ h1 {
 <div class="card active" id="tab-qsofa">
   <div class="card-title">qSOFA — Экспресс-сепсис</div>
   <div class="card-desc">Три критерия по 1 баллу. ≥2 баллов — высокий риск сепсиса.</div>
+  <div style="background:rgba(10,132,255,0.06);border:1px solid rgba(10,132,255,0.15);border-radius:12px;padding:12px;margin-bottom:16px;display:flex;gap:10px;align-items:flex-start;">
+    <div style="font-size:18px;flex-shrink:0;margin-top:1px;">ℹ️</div>
+    <div style="font-size:12px;color:var(--text3);line-height:1.6;">Быстрый прикроватный тест для выявления пациентов с подозрением на инфекцию, у которых высок риск органной дисфункции и смерти. Не требует анализов — только клинические признаки.</div>
+  </div>
   <div class="crit-list">
     <div class="crit" id="q1" onclick="tog('q1',1,'q')">
       <div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">ЧДД ≥ 22 в минуту</div><div class="crit-hint">Считать 30 сек × 2</div></div></div>
@@ -291,6 +663,10 @@ h1 {
 <div class="card" id="tab-news">
   <div class="card-title">NEWS2 — Раннее предупреждение</div>
   <div class="card-desc">Введите показатели. Результат пересчитывается мгновенно.</div>
+  <div style="background:rgba(10,132,255,0.06);border:1px solid rgba(10,132,255,0.15);border-radius:12px;padding:12px;margin-bottom:16px;display:flex;gap:10px;align-items:flex-start;">
+    <div style="font-size:18px;flex-shrink:0;margin-top:1px;">ℹ️</div>
+    <div style="font-size:12px;color:var(--text3);line-height:1.6;">Национальная шкала раннего предупреждения (Великобритания). Выявляет пациентов с риском клинического ухудшения по витальным показателям. ≥7 баллов — критическое состояние, вызов реанимационной бригады.</div>
+  </div>
   <div class="inp-grid">
     <div class="inp-grp">
       <div class="inp-lbl">ЧДД <span class="inp-unit">в мин</span></div>
@@ -335,6 +711,10 @@ h1 {
 <div class="card" id="tab-wells">
   <div class="card-title">Wells — Вероятность ТЭЛА</div>
   <div class="card-desc">Предтестовая вероятность тромбоэмболии лёгочной артерии. Макс. 12.5 баллов.</div>
+  <div style="background:rgba(10,132,255,0.06);border:1px solid rgba(10,132,255,0.15);border-radius:12px;padding:12px;margin-bottom:16px;display:flex;gap:10px;align-items:flex-start;">
+    <div style="font-size:18px;flex-shrink:0;margin-top:1px;">ℹ️</div>
+    <div style="font-size:12px;color:var(--text3);line-height:1.6;">Клиническая шкала для оценки вероятности ТЭЛА до инструментальной диагностики. ≤4 баллов — ТЭЛА маловероятна, достаточно D-димера. >4 — необходима КТ-ангиография лёгочной артерии.</div>
+  </div>
   <div class="crit-list">
     <div class="crit" id="w1" onclick="tog('w1',3,'w')">
       <div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Признаки ТГВ</div><div class="crit-hint">Отёк, боль, покраснение голени/бедра</div></div></div>
@@ -381,6 +761,10 @@ h1 {
 <div class="card" id="tab-gcs">
   <div class="card-title">GCS — Шкала комы Глазго</div>
   <div class="card-desc">Оценка сознания по трём компонентам. Норма = 15. GCS 8 и менее — показание к интубации.</div>
+  <div style="background:rgba(10,132,255,0.06);border:1px solid rgba(10,132,255,0.15);border-radius:12px;padding:12px;margin-bottom:16px;display:flex;gap:10px;align-items:flex-start;">
+    <div style="font-size:18px;flex-shrink:0;margin-top:1px;">ℹ️</div>
+    <div style="font-size:12px;color:var(--text3);line-height:1.6;">Стандартный метод объективной оценки уровня сознания. Применяется при ЧМТ, инсульте, отравлениях и любом угнетении сознания. GCS ≤8 — кома, риск аспирации, необходима защита дыхательных путей.</div>
+  </div>
   <div class="gcs-sec">
     <div class="gcs-ttl">E — Открывание глаз</div>
     <select class="gcs-sel" id="g-e" onchange="calcGCS()">
@@ -423,6 +807,10 @@ h1 {
 <div class="card" id="tab-inf">
   <div class="card-title">Инфузомат — Скорость подачи</div>
   <div class="card-desc">Infusia SP7S. Шприц 20 мл. Разведение в 250 мл NaCl 0.9%.</div>
+  <div style="background:rgba(10,132,255,0.06);border:1px solid rgba(10,132,255,0.15);border-radius:12px;padding:12px;margin-bottom:16px;display:flex;gap:10px;align-items:flex-start;">
+    <div style="font-size:18px;flex-shrink:0;margin-top:1px;">ℹ️</div>
+    <div style="font-size:12px;color:var(--text3);line-height:1.6;">Расчёт скорости введения вазопрессоров в мл/час для шприцевого инфузомата. Формула: доза (мкг/кг/мин) × вес (кг) × 60 / концентрация (мкг/мл). Подобрано под ваше стандартное разведение на подстанции.</div>
+  </div>
 
   <div class="drug-grid">
     <button class="drug-btn sel-d" id="ibtn-d" onclick="selDrug('d')">
@@ -468,6 +856,10 @@ h1 {
 <div class="card" id="tab-ped">
   <div class="card-title">Педиатрия — Дозировки</div>
   <div class="card-desc">Введите вес ребёнка, выберите препарат — получите мл для набора в шприц.</div>
+  <div style="background:rgba(10,132,255,0.06);border:1px solid rgba(10,132,255,0.15);border-radius:12px;padding:12px;margin-bottom:16px;display:flex;gap:10px;align-items:flex-start;">
+    <div style="font-size:18px;flex-shrink:0;margin-top:1px;">ℹ️</div>
+    <div style="font-size:12px;color:var(--text3);line-height:1.6;">Расчёт детских доз по весу согласно клиническим рекомендациям МЗ РФ. Выдаёт готовый объём в мл из стандартной ампулы — без промежуточных вычислений. Учитывает максимальные дозы и возрастные ограничения.</div>
+  </div>
 
   <div class="w-inp">
     <div class="w-lbl">Вес ребёнка (кг)</div>
@@ -524,17 +916,21 @@ h1 {
 <div class="card" id="tab-rass">
   <div class="card-title">RASS — Седация и возбуждение</div>
   <div class="card-desc">Richmond Agitation-Sedation Scale. Выберите описание, которое подходит пациенту.</div>
+  <div style="background:rgba(10,132,255,0.06);border:1px solid rgba(10,132,255,0.15);border-radius:12px;padding:12px;margin-bottom:16px;display:flex;gap:10px;align-items:flex-start;">
+    <div style="font-size:18px;flex-shrink:0;margin-top:1px;">ℹ️</div>
+    <div style="font-size:12px;color:var(--text3);line-height:1.6;">Шкала оценки уровня седации и возбуждения. Применяется в ОРИТ и при транспортировке седированных пациентов. Целевой уровень при ИВЛ: от -2 до 0. При агрессии (+3/+4) — риск самоэкстубации.</div>
+  </div>
   <div class="crit-list" style="gap:6px;">
-    <div class="crit" id="rass_p4" onclick="setRASS(4)"><div class="crit-l"><div style="font-size:13px;font-weight:700;color:#ef4444;min-width:32px;">+4</div><div><div class="crit-txt">Агрессивный</div><div class="crit-hint">Явно агрессивен, опасен для персонала</div></div></div></div>
-    <div class="crit" id="rass_p3" onclick="setRASS(3)"><div class="crit-l"><div style="font-size:13px;font-weight:700;color:#ef4444;min-width:32px;">+3</div><div><div class="crit-txt">Очень возбуждён</div><div class="crit-hint">Вырывает трубки и катетеры</div></div></div></div>
-    <div class="crit" id="rass_p2" onclick="setRASS(2)"><div class="crit-l"><div style="font-size:13px;font-weight:700;color:#f59e0b;min-width:32px;">+2</div><div><div class="crit-txt">Возбуждён</div><div class="crit-hint">Частые нецеленаправленные движения</div></div></div></div>
-    <div class="crit" id="rass_p1" onclick="setRASS(1)"><div class="crit-l"><div style="font-size:13px;font-weight:700;color:#f59e0b;min-width:32px;">+1</div><div><div class="crit-txt">Беспокойный</div><div class="crit-hint">Тревожен, движения не агрессивны</div></div></div></div>
-    <div class="crit" id="rass_0" onclick="setRASS(0)"><div class="crit-l"><div style="font-size:13px;font-weight:700;color:#10b981;min-width:32px;">0</div><div><div class="crit-txt">Бодрствует и спокоен</div><div class="crit-hint">Норма</div></div></div></div>
-    <div class="crit" id="rass_m1" onclick="setRASS(-1)"><div class="crit-l"><div style="font-size:13px;font-weight:700;color:#10b981;min-width:32px;">-1</div><div><div class="crit-txt">Сонливый</div><div class="crit-hint">Держит глаза открытыми более 10 сек на голос</div></div></div></div>
-    <div class="crit" id="rass_m2" onclick="setRASS(-2)"><div class="crit-l"><div style="font-size:13px;font-weight:700;color:#f59e0b;min-width:32px;">-2</div><div><div class="crit-txt">Лёгкая седация</div><div class="crit-hint">Открывает глаза на голос менее 10 сек</div></div></div></div>
-    <div class="crit" id="rass_m3" onclick="setRASS(-3)"><div class="crit-l"><div style="font-size:13px;font-weight:700;color:#f59e0b;min-width:32px;">-3</div><div><div class="crit-txt">Умеренная седация</div><div class="crit-hint">Открывает глаза на голос, без контакта</div></div></div></div>
-    <div class="crit" id="rass_m4" onclick="setRASS(-4)"><div class="crit-l"><div style="font-size:13px;font-weight:700;color:#ef4444;min-width:32px;">-4</div><div><div class="crit-txt">Глубокая седация</div><div class="crit-hint">Не реагирует на голос, реагирует на боль</div></div></div></div>
-    <div class="crit" id="rass_m5" onclick="setRASS(-5)"><div class="crit-l"><div style="font-size:13px;font-weight:700;color:#ef4444;min-width:32px;">-5</div><div><div class="crit-txt">Без сознания</div><div class="crit-hint">Не реагирует ни на голос, ни на боль</div></div></div></div>
+    <div class="crit" id="rass_p4" onclick="setRASS(4)"><div class="crit-l"><div style="font-size:13px;font-weight:700;color:var(--red);min-width:32px;">+4</div><div><div class="crit-txt">Агрессивный</div><div class="crit-hint">Явно агрессивен, опасен для персонала</div></div></div></div>
+    <div class="crit" id="rass_p3" onclick="setRASS(3)"><div class="crit-l"><div style="font-size:13px;font-weight:700;color:var(--red);min-width:32px;">+3</div><div><div class="crit-txt">Очень возбуждён</div><div class="crit-hint">Вырывает трубки и катетеры</div></div></div></div>
+    <div class="crit" id="rass_p2" onclick="setRASS(2)"><div class="crit-l"><div style="font-size:13px;font-weight:700;color:var(--orange);min-width:32px;">+2</div><div><div class="crit-txt">Возбуждён</div><div class="crit-hint">Частые нецеленаправленные движения</div></div></div></div>
+    <div class="crit" id="rass_p1" onclick="setRASS(1)"><div class="crit-l"><div style="font-size:13px;font-weight:700;color:var(--orange);min-width:32px;">+1</div><div><div class="crit-txt">Беспокойный</div><div class="crit-hint">Тревожен, движения не агрессивны</div></div></div></div>
+    <div class="crit" id="rass_0" onclick="setRASS(0)"><div class="crit-l"><div style="font-size:13px;font-weight:700;color:var(--green);min-width:32px;">0</div><div><div class="crit-txt">Бодрствует и спокоен</div><div class="crit-hint">Норма</div></div></div></div>
+    <div class="crit" id="rass_m1" onclick="setRASS(-1)"><div class="crit-l"><div style="font-size:13px;font-weight:700;color:var(--green);min-width:32px;">-1</div><div><div class="crit-txt">Сонливый</div><div class="crit-hint">Держит глаза открытыми более 10 сек на голос</div></div></div></div>
+    <div class="crit" id="rass_m2" onclick="setRASS(-2)"><div class="crit-l"><div style="font-size:13px;font-weight:700;color:var(--orange);min-width:32px;">-2</div><div><div class="crit-txt">Лёгкая седация</div><div class="crit-hint">Открывает глаза на голос менее 10 сек</div></div></div></div>
+    <div class="crit" id="rass_m3" onclick="setRASS(-3)"><div class="crit-l"><div style="font-size:13px;font-weight:700;color:var(--orange);min-width:32px;">-3</div><div><div class="crit-txt">Умеренная седация</div><div class="crit-hint">Открывает глаза на голос, без контакта</div></div></div></div>
+    <div class="crit" id="rass_m4" onclick="setRASS(-4)"><div class="crit-l"><div style="font-size:13px;font-weight:700;color:var(--red);min-width:32px;">-4</div><div><div class="crit-txt">Глубокая седация</div><div class="crit-hint">Не реагирует на голос, реагирует на боль</div></div></div></div>
+    <div class="crit" id="rass_m5" onclick="setRASS(-5)"><div class="crit-l"><div style="font-size:13px;font-weight:700;color:var(--red);min-width:32px;">-5</div><div><div class="crit-txt">Без сознания</div><div class="crit-hint">Не реагирует ни на голос, ни на боль</div></div></div></div>
   </div>
   <div class="res" id="rass-res">
     <div class="res-score" id="rass-sc">—</div>
@@ -548,6 +944,10 @@ h1 {
 <div class="card" id="tab-alg">
   <div class="card-title">Индекс Альговера</div>
   <div class="card-desc">Шоковый индекс = ЧСС / АД систолическое. Быстрая оценка степени шока.</div>
+  <div style="background:rgba(10,132,255,0.06);border:1px solid rgba(10,132,255,0.15);border-radius:12px;padding:12px;margin-bottom:16px;display:flex;gap:10px;align-items:flex-start;">
+    <div style="font-size:18px;flex-shrink:0;margin-top:1px;">ℹ️</div>
+    <div style="font-size:12px;color:var(--text3);line-height:1.6;">Простой расчётный индекс для экспресс-оценки гемодинамики при кровопотере. Отражает соотношение компенсаторной тахикардии и гипотензии. Норма <1.0. Особенно полезен при политравме и желудочно-кишечных кровотечениях.</div>
+  </div>
   <div class="inp-grid">
     <div class="inp-grp">
       <div class="inp-lbl">ЧСС <span class="inp-unit">уд/мин</span></div>
@@ -563,13 +963,13 @@ h1 {
     <div class="res-lbl" id="alg-lb">Введите данные</div>
     <div class="res-act" id="alg-ac">Нормальное значение менее 1.0</div>
   </div>
-  <div style="margin-top:14px;background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:14px;">
-    <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:10px;">Интерпретация</div>
+  <div style="margin-top:14px;background:rgba(255,255,255,0.04);border:1px solid var(--glass-border);border-radius:12px;padding:14px;">
+    <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:10px;">Интерпретация</div>
     <div style="display:flex;flex-direction:column;gap:7px;">
-      <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:#10b981;font-weight:700;">менее 1.0</span><span style="color:var(--muted);">Норма</span></div>
-      <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:#f59e0b;font-weight:700;">1.0 – 1.5</span><span style="color:var(--muted);">Шок I–II ст. (~20–30% ОЦК)</span></div>
-      <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:#ef4444;font-weight:700;">1.5 – 2.0</span><span style="color:var(--muted);">Шок III ст. (~30–40% ОЦК)</span></div>
-      <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:#ef4444;font-weight:700;">более 2.0</span><span style="color:var(--muted);">Шок IV ст. (более 40% ОЦК)</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:var(--green);font-weight:700;">менее 1.0</span><span style="color:var(--text3);">Норма</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:var(--orange);font-weight:700;">1.0 – 1.5</span><span style="color:var(--text3);">Шок I–II ст. (~20–30% ОЦК)</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:var(--red);font-weight:700;">1.5 – 2.0</span><span style="color:var(--text3);">Шок III ст. (~30–40% ОЦК)</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:var(--red);font-weight:700;">более 2.0</span><span style="color:var(--text3);">Шок IV ст. (более 40% ОЦК)</span></div>
     </div>
   </div>
   <button class="reset" onclick="resetAlg()">Сбросить</button>
@@ -579,6 +979,10 @@ h1 {
 <div class="card" id="tab-ivl">
   <div class="card-title">ИВЛ — Медпром 4/40</div>
   <div class="card-desc">Расчёт параметров для А-ИВЛ/ВВЛ/ВЧп-4/40. Введите данные пациента.</div>
+  <div style="background:rgba(10,132,255,0.06);border:1px solid rgba(10,132,255,0.15);border-radius:12px;padding:12px;margin-bottom:16px;display:flex;gap:10px;align-items:flex-start;">
+    <div style="font-size:18px;flex-shrink:0;margin-top:1px;">ℹ️</div>
+    <div style="font-size:12px;color:var(--text3);line-height:1.6;">Расчёт стартовых параметров ИВЛ под конкретный аппарат. Дыхательный объём рассчитывается по идеальной массе тела (по росту), а не реальному весу — это ключевой принцип протективной вентиляции. Три режима: ИВЛ, ВВЛ, ВЧ-ИВЛ.</div>
+  </div>
 
   <div class="inp-grid">
     <div class="inp-grp">
@@ -610,52 +1014,52 @@ h1 {
   <div id="ivl-results" style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px;">
 
     <!-- ДО -->
-    <div style="background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:14px;">
-      <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px;">Дыхательный объём (ДО / Vt)</div>
+    <div style="background:rgba(255,255,255,0.04);border:1px solid var(--glass-border);border-radius:12px;padding:14px;">
+      <div style="font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px;">Дыхательный объём (ДО / Vt)</div>
       <div style="display:flex;justify-content:space-between;align-items:baseline;">
-        <div><span style="font-family:var(--mono);font-size:28px;font-weight:700;color:#00d4ff;" id="ivl-vt-min">—</span><span style="font-size:12px;color:var(--muted);margin-left:4px;">–</span><span style="font-family:var(--mono);font-size:28px;font-weight:700;color:#00d4ff;" id="ivl-vt-max">—</span><span style="font-size:12px;color:var(--muted);margin-left:4px;">мл</span></div>
-        <div style="font-size:11px;color:var(--muted);text-align:right;" id="ivl-vt-hint">6–8 мл/кг ИМТ</div>
+        <div><span style="font-family:var(--mono);font-size:28px;font-weight:700;color:var(--accent);" id="ivl-vt-min">—</span><span style="font-size:12px;color:var(--text3);margin-left:4px;">–</span><span style="font-family:var(--mono);font-size:28px;font-weight:700;color:var(--accent);" id="ivl-vt-max">—</span><span style="font-size:12px;color:var(--text3);margin-left:4px;">мл</span></div>
+        <div style="font-size:11px;color:var(--text3);text-align:right;" id="ivl-vt-hint">6–8 мл/кг ИМТ</div>
       </div>
     </div>
 
     <!-- МОД и ЧД -->
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-      <div style="background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:14px;">
-        <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:6px;">ЧД</div>
-        <div style="font-family:var(--mono);font-size:28px;font-weight:700;color:#10b981;" id="ivl-rr">12</div>
-        <div style="font-size:11px;color:var(--muted);">в мин</div>
+      <div style="background:rgba(255,255,255,0.04);border:1px solid var(--glass-border);border-radius:12px;padding:14px;">
+        <div style="font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:6px;">ЧД</div>
+        <div style="font-family:var(--mono);font-size:28px;font-weight:700;color:var(--green);" id="ivl-rr">12</div>
+        <div style="font-size:11px;color:var(--text3);">в мин</div>
       </div>
-      <div style="background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:14px;">
-        <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:6px;">МОД</div>
-        <div style="font-family:var(--mono);font-size:28px;font-weight:700;color:#10b981;" id="ivl-mod">—</div>
-        <div style="font-size:11px;color:var(--muted);">л/мин</div>
+      <div style="background:rgba(255,255,255,0.04);border:1px solid var(--glass-border);border-radius:12px;padding:14px;">
+        <div style="font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:6px;">МОД</div>
+        <div style="font-family:var(--mono);font-size:28px;font-weight:700;color:var(--green);" id="ivl-mod">—</div>
+        <div style="font-size:11px;color:var(--text3);">л/мин</div>
       </div>
     </div>
 
     <!-- FiO2 и I:E -->
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-      <div style="background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:14px;">
-        <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:6px;">FiO2 старт</div>
-        <div style="font-family:var(--mono);font-size:28px;font-weight:700;color:#f59e0b;">100%</div>
-        <div style="font-size:11px;color:var(--muted);">снизить до 50% при SpO2 95+</div>
+      <div style="background:rgba(255,255,255,0.04);border:1px solid var(--glass-border);border-radius:12px;padding:14px;">
+        <div style="font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:6px;">FiO2 старт</div>
+        <div style="font-family:var(--mono);font-size:28px;font-weight:700;color:var(--orange);">100%</div>
+        <div style="font-size:11px;color:var(--text3);">снизить до 50% при SpO2 95+</div>
       </div>
-      <div style="background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:14px;">
-        <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:6px;">I:E</div>
+      <div style="background:rgba(255,255,255,0.04);border:1px solid var(--glass-border);border-radius:12px;padding:14px;">
+        <div style="font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:6px;">I:E</div>
         <div style="font-family:var(--mono);font-size:28px;font-weight:700;color:#a78bfa;" id="ivl-ie">1:2</div>
-        <div style="font-size:11px;color:var(--muted);" id="ivl-ie-hint">стандарт</div>
+        <div style="font-size:11px;color:var(--text3);" id="ivl-ie-hint">стандарт</div>
       </div>
     </div>
 
     <!-- Давление -->
-    <div style="background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:14px;">
-      <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px;">Контроль давления (на аппарате)</div>
+    <div style="background:rgba(255,255,255,0.04);border:1px solid var(--glass-border);border-radius:12px;padding:14px;">
+      <div style="font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px;">Контроль давления (на аппарате)</div>
       <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;">
-        <span style="color:var(--muted);">Ограничение по давлению</span>
+        <span style="color:var(--text3);">Ограничение по давлению</span>
         <span style="font-family:var(--mono);font-weight:700;color:white;" id="ivl-plim">20–30 см вод.ст.</span>
       </div>
       <div style="display:flex;justify-content:space-between;font-size:12px;">
-        <span style="color:var(--muted);">Макс. безопасное (клапан)</span>
-        <span style="font-family:var(--mono);font-weight:700;color:#ef4444;">80 см вод.ст.</span>
+        <span style="color:var(--text3);">Макс. безопасное (клапан)</span>
+        <span style="font-family:var(--mono);font-weight:700;color:var(--red);">80 см вод.ст.</span>
       </div>
     </div>
 
@@ -665,7 +1069,7 @@ h1 {
   </div>
 
   <!-- ИМТ -->
-  <div style="background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:12px;font-size:11px;color:var(--muted);line-height:1.6;">
+  <div style="background:rgba(255,255,255,0.04);border:1px solid var(--glass-border);border-radius:10px;padding:12px;font-size:11px;color:var(--text3);line-height:1.6;">
     <span style="font-weight:700;color:var(--text);">Идеальная масса тела:</span> <span id="ivl-imt">введите рост</span><br>
     <span style="font-weight:700;color:var(--text);">Формула:</span> Мужчины: 50 + 0.91 × (рост − 152.4) / Женщины: 45.5 + 0.91 × (рост − 152.4)
   </div>
@@ -677,6 +1081,10 @@ h1 {
 <div class="card" id="tab-imt">
   <div class="card-title">ИМТ — Индекс массы тела</div>
   <div class="card-desc">Введите рост и вес для расчёта индекса массы тела и идеальной массы тела.</div>
+  <div style="background:rgba(10,132,255,0.06);border:1px solid rgba(10,132,255,0.15);border-radius:12px;padding:12px;margin-bottom:16px;display:flex;gap:10px;align-items:flex-start;">
+    <div style="font-size:18px;flex-shrink:0;margin-top:1px;">ℹ️</div>
+    <div style="font-size:12px;color:var(--text3);line-height:1.6;">Расчёт ИМТ по формуле ВОЗ (вес/рост²) с классификацией по 8 категориям. Дополнительно — идеальная масса тела по формуле Devine, которая используется для расчёта доз препаратов и параметров ИВЛ.</div>
+  </div>
 
   <div class="inp-grid">
     <div class="inp-grp">
@@ -704,40 +1112,40 @@ h1 {
 
   <!-- Доп данные -->
   <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px;">
-    <div style="background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:14px;display:flex;justify-content:space-between;align-items:center;">
+    <div style="background:rgba(255,255,255,0.04);border:1px solid var(--glass-border);border-radius:12px;padding:14px;display:flex;justify-content:space-between;align-items:center;">
       <div>
-        <div style="font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:0.07em;">Идеальная масса тела</div>
-        <div style="font-size:11px;color:var(--muted);margin-top:2px;" id="imt-ideal-formula">Формула Devine</div>
+        <div style="font-size:11px;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:0.07em;">Идеальная масса тела</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:2px;" id="imt-ideal-formula">Формула Devine</div>
       </div>
       <div style="text-align:right;">
-        <div style="font-family:var(--mono);font-size:24px;font-weight:700;color:#00d4ff;" id="imt-ideal">—</div>
-        <div style="font-size:11px;color:var(--muted);">кг</div>
+        <div style="font-family:var(--mono);font-size:24px;font-weight:700;color:var(--accent);" id="imt-ideal">—</div>
+        <div style="font-size:11px;color:var(--text3);">кг</div>
       </div>
     </div>
-    <div style="background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:14px;display:flex;justify-content:space-between;align-items:center;">
+    <div style="background:rgba(255,255,255,0.04);border:1px solid var(--glass-border);border-radius:12px;padding:14px;display:flex;justify-content:space-between;align-items:center;">
       <div>
-        <div style="font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:0.07em;">Избыток / дефицит</div>
-        <div style="font-size:11px;color:var(--muted);margin-top:2px;">от идеальной массы</div>
+        <div style="font-size:11px;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:0.07em;">Избыток / дефицит</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:2px;">от идеальной массы</div>
       </div>
       <div style="text-align:right;">
         <div style="font-family:var(--mono);font-size:24px;font-weight:700;" id="imt-diff">—</div>
-        <div style="font-size:11px;color:var(--muted);">кг</div>
+        <div style="font-size:11px;color:var(--text3);">кг</div>
       </div>
     </div>
   </div>
 
   <!-- Таблица категорий -->
-  <div style="background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:14px;">
-    <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:10px;">Классификация ВОЗ</div>
+  <div style="background:rgba(255,255,255,0.04);border:1px solid var(--glass-border);border-radius:12px;padding:14px;">
+    <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:10px;">Классификация ВОЗ</div>
     <div style="display:flex;flex-direction:column;gap:5px;">
-      <div class="imt-row" id="imt-r1" style="display:flex;justify-content:space-between;font-size:12px;padding:6px 8px;border-radius:7px;"><span style="color:#00d4ff;font-weight:700;">менее 16</span><span style="color:var(--muted);">Выраженный дефицит</span></div>
-      <div class="imt-row" id="imt-r2" style="display:flex;justify-content:space-between;font-size:12px;padding:6px 8px;border-radius:7px;"><span style="color:#f59e0b;font-weight:700;">16 - 17</span><span style="color:var(--muted);">Дефицит средний</span></div>
-      <div class="imt-row" id="imt-r3" style="display:flex;justify-content:space-between;font-size:12px;padding:6px 8px;border-radius:7px;"><span style="color:#f59e0b;font-weight:700;">17 - 18.5</span><span style="color:var(--muted);">Дефицит лёгкий</span></div>
-      <div class="imt-row" id="imt-r4" style="display:flex;justify-content:space-between;font-size:12px;padding:6px 8px;border-radius:7px;"><span style="color:#10b981;font-weight:700;">18.5 - 25</span><span style="color:var(--muted);">Норма</span></div>
-      <div class="imt-row" id="imt-r5" style="display:flex;justify-content:space-between;font-size:12px;padding:6px 8px;border-radius:7px;"><span style="color:#f59e0b;font-weight:700;">25 - 30</span><span style="color:var(--muted);">Избыточная масса</span></div>
-      <div class="imt-row" id="imt-r6" style="display:flex;justify-content:space-between;font-size:12px;padding:6px 8px;border-radius:7px;"><span style="color:#ef4444;font-weight:700;">30 - 35</span><span style="color:var(--muted);">Ожирение I</span></div>
-      <div class="imt-row" id="imt-r7" style="display:flex;justify-content:space-between;font-size:12px;padding:6px 8px;border-radius:7px;"><span style="color:#ef4444;font-weight:700;">35 - 40</span><span style="color:var(--muted);">Ожирение II</span></div>
-      <div class="imt-row" id="imt-r8" style="display:flex;justify-content:space-between;font-size:12px;padding:6px 8px;border-radius:7px;"><span style="color:#ef4444;font-weight:700;">более 40</span><span style="color:var(--muted);">Ожирение III (морбидное)</span></div>
+      <div class="imt-row" id="imt-r1" style="display:flex;justify-content:space-between;font-size:12px;padding:6px 8px;border-radius:7px;"><span style="color:var(--accent);font-weight:700;">менее 16</span><span style="color:var(--text3);">Выраженный дефицит</span></div>
+      <div class="imt-row" id="imt-r2" style="display:flex;justify-content:space-between;font-size:12px;padding:6px 8px;border-radius:7px;"><span style="color:var(--orange);font-weight:700;">16 - 17</span><span style="color:var(--text3);">Дефицит средний</span></div>
+      <div class="imt-row" id="imt-r3" style="display:flex;justify-content:space-between;font-size:12px;padding:6px 8px;border-radius:7px;"><span style="color:var(--orange);font-weight:700;">17 - 18.5</span><span style="color:var(--text3);">Дефицит лёгкий</span></div>
+      <div class="imt-row" id="imt-r4" style="display:flex;justify-content:space-between;font-size:12px;padding:6px 8px;border-radius:7px;"><span style="color:var(--green);font-weight:700;">18.5 - 25</span><span style="color:var(--text3);">Норма</span></div>
+      <div class="imt-row" id="imt-r5" style="display:flex;justify-content:space-between;font-size:12px;padding:6px 8px;border-radius:7px;"><span style="color:var(--orange);font-weight:700;">25 - 30</span><span style="color:var(--text3);">Избыточная масса</span></div>
+      <div class="imt-row" id="imt-r6" style="display:flex;justify-content:space-between;font-size:12px;padding:6px 8px;border-radius:7px;"><span style="color:var(--red);font-weight:700;">30 - 35</span><span style="color:var(--text3);">Ожирение I</span></div>
+      <div class="imt-row" id="imt-r7" style="display:flex;justify-content:space-between;font-size:12px;padding:6px 8px;border-radius:7px;"><span style="color:var(--red);font-weight:700;">35 - 40</span><span style="color:var(--text3);">Ожирение II</span></div>
+      <div class="imt-row" id="imt-r8" style="display:flex;justify-content:space-between;font-size:12px;padding:6px 8px;border-radius:7px;"><span style="color:var(--red);font-weight:700;">более 40</span><span style="color:var(--text3);">Ожирение III (морбидное)</span></div>
     </div>
   </div>
 
@@ -748,6 +1156,10 @@ h1 {
 <div class="card" id="tab-ped2">
   <div class="card-title">Нормы детей по возрасту</div>
   <div class="card-desc">Введите возраст — получите нормы. Введите реальные данные — получите оценку по центилям.</div>
+  <div style="background:rgba(10,132,255,0.06);border:1px solid rgba(10,132,255,0.15);border-radius:12px;padding:12px;margin-bottom:16px;display:flex;gap:10px;align-items:flex-start;">
+    <div style="font-size:18px;flex-shrink:0;margin-top:1px;">ℹ️</div>
+    <div style="font-size:12px;color:var(--text3);line-height:1.6;">Референсные значения витальных показателей для детей от 0 до 18 лет по данным ВОЗ и российских клинических рекомендаций (Шабалов 2019). При введении реальных данных — автоматическая оценка по центилям 3-97.</div>
+  </div>
 
   <!-- Возраст + антропометрия -->
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
@@ -772,30 +1184,30 @@ h1 {
   </div>
 
   <!-- Реальные показатели (опционально) -->
-  <div style="background:rgba(0,212,255,0.04);border:1px solid rgba(0,212,255,0.15);border-radius:12px;padding:14px;margin-bottom:16px;">
+  <div style="background:rgba(10,132,255,0.04);border:1px solid rgba(10,132,255,0.15);border-radius:12px;padding:14px;margin-bottom:16px;">
     <div style="font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:12px;">Данные пациента (необязательно)</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-      <div class="inp-grp" style="background:var(--bg);">
+      <div class="inp-grp" style="background:transparent;">
         <div class="inp-lbl">ЧСС <span class="inp-unit">уд/мин</span></div>
         <input class="inp-f" type="number" id="ch-hr" placeholder="—" inputmode="numeric" oninput="calcChild()" style="font-size:20px;">
       </div>
-      <div class="inp-grp" style="background:var(--bg);">
+      <div class="inp-grp" style="background:transparent;">
         <div class="inp-lbl">ЧДД <span class="inp-unit">в мин</span></div>
         <input class="inp-f" type="number" id="ch-rr" placeholder="—" inputmode="numeric" oninput="calcChild()" style="font-size:20px;">
       </div>
-      <div class="inp-grp" style="background:var(--bg);">
+      <div class="inp-grp" style="background:transparent;">
         <div class="inp-lbl">АД сист. <span class="inp-unit">мм рт.ст.</span></div>
         <input class="inp-f" type="number" id="ch-sbp" placeholder="—" inputmode="numeric" oninput="calcChild()" style="font-size:20px;">
       </div>
-      <div class="inp-grp" style="background:var(--bg);">
+      <div class="inp-grp" style="background:transparent;">
         <div class="inp-lbl">АД диаст. <span class="inp-unit">мм рт.ст.</span></div>
         <input class="inp-f" type="number" id="ch-dbp" placeholder="—" inputmode="numeric" oninput="calcChild()" style="font-size:20px;">
       </div>
-      <div class="inp-grp" style="background:var(--bg);">
+      <div class="inp-grp" style="background:transparent;">
         <div class="inp-lbl">SpO2 <span class="inp-unit">%</span></div>
         <input class="inp-f" type="number" id="ch-spo" placeholder="—" inputmode="numeric" oninput="calcChild()" style="font-size:20px;">
       </div>
-      <div class="inp-grp" style="background:var(--bg);">
+      <div class="inp-grp" style="background:transparent;">
         <div class="inp-lbl">Температура <span class="inp-unit">°C</span></div>
         <input class="inp-f" type="number" id="ch-tmp" placeholder="—" inputmode="decimal" step="0.1" oninput="calcChild()" style="font-size:20px;">
       </div>
@@ -804,7 +1216,7 @@ h1 {
 
   <!-- Результаты -->
   <div id="ch-results" style="display:none;flex-direction:column;gap:8px;">
-    <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:4px;" id="ch-age-label"></div>
+    <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:4px;" id="ch-age-label"></div>
 
     <div id="ch-hr-row" class="ch-row">
       <div class="ch-row-left"><div class="ch-row-name">ЧСС</div><div class="ch-row-norm" id="ch-hr-norm"></div></div>
@@ -832,34 +1244,34 @@ h1 {
     </div>
 
     <!-- Вес и рост -->
-    <div style="background:rgba(124,58,237,0.08);border:1px solid rgba(124,58,237,0.2);border-radius:12px;padding:12px;margin-top:4px;">
+    <div style="background:rgba(94,92,230,0.08);border:1px solid rgba(94,92,230,0.2);border-radius:12px;padding:12px;margin-top:4px;">
       <div style="font-size:11px;font-weight:700;color:#a78bfa;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px;">Антропометрия</div>
       <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:6px;">
-        <span style="color:var(--muted);">Норма веса (по возрасту)</span>
+        <span style="color:var(--text3);">Норма веса (по возрасту)</span>
         <span style="font-family:var(--mono);font-weight:700;color:white;" id="ch-wt"></span>
       </div>
       <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:6px;">
-        <span style="color:var(--muted);">Норма роста (50 центиль)</span>
+        <span style="color:var(--text3);">Норма роста (50 центиль)</span>
         <span style="font-family:var(--mono);font-weight:700;color:white;" id="ch-ht"></span>
       </div>
-      <div id="ch-wt-assess" style="display:none;padding-top:8px;border-top:1px solid rgba(124,58,237,0.2);">
+      <div id="ch-wt-assess" style="display:none;padding-top:8px;border-top:1px solid rgba(94,92,230,0.2);">
         <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:4px;">
-          <span style="color:var(--muted);">Вес пациента</span>
+          <span style="color:var(--text3);">Вес пациента</span>
           <span style="font-family:var(--mono);font-weight:700;" id="ch-wt-val"></span>
         </div>
         <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:4px;">
-          <span style="color:var(--muted);">Рост пациента</span>
+          <span style="color:var(--text3);">Рост пациента</span>
           <span style="font-family:var(--mono);font-weight:700;" id="ch-ht-val"></span>
         </div>
         <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;">
-          <span style="color:var(--muted);">ИМТ (для возраста)</span>
+          <span style="color:var(--text3);">ИМТ (для возраста)</span>
           <span style="font-family:var(--mono);font-weight:700;" id="ch-imt-val"></span>
         </div>
       </div>
     </div>
   </div>
 
-  <div id="ch-empty" style="text-align:center;padding:30px;color:var(--muted);font-size:13px;">Введите возраст ребёнка</div>
+  <div id="ch-empty" style="text-align:center;padding:30px;color:var(--text3);font-size:13px;">Введите возраст ребёнка</div>
 
   <button class="reset" onclick="resetChild()" style="margin-top:14px;">Сбросить</button>
 </div>
@@ -868,48 +1280,52 @@ h1 {
 <div class="card" id="tab-cpss">
   <div class="card-title">Инсульт — Экспресс-скрининг</div>
   <div class="card-desc">CPSS + FAST + время. Три шкалы для быстрой оценки на вызове.</div>
+  <div style="background:rgba(10,132,255,0.06);border:1px solid rgba(10,132,255,0.15);border-radius:12px;padding:12px;margin-bottom:16px;display:flex;gap:10px;align-items:flex-start;">
+    <div style="font-size:18px;flex-shrink:0;margin-top:1px;">ℹ️</div>
+    <div style="font-size:12px;color:var(--text3);line-height:1.6;">Cincinnati Prehospital Stroke Scale — стандарт догоспитального скрининга инсульта. Три теста за 60 секунд. Один положительный признак = 72% вероятность инсульта. Критично отследить время начала симптомов — определяет возможность тромболизиса.</div>
+  </div>
 
   <!-- Время появления симптомов -->
-  <div style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.25);border-radius:12px;padding:14px;margin-bottom:16px;">
-    <div style="font-size:11px;font-weight:700;color:#ef4444;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:10px;">Время появления симптомов</div>
+  <div style="background:rgba(255,69,58,0.08);border:1px solid rgba(255,69,58,0.25);border-radius:12px;padding:14px;margin-bottom:16px;">
+    <div style="font-size:11px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:10px;">Время появления симптомов</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-      <div class="inp-grp" style="background:var(--bg);">
+      <div class="inp-grp" style="background:transparent;">
         <div class="inp-lbl">Часов назад</div>
         <input class="inp-f" type="number" id="st-h" placeholder="0" inputmode="numeric" oninput="calcStroke()" style="font-size:24px;">
       </div>
-      <div class="inp-grp" style="background:var(--bg);">
+      <div class="inp-grp" style="background:transparent;">
         <div class="inp-lbl">Минут назад</div>
         <input class="inp-f" type="number" id="st-m" placeholder="0" inputmode="numeric" oninput="calcStroke()" style="font-size:24px;">
       </div>
     </div>
-    <div id="st-time-res" style="margin-top:10px;font-size:13px;font-weight:700;color:var(--muted);text-align:center;"></div>
+    <div id="st-time-res" style="margin-top:10px;font-size:13px;font-weight:700;color:var(--text3);text-align:center;"></div>
   </div>
 
   <!-- CPSS -->
-  <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px;">CPSS — Cincinnati Prehospital Stroke Scale</div>
+  <div style="font-size:12px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px;">CPSS — Cincinnati Prehospital Stroke Scale</div>
   <div class="crit-list" style="gap:8px;margin-bottom:16px;">
 
-    <div style="background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:14px;">
+    <div style="background:rgba(255,255,255,0.04);border:1px solid var(--glass-border);border-radius:12px;padding:14px;">
       <div style="font-size:13px;font-weight:700;color:white;margin-bottom:10px;">Асимметрия лица</div>
-      <div style="font-size:11px;color:var(--muted);margin-bottom:10px;">Попросить улыбнуться или показать зубы</div>
+      <div style="font-size:11px;color:var(--text3);margin-bottom:10px;">Попросить улыбнуться или показать зубы</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
         <button class="con-btn on" id="face-n" onclick="setStroke('face','n')">Симметрично</button>
         <button class="con-btn" id="face-y" onclick="setStroke('face','y')" style="border-color:transparent;">Асимметрия</button>
       </div>
     </div>
 
-    <div style="background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:14px;">
+    <div style="background:rgba(255,255,255,0.04);border:1px solid var(--glass-border);border-radius:12px;padding:14px;">
       <div style="font-size:13px;font-weight:700;color:white;margin-bottom:10px;">Слабость руки</div>
-      <div style="font-size:11px;color:var(--muted);margin-bottom:10px;">Вытянуть обе руки вперёд на 10 сек с закрытыми глазами</div>
+      <div style="font-size:11px;color:var(--text3);margin-bottom:10px;">Вытянуть обе руки вперёд на 10 сек с закрытыми глазами</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
         <button class="con-btn on" id="arm-n" onclick="setStroke('arm','n')">Держат одинаково</button>
         <button class="con-btn" id="arm-y" onclick="setStroke('arm','y')" style="border-color:transparent;">Одна опускается</button>
       </div>
     </div>
 
-    <div style="background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:14px;">
+    <div style="background:rgba(255,255,255,0.04);border:1px solid var(--glass-border);border-radius:12px;padding:14px;">
       <div style="font-size:13px;font-weight:700;color:white;margin-bottom:10px;">Нарушение речи</div>
-      <div style="font-size:11px;color:var(--muted);margin-bottom:10px;">Попросить повторить: "Небо ясное, солнце светит ярко"</div>
+      <div style="font-size:11px;color:var(--text3);margin-bottom:10px;">Попросить повторить: "Небо ясное, солнце светит ярко"</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
         <button class="con-btn on" id="speech-n" onclick="setStroke('speech','n')">Речь нормальная</button>
         <button class="con-btn" id="speech-y" onclick="setStroke('speech','y')" style="border-color:transparent;">Нарушена / отсутствует</button>
@@ -926,7 +1342,7 @@ h1 {
   </div>
 
   <!-- Дополнительные симптомы -->
-  <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px;">Дополнительные признаки</div>
+  <div style="font-size:12px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px;">Дополнительные признаки</div>
   <div class="crit-list" style="gap:6px;margin-bottom:16px;">
     <div class="crit" id="sx-eye" onclick="togSx('sx-eye')">
       <div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Девиация взора / нистагм</div><div class="crit-hint">Глаза повёрнуты в сторону</div></div></div>
@@ -946,16 +1362,409 @@ h1 {
   </div>
 
   <!-- Тактика -->
-  <div id="st-tactic" style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);border-radius:12px;padding:14px;display:none;">
-    <div style="font-size:11px;font-weight:700;color:#ef4444;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px;">Тактика СМП</div>
+  <div id="st-tactic" style="background:rgba(255,69,58,0.08);border:1px solid rgba(255,69,58,0.2);border-radius:12px;padding:14px;display:none;">
+    <div style="font-size:11px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px;">Тактика СМП</div>
     <div id="st-tactic-text" style="font-size:13px;color:var(--text);line-height:1.6;"></div>
   </div>
 
   <button class="reset" onclick="resetStroke()" style="margin-top:14px;">Сбросить</button>
 </div>
 
+<!-- Дефибрилляция и интубация детей -->
+<div class="card" id="tab-defib">
+  <div class="card-title">Дефибрилляция и интубация детей</div>
+  <div class="card-desc">Введите вес ребёнка — получите готовые параметры для реанимации.</div>
+  <div style="background:rgba(10,132,255,0.06);border:1px solid rgba(10,132,255,0.15);border-radius:12px;padding:12px;margin-bottom:16px;display:flex;gap:10px;align-items:flex-start;">
+    <div style="font-size:18px;flex-shrink:0;margin-top:1px;">ℹ️</div>
+    <div style="font-size:12px;color:var(--text3);line-height:1.6;">Экстренный расчёт по весу: энергия дефибрилляции, доза адреналина, размер интубационной трубки, глубина введения, клинок ларингоскопа, доза атропина. Всё по российским протоколам СЛР (2021) и PALS.</div>
+  </div>
+
+  <div class="w-inp" style="margin-bottom:10px;">
+    <div class="w-lbl">Вес ребёнка (кг)</div>
+    <input class="w-field" type="number" id="def-wt" placeholder="20" inputmode="decimal" step="0.1" oninput="calcDefib()">
+  </div>
+
+  <div style="font-size:10px;color:var(--text3);margin-bottom:16px;padding:8px 12px;background:rgba(167,139,250,0.06);border-radius:8px;border:1px solid rgba(167,139,250,0.15);">
+    Если вес неизвестен: вес (кг) = (возраст лет + 4) x 2 для детей 1-10 лет
+  </div>
+
+  <!-- Дефибрилляция -->
+  <div style="font-size:11px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px;">Дефибрилляция (ФЖ / бСЖТ)</div>
+  <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px;">
+    <div style="background:rgba(255,255,255,0.04);border:1px solid var(--glass-border);border-radius:12px;padding:14px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <div style="font-size:13px;font-weight:700;color:white;">1-й разряд</div>
+        <div style="font-family:var(--mono);font-size:26px;font-weight:700;color:var(--red);" id="def-d1">— Дж</div>
+      </div>
+      <div style="font-size:11px;color:var(--text3);">2 Дж/кг — начальный</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.04);border:1px solid var(--glass-border);border-radius:12px;padding:14px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <div style="font-size:13px;font-weight:700;color:white;">2-й разряд</div>
+        <div style="font-family:var(--mono);font-size:26px;font-weight:700;color:var(--red);" id="def-d2">— Дж</div>
+      </div>
+      <div style="font-size:11px;color:var(--text3);">4 Дж/кг — последующие</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.04);border:1px solid var(--glass-border);border-radius:12px;padding:14px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <div style="font-size:13px;font-weight:700;color:white;">Максимум</div>
+        <div style="font-family:var(--mono);font-size:26px;font-weight:700;color:var(--red);" id="def-dmax">— Дж</div>
+      </div>
+      <div style="font-size:11px;color:var(--text3);">не более 200 Дж (взрослая доза)</div>
+    </div>
+  </div>
+
+  <!-- Адреналин при остановке -->
+  <div style="font-size:11px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px;">Адреналин при остановке сердца</div>
+  <div style="background:rgba(255,255,255,0.04);border:1px solid var(--glass-border);border-radius:12px;padding:14px;margin-bottom:16px;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div>
+        <div style="font-size:11px;color:var(--text3);margin-bottom:4px;">Доза (0.01 мг/кг)</div>
+        <div style="font-family:var(--mono);font-size:22px;font-weight:700;color:var(--orange);" id="def-epi-mg">— мг</div>
+      </div>
+      <div>
+        <div style="font-size:11px;color:var(--text3);margin-bottom:4px;">Объём (1:10000)</div>
+        <div style="font-family:var(--mono);font-size:22px;font-weight:700;color:var(--orange);" id="def-epi-ml">— мл</div>
+      </div>
+    </div>
+    <div style="font-size:11px;color:var(--text3);margin-top:8px;padding-top:8px;border-top:1px solid var(--divider);">Разведение: 1 мл адреналина 0.1% + 9 мл NaCl 0.9% = 10 мл раствора 0.01% (0.1 мг/мл). Повтор каждые 3-5 мин в/в.</div>
+  </div>
+
+  <!-- Интубация -->
+  <div style="font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px;">Интубация трахеи</div>
+  <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px;">
+    <div style="background:rgba(255,255,255,0.04);border:1px solid var(--glass-border);border-radius:12px;padding:14px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div>
+          <div style="font-size:11px;color:var(--text3);margin-bottom:4px;">Размер трубки (ID)</div>
+          <div style="font-family:var(--mono);font-size:26px;font-weight:700;color:var(--accent);" id="def-tube">—</div>
+          <div style="font-size:10px;color:var(--text3);">мм (без манжеты)</div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--text3);margin-bottom:4px;">С манжетой</div>
+          <div style="font-family:var(--mono);font-size:26px;font-weight:700;color:#7c3aed;" id="def-tube-c">—</div>
+          <div style="font-size:10px;color:var(--text3);">мм (старше 8 лет)</div>
+        </div>
+      </div>
+    </div>
+    <div style="background:rgba(255,255,255,0.04);border:1px solid var(--glass-border);border-radius:12px;padding:14px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div>
+          <div style="font-size:11px;color:var(--text3);margin-bottom:4px;">Глубина введения</div>
+          <div style="font-family:var(--mono);font-size:26px;font-weight:700;color:var(--accent);" id="def-depth">— см</div>
+          <div style="font-size:10px;color:var(--text3);">от зубов / дёсен</div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--text3);margin-bottom:4px;">Клинок ларингоскопа</div>
+          <div style="font-family:var(--mono);font-size:26px;font-weight:700;color:var(--accent);" id="def-blade">—</div>
+          <div style="font-size:10px;color:var(--text3);">размер Миллера/Макинтош</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Атропин при брадикардии -->
+  <div style="font-size:11px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px;">Атропин при брадикардии</div>
+  <div style="background:rgba(255,255,255,0.04);border:1px solid var(--glass-border);border-radius:12px;padding:14px;margin-bottom:4px;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div>
+        <div style="font-size:11px;color:var(--text3);margin-bottom:4px;">Доза (0.02 мг/кг)</div>
+        <div style="font-family:var(--mono);font-size:22px;font-weight:700;color:var(--green);" id="def-atr-mg">— мг</div>
+      </div>
+      <div>
+        <div style="font-size:11px;color:var(--text3);margin-bottom:4px;">Объём (0.1%)</div>
+        <div style="font-family:var(--mono);font-size:22px;font-weight:700;color:var(--green);" id="def-atr-ml">— мл</div>
+      </div>
+    </div>
+    <div style="font-size:11px;color:var(--text3);margin-top:8px;padding-top:8px;border-top:1px solid var(--divider);">Минимум 0.1 мг. Максимум 0.5 мг у детей, 1 мг у подростков.</div>
+  </div>
+
+  <button class="reset" onclick="resetDefib()" style="margin-top:14px;">Сбросить</button>
+</div>
+
+<!-- GRACE -->
+<div class="card" id="tab-grace">
+  <div class="card-title">GRACE — Риск при ОКС</div>
+  <div class="card-desc">Оценка риска смерти в стационаре и через 6 месяцев при остром коронарном синдроме.</div>
+  <div style="background:rgba(10,132,255,0.06);border:1px solid rgba(10,132,255,0.15);border-radius:12px;padding:12px;margin-bottom:16px;display:flex;gap:10px;align-items:flex-start;">
+    <div style="font-size:18px;flex-shrink:0;margin-top:1px;">ℹ️</div>
+    <div style="font-size:12px;color:var(--text3);line-height:1.6;">Global Registry of Acute Coronary Events. Наиболее валидированный инструмент стратификации риска при ОКС. Определяет тактику: консервативная или экстренная инвазивная стратегия. GRACE >140 — экстренное ЧКВ в течение 2 часов.</div>
+  </div>
+
+  <!-- Возраст -->
+  <div class="inp-grp" style="margin-bottom:10px;">
+    <div class="inp-lbl">Возраст <span class="inp-unit">лет</span></div>
+    <input class="inp-f" type="number" id="gr-age" placeholder="65" inputmode="numeric" oninput="calcGRACE()">
+  </div>
+
+  <!-- ЧСС и АД -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+    <div class="inp-grp">
+      <div class="inp-lbl">ЧСС <span class="inp-unit">уд/мин</span></div>
+      <input class="inp-f" type="number" id="gr-hr" placeholder="80" inputmode="numeric" oninput="calcGRACE()">
+    </div>
+    <div class="inp-grp">
+      <div class="inp-lbl">АД сист. <span class="inp-unit">мм рт.ст.</span></div>
+      <input class="inp-f" type="number" id="gr-sbp" placeholder="120" inputmode="numeric" oninput="calcGRACE()">
+    </div>
+  </div>
+
+  <!-- Креатинин -->
+  <div class="inp-grp" style="margin-bottom:10px;">
+    <div class="inp-lbl">Креатинин <span class="inp-unit">мкмоль/л (если нет — оставить пустым)</span></div>
+    <input class="inp-f" type="number" id="gr-cr" placeholder="—" inputmode="numeric" oninput="calcGRACE()" style="font-size:20px;">
+  </div>
+
+  <!-- Класс Killip -->
+  <div class="con-lbl">Класс Killip (сердечная недостаточность)</div>
+  <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px;">
+    <button class="con-btn on" id="kl-1" onclick="setKillip(1)" style="text-align:left;padding:10px 14px;">
+      <span style="font-weight:700;color:white;">I</span> — Нет признаков СН
+    </button>
+    <button class="con-btn" id="kl-2" onclick="setKillip(2)" style="text-align:left;padding:10px 14px;">
+      <span style="font-weight:700;">II</span> — Влажные хрипы в нижних отделах, S3
+    </button>
+    <button class="con-btn" id="kl-3" onclick="setKillip(3)" style="text-align:left;padding:10px 14px;">
+      <span style="font-weight:700;">III</span> — Отёк лёгких
+    </button>
+    <button class="con-btn" id="kl-4" onclick="setKillip(4)" style="text-align:left;padding:10px 14px;">
+      <span style="font-weight:700;">IV</span> — Кардиогенный шок
+    </button>
+  </div>
+
+  <!-- Бинарные факторы -->
+  <div class="con-lbl">Дополнительные факторы</div>
+  <div class="crit-list" style="gap:6px;margin-bottom:16px;">
+    <div class="crit" id="gr-arrest" onclick="togGrace('gr-arrest')">
+      <div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div>
+      <div><div class="crit-txt">Остановка сердца при поступлении</div>
+      <div class="crit-hint">Реанимация на догоспитальном этапе</div></div></div>
+    </div>
+    <div class="crit" id="gr-st" onclick="togGrace('gr-st')">
+      <div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div>
+      <div><div class="crit-txt">Отклонение сегмента ST</div>
+      <div class="crit-hint">Депрессия или элевация ST на ЭКГ</div></div></div>
+    </div>
+    <div class="crit" id="gr-trop" onclick="togGrace('gr-trop')">
+      <div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div>
+      <div><div class="crit-txt">Повышение тропонина</div>
+      <div class="crit-hint">Trop I или T выше нормы (если известно)</div></div></div>
+    </div>
+  </div>
+
+  <!-- Результат -->
+  <div class="res" id="grace-res" style="margin-bottom:12px;">
+    <div class="res-score" id="grace-sc">—</div>
+    <div class="res-lbl" id="grace-lb">Баллов GRACE</div>
+    <div class="res-act" id="grace-ac">Введите данные пациента</div>
+  </div>
+
+  <!-- Риск -->
+  <div id="grace-risk" style="display:none;flex-direction:column;gap:8px;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+      <div style="background:rgba(255,255,255,0.04);border:1px solid var(--glass-border);border-radius:12px;padding:14px;text-align:center;">
+        <div style="font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:6px;">Смерть в стационаре</div>
+        <div style="font-family:var(--mono);font-size:26px;font-weight:700;" id="grace-hosp-risk">—</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:4px;" id="grace-hosp-cat">—</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.04);border:1px solid var(--glass-border);border-radius:12px;padding:14px;text-align:center;">
+        <div style="font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:6px;">Смерть через 6 мес</div>
+        <div style="font-family:var(--mono);font-size:26px;font-weight:700;" id="grace-6m-risk">—</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:4px;" id="grace-6m-cat">—</div>
+      </div>
+    </div>
+    <div id="grace-tactic" style="border-radius:12px;padding:14px;font-size:13px;line-height:1.6;"></div>
+  </div>
+
+  <button class="reset" onclick="resetGRACE()" style="margin-top:14px;">Сбросить</button>
+</div>
+
+
+<!-- Альварадо -->
+<div class="card" id="tab-alvarado">
+  <div class="card-title">Шкала Альварадо</div>
+  <div class="card-desc">Клиническая оценка вероятности острого аппендицита. Максимум 10 баллов.</div>
+  <div style="background:rgba(10,132,255,0.06);border:1px solid rgba(10,132,255,0.15);border-radius:12px;padding:12px;margin-bottom:16px;display:flex;gap:10px;align-items:flex-start;">
+    <div style="font-size:18px;flex-shrink:0;margin-top:1px;">ℹ️</div>
+    <div style="font-size:12px;color:var(--text3);line-height:1.6;">Клиническая шкала для стратификации риска острого аппендицита без лучевой нагрузки. Включает симптомы и лабораторные данные. ≤4 — наблюдение, 5-6 — УЗИ и хирург, 7-8 — госпитализация, 9-10 — срочная операция. Чувствительность 99% при пороге ≥5.</div>
+  </div>
+
+  <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">Симптомы (по 1 баллу)</div>
+  <div class="crit-list" style="gap:8px;margin-bottom:16px;">
+
+    <div class="crit" id="av1" onclick="togAV('av1',1)">
+      <div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div>
+      <div><div class="crit-txt">Миграция боли в правую подвздошную область</div>
+      <div class="crit-hint">Боль начиналась около пупка, затем сместилась вправо вниз</div></div></div>
+      <div class="cbadge">+1</div>
+    </div>
+
+    <div class="crit" id="av2" onclick="togAV('av2',1)">
+      <div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div>
+      <div><div class="crit-txt">Анорексия / тошнота</div>
+      <div class="crit-hint">Снижение аппетита или тошнота</div></div></div>
+      <div class="cbadge">+1</div>
+    </div>
+
+    <div class="crit" id="av3" onclick="togAV('av3',1)">
+      <div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div>
+      <div><div class="crit-txt">Рвота</div>
+      <div class="crit-hint">Один и более эпизодов рвоты</div></div></div>
+      <div class="cbadge">+1</div>
+    </div>
+
+    <div class="crit" id="av4" onclick="togAV('av4',2)">
+      <div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div>
+      <div><div class="crit-txt">Болезненность в правой подвздошной области</div>
+      <div class="crit-hint">Пальпаторная болезненность в точке Мак-Бурнея</div></div></div>
+      <div class="cbadge">+2</div>
+    </div>
+
+    <div class="crit" id="av5" onclick="togAV('av5',1)">
+      <div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div>
+      <div><div class="crit-txt">Симптом Щёткина-Блюмберга</div>
+      <div class="crit-hint">Усиление боли при резком отнятии руки после надавливания</div></div></div>
+      <div class="cbadge">+1</div>
+    </div>
+
+    <div class="crit" id="av6" onclick="togAV('av6',1)">
+      <div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div>
+      <div><div class="crit-txt">Повышение температуры тела</div>
+      <div class="crit-hint">Температура 37.3°C и выше</div></div></div>
+      <div class="cbadge">+1</div>
+    </div>
+
+  </div>
+
+  <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">Лабораторные данные</div>
+  <div class="crit-list" style="gap:8px;margin-bottom:16px;">
+
+    <div class="crit" id="av7" onclick="togAV('av7',2)">
+      <div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div>
+      <div><div class="crit-txt">Лейкоцитоз (лейкоциты более 10 тыс.)</div>
+      <div class="crit-hint">Лейкоциты крови более 10 × 10⁹/л</div></div></div>
+      <div class="cbadge">+2</div>
+    </div>
+
+    <div class="crit" id="av8" onclick="togAV('av8',1)">
+      <div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div>
+      <div><div class="crit-txt">Сдвиг лейкоцитарной формулы влево</div>
+      <div class="crit-hint">Палочкоядерные нейтрофилы более 75% или более 7 тыс.</div></div></div>
+      <div class="cbadge">+1</div>
+    </div>
+
+  </div>
+
+  <!-- Примечание о болезненности -->
+  <div style="background:rgba(10,132,255,0.08);border:1px solid rgba(10,132,255,0.2);border-radius:12px;padding:12px;margin-bottom:16px;">
+    <div style="font-size:11px;color:var(--accent);font-weight:600;margin-bottom:4px;">Важно: болезненность в ПРП = 2 балла</div>
+    <div style="font-size:12px;color:var(--text3);line-height:1.5;">Пункт "болезненность в правой подвздошной области" стоит 2 балла в оригинальной шкале Альварадо. Нажмите на него дважды чтобы отметить — он учтёт правильный вес.</div>
+  </div>
+
+  <!-- Результат -->
+  <div class="res" id="av-res">
+    <div class="res-score" id="av-sc">0</div>
+    <div class="res-lbl" id="av-lb">Баллов</div>
+    <div class="res-act" id="av-ac">Отметьте имеющиеся симптомы</div>
+  </div>
+
+  <!-- Интерпретация -->
+  <div style="margin-top:12px;background:rgba(255,255,255,0.03);border:1px solid var(--glass-border);border-radius:14px;padding:14px;">
+    <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">Интерпретация</div>
+    <div style="display:flex;flex-direction:column;gap:7px;">
+      <div style="display:flex;justify-content:space-between;font-size:12px;align-items:center;">
+        <span style="font-family:var(--mono);font-weight:700;color:var(--green);">1 - 4 балла</span>
+        <span style="color:var(--text3);">Аппендицит маловероятен — наблюдение</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;align-items:center;">
+        <span style="font-family:var(--mono);font-weight:700;color:var(--orange);">5 - 6 баллов</span>
+        <span style="color:var(--text3);">Возможен — УЗИ, хирург</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;align-items:center;">
+        <span style="font-family:var(--mono);font-weight:700;color:var(--orange);">7 - 8 баллов</span>
+        <span style="color:var(--text3);">Вероятен — госпитализация</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;align-items:center;">
+        <span style="font-family:var(--mono);font-weight:700;color:var(--red);">9 - 10 баллов</span>
+        <span style="color:var(--text3);">Высокая вероятность — срочная операция</span>
+      </div>
+    </div>
+  </div>
+
+  <button class="reset" onclick="resetAV()">Сбросить</button>
+</div>
+
+<!-- СЛР Таймер -->
+<div class="card" id="tab-cpr">
+  <div class="card-title">Таймер СЛР</div>
+  <div class="card-desc">Запустите таймер при начале реанимации. Автоматические напоминания адреналина и ритм-анализа.</div>
+  <div style="background:rgba(10,132,255,0.06);border:1px solid rgba(10,132,255,0.15);border-radius:12px;padding:12px;margin-bottom:20px;display:flex;gap:10px;align-items:flex-start;">
+    <div style="font-size:18px;flex-shrink:0;margin-top:1px;">ℹ️</div>
+    <div style="font-size:12px;color:var(--text3);line-height:1.6;">Протокол СЛР согласно рекомендациям РОК 2021. Адреналин 1 мг в/в каждые 3-5 мин. Ритм-анализ каждые 2 мин. Амиодарон 300 мг после 3-го разряда.</div>
+  </div>
+
+  <!-- Главный таймер -->
+  <div style="background:rgba(255,69,58,0.06);border:2px solid rgba(255,69,58,0.3);border-radius:20px;padding:24px;text-align:center;margin-bottom:16px;" id="cpr-main-card">
+    <div style="font-size:11px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;">Общее время СЛР</div>
+    <div style="font-family:var(--mono);font-size:72px;font-weight:700;color:white;line-height:1;letter-spacing:-0.02em;" id="cpr-total-time">00:00</div>
+    <div style="font-size:13px;color:var(--text3);margin-top:8px;" id="cpr-status">Нажмите СТАРТ для начала реанимации</div>
+  </div>
+
+  <!-- Сетка мини-таймеров -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
+
+    <!-- Адреналин -->
+    <div style="background:rgba(255,159,10,0.06);border:1px solid rgba(255,159,10,0.3);border-radius:16px;padding:16px;text-align:center;" id="cpr-epi-card">
+      <div style="font-size:10px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px;">Адреналин 1 мг</div>
+      <div style="font-family:var(--mono);font-size:36px;font-weight:700;color:white;line-height:1;" id="cpr-epi-time">--:--</div>
+      <div style="font-size:11px;color:var(--text3);margin-top:4px;">до следующего</div>
+      <div style="font-size:10px;color:var(--text3);margin-top:2px;" id="cpr-epi-count">Введено: 0</div>
+      <button onclick="cprGiveEpi()" style="margin-top:10px;width:100%;padding:8px;background:rgba(255,159,10,0.15);border:1px solid rgba(255,159,10,0.4);border-radius:8px;color:var(--orange);font-family:var(--sans);font-size:12px;font-weight:700;cursor:pointer;" id="cpr-epi-btn">Ввёл адреналин</button>
+    </div>
+
+    <!-- Ритм-анализ -->
+    <div style="background:rgba(10,132,255,0.06);border:1px solid rgba(10,132,255,0.3);border-radius:16px;padding:16px;text-align:center;" id="cpr-rhythm-card">
+      <div style="font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px;">Ритм-анализ / ДФ</div>
+      <div style="font-family:var(--mono);font-size:36px;font-weight:700;color:white;line-height:1;" id="cpr-rhythm-time">--:--</div>
+      <div style="font-size:11px;color:var(--text3);margin-top:4px;">до следующего</div>
+      <div style="font-size:10px;color:var(--text3);margin-top:2px;" id="cpr-rhythm-count">Циклов: 0</div>
+      <button onclick="cprDoRhythm()" style="margin-top:10px;width:100%;padding:8px;background:rgba(10,132,255,0.15);border:1px solid rgba(10,132,255,0.4);border-radius:8px;color:var(--accent);font-family:var(--sans);font-size:12px;font-weight:700;cursor:pointer;" id="cpr-rhythm-btn">Анализ ритма</button>
+    </div>
+
+  </div>
+
+  <!-- Амиодарон -->
+  <div style="background:rgba(167,139,250,0.06);border:1px solid rgba(167,139,250,0.25);border-radius:14px;padding:14px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;">
+    <div>
+      <div style="font-size:12px;font-weight:700;color:#a78bfa;">Амиодарон 300 мг</div>
+      <div style="font-size:11px;color:var(--text3);margin-top:2px;">После 3-го разряда при ФЖ/бСЖТ</div>
+      <div style="font-size:11px;color:var(--text3);">Повтор 150 мг после 5-го разряда</div>
+    </div>
+    <button onclick="cprGiveAmio()" style="padding:10px 14px;background:rgba(167,139,250,0.15);border:1px solid rgba(167,139,250,0.3);border-radius:10px;color:#a78bfa;font-family:var(--sans);font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;" id="cpr-amio-btn">Ввёл</button>
+  </div>
+
+  <!-- Лог событий -->
+  <div style="background:rgba(255,255,255,0.03);border:1px solid var(--glass-border);border-radius:14px;padding:14px;margin-bottom:16px;">
+    <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">Журнал событий</div>
+    <div id="cpr-log" style="display:flex;flex-direction:column;gap:5px;max-height:160px;overflow-y:auto;">
+      <div style="font-size:12px;color:var(--text3);text-align:center;padding:10px;">Журнал пуст</div>
+    </div>
+  </div>
+
+  <!-- Кнопки управления -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+    <button onclick="cprStart()" id="cpr-start-btn" style="padding:16px;background:var(--red);border:none;border-radius:14px;color:white;font-family:var(--sans);font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 4px 20px rgba(255,69,58,0.4);">СТАРТ</button>
+    <button onclick="cprStop()" id="cpr-stop-btn" style="padding:16px;background:rgba(255,255,255,0.06);border:1px solid var(--glass-border);border-radius:14px;color:var(--text3);font-family:var(--sans);font-size:16px;font-weight:700;cursor:pointer;" disabled>СТОП</button>
+  </div>
+
+  <!-- ROSC -->
+  <button onclick="cprROSC()" style="display:block;width:100%;margin-top:10px;padding:14px;background:rgba(48,209,88,0.1);border:1px solid rgba(48,209,88,0.3);border-radius:14px;color:var(--green);font-family:var(--sans);font-size:14px;font-weight:700;cursor:pointer;">✓ ROSC — Восстановление кровообращения</button>
+
+</div>
+
 <script>
-var TABS = ['qsofa','news','wells','gcs','inf','ped','rass','alg','ivl','imt','ped2','cpss'];
+
+var TABS = ['qsofa','news','wells','gcs','inf','ped','rass','alg','ivl','imt','ped2','cpss','defib','grace','alvarado','cpr'];
 var grpScores = {q:{}, w:{}};
 var conScore = 0;
 var curDrug = 'd';
@@ -1039,7 +1848,7 @@ function sSP(v)  { return v<=91?3 : v<=93?2 : v<=95?1 : 0; }
 function sSB(v)  { return v<=90?3 : v<=100?2 : v<=110?1 : v<=219?0 : 3; }
 function sHR(v)  { return v<=40?3 : v<=50?1 : v<=90?0 : v<=110?1 : v<=130?2 : 3; }
 function sTM(v)  { return v<=35?3 : v<=36?1 : v<=38?0 : v<=39?1 : 2; }
-var SC = {0:'#10b981', 1:'#f59e0b', 2:'#ef4444', 3:'#ef4444'};
+var SC = {0:'var(--green)', 1:'var(--orange)', 2:'var(--red)', 3:'var(--red)'};
 
 function calcNEWS() {
   var fs = [
@@ -1585,7 +2394,7 @@ function calcIMT() {
   var diff = wt - ideal;
   var diffEl = document.getElementById('imt-diff');
   diffEl.textContent = (diff >= 0 ? '+' : '') + diff.toFixed(1);
-  diffEl.style.color = diff > 5 ? '#ef4444' : diff < -5 ? '#f59e0b' : '#10b981';
+  diffEl.style.color = diff > 5 ? 'var(--red)' : diff < -5 ? 'var(--orange)' : 'var(--green)';
 
   document.getElementById('imt-val').textContent = imt.toFixed(1);
   document.getElementById('imt-act').textContent = 'кг / м2';
@@ -1741,7 +2550,7 @@ function calcChild() {
     var imtEl = document.getElementById('ch-imt-val');
 
     if (!isNaN(wtIn)) {
-      var wtCls = wtIn < n.wtL ? '#f59e0b' : wtIn > n.wtH ? '#ef4444' : '#10b981';
+      var wtCls = wtIn < n.wtL ? 'var(--orange)' : wtIn > n.wtH ? 'var(--red)' : 'var(--green)';
       var wtTxt = wtIn < n.wtL ? ' (дефицит, <3 центиль)' : wtIn > n.wtH ? ' (избыток, >97 центиль)' : ' (норма, 3-97 центиль)';
       wtEl.textContent = wtIn + ' кг' + wtTxt;
       wtEl.style.color = wtCls;
@@ -1751,10 +2560,10 @@ function calcChild() {
     }
 
     if (!isNaN(htIn)) {
-      var htCls2 = htIn < n.htL ? '#f59e0b' : htIn > n.htH ? '#10b981' : '#10b981';
+      var htCls2 = htIn < n.htL ? 'var(--orange)' : htIn > n.htH ? 'var(--green)' : 'var(--green)';
       var htTxt = htIn < n.htL ? ' (ниже 3 центиля)' : htIn > n.htH ? ' (выше 97 центиля)' : ' (норма, 3-97 центиль)';
       htEl.textContent = htIn + ' см' + htTxt;
-      htEl.style.color = htIn < n.htL ? '#f59e0b' : '#10b981';
+      htEl.style.color = htIn < n.htL ? 'var(--orange)' : 'var(--green)';
     } else {
       htEl.textContent = 'не введён';
       htEl.style.color = 'var(--muted)';
@@ -1766,7 +2575,7 @@ function calcChild() {
       var imt = wtIn / (htM * htM);
       // IMT norms for children differ by age - simplified
       var imtNorm = totalMo < 24 ? [14,18] : totalMo < 60 ? [13.5,17.5] : totalMo < 120 ? [14,19] : [15,21];
-      var imtCls = imt < imtNorm[0] ? '#f59e0b' : imt > imtNorm[1] ? '#ef4444' : '#10b981';
+      var imtCls = imt < imtNorm[0] ? 'var(--orange)' : imt > imtNorm[1] ? 'var(--red)' : 'var(--green)';
       imtEl.textContent = imt.toFixed(1) + ' кг/м2';
       imtEl.style.color = imtCls;
     } else {
@@ -1799,9 +2608,9 @@ function setStroke(param, val) {
     var yBtn = document.getElementById(p+'-y');
     yBtn.classList.toggle('on', strokeData[p] === 'y');
     if (strokeData[p] === 'y') {
-      yBtn.style.borderColor = '#ef4444';
+      yBtn.style.borderColor = 'var(--red)';
       yBtn.style.background = 'rgba(239,68,68,0.1)';
-      yBtn.style.color = '#ef4444';
+      yBtn.style.color = 'var(--red)';
     } else {
       yBtn.style.borderColor = 'transparent';
       yBtn.style.background = '';
@@ -1859,16 +2668,16 @@ function calcStroke() {
   if (h > 0 || m > 0) {
     if (totalMin <= 270) {
       timeEl.textContent = 'Окно тромболизиса ОТКРЫТО (' + Math.round(270 - totalMin) + ' мин осталось)';
-      timeEl.style.color = '#10b981';
+      timeEl.style.color = 'var(--green)';
     } else if (totalMin <= 360) {
       timeEl.textContent = 'Окно тромболизиса ЗАКРЫТО. Возможна тромбэктомия (до 6 часов).';
-      timeEl.style.color = '#f59e0b';
+      timeEl.style.color = 'var(--orange)';
     } else if (totalMin <= 1440) {
       timeEl.textContent = 'Более 6 часов. Тромбэктомия возможна до 24 ч при отборе.';
-      timeEl.style.color = '#f59e0b';
+      timeEl.style.color = 'var(--orange)';
     } else {
       timeEl.textContent = 'Более 24 часов от начала симптомов.';
-      timeEl.style.color = '#ef4444';
+      timeEl.style.color = 'var(--red)';
     }
   } else {
     timeEl.textContent = '';
@@ -1897,9 +2706,541 @@ function resetStroke() {
   calcStroke();
 }
 
+
+function calcDefib() {
+  var wt = parseFloat(document.getElementById('def-wt').value);
+
+  if (isNaN(wt) || wt <= 0) {
+    var ids = ['def-d1','def-d2','def-dmax','def-epi-mg','def-epi-ml','def-tube','def-tube-c','def-depth','def-blade','def-atr-mg','def-atr-ml'];
+    for (var i = 0; i < ids.length; i++) {
+      document.getElementById(ids[i]).textContent = '--';
+    }
+    return;
+  }
+
+  // Дефибрилляция
+  var d1 = Math.round(2 * wt);
+  var d2 = Math.round(4 * wt);
+  var dmax = Math.min(d2, 200);
+  document.getElementById('def-d1').textContent = d1 + ' Дж';
+  document.getElementById('def-d2').textContent = d2 + ' Дж';
+  document.getElementById('def-dmax').textContent = dmax + ' Дж';
+
+  // Адреналин 0.01 мг/кг, разведение 1:10000 = 0.1 мг/мл
+  var epiMg = (0.01 * wt).toFixed(2);
+  var epiMl = (parseFloat(epiMg) / 0.1).toFixed(1);
+  document.getElementById('def-epi-mg').textContent = epiMg + ' мг';
+  document.getElementById('def-epi-ml').textContent = epiMl + ' мл';
+
+  // Интубация - формула: ID = (возраст/4) + 4
+  // По весу приблизительный возраст: возраст = вес/2 - 2 (упрощённо)
+  // Точнее: ID без манжеты = (16 + возраст мес/12*4) / 4 -> используем вес
+  // Стандартная формула по весу: ID = (вес/4) + 3.5 приблизительно
+  var tubeId, tubeIdC, depth, blade;
+
+  if (wt < 1) {
+    tubeId = 2.5; tubeIdC = 'не применяется'; depth = '6-7'; blade = '00 Миллер';
+  } else if (wt < 3) {
+    tubeId = 3.0; tubeIdC = 'не применяется'; depth = '7-8'; blade = '0 Миллер';
+  } else if (wt < 5) {
+    tubeId = 3.0; tubeIdC = 'не применяется'; depth = '8-9'; blade = '1 Миллер';
+  } else if (wt < 8) {
+    tubeId = 3.5; tubeIdC = 'не применяется'; depth = '10-11'; blade = '1 Миллер';
+  } else if (wt < 12) {
+    tubeId = 4.0; tubeIdC = '3.5 с манж.'; depth = '12-13'; blade = '2 Миллер';
+  } else if (wt < 16) {
+    tubeId = 4.5; tubeIdC = '4.0 с манж.'; depth = '13-14'; blade = '2 Миллер';
+  } else if (wt < 22) {
+    tubeId = 5.0; tubeIdC = '4.5 с манж.'; depth = '14-15'; blade = '2 Макинтош';
+  } else if (wt < 30) {
+    tubeId = 5.5; tubeIdC = '5.0 с манж.'; depth = '15-17'; blade = '2-3 Макинтош';
+  } else if (wt < 45) {
+    tubeId = 6.0; tubeIdC = '5.5 с манж.'; depth = '17-19'; blade = '3 Макинтош';
+  } else {
+    tubeId = 7.0; tubeIdC = '6.5-7.0 с манж.'; depth = '19-21'; blade = '3 Макинтош';
+  }
+
+  document.getElementById('def-tube').textContent = tubeId + ' мм';
+  document.getElementById('def-tube-c').textContent = tubeIdC;
+  document.getElementById('def-depth').textContent = depth + ' см';
+  document.getElementById('def-blade').textContent = blade;
+
+  // Атропин 0.02 мг/кг, мин 0.1, макс 0.5 (дети) / 1 мг (подростки)
+  var atrMg = 0.02 * wt;
+  atrMg = Math.max(0.1, atrMg);
+  atrMg = Math.min(wt >= 30 ? 1.0 : 0.5, atrMg);
+  var atrMl = atrMg / 1.0; // атропин 0.1% = 1 мг/мл
+  document.getElementById('def-atr-mg').textContent = atrMg.toFixed(2) + ' мг';
+  document.getElementById('def-atr-ml').textContent = atrMl.toFixed(2) + ' мл';
+}
+
+function resetDefib() {
+  document.getElementById('def-wt').value = '';
+  calcDefib();
+}
+
+
+var killipVal = 1;
+var graceFlags = {arrest: false, st: false, trop: false};
+
+function setKillip(v) {
+  killipVal = v;
+  for (var i = 1; i <= 4; i++) {
+    document.getElementById('kl-' + i).classList.toggle('on', i === v);
+  }
+  calcGRACE();
+}
+
+function togGrace(id) {
+  document.getElementById(id).classList.toggle('on');
+  graceFlags[id.replace('gr-','')] = document.getElementById(id).classList.contains('on');
+  calcGRACE();
+}
+
+// GRACE score lookup tables
+// GRACE баллы по оригинальным таблицам Fox 2006 (BMJ)
+function scoreAge(age) {
+  if (age < 30) return 0;
+  if (age < 40) return 8;
+  if (age < 50) return 25;
+  if (age < 60) return 41;
+  if (age < 70) return 58;
+  if (age < 80) return 75;
+  if (age < 90) return 91;
+  return 100;
+}
+
+function scoreHR(hr) {
+  if (hr < 50) return 0;
+  if (hr < 70) return 3;
+  if (hr < 90) return 9;
+  if (hr < 110) return 15;
+  if (hr < 150) return 24;
+  if (hr < 200) return 38;
+  return 46;
+}
+
+function scoreSBP(sbp) {
+  if (sbp < 80) return 58;
+  if (sbp < 100) return 53;
+  if (sbp < 120) return 43;
+  if (sbp < 140) return 34;
+  if (sbp < 160) return 24;
+  if (sbp < 200) return 10;
+  return 0;
+}
+
+function scoreCr(cr) {
+  // cr в мкмоль/л — оригинальные диапазоны из таблицы Fox 2006
+  if (isNaN(cr)) return 7; // неизвестен — берём средний балл (норма ~80 мкмоль/л)
+  if (cr < 35) return 1;
+  if (cr < 71) return 4;
+  if (cr < 106) return 7;
+  if (cr < 141) return 10;
+  if (cr < 178) return 13;
+  if (cr < 354) return 21;
+  return 28;
+}
+
+function scoreKillip(k) {
+  if (k === 1) return 0;
+  if (k === 2) return 20;
+  if (k === 3) return 39;
+  return 59;
+}
+
+// Госпитальная смертность — пороги ESC 2020 guidelines
+function hospMortality(score) {
+  if (score <= 108) return {pct:'< 1%',  cat:'Низкий риск',   col:'var(--green)'};
+  if (score <= 140) return {pct:'1-3%',  cat:'Средний риск',  col:'var(--orange)'};
+  return              {pct:'> 3%',  cat:'Высокий риск',  col:'var(--red)'};
+}
+
+// 6-месячная смертность — пороги ESC 2020 guidelines
+function sixMortality(score) {
+  if (score <= 88)  return {pct:'< 3%',  cat:'Низкий риск',   col:'var(--green)'};
+  if (score <= 118) return {pct:'3-8%',  cat:'Средний риск',  col:'var(--orange)'};
+  return              {pct:'> 8%',  cat:'Высокий риск',  col:'var(--red)'};
+}
+
+function calcGRACE() {
+  var age = parseFloat(document.getElementById('gr-age').value);
+  var hr  = parseFloat(document.getElementById('gr-hr').value);
+  var sbp = parseFloat(document.getElementById('gr-sbp').value);
+  var cr  = parseFloat(document.getElementById('gr-cr').value);
+
+  var hasAny = !isNaN(age) || !isNaN(hr) || !isNaN(sbp);
+  if (!hasAny) {
+    document.getElementById('grace-res').className = 'res';
+    document.getElementById('grace-sc').textContent = '--';
+    document.getElementById('grace-lb').textContent = 'Баллов GRACE';
+    document.getElementById('grace-ac').textContent = 'Введите данные пациента';
+    document.getElementById('grace-risk').style.display = 'none';
+    return;
+  }
+
+  var score = 0;
+  if (!isNaN(age)) score += scoreAge(age);
+  if (!isNaN(hr))  score += scoreHR(hr);
+  if (!isNaN(sbp)) score += scoreSBP(sbp);
+  score += scoreCr(cr);
+  score += scoreKillip(killipVal);
+  if (graceFlags.arrest) score += 39;
+  if (graceFlags.st)     score += 28;
+  if (graceFlags.trop)   score += 14;
+
+  var hosp = hospMortality(score);
+  var sixm = sixMortality(score);
+
+  document.getElementById('grace-sc').textContent = score;
+  document.getElementById('grace-lb').textContent = 'Баллов GRACE';
+
+  var r = document.getElementById('grace-res');
+  if (hosp.cat === 'Низкий')          { r.className = 'res low'; }
+  else if (hosp.cat === 'Средний')    { r.className = 'res med'; }
+  else                                { r.className = 'res hi'; }
+
+  document.getElementById('grace-ac').textContent = 'Риск в стационаре: ' + hosp.pct + ' (' + hosp.cat + ')';
+
+  // Show risk breakdown
+  var riskEl = document.getElementById('grace-risk');
+  riskEl.style.display = 'flex';
+
+  var hospRisk = document.getElementById('grace-hosp-risk');
+  var hospCat  = document.getElementById('grace-hosp-cat');
+  hospRisk.textContent = hosp.pct;
+  hospRisk.style.color = hosp.col;
+  hospCat.textContent  = hosp.cat;
+
+  var sixRisk = document.getElementById('grace-6m-risk');
+  var sixCat  = document.getElementById('grace-6m-cat');
+  sixRisk.textContent = sixm.pct;
+  sixRisk.style.color = sixm.col;
+  sixCat.textContent  = sixm.cat;
+
+  // Tactic
+  var tacticEl = document.getElementById('grace-tactic');
+  if (score <= 108) {
+    tacticEl.style.background = 'rgba(16,185,129,0.08)';
+    tacticEl.style.border = '1px solid rgba(16,185,129,0.2)';
+    tacticEl.innerHTML = '<span style="color:#10b981;font-weight:700;">Низкий риск (GRACE 108 и менее)</span><br>Инвазивная стратегия в плановом порядке (более 72 часов). Возможна консервативная тактика.';
+  } else if (score <= 140) {
+    tacticEl.style.background = 'rgba(245,158,11,0.08)';
+    tacticEl.style.border = '1px solid rgba(245,158,11,0.2)';
+    tacticEl.innerHTML = '<span style="color:#f59e0b;font-weight:700;">Средний риск (GRACE 109-140)</span><br>Ранняя инвазивная стратегия (в течение 72 часов). Госпитализация в кардиологию.';
+  } else {
+    tacticEl.style.background = 'rgba(239,68,68,0.08)';
+    tacticEl.style.border = '1px solid rgba(239,68,68,0.2)';
+    tacticEl.innerHTML = '<span style="color:#ef4444;font-weight:700;">Высокий риск (GRACE более 140)</span><br>Экстренная инвазивная стратегия (менее 2 часов). Срочная транспортировка в ПСО/РСЦ с возможностью ЧКВ!';
+  }
+}
+
+function resetGRACE() {
+  document.getElementById('gr-age').value = '';
+  document.getElementById('gr-hr').value = '';
+  document.getElementById('gr-sbp').value = '';
+  document.getElementById('gr-cr').value = '';
+  killipVal = 1;
+  for (var i = 1; i <= 4; i++) {
+    document.getElementById('kl-' + i).classList.toggle('on', i === 1);
+  }
+  graceFlags = {arrest: false, st: false, trop: false};
+  ['gr-arrest','gr-st','gr-trop'].forEach(function(id) {
+    document.getElementById(id).classList.remove('on');
+  });
+  document.getElementById('grace-risk').style.display = 'none';
+  calcGRACE();
+}
+
+
+var avScores = {};
+
+function togAV(id, val) {
+  var el = document.getElementById(id);
+  el.classList.toggle('on');
+  avScores[id] = el.classList.contains('on') ? val : 0;
+  calcAV();
+}
+
+function calcAV() {
+  var total = 0;
+  var vals = Object.values(avScores);
+  for (var i = 0; i < vals.length; i++) total += vals[i];
+
+  var sc = document.getElementById('av-sc');
+  var lb = document.getElementById('av-lb');
+  var ac = document.getElementById('av-ac');
+  var r  = document.getElementById('av-res');
+
+  sc.textContent = total;
+
+  if (total <= 4) {
+    r.className = 'res low';
+    lb.textContent = 'Аппендицит маловероятен';
+    ac.textContent = 'Наблюдение. Повторный осмотр через 4-6 часов. Госпитализация при нарастании симптомов.';
+  } else if (total <= 6) {
+    r.className = 'res med';
+    lb.textContent = 'Аппендицит возможен';
+    ac.textContent = 'УЗИ брюшной полости. Консультация хирурга. Динамическое наблюдение.';
+  } else if (total <= 8) {
+    r.className = 'res med';
+    lb.textContent = 'Аппендицит вероятен';
+    ac.textContent = 'Госпитализация в хирургическое отделение. КТ или УЗИ. Подготовка к операции.';
+  } else {
+    r.className = 'res hi';
+    lb.textContent = 'Острый аппендицит!';
+    ac.textContent = 'Высокая вероятность. Срочная госпитализация. Хирургическое лечение.';
+  }
+}
+
+function resetAV() {
+  avScores = {};
+  var ids = ['av1','av2','av3','av4','av5','av6','av7','av8'];
+  for (var i = 0; i < ids.length; i++) {
+    document.getElementById(ids[i]).classList.remove('on');
+  }
+  calcAV();
+}
+
+
+// ===== СЛР ТАЙМЕР =====
+var cprRunning = false;
+var cprStartTime = 0;
+var cprInterval = null;
+var cprEpiTime = 0;
+var cprEpiCount = 0;
+var cprRhythmTime = 0;
+var cprRhythmCount = 0;
+var cprAmioCount = 0;
+var cprLogEntries = [];
+var cprAudioCtx = null;
+
+function cprGetAudio() {
+  if (!cprAudioCtx) {
+    try { cprAudioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
+  }
+  return cprAudioCtx;
+}
+
+function cprBeep(freq, dur, vol) {
+  var ctx = cprGetAudio();
+  if (!ctx) return;
+  try {
+    var osc = ctx.createOscillator();
+    var gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.frequency.value = freq || 880;
+    gain.gain.setValueAtTime(vol || 0.3, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + (dur || 0.2));
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + (dur || 0.2));
+  } catch(e) {}
+}
+
+function cprAlarm(type) {
+  var ctx = cprGetAudio();
+  if (!ctx) return;
+  if (type === 'epi') {
+    // Три коротких высоких сигнала
+    setTimeout(function(){ cprBeep(1047, 0.15, 0.4); }, 0);
+    setTimeout(function(){ cprBeep(1047, 0.15, 0.4); }, 200);
+    setTimeout(function(){ cprBeep(1319, 0.3,  0.5); }, 400);
+  } else if (type === 'rhythm') {
+    // Два низких сигнала
+    setTimeout(function(){ cprBeep(440, 0.2, 0.4); }, 0);
+    setTimeout(function(){ cprBeep(440, 0.2, 0.4); }, 300);
+  } else if (type === 'start') {
+    setTimeout(function(){ cprBeep(523, 0.1, 0.3); }, 0);
+    setTimeout(function(){ cprBeep(659, 0.1, 0.3); }, 150);
+    setTimeout(function(){ cprBeep(784, 0.3, 0.4); }, 300);
+  } else if (type === 'rosc') {
+    setTimeout(function(){ cprBeep(523, 0.15, 0.3); }, 0);
+    setTimeout(function(){ cprBeep(659, 0.15, 0.3); }, 200);
+    setTimeout(function(){ cprBeep(784, 0.15, 0.3); }, 400);
+    setTimeout(function(){ cprBeep(1047, 0.5,  0.4); }, 600);
+  }
+}
+
+function cprFmt(ms) {
+  var s = Math.floor(ms / 1000);
+  var m = Math.floor(s / 60);
+  s = s % 60;
+  return (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+}
+
+function cprFmtCountdown(ms) {
+  if (ms <= 0) return '00:00';
+  return cprFmt(ms);
+}
+
+function cprAddLog(text, color) {
+  var now = Date.now() - cprStartTime;
+  var entry = {time: cprFmt(now), text: text, color: color || 'var(--text2)'};
+  cprLogEntries.unshift(entry);
+  var log = document.getElementById('cpr-log');
+  log.innerHTML = '';
+  for (var i = 0; i < Math.min(cprLogEntries.length, 20); i++) {
+    var e = cprLogEntries[i];
+    log.innerHTML += '<div style="display:flex;justify-content:space-between;font-size:12px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.04);">' +
+      '<span style="color:' + e.color + ';flex:1;">' + e.text + '</span>' +
+      '<span style="font-family:var(--mono);font-size:11px;color:var(--text3);margin-left:8px;flex-shrink:0;">' + e.time + '</span>' +
+      '</div>';
+  }
+}
+
+function cprStart() {
+  if (cprRunning) return;
+  cprGetAudio(); // init audio on user gesture
+  cprRunning = true;
+  cprStartTime = Date.now();
+  cprEpiTime = Date.now();
+  cprRhythmTime = Date.now();
+  cprLogEntries = [];
+  cprEpiCount = 0;
+  cprRhythmCount = 0;
+  cprAmioCount = 0;
+
+  cprAlarm('start');
+  cprAddLog('СЛР начата', 'var(--red)');
+
+  document.getElementById('cpr-start-btn').disabled = true;
+  document.getElementById('cpr-start-btn').style.opacity = '0.4';
+  document.getElementById('cpr-stop-btn').disabled = false;
+  document.getElementById('cpr-stop-btn').style.color = 'white';
+  document.getElementById('cpr-stop-btn').style.background = 'rgba(255,255,255,0.1)';
+  document.getElementById('cpr-epi-btn').disabled = false;
+  document.getElementById('cpr-rhythm-btn').disabled = false;
+  document.getElementById('cpr-main-card').style.borderColor = 'var(--red)';
+  document.getElementById('cpr-status').textContent = 'СЛР идёт...';
+
+  cprInterval = setInterval(cprTick, 500);
+}
+
+function cprTick() {
+  if (!cprRunning) return;
+  var now = Date.now();
+  var total = now - cprStartTime;
+  var epiElapsed = now - cprEpiTime;
+  var rhythmElapsed = now - cprRhythmTime;
+
+  // Total time
+  document.getElementById('cpr-total-time').textContent = cprFmt(total);
+
+  // Adrenaline countdown (every 5 min = 300000ms, warn at 4min = 240000ms)
+  var epiLeft = 300000 - epiElapsed;
+  var epiEl = document.getElementById('cpr-epi-time');
+  var epiCard = document.getElementById('cpr-epi-card');
+  if (epiLeft <= 0) {
+    epiEl.textContent = 'СЕЙЧАС!';
+    epiEl.style.color = 'var(--red)';
+    epiCard.style.borderColor = 'var(--red)';
+    epiCard.style.background = 'rgba(255,69,58,0.1)';
+    // Beep every 5 seconds when overdue
+    if (Math.floor(epiElapsed / 1000) % 5 === 0 && Math.floor(epiElapsed / 500) % 2 === 0) {
+      cprAlarm('epi');
+    }
+  } else {
+    epiEl.textContent = cprFmtCountdown(epiLeft);
+    if (epiLeft < 60000) {
+      epiEl.style.color = 'var(--orange)';
+      epiCard.style.borderColor = 'var(--orange)';
+    } else {
+      epiEl.style.color = 'white';
+      epiCard.style.borderColor = 'rgba(255,159,10,0.3)';
+      epiCard.style.background = 'rgba(255,159,10,0.06)';
+    }
+  }
+  document.getElementById('cpr-epi-count').textContent = 'Введено: ' + cprEpiCount;
+
+  // Rhythm countdown (every 2 min = 120000ms)
+  var rhythmLeft = 120000 - rhythmElapsed;
+  var rhythmEl = document.getElementById('cpr-rhythm-time');
+  var rhythmCard = document.getElementById('cpr-rhythm-card');
+  if (rhythmLeft <= 0) {
+    rhythmEl.textContent = 'СЕЙЧАС!';
+    rhythmEl.style.color = 'var(--red)';
+    rhythmCard.style.borderColor = 'var(--red)';
+    rhythmCard.style.background = 'rgba(255,69,58,0.1)';
+    if (Math.floor(rhythmElapsed / 1000) % 5 === 0 && Math.floor(rhythmElapsed / 500) % 2 === 0) {
+      cprAlarm('rhythm');
+    }
+  } else {
+    rhythmEl.textContent = cprFmtCountdown(rhythmLeft);
+    if (rhythmLeft < 30000) {
+      rhythmEl.style.color = 'var(--orange)';
+      rhythmCard.style.borderColor = 'var(--orange)';
+    } else {
+      rhythmEl.style.color = 'white';
+      rhythmCard.style.borderColor = 'rgba(10,132,255,0.3)';
+      rhythmCard.style.background = 'rgba(10,132,255,0.06)';
+    }
+  }
+  document.getElementById('cpr-rhythm-count').textContent = 'Циклов: ' + cprRhythmCount;
+}
+
+function cprGiveEpi() {
+  if (!cprRunning) return;
+  cprEpiCount++;
+  cprEpiTime = Date.now();
+  cprBeep(659, 0.2, 0.4);
+  var dose = cprEpiCount === 1 ? 'Адреналин 1 мг в/в (1-я доза)' : 'Адреналин 1 мг в/в (доза ' + cprEpiCount + ')';
+  cprAddLog(dose, 'var(--orange)');
+  document.getElementById('cpr-epi-card').style.borderColor = 'rgba(255,159,10,0.3)';
+  document.getElementById('cpr-epi-card').style.background = 'rgba(255,159,10,0.06)';
+}
+
+function cprDoRhythm() {
+  if (!cprRunning) return;
+  cprRhythmCount++;
+  cprRhythmTime = Date.now();
+  cprBeep(523, 0.15, 0.3);
+  cprAddLog('Ритм-анализ / Дефибрилляция #' + cprRhythmCount, 'var(--accent)');
+  document.getElementById('cpr-rhythm-card').style.borderColor = 'rgba(10,132,255,0.3)';
+  document.getElementById('cpr-rhythm-card').style.background = 'rgba(10,132,255,0.06)';
+}
+
+function cprGiveAmio() {
+  if (!cprRunning) return;
+  cprAmioCount++;
+  cprBeep(440, 0.2, 0.3);
+  var dose = cprAmioCount === 1 ? 'Амиодарон 300 мг в/в' : 'Амиодарон 150 мг в/в (повтор)';
+  cprAddLog(dose, '#a78bfa');
+  document.getElementById('cpr-amio-btn').textContent = cprAmioCount === 1 ? 'Ввёл (150мг→)' : 'Ввёл х' + cprAmioCount;
+}
+
+function cprROSC() {
+  if (!cprRunning) return;
+  var total = Date.now() - cprStartTime;
+  cprAlarm('rosc');
+  cprAddLog('ROSC — кровообращение восстановлено!', 'var(--green)');
+  cprStop();
+  document.getElementById('cpr-status').textContent = 'ROSC после ' + cprFmt(total);
+  document.getElementById('cpr-status').style.color = 'var(--green)';
+  document.getElementById('cpr-main-card').style.borderColor = 'var(--green)';
+  document.getElementById('cpr-main-card').style.background = 'rgba(48,209,88,0.06)';
+}
+
+function cprStop() {
+  if (!cprRunning) return;
+  cprRunning = false;
+  clearInterval(cprInterval);
+  cprAddLog('СЛР остановлена', 'var(--text3)');
+
+  document.getElementById('cpr-start-btn').disabled = false;
+  document.getElementById('cpr-start-btn').style.opacity = '1';
+  document.getElementById('cpr-start-btn').textContent = 'РЕСТАРТ';
+  document.getElementById('cpr-stop-btn').disabled = true;
+  document.getElementById('cpr-stop-btn').style.color = 'var(--text3)';
+  document.getElementById('cpr-epi-btn').disabled = true;
+  document.getElementById('cpr-rhythm-btn').disabled = true;
+  document.getElementById('cpr-status').textContent = 'СЛР завершена';
+}
+
 renderGrp('q');
 renderGrp('w');
 calcGCS();
+
 </script>
 </body>
 </html>
