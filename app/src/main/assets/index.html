@@ -1764,6 +1764,125 @@ h1 {
 
 <script>
 
+// ===== GLOBAL SOUND SYSTEM =====
+var sndCtx = null;
+
+function getSndCtx() {
+  if (!sndCtx) {
+    try { sndCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
+  }
+  return sndCtx;
+}
+
+function playTone(freq, dur, vol, type, fadeIn) {
+  var ctx = getSndCtx();
+  if (!ctx) return;
+  try {
+    var osc = ctx.createOscillator();
+    var gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.type = type || 'sine';
+    osc.frequency.value = freq;
+    var now = ctx.currentTime;
+    gain.gain.setValueAtTime(fadeIn ? 0 : (vol || 0.08), now);
+    if (fadeIn) gain.gain.linearRampToValueAtTime(vol || 0.08, now + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + (dur || 0.12));
+    osc.start(now);
+    osc.stop(now + (dur || 0.12));
+  } catch(e) {}
+}
+
+// UI sounds
+function sndTap() {
+  // Soft click — sine wave, very short
+  playTone(520, 0.06, 0.06, 'sine');
+}
+
+function sndToggleOn() {
+  // Pleasant two-note chord going up
+  playTone(440, 0.08, 0.07, 'sine');
+  setTimeout(function(){ playTone(660, 0.12, 0.06, 'sine'); }, 60);
+}
+
+function sndToggleOff() {
+  // Going down
+  playTone(440, 0.08, 0.05, 'sine');
+  setTimeout(function(){ playTone(330, 0.10, 0.04, 'sine'); }, 60);
+}
+
+function sndTabSwitch() {
+  // Light chime
+  playTone(880, 0.08, 0.05, 'sine', true);
+  setTimeout(function(){ playTone(1100, 0.12, 0.04, 'sine', true); }, 50);
+}
+
+function sndReset() {
+  // Three descending soft tones
+  playTone(660, 0.07, 0.05, 'sine');
+  setTimeout(function(){ playTone(550, 0.07, 0.05, 'sine'); }, 80);
+  setTimeout(function(){ playTone(440, 0.1,  0.04, 'sine'); }, 160);
+}
+
+function sndSlider() {
+  // Very soft tick
+  playTone(600, 0.03, 0.04, 'sine');
+}
+
+function sndSelectDrug() {
+  // Soft confirmation
+  playTone(494, 0.08, 0.06, 'sine');
+  setTimeout(function(){ playTone(659, 0.14, 0.05, 'sine'); }, 70);
+}
+
+function sndInput() {
+  // Barely audible key click
+  playTone(400, 0.025, 0.03, 'sine');
+}
+
+function sndResult() {
+  // Soft pleasant chord when result appears
+  playTone(523, 0.15, 0.06, 'sine', true);
+  setTimeout(function(){ playTone(659, 0.15, 0.05, 'sine', true); }, 40);
+  setTimeout(function(){ playTone(784, 0.2,  0.04, 'sine', true); }, 80);
+}
+
+function sndWarning() {
+  // Mild alert
+  playTone(440, 0.1, 0.07, 'triangle');
+  setTimeout(function(){ playTone(370, 0.15, 0.06, 'triangle'); }, 120);
+}
+
+function sndSuccess() {
+  // Happy little melody
+  playTone(523, 0.1, 0.06, 'sine');
+  setTimeout(function(){ playTone(659, 0.1, 0.06, 'sine'); }, 100);
+  setTimeout(function(){ playTone(784, 0.1, 0.06, 'sine'); }, 200);
+  setTimeout(function(){ playTone(1047,0.2, 0.05, 'sine'); }, 300);
+}
+
+// Slider throttle
+var sndSliderLast = 0;
+function sndSliderThrottle() {
+  var now = Date.now();
+  if (now - sndSliderLast > 80) {
+    sndSliderLast = now;
+    sndSlider();
+  }
+}
+
+// Init audio on first interaction
+document.addEventListener('touchstart', function initAudio() {
+  getSndCtx();
+  document.removeEventListener('touchstart', initAudio);
+}, {once: true});
+
+document.addEventListener('mousedown', function initAudio() {
+  getSndCtx();
+  document.removeEventListener('mousedown', initAudio);
+}, {once: true});
+
+
 var TABS = ['qsofa','news','wells','gcs','inf','ped','rass','alg','ivl','imt','ped2','cpss','defib','grace','alvarado','cpr'];
 var grpScores = {q:{}, w:{}};
 var conScore = 0;
@@ -1775,6 +1894,7 @@ var DRUGS = {
 };
 
 function goTab(name) {
+  sndTabSwitch();
   var tabs = document.querySelectorAll('.tab');
   for (var i = 0; i < tabs.length; i++) {
     tabs[i].classList.toggle('active', tabs[i].getAttribute('onclick') === "goTab('" + name + "')");
@@ -1789,11 +1909,13 @@ function goTab(name) {
 function tog(id, val, grp) {
   var el = document.getElementById(id);
   el.classList.toggle('on');
+  if (el.classList.contains('on')) { sndToggleOn(); } else { sndToggleOff(); }
   grpScores[grp][id] = el.classList.contains('on') ? val : 0;
   renderGrp(grp);
 }
 
 function resetGrp(grp) {
+  sndReset();
   grpScores[grp] = {};
   var crits = document.querySelectorAll('.crit[id^="' + grp + '"]');
   for (var i = 0; i < crits.length; i++) { crits[i].classList.remove('on'); }
@@ -1837,6 +1959,7 @@ function renderGrp(grp) {
 }
 
 function setCon(s) {
+  sndTap();
   document.getElementById('btn-a').classList.toggle('on', s === 'a');
   document.getElementById('btn-v').classList.toggle('on', s === 'v');
   conScore = s === 'v' ? 3 : 0;
@@ -1876,10 +1999,11 @@ function calcNEWS() {
   if (!any) { setRes('news', '--', '', 'Введите данные', 'Заполните поля выше'); return; }
   if (tot <= 4)      setRes('news', tot, 'low', 'Низкий риск', 'Мониторинг каждые 12 часов.');
   else if (tot <= 6) setRes('news', tot, 'med', 'Средний риск', 'Срочная оценка врача. Мониторинг каждый час.');
-  else               setRes('news', tot, 'hi',  'ВЫСОКИЙ РИСК', 'Реанимационная бригада! Непрерывный мониторинг.');
+  else               { setRes('news', tot, 'hi',  'ВЫСОКИЙ РИСК', 'Реанимационная бригада! Непрерывный мониторинг.'); sndWarning(); }
 }
 
 function resetNEWS() {
+  sndReset();
   var ids = ['n-rr','n-sp','n-sb','n-hr','n-tm'];
   for (var i = 0; i < ids.length; i++) {
     document.getElementById(ids[i]).value = '';
@@ -1903,6 +2027,7 @@ function calcGCS() {
 }
 
 function resetGCS() {
+  sndReset();
   document.getElementById('g-e').value = '4';
   document.getElementById('g-v').value = '5';
   document.getElementById('g-m').value = '6';
@@ -1910,6 +2035,7 @@ function resetGCS() {
 }
 
 function selDrug(drug) {
+  sndSelectDrug();
   curDrug = drug;
   var d = DRUGS[drug];
   document.getElementById('ibtn-d').className = 'drug-btn' + (drug === 'd' ? ' sel-d' : '');
@@ -1926,6 +2052,7 @@ function selDrug(drug) {
 }
 
 function calcInf() {
+  sndSliderThrottle();
   var d = DRUGS[curDrug];
   var wt = parseFloat(document.getElementById('i-wt').value);
   var dose = parseFloat(document.getElementById('i-sl').value);
@@ -1960,6 +2087,7 @@ function calcInf() {
 }
 
 function resetInf() {
+  sndReset();
   document.getElementById('i-wt').value = '';
   selDrug('d');
 }
@@ -2042,6 +2170,7 @@ var PEDS = {
 };
 
 function selPed(drug) {
+  sndSelectDrug();
   curPed = drug;
   var btns = ['an','dr','dx','pr','su','mt'];
   for (var i = 0; i < btns.length; i++) {
@@ -2102,6 +2231,7 @@ function calcPed() {
 }
 
 function resetPed() {
+  sndReset();
   document.getElementById('p-wt').value = '';
   selPed('an');
 }
@@ -2110,6 +2240,7 @@ function resetPed() {
 // RASS
 var rassVal = null;
 function setRASS(v) {
+  if (v >= 2) { sndWarning(); } else if (v <= -4) { sndWarning(); } else { sndTap(); }
   rassVal = v;
   var ids = ['+4','+3','+2','+1','0','-1','-2','-3','-4','-5'];
   for (var i = 0; i < ids.length; i++) {
@@ -2129,6 +2260,7 @@ function setRASS(v) {
   else              { r.className='res hi';  lb.textContent='Глубокая седация'; ac.textContent='Глубокая седация или кома. Контроль ИВЛ.'; }
 }
 function resetRASS() {
+  sndReset();
   rassVal = null;
   var ids = ['+4','+3','+2','+1','0','-1','-2','-3','-4','-5'];
   for (var i = 0; i < ids.length; i++) {
@@ -2186,6 +2318,7 @@ var rassVal = null;
 var RASS_IDS = ['rass_p4','rass_p3','rass_p2','rass_p1','rass_0','rass_m1','rass_m2','rass_m3','rass_m4','rass_m5'];
 var RASS_VALS = [4,3,2,1,0,-1,-2,-3,-4,-5];
 function setRASS(v) {
+  if (v >= 2) { sndWarning(); } else if (v <= -4) { sndWarning(); } else { sndTap(); }
   rassVal = v;
   for (var i = 0; i < RASS_IDS.length; i++) {
     document.getElementById(RASS_IDS[i]).classList.toggle('on', RASS_VALS[i] === v);
@@ -2203,6 +2336,7 @@ function setRASS(v) {
   else              { r.className='res hi';  lb.textContent='Глубокая седация / кома'; ac.textContent='Контроль ИВЛ. Оценка необходимости пробуждения.'; }
 }
 function resetRASS() {
+  sndReset();
   rassVal = null;
   for (var i = 0; i < RASS_IDS.length; i++) {
     document.getElementById(RASS_IDS[i]).classList.remove('on');
@@ -2257,6 +2391,7 @@ var ivlSex = 'm';
 var ivlMode = 'ippv';
 
 function setIVLsex(s) {
+  sndTap();
   ivlSex = s;
   document.getElementById('ivl-male').classList.toggle('on', s === 'm');
   document.getElementById('ivl-female').classList.toggle('on', s === 'f');
@@ -2264,6 +2399,7 @@ function setIVLsex(s) {
 }
 
 function setIVLmode(m) {
+  sndTap();
   ivlMode = m;
   document.getElementById('ivl-ippv').classList.toggle('on', m === 'ippv');
   document.getElementById('ivl-vvl').classList.toggle('on', m === 'vvl');
@@ -2342,6 +2478,7 @@ function calcIVL() {
 }
 
 function resetIVL() {
+  sndReset();
   document.getElementById('ivl-wt').value = '';
   document.getElementById('ivl-ht').value = '';
   ivlSex = 'm';
@@ -2354,6 +2491,7 @@ function resetIVL() {
 var imtSex = 'm';
 
 function setIMTsex(s) {
+  sndTap();
   imtSex = s;
   document.getElementById('imt-m').classList.toggle('on', s === 'm');
   document.getElementById('imt-f').classList.toggle('on', s === 'f');
@@ -2417,6 +2555,7 @@ function calcIMT() {
 }
 
 function resetIMT() {
+  sndReset();
   document.getElementById('imt-ht').value = '';
   document.getElementById('imt-wt').value = '';
   imtSex = 'm';
@@ -2600,6 +2739,7 @@ function resetChild() {
 var strokeData = {face:'n', arm:'n', speech:'n'};
 
 function setStroke(param, val) {
+  sndTap();
   strokeData[param] = val;
   var params = ['face','arm','speech'];
   for (var i = 0; i < params.length; i++) {
@@ -2621,7 +2761,9 @@ function setStroke(param, val) {
 }
 
 function togSx(id) {
-  document.getElementById(id).classList.toggle('on');
+  var el = document.getElementById(id);
+  el.classList.toggle('on');
+  if (el.classList.contains('on')) { sndToggleOn(); } else { sndToggleOff(); }
   calcStroke();
 }
 
@@ -2685,6 +2827,7 @@ function calcStroke() {
 }
 
 function resetStroke() {
+  sndReset();
   strokeData = {face:'n', arm:'n', speech:'n'};
   var params = ['face','arm','speech'];
   for (var i = 0; i < params.length; i++) {
@@ -2784,6 +2927,7 @@ var killipVal = 1;
 var graceFlags = {arrest: false, st: false, trop: false};
 
 function setKillip(v) {
+  sndTap();
   killipVal = v;
   for (var i = 1; i <= 4; i++) {
     document.getElementById('kl-' + i).classList.toggle('on', i === v);
@@ -2792,8 +2936,10 @@ function setKillip(v) {
 }
 
 function togGrace(id) {
-  document.getElementById(id).classList.toggle('on');
-  graceFlags[id.replace('gr-','')] = document.getElementById(id).classList.contains('on');
+  var el = document.getElementById(id);
+  el.classList.toggle('on');
+  if (el.classList.contains('on')) { sndToggleOn(); } else { sndToggleOff(); }
+  graceFlags[id.replace('gr-','')] = el.classList.contains('on');
   calcGRACE();
 }
 
@@ -2936,6 +3082,7 @@ function calcGRACE() {
 }
 
 function resetGRACE() {
+  sndReset();
   document.getElementById('gr-age').value = '';
   document.getElementById('gr-hr').value = '';
   document.getElementById('gr-sbp').value = '';
@@ -2958,6 +3105,7 @@ var avScores = {};
 function togAV(id, val) {
   var el = document.getElementById(id);
   el.classList.toggle('on');
+  if (el.classList.contains('on')) { sndToggleOn(); } else { sndToggleOff(); }
   avScores[id] = el.classList.contains('on') ? val : 0;
   calcAV();
 }
@@ -2994,6 +3142,7 @@ function calcAV() {
 }
 
 function resetAV() {
+  sndReset();
   avScores = {};
   var ids = ['av1','av2','av3','av4','av5','av6','av7','av8'];
   for (var i = 0; i < ids.length; i++) {
@@ -3238,6 +3387,23 @@ function cprStop() {
 }
 
 renderGrp('q');
+
+// Add subtle sound to all number inputs
+document.addEventListener('DOMContentLoaded', function() {
+  var inputs = document.querySelectorAll('input[type="number"]');
+  for (var i = 0; i < inputs.length; i++) {
+    inputs[i].addEventListener('input', function() { sndInput(); });
+  }
+  var sliders = document.querySelectorAll('input[type="range"]');
+  for (var j = 0; j < sliders.length; j++) {
+    sliders[j].addEventListener('input', function() { sndSliderThrottle(); });
+  }
+  var selects = document.querySelectorAll('select');
+  for (var k = 0; k < selects.length; k++) {
+    selects[k].addEventListener('change', function() { sndTap(); });
+  }
+});
+
 renderGrp('w');
 calcGCS();
 
