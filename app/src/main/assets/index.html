@@ -3,8 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#000008">
 <title>МедШкалы 103 СМП</title>
 <style>
@@ -13,9 +11,7 @@
   --glass: rgba(255,255,255,0.06);
   --glass-2: rgba(255,255,255,0.04);
   --glass-border: rgba(255,255,255,0.12);
-  --glass-border-2: rgba(255,255,255,0.08);
   --accent: #0a84ff;
-  --accent-2: #5e5ce6;
   --emergency: #ff3b30;
   --green: #30d158;
   --yellow: #ffd60a;
@@ -29,12 +25,10 @@
   --mono: 'SF Mono','Courier New',monospace;
   --sans: -apple-system,'SF Pro Display','Helvetica Neue',sans-serif;
   --radius: 16px;
-  --radius-sm: 10px;
   --blur: blur(40px) saturate(180%);
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bot: env(safe-area-inset-bottom, 0px);
 }
-
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 html { background: var(--bg); }
 body {
@@ -46,60 +40,65 @@ body {
   color: var(--text);
   font-family: var(--sans);
   min-height: 100vh;
-  min-height: -webkit-fill-available;
   overflow-x: hidden;
   -webkit-text-size-adjust: 100%;
-  padding-bottom: calc(80px + var(--safe-bot));
+  padding: calc(var(--safe-top) + 20px) 0 calc(40px + var(--safe-bot));
 }
 
-/* ===== HEADER ===== */
+/* === HEADER === */
 .hdr {
-  padding: calc(var(--safe-top) + 24px) 20px 20px;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  background: linear-gradient(180deg, rgba(0,0,8,0.95) 0%, rgba(0,0,8,0.85) 70%, rgba(0,0,8,0) 100%);
-  backdrop-filter: var(--blur);
-  -webkit-backdrop-filter: var(--blur);
+  text-align: center;
+  padding: 0 20px 20px;
 }
-
-.hdr-row {
-  display: flex;
+.hdr-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(10,132,255,0.12);
+  border: 1px solid rgba(10,132,255,0.3);
+  border-radius: 100px;
+  padding: 6px 16px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.hdr-badge::before {
+  content: '';
+  width: 8px; height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+}
+.hdr-title-row {
+  display: inline-flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 14px;
+  margin-bottom: 6px;
 }
-
 .logo {
-  width: 48px; height: 48px;
+  width: 42px; height: 42px;
   position: relative;
-  flex-shrink: 0;
   background: linear-gradient(135deg, #ff3b30 0%, #ff6b00 100%);
-  border-radius: 14px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 16px rgba(255,59,48,0.4), 0 0 0 1px rgba(255,255,255,0.1) inset;
+  box-shadow: 0 4px 16px rgba(255,59,48,0.4);
 }
-
-.logo-cross {
-  position: absolute;
-  width: 22px;
-  height: 22px;
-}
-.logo-cross::before, .logo-cross::after {
+.logo::before, .logo::after {
   content: '';
   position: absolute;
   background: white;
   border-radius: 2px;
 }
-.logo-cross::before { width: 22px; height: 6px; top: 8px; left: 0; }
-.logo-cross::after  { width: 6px; height: 22px; top: 0; left: 8px; }
-
+.logo::before { width: 20px; height: 5px; }
+.logo::after { width: 5px; height: 20px; }
 .logo-103 {
   position: absolute;
-  bottom: -4px;
-  right: -4px;
+  bottom: -5px;
+  right: -5px;
   background: #000;
   color: #ff3b30;
   font-family: var(--mono);
@@ -109,276 +108,104 @@ body {
   border-radius: 4px;
   border: 1px solid #ff3b30;
   letter-spacing: 0.5px;
+  z-index: 2;
 }
-
-.hdr-title {
-  flex: 1;
-  min-width: 0;
-}
-
 .hdr-name {
-  font-size: 20px;
+  font-size: 28px;
   font-weight: 700;
   letter-spacing: -0.02em;
   color: white;
-  line-height: 1.1;
 }
-
 .hdr-sub {
-  font-size: 11px;
-  color: var(--text-3);
-  margin-top: 2px;
-  letter-spacing: 0.02em;
-}
-
-.hdr-status {
-  font-size: 10px;
-  font-weight: 700;
-  color: var(--green);
-  background: rgba(48,209,88,0.12);
-  border: 1px solid rgba(48,209,88,0.3);
-  padding: 4px 10px;
-  border-radius: 100px;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  flex-shrink: 0;
-}
-.hdr-status::before {
-  content: '';
-  width: 6px; height: 6px;
-  background: var(--green);
-  border-radius: 50%;
-  animation: pulse 2s infinite;
-}
-@keyframes pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.7); } }
-
-/* Search */
-.search-wrap {
-  position: relative;
-}
-.search {
-  width: 100%;
-  background: var(--glass);
-  border: 1px solid var(--glass-border);
-  border-radius: 12px;
-  padding: 11px 14px 11px 38px;
-  color: white;
-  font-family: var(--sans);
-  font-size: 14px;
-  outline: none;
-  backdrop-filter: var(--blur);
-  -webkit-backdrop-filter: var(--blur);
-}
-.search:focus { border-color: var(--accent); }
-.search::placeholder { color: var(--text-3); }
-.search-ico {
-  position: absolute;
-  left: 12px;
-  top: 50%;
-  transform: translateY(-50%);
   font-size: 14px;
   color: var(--text-3);
-  pointer-events: none;
 }
 
-/* ===== WRAP ===== */
-.wrap { max-width: 560px; margin: 0 auto; padding: 0 16px; }
+/* === WRAP === */
+.wrap { max-width: 560px; margin: 0 auto; padding: 0 14px; }
 
-/* ===== CATEGORY GRID ===== */
-.cat-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-bottom: 16px;
-}
-
-.cat-card {
-  background: var(--glass);
-  border: 1px solid var(--glass-border);
-  border-radius: 18px;
-  padding: 16px;
-  cursor: pointer;
-  transition: all 0.2s;
-  backdrop-filter: var(--blur);
-  -webkit-backdrop-filter: var(--blur);
-  position: relative;
-  overflow: hidden;
-}
-.cat-card:active { transform: scale(0.97); }
-.cat-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  transition: opacity 0.2s;
-  background: radial-gradient(circle at 0% 0%, currentColor 0%, transparent 60%);
-  pointer-events: none;
-}
-.cat-card:hover::before { opacity: 0.08; }
-
-.cat-icon {
-  width: 38px; height: 38px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 10px;
-  font-size: 20px;
-  background: currentColor;
-  opacity: 0.15;
-}
-.cat-icon-inner {
-  position: absolute;
-  font-size: 22px;
-}
-
-.cat-title {
-  font-size: 14px;
-  font-weight: 700;
-  color: white;
-  line-height: 1.2;
-  margin-bottom: 4px;
-}
-.cat-desc {
-  font-size: 11px;
-  color: var(--text-3);
-  line-height: 1.3;
-}
-.cat-count {
-  font-family: var(--mono);
-  font-size: 10px;
-  color: var(--text-3);
-  margin-top: 8px;
-  font-weight: 600;
-}
-
-/* Category colors */
-.cat-emergency { color: var(--red); }
-.cat-emergency .cat-title { color: var(--red); }
-.cat-assess { color: var(--accent); }
-.cat-assess .cat-title { color: var(--accent); }
-.cat-diag { color: var(--purple); }
-.cat-diag .cat-title { color: var(--purple); }
-.cat-calc { color: var(--orange); }
-.cat-calc .cat-title { color: var(--orange); }
-.cat-ref { color: var(--green); }
-.cat-ref .cat-title { color: var(--green); }
-.cat-peds { color: var(--yellow); }
-.cat-peds .cat-title { color: var(--yellow); }
-
-/* ===== SUBCATEGORY LIST ===== */
-.sub-back {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--glass);
-  border: 1px solid var(--glass-border);
-  border-radius: 12px;
-  padding: 10px 14px;
-  margin-bottom: 14px;
-  cursor: pointer;
-  color: var(--text-2);
-  font-size: 13px;
-  font-weight: 600;
-  backdrop-filter: var(--blur);
-  -webkit-backdrop-filter: var(--blur);
-}
-.sub-back:active { transform: scale(0.98); }
-
-.sub-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 20px;
-}
-
-.sub-item {
-  background: var(--glass);
-  border: 1px solid var(--glass-border);
-  border-radius: 14px;
-  padding: 14px 16px;
-  cursor: pointer;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  backdrop-filter: var(--blur);
-  -webkit-backdrop-filter: var(--blur);
-}
-.sub-item:active { transform: scale(0.98); }
-
-.sub-icon {
-  width: 36px; height: 36px;
-  border-radius: 10px;
-  background: rgba(255,255,255,0.06);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--mono);
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--accent);
-  flex-shrink: 0;
-}
-
-.sub-content { flex: 1; min-width: 0; }
-.sub-title {
-  font-size: 14px;
-  font-weight: 600;
-  color: white;
-  line-height: 1.2;
-}
-.sub-desc {
-  font-size: 11px;
-  color: var(--text-3);
-  margin-top: 3px;
-  line-height: 1.3;
-}
-.sub-arrow {
-  color: var(--text-3);
-  font-size: 18px;
-  flex-shrink: 0;
-}
-
-/* ===== TOOL CARD ===== */
-.tool {
+/* === NAV CARD === */
+.nav {
   background: var(--glass);
   border: 1px solid var(--glass-border);
   border-radius: 20px;
-  padding: 20px;
+  padding: 18px;
   margin-bottom: 16px;
   backdrop-filter: var(--blur);
   -webkit-backdrop-filter: var(--blur);
-  animation: fadeIn 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+.nav-cat {
+  margin-bottom: 14px;
+}
+.nav-cat:last-child { margin-bottom: 0; }
+.nav-cat-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 10px;
+  padding-left: 4px;
+}
+.nav-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.tab {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--glass-border);
+  border-radius: 100px;
+  padding: 10px 18px;
+  color: var(--text-2);
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.tab:active { transform: scale(0.96); }
+.tab.active {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+  box-shadow: 0 4px 16px rgba(10,132,255,0.4);
+}
+.nav-divider {
+  height: 1px;
+  background: var(--divider);
+  margin: 14px 0;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+/* === CARD === */
+.card {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 18px;
+  margin-bottom: 16px;
+  backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur);
+  display: none;
+  animation: fadeIn 0.3s;
 }
+.card.show { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-.tool-title {
-  font-size: 20px;
+.card-title {
+  font-size: 22px;
   font-weight: 700;
   letter-spacing: -0.02em;
   color: white;
   margin-bottom: 4px;
 }
-.tool-sub {
-  font-size: 12px;
-  color: var(--accent);
-  font-family: var(--mono);
-  margin-bottom: 8px;
-}
-.tool-desc {
+.card-desc {
   font-size: 13px;
   color: var(--text-3);
   line-height: 1.5;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
-/* Info block */
 .info {
   background: rgba(10,132,255,0.06);
   border: 1px solid rgba(10,132,255,0.15);
@@ -387,51 +214,43 @@ body {
   margin-bottom: 16px;
   display: flex;
   gap: 10px;
-  align-items: flex-start;
 }
-.info-ico { font-size: 18px; flex-shrink: 0; line-height: 1.3; }
 .info-text { font-size: 12px; color: var(--text-3); line-height: 1.6; }
 
-/* ===== CRITERIA CHECKBOXES ===== */
+/* === CRITERIA === */
 .crit-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
 .crit {
   background: var(--glass-2);
   border: 1px solid var(--glass-border);
-  border-radius: var(--radius);
-  padding: 14px;
+  border-radius: 14px;
+  padding: 13px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 10px;
   cursor: pointer;
   transition: all 0.2s;
-  user-select: none;
-  -webkit-user-select: none;
 }
 .crit:active { transform: scale(0.98); }
 .crit.on { border-color: var(--accent); background: rgba(10,132,255,0.12); }
-
 .crit-l { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
 .chk {
-  width: 26px; height: 26px;
+  width: 24px; height: 24px;
   border: 2px solid var(--glass-border);
-  border-radius: 8px;
+  border-radius: 7px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  transition: all 0.2s;
   font-size: 14px;
   color: white;
   font-weight: 900;
 }
 .crit.on .chk { background: var(--accent); border-color: var(--accent); }
-.chk-i { opacity: 0; transition: opacity 0.15s; }
+.chk-i { opacity: 0; }
 .crit.on .chk-i { opacity: 1; }
-
-.crit-txt { font-size: 14px; font-weight: 600; line-height: 1.35; color: var(--text); }
+.crit-txt { font-size: 13px; font-weight: 600; line-height: 1.35; color: var(--text); }
 .crit-hint { font-size: 11px; color: var(--text-3); margin-top: 2px; line-height: 1.3; }
-
 .cbadge {
   font-family: var(--mono);
   font-size: 12px;
@@ -442,18 +261,15 @@ body {
   border-radius: 8px;
   padding: 4px 10px;
   white-space: nowrap;
-  flex-shrink: 0;
 }
 
-/* ===== INPUTS ===== */
+/* === INPUTS === */
 .inp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
-.inp-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 12px; }
 .inp-grp {
   background: var(--glass-2);
   border: 1px solid var(--glass-border);
-  border-radius: var(--radius);
-  padding: 12px 14px;
-  transition: border-color 0.2s;
+  border-radius: 14px;
+  padding: 11px 13px;
 }
 .inp-grp:focus-within { border-color: var(--accent); }
 .inp-lbl {
@@ -463,9 +279,6 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.08em;
   margin-bottom: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 }
 .inp-unit { font-family: var(--mono); font-size: 9px; color: var(--text-3); font-weight: 400; }
 .inp-f {
@@ -475,29 +288,18 @@ body {
   outline: none;
   color: white;
   font-family: var(--mono);
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 700;
   padding: 0;
 }
 .inp-f::placeholder { color: rgba(255,255,255,0.1); }
 .inp-sc { font-size: 10px; color: var(--text-3); margin-top: 4px; font-family: var(--mono); min-height: 14px; }
 
-/* ===== BUTTONS ===== */
-.con-lbl {
-  font-size: 10px;
-  font-weight: 600;
-  color: var(--text-3);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin-bottom: 8px;
-}
-.con-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 16px; }
-.con-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 16px; }
-
+/* === BUTTONS === */
 .con-btn {
-  padding: 11px 8px;
+  padding: 10px 8px;
   border: 1px solid var(--glass-border);
-  border-radius: var(--radius-sm);
+  border-radius: 10px;
   background: var(--glass-2);
   color: var(--text-2);
   font-family: var(--sans);
@@ -510,114 +312,76 @@ body {
 .con-btn:active { transform: scale(0.96); }
 .con-btn.on { background: rgba(10,132,255,0.18); border-color: var(--accent); color: var(--accent); font-weight: 600; }
 
-/* ===== RESULT ===== */
+/* === RESULT === */
 .res {
-  border-radius: var(--radius);
-  padding: 22px 16px;
+  border-radius: 16px;
+  padding: 20px 16px;
   text-align: center;
-  transition: all 0.35s;
   background: var(--glass-2);
   border: 1px solid var(--glass-border);
-  position: relative;
-  overflow: hidden;
   margin-bottom: 14px;
 }
-.res::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  transition: opacity 0.35s;
-  background: radial-gradient(circle at 50% 0%, currentColor 0%, transparent 70%);
-  pointer-events: none;
-}
-.res.low { border-color: var(--green); }
-.res.low::before { color: rgba(48,209,88,0.12); opacity: 1; }
-.res.med { border-color: var(--orange); }
-.res.med::before { color: rgba(255,159,10,0.12); opacity: 1; }
-.res.hi { border-color: var(--red); }
-.res.hi::before { color: rgba(255,69,58,0.12); opacity: 1; }
-
-.res-score {
-  font-family: var(--mono);
-  font-size: 60px;
-  font-weight: 700;
-  line-height: 1;
-  color: var(--text-2);
-  transition: color 0.35s;
-  position: relative;
-}
+.res.low { border-color: var(--green); background: rgba(48,209,88,0.08); }
+.res.med { border-color: var(--orange); background: rgba(255,159,10,0.08); }
+.res.hi { border-color: var(--red); background: rgba(255,69,58,0.08); }
+.res-score { font-family: var(--mono); font-size: 56px; font-weight: 700; line-height: 1; color: var(--text-2); }
 .res.low .res-score { color: var(--green); }
 .res.med .res-score { color: var(--orange); }
 .res.hi .res-score { color: var(--red); }
-
 .res-lbl {
   font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   margin-top: 8px;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   color: var(--text-2);
-  position: relative;
 }
 .res.low .res-lbl { color: var(--green); }
 .res.med .res-lbl { color: var(--orange); }
 .res.hi .res-lbl { color: var(--red); }
+.res-act { font-size: 12px; color: var(--text-3); line-height: 1.5; }
 
-.res-act { font-size: 12px; color: var(--text-3); line-height: 1.55; position: relative; }
-
-/* Interpretation table */
+/* Interpretation */
 .interp {
   background: var(--glass-2);
   border: 1px solid var(--glass-border);
-  border-radius: 14px;
-  padding: 14px;
-}
-.interp-title {
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--text-3);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin-bottom: 10px;
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 14px;
 }
 .interp-row {
   display: flex;
   justify-content: space-between;
-  align-items: center;
   font-size: 12px;
-  padding: 6px 0;
+  padding: 5px 0;
   border-bottom: 1px solid var(--divider);
 }
 .interp-row:last-child { border-bottom: none; }
 .interp-range { color: var(--text-3); font-family: var(--mono); }
 .interp-val { font-weight: 700; }
 
-/* Reset button */
 .reset {
   display: block;
   width: 100%;
-  margin-top: 14px;
-  padding: 13px;
+  margin-top: 12px;
+  padding: 12px;
   background: var(--glass-2);
   border: 1px solid var(--glass-border);
-  border-radius: var(--radius);
+  border-radius: 14px;
   color: var(--text-3);
   font-family: var(--sans);
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s;
 }
-.reset:active { background: rgba(255,255,255,0.08); color: var(--text); }
 
-/* GCS sections */
+/* GCS */
 .gcs-sec {
   background: rgba(94,92,230,0.08);
   border: 1px solid rgba(94,92,230,0.2);
-  border-radius: var(--radius);
-  padding: 14px;
+  border-radius: 14px;
+  padding: 13px;
   margin-bottom: 10px;
 }
 .gcs-ttl {
@@ -632,65 +396,37 @@ body {
   width: 100%;
   background: rgba(255,255,255,0.06);
   border: 1px solid var(--glass-border);
-  border-radius: var(--radius-sm);
+  border-radius: 10px;
   color: white;
   font-family: var(--sans);
   font-size: 13px;
   font-weight: 500;
   padding: 10px 12px;
-  cursor: pointer;
   outline: none;
-  appearance: auto;
 }
 
 /* Wells pills */
 .w-pills { display: flex; gap: 8px; justify-content: center; margin-top: 12px; flex-wrap: wrap; }
-.w-pill { padding: 5px 13px; border-radius: 100px; font-size: 11px; font-weight: 700; font-family: var(--mono); opacity: 0.35; border: 1px solid transparent; transition: all 0.3s; }
+.w-pill { padding: 5px 13px; border-radius: 100px; font-size: 11px; font-weight: 700; font-family: var(--mono); opacity: 0.35; border: 1px solid transparent; }
 .w-pill.on { opacity: 1; }
 .w-pill.unlikely { background: rgba(48,209,88,0.1); border-color: var(--green); color: var(--green); }
 .w-pill.likely { background: rgba(255,69,58,0.1); border-color: var(--red); color: var(--red); }
 
-/* Slider */
-.slider {
-  width: 100%;
-  height: 4px;
-  border-radius: 2px;
-  background: rgba(255,255,255,0.12);
-  outline: none;
-  cursor: pointer;
-  -webkit-appearance: none;
-  appearance: none;
-  margin-bottom: 8px;
-}
-.slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 28px; height: 28px;
-  border-radius: 50%;
-  cursor: pointer;
-  border: 3px solid rgba(0,0,0,0.3);
-}
-.slider.d::-webkit-slider-thumb { background: var(--yellow); box-shadow: 0 4px 12px rgba(255,214,10,0.4); }
-.slider.n::-webkit-slider-thumb { background: var(--red); box-shadow: 0 4px 12px rgba(255,69,58,0.4); }
-.slider.novoc::-webkit-slider-thumb { background: var(--purple); box-shadow: 0 4px 12px rgba(191,90,242,0.4); }
-.slider.furos::-webkit-slider-thumb { background: var(--green); box-shadow: 0 4px 12px rgba(48,209,88,0.4); }
-
-/* Drug buttons */
-.drug-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+/* Infusomat */
+.drug-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
 .drug-btn {
-  padding: 14px 10px;
+  padding: 12px 8px;
   border: 1px solid var(--glass-border);
-  border-radius: var(--radius);
+  border-radius: 14px;
   background: var(--glass-2);
   color: var(--text-2);
   font-family: var(--sans);
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
   text-align: center;
 }
-.drug-btn:active { transform: scale(0.96); }
-.drug-btn .dn { font-size: 14px; color: var(--text); display: block; margin-bottom: 4px; }
+.drug-btn .dn { font-size: 13px; color: var(--text); display: block; margin-bottom: 3px; }
 .drug-btn .dc { font-size: 10px; font-family: var(--mono); color: var(--text-3); }
 .drug-btn.sel-d { border-color: var(--yellow); background: rgba(255,214,10,0.08); }
 .drug-btn.sel-d .dn { color: var(--yellow); }
@@ -701,1757 +437,225 @@ body {
 .drug-btn.sel-furos { border-color: var(--green); background: rgba(48,209,88,0.08); }
 .drug-btn.sel-furos .dn { color: var(--green); }
 
-.dose-hdr { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-.dose-lbl { font-size: 11px; font-weight: 600; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.07em; }
-.dose-val { font-family: var(--mono); font-size: 18px; font-weight: 700; color: white; }
-.dose-range { display: flex; justify-content: space-between; font-size: 10px; color: var(--text-3); font-family: var(--mono); }
-
 .w-inp {
   background: var(--glass-2);
   border: 1px solid var(--glass-border);
-  border-radius: var(--radius);
+  border-radius: 14px;
   padding: 12px 16px;
-  transition: border-color 0.2s;
   margin-bottom: 12px;
 }
-.w-inp:focus-within { border-color: var(--accent); }
 .w-lbl { font-size: 10px; font-weight: 600; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
-.w-field { width: 100%; background: transparent; border: none; outline: none; color: white; font-family: var(--mono); font-size: 28px; font-weight: 700; }
-.w-field::placeholder { color: rgba(255,255,255,0.1); }
+.w-field { width: 100%; background: transparent; border: none; outline: none; color: white; font-family: var(--mono); font-size: 26px; font-weight: 700; }
+
+.slider {
+  width: 100%; height: 4px;
+  border-radius: 2px;
+  background: rgba(255,255,255,0.12);
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  margin-bottom: 8px;
+}
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  border: 3px solid rgba(0,0,0,0.3);
+}
+.slider.d::-webkit-slider-thumb { background: var(--yellow); }
+.slider.n::-webkit-slider-thumb { background: var(--red); }
+.slider.novoc::-webkit-slider-thumb { background: var(--purple); }
+.slider.furos::-webkit-slider-thumb { background: var(--green); }
 
 .inf-res {
   background: var(--glass-2);
   border: 2px solid var(--glass-border);
-  border-radius: var(--radius);
-  padding: 20px;
+  border-radius: 14px;
+  padding: 18px;
   text-align: center;
   margin-top: 4px;
-  transition: all 0.3s;
 }
 .inf-res.d { border-color: var(--yellow); background: rgba(255,214,10,0.06); }
 .inf-res.n { border-color: var(--red); background: rgba(255,69,58,0.06); }
 .inf-res.novoc { border-color: var(--purple); background: rgba(191,90,242,0.06); }
 .inf-res.furos { border-color: var(--green); background: rgba(48,209,88,0.06); }
-
-.inf-rate { font-family: var(--mono); font-size: 56px; font-weight: 700; line-height: 1; transition: color 0.3s; }
+.inf-rate { font-family: var(--mono); font-size: 52px; font-weight: 700; line-height: 1; }
 .inf-res.d .inf-rate { color: var(--yellow); }
 .inf-res.n .inf-rate { color: var(--red); }
 .inf-res.novoc .inf-rate { color: var(--purple); }
 .inf-res.furos .inf-rate { color: var(--green); }
-
-.inf-unit-lbl { font-size: 16px; font-weight: 500; color: var(--text-3); margin-top: 4px; font-family: var(--mono); }
+.inf-unit-lbl { font-size: 15px; color: var(--text-3); margin-top: 4px; font-family: var(--mono); }
 .inf-formula { font-size: 11px; color: var(--text-3); margin-top: 10px; font-family: var(--mono); line-height: 1.6; background: rgba(0,0,0,0.15); border-radius: 8px; padding: 8px; }
 .inf-warn { margin-top: 10px; font-size: 11px; color: var(--text-3); line-height: 1.5; white-space: pre-line; }
 
-/* Protocol box */
 .proto {
   margin-top: 12px;
   border-radius: 14px;
-  padding: 14px;
+  padding: 13px;
 }
-.proto-d { background: rgba(255,214,10,0.06); border: 1px solid rgba(255,214,10,0.25); }
-.proto-n { background: rgba(255,69,58,0.06); border: 1px solid rgba(255,69,58,0.25); }
-.proto-novoc { background: rgba(191,90,242,0.06); border: 1px solid rgba(191,90,242,0.25); }
-.proto-furos { background: rgba(48,209,88,0.06); border: 1px solid rgba(48,209,88,0.25); }
-
-.proto-title { font-size: 12px; font-weight: 700; margin-bottom: 10px; }
-.proto-title.d { color: var(--yellow); }
-.proto-title.n { color: var(--red); }
-.proto-title.novoc { color: var(--purple); }
-.proto-title.furos { color: var(--green); }
-
-.proto-body { display: flex; flex-direction: column; gap: 6px; font-size: 12px; color: var(--text-2); line-height: 1.6; }
+.proto.d { background: rgba(255,214,10,0.06); border: 1px solid rgba(255,214,10,0.25); }
+.proto.n { background: rgba(255,69,58,0.06); border: 1px solid rgba(255,69,58,0.25); }
+.proto.novoc { background: rgba(191,90,242,0.06); border: 1px solid rgba(191,90,242,0.25); }
+.proto.furos { background: rgba(48,209,88,0.06); border: 1px solid rgba(48,209,88,0.25); }
+.proto-ttl { font-size: 12px; font-weight: 700; margin-bottom: 10px; }
+.proto.d .proto-ttl { color: var(--yellow); }
+.proto.n .proto-ttl { color: var(--red); }
+.proto.novoc .proto-ttl { color: var(--purple); }
+.proto.furos .proto-ttl { color: var(--green); }
+.proto-row { font-size: 12px; color: var(--text-2); line-height: 1.6; margin-bottom: 5px; }
 .proto-row b.d { color: var(--yellow); }
 .proto-row b.n { color: var(--red); }
 .proto-row b.novoc { color: var(--purple); }
 .proto-row b.furos { color: var(--green); }
-
-.proto-mix { background: rgba(0,0,0,0.2); border-radius: 8px; padding: 8px 10px; font-family: var(--mono); font-size: 11px; }
-.proto-warn { background: rgba(255,69,58,0.1); border-radius: 8px; padding: 8px 10px; }
+.proto-mix { background: rgba(0,0,0,0.2); border-radius: 8px; padding: 8px 10px; font-family: var(--mono); font-size: 11px; margin: 5px 0; }
+.proto-warn { background: rgba(255,69,58,0.1); border-radius: 8px; padding: 7px 10px; margin: 5px 0; }
 .proto-warn b { color: var(--red); }
 
-/* CPR card */
-.cpr-main {
-  background: rgba(255,69,58,0.06);
-  border: 2px solid rgba(255,69,58,0.3);
-  border-radius: 20px;
-  padding: 24px;
-  text-align: center;
-  margin-bottom: 16px;
-}
-.cpr-main-lbl {
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--red);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-bottom: 8px;
-}
-.cpr-main-time {
-  font-family: var(--mono);
-  font-size: 64px;
-  font-weight: 700;
-  color: white;
-  line-height: 1;
-  letter-spacing: -0.02em;
-}
-.cpr-main-status {
-  font-size: 13px;
-  color: var(--text-3);
-  margin-top: 8px;
-}
-
-.cpr-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
-.cpr-mini {
-  border-radius: 16px;
-  padding: 14px;
-  text-align: center;
-  transition: all 0.3s;
-}
-.cpr-mini.epi { background: rgba(255,159,10,0.06); border: 1px solid rgba(255,159,10,0.3); }
-.cpr-mini.rhy { background: rgba(10,132,255,0.06); border: 1px solid rgba(10,132,255,0.3); }
-.cpr-mini-lbl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 5px; }
-.cpr-mini.epi .cpr-mini-lbl { color: var(--orange); }
-.cpr-mini.rhy .cpr-mini-lbl { color: var(--accent); }
-.cpr-mini-time { font-family: var(--mono); font-size: 32px; font-weight: 700; color: white; line-height: 1; }
-.cpr-mini-sub { font-size: 11px; color: var(--text-3); margin-top: 4px; }
-.cpr-mini-cnt { font-size: 10px; color: var(--text-3); margin-top: 2px; }
-.cpr-btn {
-  margin-top: 10px;
-  width: 100%;
-  padding: 8px;
-  border-radius: 8px;
-  font-family: var(--sans);
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  border: 1px solid transparent;
-}
-.cpr-btn.epi { background: rgba(255,159,10,0.15); border-color: rgba(255,159,10,0.4); color: var(--orange); }
-.cpr-btn.rhy { background: rgba(10,132,255,0.15); border-color: rgba(10,132,255,0.4); color: var(--accent); }
-.cpr-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-
-.cpr-amio {
-  background: rgba(191,90,242,0.06);
-  border: 1px solid rgba(191,90,242,0.25);
-  border-radius: 14px;
-  padding: 14px;
-  margin-bottom: 14px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.cpr-amio-btn {
-  padding: 10px 14px;
-  background: rgba(191,90,242,0.15);
-  border: 1px solid rgba(191,90,242,0.3);
-  border-radius: 10px;
-  color: var(--purple);
-  font-family: var(--sans);
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.cpr-log {
+/* Med card (medication reference) */
+.med-card {
   background: var(--glass-2);
   border: 1px solid var(--glass-border);
   border-radius: 14px;
   padding: 14px;
-  margin-bottom: 14px;
+  margin-bottom: 10px;
 }
-.cpr-log-list {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  max-height: 160px;
-  overflow-y: auto;
-}
-.cpr-log-empty {
-  font-size: 12px;
-  color: var(--text-3);
-  text-align: center;
-  padding: 10px;
-}
-
-.cpr-ctrl { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.cpr-start, .cpr-stop {
-  padding: 16px;
-  border: none;
-  border-radius: 14px;
-  font-family: var(--sans);
-  font-size: 16px;
-  font-weight: 700;
-  cursor: pointer;
-}
-.cpr-start { background: var(--red); color: white; box-shadow: 0 4px 20px rgba(255,69,58,0.4); }
-.cpr-stop { background: var(--glass-2); border: 1px solid var(--glass-border); color: var(--text-3); }
-.cpr-rosc {
-  display: block;
-  width: 100%;
-  margin-top: 10px;
-  padding: 14px;
-  background: rgba(48,209,88,0.1);
-  border: 1px solid rgba(48,209,88,0.3);
-  border-radius: 14px;
-  color: var(--green);
-  font-family: var(--sans);
+.med-name {
   font-size: 14px;
   font-weight: 700;
-  cursor: pointer;
+  color: white;
+  margin-bottom: 4px;
 }
-
-/* Reference items */
-.ref-cats {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 6px;
-  margin-bottom: 14px;
-}
-
-.ref-item {
-  background: var(--glass-2);
-  border: 1px solid var(--glass-border);
-  border-radius: 12px;
-  overflow: hidden;
-  margin-bottom: 6px;
-}
-.ref-item-hdr {
-  padding: 10px 14px;
-  background: rgba(255,255,255,0.03);
-  border-bottom: 1px solid var(--glass-border-2);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.ref-item-hdr.clickable { cursor: pointer; }
-.ref-item-hdr.clickable:active { background: rgba(255,255,255,0.06); }
-.ref-item-name { font-size: 11px; font-weight: 700; color: var(--accent); }
-.ref-row { padding: 9px 14px; display: flex; justify-content: space-between; border-bottom: 1px solid var(--glass-border-2); }
-.ref-row:last-child { border-bottom: none; }
-.ref-row-lbl { font-size: 12px; color: var(--text-3); }
-.ref-row-val { font-family: var(--mono); font-size: 12px; font-weight: 700; color: white; }
-.ref-note { padding: 7px 14px; background: rgba(255,255,255,0.02); font-size: 11px; color: var(--text-3); }
-.ref-note.crit { background: rgba(255,69,58,0.05); color: var(--red); }
-
-/* Detail card */
-.detail {
-  background: var(--glass);
-  border: 1px solid var(--glass-border);
-  border-radius: 18px;
-  padding: 16px;
-  margin-bottom: 16px;
-  backdrop-filter: var(--blur);
-  -webkit-backdrop-filter: var(--blur);
-}
-.detail-title { font-size: 16px; font-weight: 700; color: white; margin-bottom: 4px; }
-.detail-sub { font-size: 11px; color: var(--accent); font-family: var(--mono); margin-bottom: 14px; }
-.detail-section { margin-bottom: 14px; }
-.detail-section-title {
+.med-class {
   font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin-bottom: 8px;
+  color: var(--accent);
+  font-family: var(--mono);
+  margin-bottom: 10px;
 }
-.detail-list { display: flex; flex-direction: column; gap: 5px; }
-.detail-list-item {
+.med-row {
   display: flex;
   gap: 8px;
   font-size: 12px;
   color: var(--text-2);
-  line-height: 1.4;
+  line-height: 1.5;
+  margin-bottom: 5px;
 }
-.detail-list-item span:first-child { flex-shrink: 0; }
-.detail-block {
+.med-row b { color: var(--text-3); min-width: 110px; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; }
+.med-mech {
+  background: rgba(94,92,230,0.06);
+  border: 1px solid rgba(94,92,230,0.15);
   border-radius: 10px;
-  padding: 10px 12px;
-  font-size: 12px;
+  padding: 9px 11px;
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--text-3);
   line-height: 1.5;
 }
-.detail-block-title { font-size: 11px; font-weight: 700; margin-bottom: 4px; }
+.med-mech b { color: #a78bfa; }
 
-/* Sticky bottom nav */
-.bnav {
-  position: fixed;
-  bottom: 0; left: 0; right: 0;
-  background: rgba(0,0,8,0.95);
-  backdrop-filter: var(--blur);
-  -webkit-backdrop-filter: var(--blur);
-  border-top: 1px solid var(--glass-border);
-  padding: 8px 16px calc(8px + var(--safe-bot));
-  z-index: 20;
-}
-.bnav-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  gap: 4px;
-  max-width: 560px;
-  margin: 0 auto;
-}
-.bnav-btn {
+.med-cat-tabs {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-  padding: 8px 4px;
-  background: transparent;
-  border: none;
-  color: var(--text-3);
+  gap: 6px;
+  margin-bottom: 14px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+.med-cat-tab {
+  padding: 8px 14px;
+  border: 1px solid var(--glass-border);
+  border-radius: 100px;
+  background: var(--glass-2);
+  color: var(--text-2);
   font-family: var(--sans);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 600;
   cursor: pointer;
-  border-radius: 10px;
-  transition: all 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
-.bnav-btn.active { color: var(--accent); background: rgba(10,132,255,0.1); }
-.bnav-ico { font-size: 20px; line-height: 1; }
+.med-cat-tab.on { background: var(--accent); border-color: var(--accent); color: white; }
+
 </style>
 </head>
 <body>
 
 <!-- HEADER -->
 <div class="hdr">
-  <div class="hdr-row">
-    <div class="logo">
-      <div class="logo-cross"></div>
-      <div class="logo-103">103</div>
-    </div>
-    <div class="hdr-title">
+  <div class="hdr-badge">СМП · Клинические шкалы</div>
+  <div class="hdr-title-row">
+    <div class="logo"><div class="logo-103">103</div></div>
+    <div>
       <div class="hdr-name">МедШкалы СМП</div>
-      <div class="hdr-sub" id="hdr-sub">Клинический калькулятор · v2.0</div>
     </div>
-    <div class="hdr-status">ОНЛАЙН</div>
   </div>
-  <div class="search-wrap" id="search-wrap">
-    <span class="search-ico">⌕</span>
-    <input class="search" id="search" type="text" placeholder="Поиск шкалы или калькулятора...">
-  </div>
+  <div class="hdr-sub">Прогностические шкалы · Расчёты · Нормы</div>
 </div>
 
 <div class="wrap">
 
-<!-- HOME SCREEN -->
-<div id="screen-home"></div>
-
-<!-- SUBCATEGORY SCREEN -->
-<div id="screen-sub" style="display:none;"></div>
-
-<!-- TOOL SCREEN -->
-<div id="screen-tool" style="display:none;"></div>
-
-</div>
-
-<!-- BOTTOM NAV -->
-<div class="bnav">
-  <div class="bnav-row">
-    <button class="bnav-btn active" id="bnav-home" onclick="goHome()">
-      <div class="bnav-ico">⌂</div>
-      <div>Главная</div>
-    </button>
-    <button class="bnav-btn" id="bnav-fav" onclick="goCategory('emergency')">
-      <div class="bnav-ico">⚡</div>
-      <div>Экстренно</div>
-    </button>
-    <button class="bnav-btn" id="bnav-ped" onclick="goCategory('peds')">
-      <div class="bnav-ico">⚕</div>
-      <div>Педиатрия</div>
-    </button>
-    <button class="bnav-btn" id="bnav-ref" onclick="goCategory('ref')">
-      <div class="bnav-ico">⚐</div>
-      <div>Справочник</div>
-    </button>
+<!-- NAVIGATION -->
+<div class="nav">
+  <div class="nav-cat">
+    <div class="nav-cat-label">Оценка тяжести</div>
+    <div class="nav-row">
+      <button class="tab active" onclick="goTab('qsofa')">qSOFA</button>
+      <button class="tab" onclick="goTab('news')">NEWS2</button>
+      <button class="tab" onclick="goTab('gcs')">GCS</button>
+      <button class="tab" onclick="goTab('rass')">RASS</button>
+    </div>
+  </div>
+  <div class="nav-divider"></div>
+  <div class="nav-cat">
+    <div class="nav-cat-label">Диагностика</div>
+    <div class="nav-row">
+      <button class="tab" onclick="goTab('wells')">Wells ТЭЛА</button>
+      <button class="tab" onclick="goTab('alg')">Альговер</button>
+      <button class="tab" onclick="goTab('cpss')">Инсульт</button>
+      <button class="tab" onclick="goTab('grace')">GRACE</button>
+      <button class="tab" onclick="goTab('alv')">Альварадо</button>
+    </div>
+  </div>
+  <div class="nav-divider"></div>
+  <div class="nav-cat">
+    <div class="nav-cat-label">Лечение и расчёты</div>
+    <div class="nav-row">
+      <button class="tab" onclick="goTab('inf')">Инфузомат</button>
+      <button class="tab" onclick="goTab('ped')">Педиатрия</button>
+      <button class="tab" onclick="goTab('ivl')">ИВЛ 4/40</button>
+      <button class="tab" onclick="goTab('cpr')">СЛР Таймер</button>
+    </div>
+  </div>
+  <div class="nav-divider"></div>
+  <div class="nav-cat">
+    <div class="nav-cat-label">Препараты СМП</div>
+    <div class="nav-row">
+      <button class="tab" onclick="goTab('meds')">Препараты</button>
+    </div>
+  </div>
+  <div class="nav-divider"></div>
+  <div class="nav-cat">
+    <div class="nav-cat-label">Антропометрия</div>
+    <div class="nav-row">
+      <button class="tab" onclick="goTab('bmi')">ИМТ</button>
+      <button class="tab" onclick="goTab('norms')">Нормы детей</button>
+    </div>
   </div>
 </div>
 
-<script>
-
-// === core.js ===
-// ===== АРХИТЕКТУРА ПРИЛОЖЕНИЯ =====
-// Каждый инструмент = объект с методами render() и calc()
-// Навигация: home → category → tool
-
-// ===== SOUND SYSTEM =====
-var sndCtx = null;
-function getSnd() {
-  if (!sndCtx) { try { sndCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {} }
-  return sndCtx;
-}
-function playTone(f, d, v, t) {
-  var ctx = getSnd(); if (!ctx) return;
-  try {
-    var o = ctx.createOscillator(), g = ctx.createGain();
-    o.connect(g); g.connect(ctx.destination);
-    o.type = t || 'sine'; o.frequency.value = f;
-    var n = ctx.currentTime;
-    g.gain.setValueAtTime(v || 0.08, n);
-    g.gain.exponentialRampToValueAtTime(0.0001, n + (d || 0.12));
-    o.start(n); o.stop(n + (d || 0.12));
-  } catch(e) {}
-}
-function sndTap() { playTone(520, 0.06, 0.06); }
-function sndOn() { playTone(440, 0.08, 0.07); setTimeout(function(){playTone(660,0.12,0.06);},60); }
-function sndOff() { playTone(440, 0.08, 0.05); setTimeout(function(){playTone(330,0.10,0.04);},60); }
-function sndNav() { playTone(880, 0.08, 0.05); setTimeout(function(){playTone(1100,0.12,0.04);},50); }
-function sndReset() { playTone(660,0.07,0.05); setTimeout(function(){playTone(550,0.07,0.05);},80); setTimeout(function(){playTone(440,0.10,0.04);},160); }
-function sndWarn() { playTone(440, 0.1, 0.07, 'triangle'); setTimeout(function(){playTone(370,0.15,0.06,'triangle');},120); }
-
-document.addEventListener('touchstart', function init() {
-  getSnd(); document.removeEventListener('touchstart', init);
-}, {once: true});
-
-// ===== CATEGORIES =====
-var CATEGORIES = {
-  emergency: {
-    title: 'Экстренная помощь',
-    desc: 'СЛР, дефибрилляция, инфузомат',
-    icon: '⚡',
-    color: 'cat-emergency',
-    tools: ['cpr','defib','infusomat']
-  },
-  assess: {
-    title: 'Оценка тяжести',
-    desc: 'qSOFA, NEWS2, шкалы ком',
-    icon: '◉',
-    color: 'cat-assess',
-    tools: ['qsofa','news2','gcs','rass','shoks','dn']
-  },
-  diag: {
-    title: 'Диагностика',
-    desc: 'ТЭЛА, инсульт, ОКС, аппендицит',
-    icon: '◈',
-    color: 'cat-diag',
-    tools: ['wells','cpss','grace','alvarado','algover']
-  },
-  peds: {
-    title: 'Педиатрия',
-    desc: 'Дозировки, нормы, реанимация',
-    icon: '⚕',
-    color: 'cat-peds',
-    tools: ['ped_dose','ped_norms','ped_defib','gcs_ped']
-  },
-  calc: {
-    title: 'Расчёты и шкалы',
-    desc: 'ИМТ, ИВЛ, FOUR',
-    icon: '∑',
-    color: 'cat-calc',
-    tools: ['bmi','ivl','four']
-  },
-  ref: {
-    title: 'Справочники',
-    desc: 'Анализы, растворы, классификации',
-    icon: '⚐',
-    color: 'cat-ref',
-    tools: ['ref_class','ref_labs','ref_infusion']
-  }
-};
-
-// ===== TOOLS REGISTRY (will be filled by tools-*.js) =====
-var TOOLS = {};
-
-// ===== ROUTING =====
-var currentScreen = 'home';
-var currentCategory = null;
-var currentTool = null;
-
-function goHome() {
-  sndNav();
-  currentScreen = 'home';
-  currentCategory = null;
-  currentTool = null;
-  renderHome();
-  updateBnav('home');
-  document.getElementById('hdr-sub').textContent = 'Клинический калькулятор · v2.0';
-}
-
-function goCategory(catId) {
-  sndNav();
-  currentScreen = 'category';
-  currentCategory = catId;
-  currentTool = null;
-  renderCategory(catId);
-  updateBnav(catId);
-  var cat = CATEGORIES[catId];
-  if (cat) document.getElementById('hdr-sub').textContent = cat.title;
-}
-
-function goTool(toolId) {
-  sndNav();
-  currentScreen = 'tool';
-  currentTool = toolId;
-  renderTool(toolId);
-  var tool = TOOLS[toolId];
-  if (tool) document.getElementById('hdr-sub').textContent = tool.title;
-  window.scrollTo({top: 0, behavior: 'smooth'});
-}
-
-function updateBnav(active) {
-  document.getElementById('bnav-home').classList.toggle('active', active === 'home');
-  document.getElementById('bnav-fav').classList.toggle('active', active === 'emergency');
-  document.getElementById('bnav-ped').classList.toggle('active', active === 'peds');
-  document.getElementById('bnav-ref').classList.toggle('active', active === 'ref');
-}
-
-function showScreen(name) {
-  document.getElementById('screen-home').style.display = name === 'home' ? 'block' : 'none';
-  document.getElementById('screen-sub').style.display = name === 'sub' ? 'block' : 'none';
-  document.getElementById('screen-tool').style.display = name === 'tool' ? 'block' : 'none';
-}
-
-// ===== RENDER HOME =====
-function renderHome() {
-  try {
-    showScreen('home');
-    var html = '<div class="cat-grid">';
-    var count = 0;
-    for (var key in CATEGORIES) {
-      var cat = CATEGORIES[key];
-      html += '<div class="cat-card ' + cat.color + '" onclick="goCategory(\'' + key + '\')">';
-      html += '<div class="cat-icon">' + cat.icon + '</div>';
-      html += '<div class="cat-title">' + cat.title + '</div>';
-      html += '<div class="cat-desc">' + cat.desc + '</div>';
-      html += '<div class="cat-count">' + cat.tools.length + ' инструментов</div>';
-      html += '</div>';
-      count++;
-    }
-    html += '</div>';
-    if (count === 0) {
-      html = '<div style="padding:20px;color:#ff3b30;font-family:monospace;font-size:12px;">renderHome: CATEGORIES пустые! count=0</div>';
-    }
-    var el = document.getElementById('screen-home');
-    if (!el) {
-      document.body.innerHTML = '<div style="padding:20px;color:#ff3b30;">screen-home element not found</div>';
-      return;
-    }
-    el.innerHTML = html;
-  } catch(e) {
-    var el = document.getElementById('screen-home');
-    if (el) {
-      el.innerHTML = '<div style="padding:20px;color:#ff3b30;font-family:monospace;font-size:11px;">renderHome ERROR: ' + e.message + '\n' + (e.stack || '') + '</div>';
-    }
-  }
-}
-
-// ===== RENDER CATEGORY =====
-function renderCategory(catId) {
-  showScreen('sub');
-  var cat = CATEGORIES[catId];
-  var html = '<div class="sub-back" onclick="goHome()"><span>‹</span><span>Главная</span></div>';
-  html += '<h2 style="font-size:24px;font-weight:700;color:white;margin-bottom:4px;letter-spacing:-0.02em;">' + cat.title + '</h2>';
-  html += '<p style="font-size:13px;color:var(--text-3);margin-bottom:18px;">' + cat.desc + '</p>';
-  html += '<div class="sub-list">';
-  for (var i = 0; i < cat.tools.length; i++) {
-    var toolId = cat.tools[i];
-    var tool = TOOLS[toolId];
-    if (!tool) continue;
-    html += '<div class="sub-item" onclick="goTool(\'' + toolId + '\')">';
-    html += '<div class="sub-icon">' + (tool.abbr || '◉') + '</div>';
-    html += '<div class="sub-content">';
-    html += '<div class="sub-title">' + tool.title + '</div>';
-    html += '<div class="sub-desc">' + (tool.short || '') + '</div>';
-    html += '</div>';
-    html += '<div class="sub-arrow">›</div>';
-    html += '</div>';
-  }
-  html += '</div>';
-  document.getElementById('screen-sub').innerHTML = html;
-}
-
-// ===== RENDER TOOL =====
-function renderTool(toolId) {
-  showScreen('tool');
-  var tool = TOOLS[toolId];
-  if (!tool) {
-    document.getElementById('screen-tool').innerHTML = '<div class="tool"><div class="tool-title">Не найдено</div></div>';
-    return;
-  }
-
-  var backTarget = currentCategory ? 'goCategory(\'' + currentCategory + '\')' : 'goHome()';
-  var backLabel = currentCategory ? CATEGORIES[currentCategory].title : 'Главная';
-
-  var html = '<div class="sub-back" onclick="' + backTarget + '"><span>‹</span><span>' + backLabel + '</span></div>';
-  html += '<div class="tool">';
-  html += '<div class="tool-title">' + tool.title + '</div>';
-  if (tool.subtitle) html += '<div class="tool-sub">' + tool.subtitle + '</div>';
-  if (tool.desc) html += '<div class="tool-desc">' + tool.desc + '</div>';
-  if (tool.info) {
-    html += '<div class="info"><div class="info-ico">ℹ</div><div class="info-text">' + tool.info + '</div></div>';
-  }
-  html += tool.render();
-  html += '</div>';
-  document.getElementById('screen-tool').innerHTML = html;
-
-  if (tool.init) tool.init();
-}
-
-// ===== SEARCH =====
-function attachSearch() {
-  var s = document.getElementById('search');
-  if (!s) return;
-  s.addEventListener('input', function(e) {
-  var q = e.target.value.toLowerCase().trim();
-  if (!q) {
-    if (currentScreen === 'home') renderHome();
-    else if (currentScreen === 'category') renderCategory(currentCategory);
-    return;
-  }
-  var matches = [];
-  for (var key in TOOLS) {
-    var tool = TOOLS[key];
-    var searchText = (tool.title + ' ' + (tool.short || '') + ' ' + (tool.abbr || '') + ' ' + (tool.keywords || '')).toLowerCase();
-    if (searchText.indexOf(q) !== -1) matches.push(key);
-  }
-  showScreen('sub');
-  var html = '<div class="sub-back" onclick="document.getElementById(\'search\').value=\'\';goHome()"><span>‹</span><span>Очистить поиск</span></div>';
-  html += '<h2 style="font-size:18px;font-weight:700;color:white;margin-bottom:12px;">Найдено: ' + matches.length + '</h2>';
-  if (matches.length === 0) {
-    html += '<div style="color:var(--text-3);font-size:13px;text-align:center;padding:30px;">Ничего не найдено по запросу "' + q + '"</div>';
-  } else {
-    html += '<div class="sub-list">';
-    for (var i = 0; i < matches.length; i++) {
-      var tool = TOOLS[matches[i]];
-      html += '<div class="sub-item" onclick="document.getElementById(\'search\').value=\'\';goTool(\'' + matches[i] + '\')">';
-      html += '<div class="sub-icon">' + (tool.abbr || '◉') + '</div>';
-      html += '<div class="sub-content">';
-      html += '<div class="sub-title">' + tool.title + '</div>';
-      html += '<div class="sub-desc">' + (tool.short || '') + '</div>';
-      html += '</div><div class="sub-arrow">›</div></div>';
-    }
-    html += '</div>';
-  }
-  document.getElementById('screen-sub').innerHTML = html;
-  });
-}
-
-// ===== INIT =====
-function initApp() {
-  attachSearch();
-  renderHome();
-}
-
-
-// === tools-assess.js ===
-// ===== ШКАЛЫ ОЦЕНКИ ТЯЖЕСТИ =====
-
-// ---------- qSOFA ----------
-TOOLS.qsofa = {
-  title: 'qSOFA — Экспресс-сепсис',
-  abbr: 'qS',
-  subtitle: 'Quick Sequential Organ Failure Assessment',
-  short: '3 критерия. ≥2 баллов — высокий риск сепсиса',
-  desc: 'Прикроватный тест для выявления риска органной дисфункции при подозрении на инфекцию. Не требует анализов.',
-  keywords: 'сепсис sepsis инфекция',
-  scores: {},
-
-  render: function() {
-    var crits = [
-      {id:'rr', txt:'ЧДД ≥ 22 в минуту', hint:'Считать 30 сек × 2', val:1},
-      {id:'sbp', txt:'АД систолическое ≤ 100 мм рт.ст.', hint:'По тонометру, любая рука', val:1},
-      {id:'gcs', txt:'Нарушение сознания (GCS < 15)', hint:'Дезориентация, заторможенность', val:1}
-    ];
-    var html = '<div class="crit-list">';
-    for (var i = 0; i < crits.length; i++) {
-      var c = crits[i];
-      html += '<div class="crit" id="qsofa-' + c.id + '" onclick="TOOLS.qsofa.toggle(\'' + c.id + '\',' + c.val + ')">';
-      html += '<div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div>';
-      html += '<div><div class="crit-txt">' + c.txt + '</div><div class="crit-hint">' + c.hint + '</div></div></div>';
-      html += '<div class="cbadge">+' + c.val + '</div></div>';
-    }
-    html += '</div>';
-    html += '<div class="res" id="qsofa-res"><div class="res-score" id="qsofa-sc">0</div>';
-    html += '<div class="res-lbl" id="qsofa-lb">Баллов</div>';
-    html += '<div class="res-act" id="qsofa-ac">Отметьте имеющиеся критерии</div></div>';
-    html += '<button class="reset" onclick="TOOLS.qsofa.reset()">Сбросить</button>';
-    return html;
-  },
-
-  toggle: function(id, val) {
-    var el = document.getElementById('qsofa-' + id);
-    el.classList.toggle('on');
-    this.scores[id] = el.classList.contains('on') ? val : 0;
-    if (el.classList.contains('on')) sndOn(); else sndOff();
-    this.calc();
-  },
-
-  calc: function() {
-    var t = (this.scores.rr || 0) + (this.scores.sbp || 0) + (this.scores.gcs || 0);
-    document.getElementById('qsofa-sc').textContent = t;
-    var r = document.getElementById('qsofa-res');
-    var lb = document.getElementById('qsofa-lb');
-    var ac = document.getElementById('qsofa-ac');
-    if (t === 0) { r.className = 'res low'; lb.textContent = 'Низкий риск'; ac.textContent = 'Продолжить клиническую оценку'; }
-    else if (t === 1) { r.className = 'res med'; lb.textContent = 'Наблюдение'; ac.textContent = 'Переоценка через 30-60 мин'; }
-    else { r.className = 'res hi'; lb.textContent = 'ТРЕВОГА — высокий риск сепсиса'; ac.textContent = 'Госпитализация. Антибиотики < 1 ч, инфузия 30 мл/кг.'; if (t >= 2) sndWarn(); }
-  },
-
-  reset: function() {
-    sndReset();
-    this.scores = {};
-    ['rr','sbp','gcs'].forEach(function(id) { document.getElementById('qsofa-' + id).classList.remove('on'); });
-    this.calc();
-  },
-
-  init: function() { this.scores = {}; this.calc(); }
-};
-
-// ---------- NEWS2 ----------
-TOOLS.news2 = {
-  title: 'NEWS2 — Раннее предупреждение',
-  abbr: 'N2',
-  subtitle: 'National Early Warning Score 2 (RCP 2017)',
-  short: '7 параметров. ≥7 — реанимационная бригада',
-  desc: 'Раннее выявление клинического ухудшения по витальным показателям. Стандарт NHS Великобритании.',
-  keywords: 'витальные раннее ухудшение',
-
-  scoreRR: function(v) { return v<=8?3 : v<=11?1 : v<=20?0 : v<=24?2 : 3; },
-  scoreSpO2: function(v) { return v<=91?3 : v<=93?2 : v<=95?1 : 0; },
-  scoreSBP: function(v) { return v<=90?3 : v<=100?2 : v<=110?1 : v<=219?0 : 3; },
-  scoreHR: function(v) { return v<=40?3 : v<=50?1 : v<=90?0 : v<=110?1 : v<=130?2 : 3; },
-  scoreT: function(v) { return v<=35?3 : v<=36?1 : v<=38?0 : v<=39?1 : 2; },
-
-  render: function() {
-    var html = '<div class="inp-grid">';
-    html += this.inputField('rr', 'ЧДД', 'в мин', '16');
-    html += this.inputField('spo2', 'SpO2', '%', '98');
-    html += '</div><div class="inp-grid">';
-    html += this.inputField('sbp', 'АД сист.', 'мм рт.ст.', '120');
-    html += this.inputField('hr', 'ЧСС', 'уд/мин', '70');
-    html += '</div><div class="inp-grid">';
-    html += this.inputField('t', 'Температура', '°C', '36.6', '0.1');
-    html += '<div class="inp-grp" style="display:flex;flex-direction:column;justify-content:center;"><div class="inp-lbl">Сознание</div>';
-    html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:4px;">';
-    html += '<button class="con-btn on" id="news2-a" onclick="TOOLS.news2.setCon(\'a\')" style="padding:6px;font-size:11px;">A</button>';
-    html += '<button class="con-btn" id="news2-v" onclick="TOOLS.news2.setCon(\'v\')" style="padding:6px;font-size:11px;">V/P/U</button>';
-    html += '</div></div></div>';
-    html += '<div class="res" id="news2-res"><div class="res-score" id="news2-sc">0</div>';
-    html += '<div class="res-lbl" id="news2-lb">Баллов NEWS2</div>';
-    html += '<div class="res-act" id="news2-ac">Введите витальные показатели</div></div>';
-    html += '<button class="reset" onclick="TOOLS.news2.reset()">Сбросить</button>';
-    return html;
-  },
-
-  inputField: function(id, lbl, unit, ph, step) {
-    return '<div class="inp-grp"><div class="inp-lbl">' + lbl + ' <span class="inp-unit">' + unit + '</span></div>' +
-      '<input class="inp-f" type="number" id="news2-' + id + '" inputmode="decimal" placeholder="' + ph + '"' + (step ? ' step="' + step + '"' : '') + ' oninput="TOOLS.news2.calc()">' +
-      '<div class="inp-sc" id="news2-' + id + '-s"></div></div>';
-  },
-
-  setCon: function(s) {
-    sndTap();
-    document.getElementById('news2-a').classList.toggle('on', s === 'a');
-    document.getElementById('news2-v').classList.toggle('on', s === 'v');
-    this.consc = s === 'v' ? 3 : 0;
-    this.calc();
-  },
-
-  calc: function() {
-    var rr = parseFloat(document.getElementById('news2-rr').value);
-    var spo2 = parseFloat(document.getElementById('news2-spo2').value);
-    var sbp = parseFloat(document.getElementById('news2-sbp').value);
-    var hr = parseFloat(document.getElementById('news2-hr').value);
-    var t = parseFloat(document.getElementById('news2-t').value);
-    var consc = this.consc || 0;
-
-    var total = 0, anyInput = false;
-    var setScore = function(id, val) {
-      var el = document.getElementById('news2-' + id + '-s');
-      el.textContent = isNaN(val) ? '' : '+' + val;
-      el.style.color = val >= 3 ? 'var(--red)' : val >= 1 ? 'var(--orange)' : 'var(--green)';
-    };
-    if (!isNaN(rr))   { var s = this.scoreRR(rr);   total += s; setScore('rr', s); anyInput = true; } else setScore('rr', NaN);
-    if (!isNaN(spo2)) { var s = this.scoreSpO2(spo2); total += s; setScore('spo2', s); anyInput = true; } else setScore('spo2', NaN);
-    if (!isNaN(sbp))  { var s = this.scoreSBP(sbp); total += s; setScore('sbp', s); anyInput = true; } else setScore('sbp', NaN);
-    if (!isNaN(hr))   { var s = this.scoreHR(hr); total += s; setScore('hr', s); anyInput = true; } else setScore('hr', NaN);
-    if (!isNaN(t))    { var s = this.scoreT(t); total += s; setScore('t', s); anyInput = true; } else setScore('t', NaN);
-    total += consc;
-
-    document.getElementById('news2-sc').textContent = total;
-    var r = document.getElementById('news2-res');
-    var ac = document.getElementById('news2-ac');
-    if (!anyInput) { r.className = 'res'; ac.textContent = 'Введите витальные показатели'; }
-    else if (total <= 4) { r.className = 'res low'; ac.textContent = 'Низкий риск. Минимум каждые 12 ч мониторинг.'; }
-    else if (total <= 6) { r.className = 'res med'; ac.textContent = 'Средний риск. Срочная оценка врача. Мониторинг каждый час.'; }
-    else { r.className = 'res hi'; ac.textContent = 'ВЫСОКИЙ РИСК! Вызов реанимационной бригады. Непрерывный мониторинг.'; sndWarn(); }
-  },
-
-  reset: function() {
-    sndReset();
-    ['rr','spo2','sbp','hr','t'].forEach(function(id) {
-      document.getElementById('news2-' + id).value = '';
-      document.getElementById('news2-' + id + '-s').textContent = '';
-    });
-    this.setCon('a');
-  },
-
-  init: function() { this.consc = 0; this.calc(); }
-};
-
-// ---------- GCS (взрослые + дети + FOUR) ----------
-TOOLS.gcs = {
-  title: 'Шкалы оценки сознания',
-  abbr: 'GC',
-  subtitle: 'GCS взрослые · GCS дети · FOUR',
-  short: 'Glasgow Coma Scale и FOUR Score',
-  desc: 'Норма GCS = 15. Интубация при GCS ≤ 8. FOUR — для интубированных и ареактивных пациентов.',
-  keywords: 'кома сознание глазго four',
-
-  render: function() {
-    var html = '<div class="con-grid-3">';
-    html += '<button class="con-btn on" id="gcs-tab-adult" onclick="TOOLS.gcs.tab(\'adult\')" style="font-size:11px;">Взрослые</button>';
-    html += '<button class="con-btn" id="gcs-tab-ped" onclick="TOOLS.gcs.tab(\'ped\')" style="font-size:11px;">Дети</button>';
-    html += '<button class="con-btn" id="gcs-tab-four" onclick="TOOLS.gcs.tab(\'four\')" style="font-size:11px;">FOUR</button>';
-    html += '</div>';
-
-    // Adult
-    html += '<div id="gcs-pane-adult">';
-    html += '<div class="gcs-sec"><div class="gcs-ttl">E — Открывание глаз</div>';
-    html += '<select class="gcs-sel" id="gcs-a-e" onchange="TOOLS.gcs.calcAdult()">';
-    html += '<option value="4">4 — Спонтанное</option><option value="3">3 — На голос</option>';
-    html += '<option value="2">2 — На боль</option><option value="1">1 — Отсутствует</option></select></div>';
-    html += '<div class="gcs-sec"><div class="gcs-ttl">V — Речевая реакция</div>';
-    html += '<select class="gcs-sel" id="gcs-a-v" onchange="TOOLS.gcs.calcAdult()">';
-    html += '<option value="5">5 — Ориентирован</option><option value="4">4 — Спутанная речь</option>';
-    html += '<option value="3">3 — Отдельные слова</option><option value="2">2 — Нечленораздельно</option>';
-    html += '<option value="1">1 — Отсутствует</option></select></div>';
-    html += '<div class="gcs-sec"><div class="gcs-ttl">M — Двигательная реакция</div>';
-    html += '<select class="gcs-sel" id="gcs-a-m" onchange="TOOLS.gcs.calcAdult()">';
-    html += '<option value="6">6 — Выполняет команды</option><option value="5">5 — Локализует боль</option>';
-    html += '<option value="4">4 — Отдёргивает</option><option value="3">3 — Патол. сгибание (декортикация)</option>';
-    html += '<option value="2">2 — Патол. разгибание (децеребрация)</option><option value="1">1 — Отсутствует</option></select></div>';
-    html += '<div class="res" id="gcs-a-res"><div class="res-score" id="gcs-a-sc">15</div>';
-    html += '<div class="res-lbl" id="gcs-a-lb">E4 + V5 + M6</div>';
-    html += '<div class="res-act" id="gcs-a-ac">Сознание ясное</div></div>';
-    html += this.interp([
-      ['15', 'Норма', 'var(--green)'],
-      ['13-14', 'Лёгкое оглушение', 'var(--green)'],
-      ['11-12', 'Глубокое оглушение', 'var(--orange)'],
-      ['8-10', 'Сопор', 'var(--orange)'],
-      ['6-7', 'Умеренная кома', 'var(--red)'],
-      ['4-5', 'Глубокая кома', 'var(--red)'],
-      ['3', 'Запредельная кома', 'var(--red)']
-    ]);
-    html += '<button class="reset" onclick="TOOLS.gcs.resetAdult()">Сбросить</button>';
-    html += '</div>';
-
-    // Ped (hidden initially)
-    html += '<div id="gcs-pane-ped" style="display:none;">';
-    html += '<div class="info"><div class="info-ico">⚕</div><div class="info-text">Для детей младше 4 лет. Отличается только вербальным компонентом V.</div></div>';
-    html += '<div class="gcs-sec"><div class="gcs-ttl">E — Открывание глаз</div>';
-    html += '<select class="gcs-sel" id="gcs-p-e" onchange="TOOLS.gcs.calcPed()">';
-    html += '<option value="4">4 — Произвольное</option><option value="3">3 — На голос</option>';
-    html += '<option value="2">2 — На боль</option><option value="1">1 — Отсутствует</option></select></div>';
-    html += '<div class="gcs-sec"><div class="gcs-ttl">V — Вербальная (детская)</div>';
-    html += '<select class="gcs-sel" id="gcs-p-v" onchange="TOOLS.gcs.calcPed()">';
-    html += '<option value="5">5 — Улыбается, следит, интерактивен</option>';
-    html += '<option value="4">4 — При плаче успокаивается, неполная интерактивность</option>';
-    html += '<option value="3">3 — Успокаивается ненадолго, стонет</option>';
-    html += '<option value="2">2 — Не успокаивается, беспокоен</option>';
-    html += '<option value="1">1 — Плач и интерактивность отсутствуют</option></select></div>';
-    html += '<div class="gcs-sec"><div class="gcs-ttl">M — Двигательная реакция</div>';
-    html += '<select class="gcs-sel" id="gcs-p-m" onchange="TOOLS.gcs.calcPed()">';
-    html += '<option value="6">6 — Выполнение по команде</option><option value="5">5 — Целенаправленное на боль</option>';
-    html += '<option value="4">4 — Отдёргивание</option><option value="3">3 — Патол. сгибание</option>';
-    html += '<option value="2">2 — Патол. разгибание</option><option value="1">1 — Нет движений</option></select></div>';
-    html += '<div class="res" id="gcs-p-res"><div class="res-score" id="gcs-p-sc">15</div>';
-    html += '<div class="res-lbl" id="gcs-p-lb">E4 + V5 + M6</div>';
-    html += '<div class="res-act" id="gcs-p-ac">Сознание ясное</div></div>';
-    html += '<button class="reset" onclick="TOOLS.gcs.resetPed()">Сбросить</button>';
-    html += '</div>';
-
-    // FOUR (hidden initially)
-    html += '<div id="gcs-pane-four" style="display:none;">';
-    html += '<div class="info"><div class="info-ico">⚕</div><div class="info-text">4 компонента по 4 балла. Макс. 16. B0 + R0 = критерии смерти мозга.</div></div>';
-    html += this.fourCard('e', 'E — Реакция глаз', [
-      [4, 'Открыты, слежение / мигание по команде'],
-      [3, 'Открыты, нет слежения'],
-      [2, 'Закрыты, открываются на голос'],
-      [1, 'Закрыты, открываются на боль'],
-      [0, 'Остаются закрытыми на боль']
-    ]);
-    html += this.fourCard('m', 'M — Двигательная реакция', [
-      [4, 'Большой палец / кулак / знак мира по команде'],
-      [3, 'Локализует боль'],
-      [2, 'Сгибательная реакция на боль'],
-      [1, 'Разгибательная реакция на боль'],
-      [0, 'Нет реакции / эпи-статус']
-    ]);
-    html += this.fourCard('b', 'B — Стволовые рефлексы', [
-      [4, 'Зрачковый И роговичный сохранены'],
-      [3, 'Один зрачок расширен, не реагирует'],
-      [2, 'Нет зрачкового ИЛИ роговичного'],
-      [1, 'Нет зрачкового И роговичного'],
-      [0, 'Нет зрачкового, роговичного И кашлевого']
-    ]);
-    html += this.fourCard('r', 'R — Дыхание', [
-      [4, 'Регулярное, не интубирован'],
-      [3, 'Чейна-Стокса, не интубирован'],
-      [2, 'Нерегулярное, не интубирован'],
-      [1, 'На ИВЛ, есть попытки дыхания'],
-      [0, 'На ИВЛ, нет попыток / апноэ']
-    ]);
-    html += '<div class="res" id="gcs-f-res"><div class="res-score" id="gcs-f-sc">16</div>';
-    html += '<div class="res-lbl" id="gcs-f-lb">E4 + M4 + B4 + R4</div>';
-    html += '<div class="res-act" id="gcs-f-ac">Норма</div></div>';
-    html += '<div style="background:rgba(255,69,58,0.06);border:1px solid rgba(255,69,58,0.2);border-radius:10px;padding:10px 12px;font-size:11px;color:var(--text-3);margin-bottom:14px;">';
-    html += '<span style="color:var(--red);font-weight:700;">B0 + R0</span> = критерии смерти мозга (требует подтверждения протоколом)</div>';
-    html += '<button class="reset" onclick="TOOLS.gcs.resetFour()">Сбросить</button>';
-    html += '</div>';
-
-    return html;
-  },
-
-  fourCard: function(comp, title, opts) {
-    var html = '<div class="gcs-sec"><div class="gcs-ttl">' + title + '</div>';
-    html += '<div style="display:flex;flex-direction:column;gap:5px;">';
-    for (var i = 0; i < opts.length; i++) {
-      var v = opts[i][0], t = opts[i][1];
-      var cls = v === 4 ? 'con-btn on' : 'con-btn';
-      html += '<button class="' + cls + '" id="gcs-f-' + comp + '-' + v + '" onclick="TOOLS.gcs.setFour(\'' + comp + '\',' + v + ')" style="text-align:left;padding:8px 12px;font-size:11px;">';
-      html += '<span style="font-family:var(--mono);font-weight:700;">' + comp.toUpperCase() + v + '</span> — ' + t + '</button>';
-    }
-    html += '</div></div>';
-    return html;
-  },
-
-  interp: function(rows) {
-    var html = '<div class="interp"><div class="interp-title">Интерпретация</div>';
-    for (var i = 0; i < rows.length; i++) {
-      html += '<div class="interp-row"><span class="interp-range">' + rows[i][0] + '</span>';
-      html += '<span class="interp-val" style="color:' + rows[i][2] + ';">' + rows[i][1] + '</span></div>';
-    }
-    html += '</div>';
-    return html;
-  },
-
-  tab: function(name) {
-    sndTap();
-    ['adult','ped','four'].forEach(function(t) {
-      document.getElementById('gcs-tab-' + t).classList.toggle('on', t === name);
-      document.getElementById('gcs-pane-' + t).style.display = t === name ? 'block' : 'none';
-    });
-  },
-
-  calcAdult: function() {
-    var e = +document.getElementById('gcs-a-e').value;
-    var v = +document.getElementById('gcs-a-v').value;
-    var m = +document.getElementById('gcs-a-m').value;
-    var t = e + v + m;
-    var cls, ac;
-    if (t === 15) { cls = 'low'; ac = 'Сознание ясное'; }
-    else if (t >= 13) { cls = 'low'; ac = 'Лёгкое оглушение'; }
-    else if (t >= 11) { cls = 'med'; ac = 'Глубокое оглушение'; }
-    else if (t >= 8) { cls = 'med'; ac = 'Сопор'; }
-    else if (t >= 6) { cls = 'hi'; ac = 'Умеренная кома. Интубация!'; }
-    else if (t >= 4) { cls = 'hi'; ac = 'Глубокая кома. Интубация немедленно!'; }
-    else { cls = 'hi'; ac = 'Запредельная кома'; }
-    document.getElementById('gcs-a-sc').textContent = t;
-    document.getElementById('gcs-a-lb').textContent = 'E' + e + ' + V' + v + ' + M' + m;
-    document.getElementById('gcs-a-ac').textContent = ac;
-    document.getElementById('gcs-a-res').className = 'res ' + cls;
-  },
-
-  calcPed: function() {
-    var e = +document.getElementById('gcs-p-e').value;
-    var v = +document.getElementById('gcs-p-v').value;
-    var m = +document.getElementById('gcs-p-m').value;
-    var t = e + v + m;
-    var cls, ac;
-    if (t === 15) { cls = 'low'; ac = 'Сознание ясное'; }
-    else if (t >= 13) { cls = 'low'; ac = 'Лёгкое оглушение'; }
-    else if (t >= 11) { cls = 'med'; ac = 'Глубокое оглушение'; }
-    else if (t >= 8) { cls = 'med'; ac = 'Сопор'; }
-    else if (t >= 6) { cls = 'hi'; ac = 'Умеренная кома'; }
-    else if (t >= 4) { cls = 'hi'; ac = 'Глубокая кома'; }
-    else { cls = 'hi'; ac = 'Запредельная кома'; }
-    document.getElementById('gcs-p-sc').textContent = t;
-    document.getElementById('gcs-p-lb').textContent = 'E' + e + ' + V' + v + ' + M' + m;
-    document.getElementById('gcs-p-ac').textContent = ac;
-    document.getElementById('gcs-p-res').className = 'res ' + cls;
-  },
-
-  fourVals: {e:4, m:4, b:4, r:4},
-  setFour: function(comp, val) {
-    sndTap();
-    this.fourVals[comp] = val;
-    for (var i = 0; i <= 4; i++) {
-      var btn = document.getElementById('gcs-f-' + comp + '-' + i);
-      if (btn) btn.classList.toggle('on', i === val);
-    }
-    var t = this.fourVals.e + this.fourVals.m + this.fourVals.b + this.fourVals.r;
-    var cls, ac;
-    if (t === 16) { cls = 'low'; ac = 'Норма — все рефлексы сохранены'; }
-    else if (t >= 9) { cls = 'med'; ac = 'Нарушение сознания. Мониторинг.'; }
-    else if (t >= 5) { cls = 'hi'; ac = 'Кома. Обеспечить дыхательные пути.'; }
-    else if (this.fourVals.b === 0 && this.fourVals.r === 0) { cls = 'hi'; ac = 'B0+R0 — критерии смерти мозга'; }
-    else { cls = 'hi'; ac = 'Тяжёлое угнетение. ИВЛ, ОРИТ.'; }
-    document.getElementById('gcs-f-sc').textContent = t;
-    document.getElementById('gcs-f-lb').textContent = 'E' + this.fourVals.e + ' + M' + this.fourVals.m + ' + B' + this.fourVals.b + ' + R' + this.fourVals.r;
-    document.getElementById('gcs-f-ac').textContent = ac;
-    document.getElementById('gcs-f-res').className = 'res ' + cls;
-  },
-
-  resetAdult: function() {
-    sndReset();
-    document.getElementById('gcs-a-e').value = '4';
-    document.getElementById('gcs-a-v').value = '5';
-    document.getElementById('gcs-a-m').value = '6';
-    this.calcAdult();
-  },
-  resetPed: function() {
-    sndReset();
-    document.getElementById('gcs-p-e').value = '4';
-    document.getElementById('gcs-p-v').value = '5';
-    document.getElementById('gcs-p-m').value = '6';
-    this.calcPed();
-  },
-  resetFour: function() {
-    sndReset();
-    this.fourVals = {e:4, m:4, b:4, r:4};
-    ['e','m','b','r'].forEach(function(c) { TOOLS.gcs.setFour(c, 4); });
-  },
-
-  init: function() { this.calcAdult(); this.calcPed(); this.fourVals = {e:4, m:4, b:4, r:4}; }
-};
-
-// ---------- RASS ----------
-TOOLS.rass = {
-  title: 'RASS — Седация и возбуждение',
-  abbr: 'RS',
-  subtitle: 'Richmond Agitation-Sedation Scale',
-  short: 'Оценка уровня седации в ОРИТ',
-  desc: 'Шкала оценки уровня седации и возбуждения. Целевой уровень при ИВЛ: от -2 до 0.',
-  keywords: 'седация возбуждение орит',
-
-  levels: [
-    {v: 4, name: 'Агрессивен', desc: 'Опасен для персонала, требует физического удержания', cls: 'hi'},
-    {v: 3, name: 'Крайне возбуждён', desc: 'Тянет/удаляет катетеры, агрессивное поведение', cls: 'hi'},
-    {v: 2, name: 'Возбуждён', desc: 'Частые нецеленаправленные движения, борется с ИВЛ', cls: 'med'},
-    {v: 1, name: 'Беспокоен', desc: 'Тревога, не агрессивен, не борется', cls: 'med'},
-    {v: 0, name: 'Бодр и спокоен', desc: 'Норма', cls: 'low'},
-    {v: -1, name: 'Сонлив', desc: 'Не полностью бодр, длительное (>10с) открытие глаз на голос', cls: 'low'},
-    {v: -2, name: 'Лёгкая седация', desc: 'Короткое (<10с) открытие глаз на голос', cls: 'low'},
-    {v: -3, name: 'Умеренная седация', desc: 'Движение на голос без открытия глаз', cls: 'med'},
-    {v: -4, name: 'Глубокая седация', desc: 'Нет ответа на голос, движение на физ. стимул', cls: 'med'},
-    {v: -5, name: 'Кома', desc: 'Нет реакции на голос и физ. стимул', cls: 'hi'}
-  ],
-
-  render: function() {
-    var html = '<div style="display:flex;flex-direction:column;gap:6px;margin-bottom:14px;">';
-    for (var i = 0; i < this.levels.length; i++) {
-      var l = this.levels[i];
-      var sign = l.v > 0 ? '+' : '';
-      html += '<button class="con-btn" id="rass-' + l.v + '" onclick="TOOLS.rass.set(' + l.v + ')" style="text-align:left;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;font-size:12px;">';
-      html += '<div><span style="font-family:var(--mono);font-weight:700;margin-right:8px;">' + sign + l.v + '</span>' + l.name + '</div>';
-      html += '<div style="font-size:10px;color:var(--text-3);text-align:right;max-width:50%;">' + l.desc + '</div>';
-      html += '</button>';
-    }
-    html += '</div>';
-    html += '<div class="res" id="rass-res"><div class="res-score" id="rass-sc">—</div>';
-    html += '<div class="res-lbl" id="rass-lb">RASS</div>';
-    html += '<div class="res-act" id="rass-ac">Выберите уровень седации</div></div>';
-    html += '<button class="reset" onclick="TOOLS.rass.reset()">Сбросить</button>';
-    return html;
-  },
-
-  set: function(v) {
-    if (Math.abs(v) >= 3) sndWarn(); else sndTap();
-    this.current = v;
-    for (var i = -5; i <= 4; i++) {
-      var btn = document.getElementById('rass-' + i);
-      if (btn) btn.classList.toggle('on', i === v);
-    }
-    var l = this.levels.filter(function(x) { return x.v === v; })[0];
-    document.getElementById('rass-sc').textContent = (v > 0 ? '+' : '') + v;
-    document.getElementById('rass-lb').textContent = l.name;
-    document.getElementById('rass-ac').textContent = l.desc;
-    document.getElementById('rass-res').className = 'res ' + l.cls;
-  },
-
-  reset: function() {
-    sndReset();
-    this.current = null;
-    for (var i = -5; i <= 4; i++) {
-      var btn = document.getElementById('rass-' + i);
-      if (btn) btn.classList.remove('on');
-    }
-    document.getElementById('rass-sc').textContent = '—';
-    document.getElementById('rass-lb').textContent = 'RASS';
-    document.getElementById('rass-ac').textContent = 'Выберите уровень седации';
-    document.getElementById('rass-res').className = 'res';
-  },
-
-  init: function() { this.current = null; }
-};
-
-// ---------- ШОКС ----------
-TOOLS.shoks = {
-  title: 'ШОКС — Шкала клинического состояния',
-  abbr: 'ШК',
-  subtitle: 'При хронической сердечной недостаточности',
-  short: '10 критериев. Максимум 20 баллов',
-  desc: 'Определяет функциональный класс ХСН по NYHA. По приложению к Регламенту маршрутизации пациентов с ХСН.',
-  keywords: 'хсн сердечная недостаточность',
-
-  criteria: [
-    {id:'dysp', t:'Одышка', opts:[[0,'нет'],[1,'при нагрузке'],[2,'в покое']]},
-    {id:'wt', t:'Изменение веса за неделю', opts:[[0,'нет'],[1,'увеличился']]},
-    {id:'arrhytm', t:'Перебои в работе сердца', opts:[[0,'нет'],[1,'есть']]},
-    {id:'pos', t:'Положение в постели', opts:[[0,'горизонтально'],[1,'2+ подушки'],[2,'просыпается от удушья'],[3,'сидя']]},
-    {id:'vein', t:'Набухшие шейные вены', opts:[[0,'нет'],[1,'лёжа'],[2,'стоя']]},
-    {id:'rale', t:'Хрипы в лёгких', opts:[[0,'нет'],[1,'нижние отделы (до 1/3)'],[2,'до лопаток (до 2/3)'],[3,'над всей поверхностью']]},
-    {id:'gallop', t:'Ритм галопа', opts:[[0,'нет'],[1,'есть']]},
-    {id:'liver', t:'Печень', opts:[[0,'не увеличена'],[1,'до 5 см'],[2,'более 5 см']]},
-    {id:'edema', t:'Отёки', opts:[[0,'нет'],[1,'пастозность'],[2,'отёки'],[3,'анасарка']]},
-    {id:'sbp', t:'АД систолическое', opts:[[0,'более 120'],[1,'100-120'],[2,'менее 100']]}
-  ],
-
-  render: function() {
-    var html = '<div class="crit-list">';
-    for (var i = 0; i < this.criteria.length; i++) {
-      var c = this.criteria[i];
-      html += '<div style="background:var(--glass-2);border:1px solid var(--glass-border);border-radius:14px;padding:14px;">';
-      html += '<div style="font-size:13px;font-weight:700;color:white;margin-bottom:10px;">' + c.t + '</div>';
-      html += '<div style="display:flex;flex-direction:column;gap:5px;">';
-      for (var j = 0; j < c.opts.length; j++) {
-        var v = c.opts[j][0], txt = c.opts[j][1];
-        var cls = j === 0 ? 'con-btn on' : 'con-btn';
-        html += '<button class="' + cls + '" id="shoks-' + c.id + '-' + v + '" onclick="TOOLS.shoks.set(\'' + c.id + '\',' + v + ')" style="text-align:left;padding:9px 12px;font-size:12px;">' + v + ' — ' + txt + '</button>';
-      }
-      html += '</div></div>';
-    }
-    html += '</div>';
-    html += '<div class="res" id="shoks-res"><div class="res-score" id="shoks-sc">0</div>';
-    html += '<div class="res-lbl" id="shoks-lb">Баллов ШОКС</div>';
-    html += '<div class="res-act" id="shoks-ac">Нет клинических признаков СН</div></div>';
-    html += this.interpEl();
-    html += '<button class="reset" onclick="TOOLS.shoks.reset()">Сбросить</button>';
-    return html;
-  },
-
-  interpEl: function() {
-    var rows = [['0','Нет признаков','var(--green)'],['1–3','I ФК','var(--green)'],['4–6','II ФК','var(--orange)'],['7–9','III ФК','var(--red)'],['>9','IV ФК','var(--red)']];
-    var html = '<div class="interp"><div class="interp-title">Интерпретация (NYHA)</div>';
-    for (var i = 0; i < rows.length; i++) {
-      html += '<div class="interp-row"><span class="interp-range">' + rows[i][0] + ' баллов</span>';
-      html += '<span class="interp-val" style="color:' + rows[i][2] + ';">' + rows[i][1] + '</span></div>';
-    }
-    return html + '</div>';
-  },
-
-  scores: {},
-
-  set: function(id, val) {
-    sndTap();
-    this.scores[id] = val;
-    var crit = this.criteria.filter(function(c) { return c.id === id; })[0];
-    for (var i = 0; i < crit.opts.length; i++) {
-      var v = crit.opts[i][0];
-      var btn = document.getElementById('shoks-' + id + '-' + v);
-      if (btn) btn.classList.toggle('on', v === val);
-    }
-    this.calc();
-  },
-
-  calc: function() {
-    var t = 0;
-    for (var k in this.scores) t += this.scores[k];
-    document.getElementById('shoks-sc').textContent = t;
-    var cls, ac;
-    if (t === 0) { cls = 'low'; ac = 'Нет клинических признаков ХСН'; }
-    else if (t <= 3) { cls = 'low'; ac = 'I ФК — симптомы при значительной нагрузке'; }
-    else if (t <= 6) { cls = 'med'; ac = 'II ФК — симптомы при обычной нагрузке'; }
-    else if (t <= 9) { cls = 'hi'; ac = 'III ФК — симптомы при минимальной нагрузке'; }
-    else { cls = 'hi'; ac = 'IV ФК — симптомы в покое. Госпитализация.'; }
-    document.getElementById('shoks-res').className = 'res ' + cls;
-    document.getElementById('shoks-ac').textContent = ac;
-  },
-
-  reset: function() {
-    sndReset();
-    this.scores = {};
-    for (var i = 0; i < this.criteria.length; i++) {
-      var c = this.criteria[i];
-      this.scores[c.id] = 0;
-      for (var j = 0; j < c.opts.length; j++) {
-        var v = c.opts[j][0];
-        var btn = document.getElementById('shoks-' + c.id + '-' + v);
-        if (btn) btn.classList.toggle('on', v === 0);
-      }
-    }
-    this.calc();
-  },
-
-  init: function() {
-    this.scores = {};
-    for (var i = 0; i < this.criteria.length; i++) this.scores[this.criteria[i].id] = 0;
-    this.calc();
-  }
-};
-
-// ---------- ДН ----------
-TOOLS.dn = {
-  title: 'Дыхательная недостаточность',
-  abbr: 'ДН',
-  subtitle: 'Классификация степеней ДН',
-  short: 'Острая, хроническая, у детей',
-  desc: 'Степени по SpO2, PaO2, PaCO2, ЧДД. По клиническим рекомендациям МЗ РФ.',
-  keywords: 'дыхание гипоксия одышка',
-
-  render: function() {
-    var html = '<div class="con-grid-3">';
-    html += '<button class="con-btn on" id="dn-tab-acute" onclick="TOOLS.dn.tab(\'acute\')" style="font-size:11px;">Острая</button>';
-    html += '<button class="con-btn" id="dn-tab-chronic" onclick="TOOLS.dn.tab(\'chronic\')" style="font-size:11px;">Хроническая</button>';
-    html += '<button class="con-btn" id="dn-tab-child" onclick="TOOLS.dn.tab(\'child\')" style="font-size:11px;">Дети</button>';
-    html += '</div>';
-
-    // ACUTE
-    html += '<div id="dn-pane-acute">';
-    html += this.degree('I', 'Лёгкая', 'var(--green)', [['SpO2','90–94 %'],['PaO2','60–79 мм рт.ст.'],['PaCO2','норма или ↓'],['ЧДД','до 25/мин']], 'Одышка при умеренной нагрузке. Цианоз отсутствует. Компенсированная.');
-    html += this.degree('II', 'Средняя', 'var(--orange)', [['SpO2','75–89 %'],['PaO2','40–59 мм рт.ст.'],['PaCO2','может быть ↑'],['ЧДД','25–35/мин']], 'Одышка в покое. Акроцианоз. Вспомогательные мышцы. Субкомпенсация.');
-    html += this.degree('III', 'Тяжёлая', 'var(--red)', [['SpO2','<75 %'],['PaO2','<40 мм рт.ст.'],['PaCO2','>60 мм рт.ст.'],['ЧДД','>35 или <8']], 'Диффузный цианоз. Кома. Парадоксальное дыхание. Показание к ИВЛ!', true);
-    html += '</div>';
-
-    // CHRONIC
-    html += '<div id="dn-pane-chronic" style="display:none;">';
-    html += '<div class="info"><div class="info-ico">⚕</div><div class="info-text">Классификация по А.Г. Дембо</div></div>';
-    html += this.degree('I', 'Компенсированная', 'var(--green)', [['SpO2','90–94 %'],['PaO2','60–79 мм рт.ст.']], 'Одышка только при значительной нагрузке (3+ этаж).');
-    html += this.degree('II', 'Субкомпенсация', 'var(--orange)', [['SpO2','75–89 %'],['PaO2','40–59 мм рт.ст.']], 'Одышка при незначительной нагрузке. Цианоз. Тахикардия.');
-    html += this.degree('III', 'Декомпенсация', 'var(--red)', [['SpO2','<75 %'],['PaO2','<40 мм рт.ст.']], 'Одышка в покое. Лёгочная гипертензия. Cor pulmonale.', true);
-    html += '<div style="background:var(--glass-2);border:1px solid var(--glass-border);border-radius:12px;padding:14px;margin-top:14px;">';
-    html += '<div style="font-size:12px;font-weight:700;color:white;margin-bottom:10px;">Типы ДН по патогенезу</div>';
-    html += '<div style="padding:10px;background:rgba(10,132,255,0.06);border-radius:10px;margin-bottom:6px;">';
-    html += '<div style="font-weight:700;color:var(--accent);font-size:12px;margin-bottom:4px;">Тип I — Гипоксемическая</div>';
-    html += '<div style="font-size:11px;color:var(--text-3);line-height:1.5;">PaO2 ↓, PaCO2 норма. Пневмония, ОРДС, отёк лёгких, ТЭЛА.</div></div>';
-    html += '<div style="padding:10px;background:rgba(255,159,10,0.06);border-radius:10px;">';
-    html += '<div style="font-weight:700;color:var(--orange);font-size:12px;margin-bottom:4px;">Тип II — Гиперкапническая</div>';
-    html += '<div style="font-size:11px;color:var(--text-3);line-height:1.5;">PaO2 ↓, PaCO2 >45. ХОБЛ, опиаты, нервно-мышечные заболевания.</div></div></div>';
-    html += '</div>';
-
-    // CHILD
-    html += '<div id="dn-pane-child" style="display:none;">';
-    html += '<div class="info"><div class="info-ico">⚕</div><div class="info-text">Классификация по Ю.Ф. Домбровской</div></div>';
-    html += this.degree('I', 'Лёгкая', 'var(--green)', [['SpO2','90–94 %'],['ЧДД','+10–20% от нормы']], 'Одышка только при нагрузке. Периоральный цианоз при плаче.');
-    html += this.degree('II', 'Средняя', 'var(--orange)', [['SpO2','75–89 %'],['ЧДД','+20–50% от нормы']], 'Одышка в покое. Постоянный цианоз. Втяжение межрёберных промежутков.');
-    html += this.degree('III', 'Тяжёлая', 'var(--red)', [['SpO2','<75 %'],['ЧДД','+50% или брадипноэ']], 'Диффузный цианоз. Сопор/кома. Парадоксальное дыхание. Экстренная интубация!', true);
-    html += '<div style="background:rgba(255,69,58,0.06);border:1px solid rgba(255,69,58,0.2);border-radius:12px;padding:14px;margin-top:14px;">';
-    html += '<div style="font-size:12px;font-weight:700;color:var(--red);margin-bottom:8px;">Признаки тяжёлого дистресса у детей</div>';
-    html += '<div style="font-size:12px;color:var(--text-2);line-height:1.6;">• Апноэ или брадипноэ<br>• Стридор в покое<br>• Втяжение яремной ямки и грудины<br>• Кряхтящее дыхание (груднички)<br>• SpO2 <90% при О2 через маску<br>• Нарушение сознания, вялость<br>• Центральный цианоз (губы, язык)</div></div>';
-    html += '</div>';
-
-    return html;
-  },
-
-  degree: function(num, name, color, params, desc, emphasis) {
-    var bgColor = color === 'var(--green)' ? 'rgba(48,209,88,0.06)' : color === 'var(--orange)' ? 'rgba(255,159,10,0.06)' : 'rgba(255,69,58,0.06)';
-    var brdColor = color === 'var(--green)' ? 'rgba(48,209,88,0.2)' : color === 'var(--orange)' ? 'rgba(255,159,10,0.2)' : 'rgba(255,69,58,0.3)';
-    var html = '<div style="background:' + bgColor + ';border:' + (emphasis ? '2px' : '1px') + ' solid ' + brdColor + ';border-radius:14px;padding:14px;margin-bottom:8px;">';
-    html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">';
-    html += '<div style="font-size:14px;font-weight:700;color:' + color + ';">ДН ' + num + ' степень</div>';
-    html += '<div style="font-family:var(--mono);font-size:11px;color:' + color + ';background:' + bgColor + ';border:1px solid ' + brdColor + ';border-radius:8px;padding:3px 10px;">' + name + '</div></div>';
-    for (var i = 0; i < params.length; i++) {
-      html += '<div style="display:flex;justify-content:space-between;font-size:12px;border-bottom:1px solid rgba(255,255,255,0.06);padding:5px 0;">';
-      html += '<span style="color:var(--text-3);">' + params[i][0] + '</span>';
-      html += '<span style="font-family:var(--mono);font-weight:700;color:white;">' + params[i][1] + '</span></div>';
-    }
-    html += '<div style="font-size:11px;color:var(--text-3);margin-top:8px;line-height:1.5;">' + desc + '</div></div>';
-    return html;
-  },
-
-  tab: function(name) {
-    sndTap();
-    ['acute','chronic','child'].forEach(function(t) {
-      document.getElementById('dn-tab-' + t).classList.toggle('on', t === name);
-      document.getElementById('dn-pane-' + t).style.display = t === name ? 'block' : 'none';
-    });
-  },
-
-  init: function() {}
-};
-
-
-// === tools-diag.js ===
-// ===== ДИАГНОСТИЧЕСКИЕ ШКАЛЫ =====
-
-// ---------- Wells ТЭЛА ----------
-TOOLS.wells = {
-  title: 'Wells — Вероятность ТЭЛА',
-  abbr: 'Wl',
-  subtitle: 'Wells Criteria for Pulmonary Embolism',
-  short: '7 критериев. >4 баллов — необходима КТ-ангиография',
-  desc: 'Предтестовая вероятность ТЭЛА. ≤4 баллов — ТЭЛА маловероятна, достаточно D-димера. >4 — КТ-ангиография.',
-  keywords: 'тэла легочная эмболия pulmonary',
-
-  criteria: [
-    {id:'dvt', t:'Клинические признаки ТГВ', h:'Отёк, болезненность по ходу глубоких вен', v:3},
-    {id:'alt', t:'Альтернативный диагноз менее вероятен', h:'ТЭЛА более вероятна чем другие диагнозы', v:3},
-    {id:'hr', t:'ЧСС > 100/мин', h:'Тахикардия при подсчёте', v:1.5},
-    {id:'immob', t:'Иммобилизация ≥3 дней / операция ≤4 недель', h:'Постельный режим, длительный перелёт, недавняя операция', v:1.5},
-    {id:'prev', t:'ТЭЛА или ТГВ в анамнезе', h:'Документированный эпизод ранее', v:1.5},
-    {id:'hemo', t:'Кровохарканье', h:'Свежая алая кровь в мокроте', v:1},
-    {id:'cancer', t:'Активная онкология', h:'Лечение в течение 6 мес. или паллиативное', v:1}
-  ],
-
-  scores: {},
-
-  render: function() {
-    var html = '<div class="crit-list">';
-    for (var i = 0; i < this.criteria.length; i++) {
-      var c = this.criteria[i];
-      html += '<div class="crit" id="wells-' + c.id + '" onclick="TOOLS.wells.toggle(\'' + c.id + '\',' + c.v + ')">';
-      html += '<div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div>';
-      html += '<div><div class="crit-txt">' + c.t + '</div><div class="crit-hint">' + c.h + '</div></div></div>';
-      html += '<div class="cbadge">+' + c.v + '</div></div>';
-    }
-    html += '</div>';
-    html += '<div class="res" id="wells-res"><div class="res-score" id="wells-sc">0</div>';
-    html += '<div class="res-lbl" id="wells-lb">Баллов Wells</div>';
-    html += '<div class="res-act" id="wells-ac">Отметьте имеющиеся критерии</div>';
-    html += '<div class="w-pills"><div class="w-pill unlikely on" id="wells-pu">ТЭЛА маловероятна ≤4</div>';
-    html += '<div class="w-pill likely" id="wells-pl">ТЭЛА вероятна >4</div></div></div>';
-    html += '<button class="reset" onclick="TOOLS.wells.reset()">Сбросить</button>';
-    return html;
-  },
-
-  toggle: function(id, val) {
-    var el = document.getElementById('wells-' + id);
-    el.classList.toggle('on');
-    this.scores[id] = el.classList.contains('on') ? val : 0;
-    if (el.classList.contains('on')) sndOn(); else sndOff();
-    this.calc();
-  },
-
-  calc: function() {
-    var t = 0;
-    for (var k in this.scores) t += this.scores[k];
-    document.getElementById('wells-sc').textContent = t;
-    var r = document.getElementById('wells-res');
-    var ac = document.getElementById('wells-ac');
-    var pu = document.getElementById('wells-pu');
-    var pl = document.getElementById('wells-pl');
-    if (t <= 4) {
-      r.className = 'res low';
-      ac.textContent = 'ТЭЛА маловероятна. D-димер высокочувствительный — при отриц. ТЭЛА исключена.';
-      pu.classList.add('on'); pl.classList.remove('on');
-    } else {
-      r.className = 'res hi';
-      ac.textContent = 'ТЭЛА вероятна. Показана КТ-ангиография лёгочной артерии.';
-      pu.classList.remove('on'); pl.classList.add('on');
-      sndWarn();
-    }
-  },
-
-  reset: function() {
-    sndReset();
-    this.scores = {};
-    for (var i = 0; i < this.criteria.length; i++) {
-      document.getElementById('wells-' + this.criteria[i].id).classList.remove('on');
-    }
-    this.calc();
-  },
-
-  init: function() { this.scores = {}; this.calc(); }
-};
-
-// ---------- CPSS Инсульт ----------
-TOOLS.cpss = {
-  title: 'Инсульт — экспресс-скрининг',
-  abbr: 'St',
-  subtitle: 'CPSS + время симптомов',
-  short: '3 теста за 60 сек. 1 признак = 72%, 2-3 = 85-100%',
-  desc: 'Cincinnati Prehospital Stroke Scale. Критично отследить время начала симптомов — определяет тактику тромболизиса.',
-  keywords: 'инсульт stroke cpss',
-
-  data: {face:'n', arm:'n', speech:'n'},
-
-  render: function() {
-    var html = '';
-    // Time
-    html += '<div style="background:rgba(255,69,58,0.08);border:1px solid rgba(255,69,58,0.25);border-radius:12px;padding:14px;margin-bottom:16px;">';
-    html += '<div style="font-size:11px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:10px;">Время появления симптомов</div>';
-    html += '<div class="inp-grid">';
-    html += '<div class="inp-grp" style="background:var(--bg);"><div class="inp-lbl">Часов назад</div>';
-    html += '<input class="inp-f" type="number" id="cpss-h" placeholder="0" inputmode="numeric" oninput="TOOLS.cpss.calc()"></div>';
-    html += '<div class="inp-grp" style="background:var(--bg);"><div class="inp-lbl">Минут назад</div>';
-    html += '<input class="inp-f" type="number" id="cpss-m" placeholder="0" inputmode="numeric" oninput="TOOLS.cpss.calc()"></div>';
-    html += '</div>';
-    html += '<div id="cpss-time-res" style="margin-top:10px;font-size:13px;font-weight:700;color:var(--text-3);text-align:center;"></div>';
-    html += '</div>';
-
-    // CPSS
-    html += '<div class="con-lbl">CPSS — Cincinnati Prehospital Stroke Scale</div>';
-    var tests = [
-      {id:'face', t:'Асимметрия лица', h:'Попросить улыбнуться или показать зубы', n:'Симметрично', y:'Асимметрия'},
-      {id:'arm', t:'Слабость руки', h:'Вытянуть обе руки на 10 сек с закрытыми глазами', n:'Держат одинаково', y:'Одна опускается'},
-      {id:'speech', t:'Нарушение речи', h:'Попросить повторить: "Небо ясное, солнце светит ярко"', n:'Речь нормальная', y:'Нарушена'}
-    ];
-    for (var i = 0; i < tests.length; i++) {
-      var test = tests[i];
-      html += '<div style="background:var(--glass-2);border:1px solid var(--glass-border);border-radius:14px;padding:14px;margin-bottom:8px;">';
-      html += '<div style="font-size:13px;font-weight:700;color:white;margin-bottom:6px;">' + test.t + '</div>';
-      html += '<div style="font-size:11px;color:var(--text-3);margin-bottom:10px;">' + test.h + '</div>';
-      html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">';
-      html += '<button class="con-btn on" id="cpss-' + test.id + '-n" onclick="TOOLS.cpss.set(\'' + test.id + '\',\'n\')">' + test.n + '</button>';
-      html += '<button class="con-btn" id="cpss-' + test.id + '-y" onclick="TOOLS.cpss.set(\'' + test.id + '\',\'y\')">' + test.y + '</button>';
-      html += '</div></div>';
-    }
-
-    html += '<div class="res" id="cpss-res" style="margin-top:14px;"><div class="res-score" id="cpss-sc">0</div>';
-    html += '<div class="res-lbl" id="cpss-lb">CPSS</div>';
-    html += '<div class="res-act" id="cpss-ac">Оцените три признака</div></div>';
-
-    html += '<div id="cpss-tactic" style="display:none;border-radius:12px;padding:14px;margin-top:12px;"></div>';
-    html += '<button class="reset" onclick="TOOLS.cpss.reset()">Сбросить</button>';
-    return html;
-  },
-
-  set: function(param, val) {
-    sndTap();
-    this.data[param] = val;
-    ['face','arm','speech'].forEach(function(p) {
-      document.getElementById('cpss-' + p + '-n').classList.toggle('on', TOOLS.cpss.data[p] === 'n');
-      var y = document.getElementById('cpss-' + p + '-y');
-      y.classList.toggle('on', TOOLS.cpss.data[p] === 'y');
-      if (TOOLS.cpss.data[p] === 'y') { y.style.borderColor = 'var(--red)'; y.style.background = 'rgba(255,69,58,0.1)'; y.style.color = 'var(--red)'; }
-      else { y.style.borderColor = ''; y.style.background = ''; y.style.color = ''; }
-    });
-    this.calc();
-  },
-
-  calc: function() {
-    var score = 0;
-    if (this.data.face === 'y') score++;
-    if (this.data.arm === 'y') score++;
-    if (this.data.speech === 'y') score++;
-
-    document.getElementById('cpss-sc').textContent = score;
-    var r = document.getElementById('cpss-res');
-    var lb = document.getElementById('cpss-lb');
-    var ac = document.getElementById('cpss-ac');
-    var tac = document.getElementById('cpss-tactic');
-
-    if (score === 0) {
-      r.className = 'res low';
-      lb.textContent = 'Признаков нет';
-      ac.textContent = 'Инсульт маловероятен по CPSS';
-      tac.style.display = 'none';
-    } else if (score === 1) {
-      r.className = 'res med';
-      lb.textContent = 'Возможен инсульт (72%)';
-      ac.textContent = 'Госпитализация в сосудистый центр';
-      tac.style.display = 'block';
-      tac.style.background = 'rgba(255,159,10,0.08)';
-      tac.style.border = '1px solid rgba(255,159,10,0.25)';
-      tac.innerHTML = '<div style="font-size:12px;font-weight:700;color:var(--orange);margin-bottom:6px;">Тактика СМП</div>' +
-        '<div style="font-size:12px;color:var(--text-2);line-height:1.6;">Транспортировка в РСЦ. Положение 30°. Мониторинг АД, SpO2, ЭКГ. Не давать есть/пить. АД не снижать если <220/120.</div>';
-    } else {
-      r.className = 'res hi';
-      lb.textContent = 'ИНСУЛЬТ (' + (score === 2 ? '85%' : '100%') + ')';
-      ac.textContent = 'Срочная транспортировка в сосудистый центр';
-      tac.style.display = 'block';
-      tac.style.background = 'rgba(255,69,58,0.08)';
-      tac.style.border = '1px solid rgba(255,69,58,0.25)';
-      tac.innerHTML = '<div style="font-size:12px;font-weight:700;color:var(--red);margin-bottom:6px;">Тактика СМП — экстренно!</div>' +
-        '<div style="font-size:12px;color:var(--text-2);line-height:1.6;">Срочная транспортировка в первичный сосудистый центр. Положение 30°. Венозный доступ. Глюкоза крови обязательно. АД не снижать если <220/120. Не давать есть/пить.</div>';
-      sndWarn();
-    }
-
-    // Time window
-    var h = parseFloat(document.getElementById('cpss-h').value) || 0;
-    var m = parseFloat(document.getElementById('cpss-m').value) || 0;
-    var totalMin = h * 60 + m;
-    var timeEl = document.getElementById('cpss-time-res');
-    if (h > 0 || m > 0) {
-      if (totalMin <= 270) {
-        timeEl.textContent = 'Окно тромболизиса ОТКРЫТО (' + Math.round(270 - totalMin) + ' мин осталось)';
-        timeEl.style.color = 'var(--green)';
-      } else if (totalMin <= 360) {
-        timeEl.textContent = 'Тромболизис закрыт. Возможна тромбэктомия (до 6 ч).';
-        timeEl.style.color = 'var(--orange)';
-      } else if (totalMin <= 1440) {
-        timeEl.textContent = 'Более 6 ч. Тромбэктомия возможна до 24 ч при отборе.';
-        timeEl.style.color = 'var(--orange)';
-      } else {
-        timeEl.textContent = 'Более 24 часов от начала симптомов.';
-        timeEl.style.color = 'var(--red)';
-      }
-    } else {
-      timeEl.textContent = '';
-    }
-  },
-
-  reset: function() {
-    sndReset();
-    this.data = {face:'n', arm:'n', speech:'n'};
-    ['face','arm','speech'].forEach(function(p) {
-      document.getElementById('cpss-' + p + '-n').classList.add('on');
-      var y = document.getElementById('cpss-' + p + '-y');
-      y.classList.remove('on'); y.style.borderColor = ''; y.style.background = ''; y.style.color = '';
-    });
-    document.getElementById('cpss-h').value = '';
-    document.getElementById('cpss-m').value = '';
-    this.calc();
-  },
-
-  init: function() { this.data = {face:'n', arm:'n', speech:'n'}; this.calc(); }
-};
-
-// ---------- GRACE ----------
-TOOLS.grace = {
-  title: 'GRACE — Риск при ОКС',
-  abbr: 'GR',
-  subtitle: 'Global Registry of Acute Coronary Events',
-  short: 'Стратификация риска при ОКС. ESC 2020',
-  desc: 'Оценка риска смерти в стационаре и через 6 месяцев. GRACE >140 — экстренное ЧКВ.',
-  keywords: 'окс инфаркт стенокардия',
-
-  killip: 1,
-  flags: {arrest:false, st:false, trop:false},
-
-  scoreAge: function(a) { if(a<30)return 0; if(a<40)return 8; if(a<50)return 25; if(a<60)return 41; if(a<70)return 58; if(a<80)return 75; if(a<90)return 91; return 100; },
-  scoreHR: function(h) { if(h<50)return 0; if(h<70)return 3; if(h<90)return 9; if(h<110)return 15; if(h<150)return 24; if(h<200)return 38; return 46; },
-  scoreSBP: function(s) { if(s<80)return 58; if(s<100)return 53; if(s<120)return 43; if(s<140)return 34; if(s<160)return 24; if(s<200)return 10; return 0; },
-  scoreCr: function(c) { if(isNaN(c))return 7; if(c<35)return 1; if(c<71)return 4; if(c<106)return 7; if(c<141)return 10; if(c<178)return 13; if(c<354)return 21; return 28; },
-  scoreKillip: function(k) { return [0,0,20,39,59][k]; },
-
-  render: function() {
-    var html = '';
-    html += '<div class="inp-grp" style="margin-bottom:10px;"><div class="inp-lbl">Возраст <span class="inp-unit">лет</span></div>';
-    html += '<input class="inp-f" type="number" id="grace-age" placeholder="65" inputmode="numeric" oninput="TOOLS.grace.calc()"></div>';
-    html += '<div class="inp-grid">';
-    html += '<div class="inp-grp"><div class="inp-lbl">ЧСС <span class="inp-unit">уд/мин</span></div>';
-    html += '<input class="inp-f" type="number" id="grace-hr" placeholder="80" inputmode="numeric" oninput="TOOLS.grace.calc()"></div>';
-    html += '<div class="inp-grp"><div class="inp-lbl">АД сист. <span class="inp-unit">мм рт.ст.</span></div>';
-    html += '<input class="inp-f" type="number" id="grace-sbp" placeholder="120" inputmode="numeric" oninput="TOOLS.grace.calc()"></div></div>';
-    html += '<div class="inp-grp" style="margin-bottom:14px;"><div class="inp-lbl">Креатинин <span class="inp-unit">мкмоль/л (если есть)</span></div>';
-    html += '<input class="inp-f" type="number" id="grace-cr" placeholder="—" inputmode="numeric" oninput="TOOLS.grace.calc()" style="font-size:20px;"></div>';
-
-    html += '<div class="con-lbl">Класс Killip</div>';
-    html += '<div style="display:flex;flex-direction:column;gap:6px;margin-bottom:14px;">';
-    var killips = [['I', 'Нет признаков СН'], ['II', 'Влажные хрипы в нижних отделах, S3'], ['III', 'Отёк лёгких'], ['IV', 'Кардиогенный шок']];
-    for (var i = 0; i < 4; i++) {
-      var k = i + 1;
-      var cls = k === 1 ? 'con-btn on' : 'con-btn';
-      html += '<button class="' + cls + '" id="grace-k-' + k + '" onclick="TOOLS.grace.setK(' + k + ')" style="text-align:left;padding:10px 14px;font-size:12px;">';
-      html += '<span style="font-family:var(--mono);font-weight:700;margin-right:8px;">' + killips[i][0] + '</span>' + killips[i][1] + '</button>';
-    }
-    html += '</div>';
-
-    html += '<div class="con-lbl">Дополнительные факторы</div>';
-    html += '<div class="crit-list">';
-    var flags = [
-      {id:'arrest', t:'Остановка сердца при поступлении', h:'Реанимация на догоспитальном этапе', v:39},
-      {id:'st', t:'Отклонение сегмента ST', h:'Депрессия или элевация ST', v:28},
-      {id:'trop', t:'Повышение тропонина', h:'Trop I/T выше нормы (если известно)', v:14}
-    ];
-    for (var i = 0; i < flags.length; i++) {
-      var f = flags[i];
-      html += '<div class="crit" id="grace-f-' + f.id + '" onclick="TOOLS.grace.toggleF(\'' + f.id + '\')">';
-      html += '<div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div>';
-      html += '<div><div class="crit-txt">' + f.t + '</div><div class="crit-hint">' + f.h + '</div></div></div>';
-      html += '<div class="cbadge">+' + f.v + '</div></div>';
-    }
-    html += '</div>';
-
-    html += '<div class="res" id="grace-res"><div class="res-score" id="grace-sc">—</div>';
-    html += '<div class="res-lbl" id="grace-lb">Баллов GRACE</div>';
-    html += '<div class="res-act" id="grace-ac">Введите данные пациента</div></div>';
-
-    html += '<div id="grace-risk" style="display:none;margin-bottom:14px;">';
-    html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">';
-    html += '<div style="background:var(--glass-2);border:1px solid var(--glass-border);border-radius:12px;padding:14px;text-align:center;">';
-    html += '<div style="font-size:10px;font-weight:700;color:var(--text-3);text-transform:uppercase;margin-bottom:6px;">В стационаре</div>';
-    html += '<div style="font-family:var(--mono);font-size:24px;font-weight:700;" id="grace-h-pct">—</div>';
-    html += '<div style="font-size:11px;color:var(--text-3);margin-top:4px;" id="grace-h-cat">—</div></div>';
-    html += '<div style="background:var(--glass-2);border:1px solid var(--glass-border);border-radius:12px;padding:14px;text-align:center;">';
-    html += '<div style="font-size:10px;font-weight:700;color:var(--text-3);text-transform:uppercase;margin-bottom:6px;">Через 6 мес</div>';
-    html += '<div style="font-family:var(--mono);font-size:24px;font-weight:700;" id="grace-s-pct">—</div>';
-    html += '<div style="font-size:11px;color:var(--text-3);margin-top:4px;" id="grace-s-cat">—</div></div></div>';
-    html += '<div id="grace-tactic" style="border-radius:12px;padding:14px;font-size:13px;"></div>';
-    html += '</div>';
-
-    html += '<button class="reset" onclick="TOOLS.grace.reset()">Сбросить</button>';
-    return html;
-  },
-
-  setK: function(k) {
-    sndTap();
-    this.killip = k;
-    for (var i = 1; i <= 4; i++) document.getElementById('grace-k-' + i).classList.toggle('on', i === k);
-    this.calc();
-  },
-
-  toggleF: function(id) {
-    var el = document.getElementById('grace-f-' + id);
-    el.classList.toggle('on');
-    this.flags[id] = el.classList.contains('on');
-    if (el.classList.contains('on')) sndOn(); else sndOff();
-    this.calc();
-  },
-
-  calc: function() {
-    var age = parseFloat(document.getElementById('grace-age').value);
-    var hr = parseFloat(document.getElementById('grace-hr').value);
-    var sbp = parseFloat(document.getElementById('grace-sbp').value);
-    var cr = parseFloat(document.getElementById('grace-cr').value);
-
-    if (isNaN(age) && isNaN(hr) && isNaN(sbp)) {
-      document.getElementById('grace-sc').textContent = '—';
-      document.getElementById('grace-ac').textContent = 'Введите данные пациента';
-      document.getElementById('grace-res').className = 'res';
-      document.getElementById('grace-risk').style.display = 'none';
-      return;
-    }
-
-    var score = 0;
-    if (!isNaN(age)) score += this.scoreAge(age);
-    if (!isNaN(hr)) score += this.scoreHR(hr);
-    if (!isNaN(sbp)) score += this.scoreSBP(sbp);
-    score += this.scoreCr(cr);
-    score += this.scoreKillip(this.killip);
-    if (this.flags.arrest) score += 39;
-    if (this.flags.st) score += 28;
-    if (this.flags.trop) score += 14;
-
-    document.getElementById('grace-sc').textContent = score;
-
-    var hospCat, hospPct, hospCol, sixCat, sixPct, sixCol, cls, tactic, tacticCol, tacticBrd, tacticTxt;
-    if (score <= 108) {
-      hospCat = 'Низкий'; hospPct = '<1%'; hospCol = 'var(--green)';
-      cls = 'low'; tactic = 'Низкий риск. Плановая инвазивная стратегия (>72 ч). Возможна консервативная тактика.';
-      tacticCol = 'rgba(48,209,88,0.08)'; tacticBrd = 'rgba(48,209,88,0.2)'; tacticTxt = 'var(--green)';
-    } else if (score <= 140) {
-      hospCat = 'Средний'; hospPct = '1-3%'; hospCol = 'var(--orange)';
-      cls = 'med'; tactic = 'Средний риск. Ранняя инвазивная стратегия (в течение 72 ч). Кардиология.';
-      tacticCol = 'rgba(255,159,10,0.08)'; tacticBrd = 'rgba(255,159,10,0.2)'; tacticTxt = 'var(--orange)';
-    } else {
-      hospCat = 'Высокий'; hospPct = '>3%'; hospCol = 'var(--red)';
-      cls = 'hi'; tactic = 'Высокий риск. Экстренная инвазивная стратегия (<2 ч). Срочная транспортировка в РСЦ с ЧКВ!';
-      tacticCol = 'rgba(255,69,58,0.08)'; tacticBrd = 'rgba(255,69,58,0.3)'; tacticTxt = 'var(--red)';
-    }
-    if (score <= 88) { sixCat = 'Низкий'; sixPct = '<3%'; sixCol = 'var(--green)'; }
-    else if (score <= 118) { sixCat = 'Средний'; sixPct = '3-8%'; sixCol = 'var(--orange)'; }
-    else { sixCat = 'Высокий'; sixPct = '>8%'; sixCol = 'var(--red)'; }
-
-    document.getElementById('grace-res').className = 'res ' + cls;
-    document.getElementById('grace-ac').textContent = 'Риск в стационаре: ' + hospPct + ' (' + hospCat + ')';
-    document.getElementById('grace-risk').style.display = 'block';
-    document.getElementById('grace-h-pct').textContent = hospPct;
-    document.getElementById('grace-h-pct').style.color = hospCol;
-    document.getElementById('grace-h-cat').textContent = hospCat + ' риск';
-    document.getElementById('grace-s-pct').textContent = sixPct;
-    document.getElementById('grace-s-pct').style.color = sixCol;
-    document.getElementById('grace-s-cat').textContent = sixCat + ' риск';
-    var tac = document.getElementById('grace-tactic');
-    tac.style.background = tacticCol;
-    tac.style.border = '1px solid ' + tacticBrd;
-    tac.innerHTML = '<div style="font-weight:700;color:' + tacticTxt + ';margin-bottom:4px;">Тактика</div>' +
-      '<div style="color:var(--text-2);font-size:12px;line-height:1.5;">' + tactic + '</div>';
-  },
-
-  reset: function() {
-    sndReset();
-    ['age','hr','sbp','cr'].forEach(function(id) { document.getElementById('grace-' + id).value = ''; });
-    this.killip = 1;
-    for (var i = 1; i <= 4; i++) document.getElementById('grace-k-' + i).classList.toggle('on', i === 1);
-    this.flags = {arrest:false, st:false, trop:false};
-    ['arrest','st','trop'].forEach(function(id) { document.getElementById('grace-f-' + id).classList.remove('on'); });
-    this.calc();
-  },
-
-  init: function() { this.killip = 1; this.flags = {arrest:false, st:false, trop:false}; }
-};
-
-// ---------- Альварадо ----------
-TOOLS.alvarado = {
-  title: 'Шкала Альварадо',
-  abbr: 'Av',
-  subtitle: 'Alvarado Score for Acute Appendicitis',
-  short: 'Вероятность острого аппендицита. Макс. 10 баллов',
-  desc: 'Чувствительность 99% при пороге ≥5. Клиническая стратификация без лучевой нагрузки.',
-  keywords: 'аппендицит appendicitis',
-
-  scores: {},
-
-  criteria: [
-    {id:'mig', t:'Миграция боли в правую подвздошную область', h:'Из околопупочной в правую нижнюю', v:1},
-    {id:'anor', t:'Анорексия / тошнота', h:'Снижение аппетита или тошнота', v:1},
-    {id:'vom', t:'Рвота', h:'Один и более эпизодов', v:1},
-    {id:'rif', t:'Болезненность в правой подвздошной области', h:'Точка Мак-Бурнея — самый весомый критерий', v:2},
-    {id:'reb', t:'Симптом Щёткина-Блюмберга', h:'Усиление боли при резком отнятии руки', v:1},
-    {id:'fev', t:'Температура ≥37.3°C', h:'Субфебрилитет и выше', v:1},
-    {id:'leu', t:'Лейкоцитоз >10×10⁹/л', h:'По общему анализу крови', v:2},
-    {id:'shf', t:'Сдвиг лейкоформулы влево', h:'Палочкоядерные >75% или >7×10⁹/л', v:1}
-  ],
-
-  render: function() {
-    var html = '<div class="crit-list">';
-    for (var i = 0; i < this.criteria.length; i++) {
-      var c = this.criteria[i];
-      html += '<div class="crit" id="alv-' + c.id + '" onclick="TOOLS.alvarado.toggle(\'' + c.id + '\',' + c.v + ')">';
-      html += '<div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div>';
-      html += '<div><div class="crit-txt">' + c.t + '</div><div class="crit-hint">' + c.h + '</div></div></div>';
-      html += '<div class="cbadge">+' + c.v + '</div></div>';
-    }
-    html += '</div>';
-    html += '<div class="res" id="alv-res"><div class="res-score" id="alv-sc">0</div>';
-    html += '<div class="res-lbl" id="alv-lb">Баллов</div>';
-    html += '<div class="res-act" id="alv-ac">Отметьте имеющиеся симптомы</div></div>';
-    var interp = [['1–4','Маловероятен — наблюдение','var(--green)'],['5–6','Возможен — УЗИ, хирург','var(--orange)'],['7–8','Вероятен — госпитализация','var(--orange)'],['9–10','Срочная операция','var(--red)']];
-    var hi = '<div class="interp"><div class="interp-title">Интерпретация</div>';
-    for (var j = 0; j < interp.length; j++) {
-      hi += '<div class="interp-row"><span class="interp-range">' + interp[j][0] + '</span>';
-      hi += '<span class="interp-val" style="color:' + interp[j][2] + ';">' + interp[j][1] + '</span></div>';
-    }
-    hi += '</div>';
-    html += hi;
-    html += '<button class="reset" onclick="TOOLS.alvarado.reset()">Сбросить</button>';
-    return html;
-  },
-
-  toggle: function(id, val) {
-    var el = document.getElementById('alv-' + id);
-    el.classList.toggle('on');
-    this.scores[id] = el.classList.contains('on') ? val : 0;
-    if (el.classList.contains('on')) sndOn(); else sndOff();
-    this.calc();
-  },
-
-  calc: function() {
-    var t = 0;
-    for (var k in this.scores) t += this.scores[k];
-    document.getElementById('alv-sc').textContent = t;
-    var r = document.getElementById('alv-res');
-    var lb = document.getElementById('alv-lb');
-    var ac = document.getElementById('alv-ac');
-    if (t <= 4) { r.className = 'res low'; lb.textContent = 'Аппендицит маловероятен'; ac.textContent = 'Наблюдение, повторный осмотр через 4-6 ч'; }
-    else if (t <= 6) { r.className = 'res med'; lb.textContent = 'Аппендицит возможен'; ac.textContent = 'УЗИ брюшной полости, консультация хирурга'; }
-    else if (t <= 8) { r.className = 'res med'; lb.textContent = 'Аппендицит вероятен'; ac.textContent = 'Госпитализация в хирургию, подготовка к операции'; sndWarn(); }
-    else { r.className = 'res hi'; lb.textContent = 'Острый аппендицит'; ac.textContent = 'Срочная госпитализация и операция'; sndWarn(); }
-  },
-
-  reset: function() {
-    sndReset();
-    this.scores = {};
-    for (var i = 0; i < this.criteria.length; i++) {
-      document.getElementById('alv-' + this.criteria[i].id).classList.remove('on');
-    }
-    this.calc();
-  },
-
-  init: function() { this.scores = {}; this.calc(); }
-};
-
-// ---------- Альговер ----------
-TOOLS.algover = {
-  title: 'Индекс Альговера',
-  abbr: 'Ag',
-  subtitle: 'Shock Index = ЧСС / АД сист.',
-  short: 'Экспресс-оценка тяжести шока',
-  desc: 'Простой индекс для оценки гемодинамики при кровопотере. Норма <1.0. Особенно полезен при политравме и ЖКК.',
-  keywords: 'шок кровопотеря',
-
-  render: function() {
-    var html = '<div class="inp-grid">';
-    html += '<div class="inp-grp
+<!-- ====================================== -->
+<!-- ===== TOOL CARDS ===================== -->
+<!-- ====================================== -->
+
+<!-- qSOFA -->
+<div class="card show" id="t-qsofa">
+  <div class="card-title">qSOFA — Экспресс-сепсис</div>
+  <div class="card-desc">Три критерия по 1 баллу. ≥2 баллов — высокий риск сепсиса.</div>
+  <div class="info"><div class="info-text">Прикроватный тест для выявления риска органной дисфункции при подозрении на инфекцию. Не требует анализов — только клинические признаки.</div></div>
+  <div class="crit-list">
+    <div class="crit" id="qsofa-rr" onclick="qsofaTog('rr')">
+      <div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div>
+      <div><div class="crit-txt">ЧДД ≥ 22 в минуту</div><div class="crit-hint">Считать 30 сек × 2</div></div></div>
+      <div class="cbadge">+1</div>
+    </div>
+    <div class="crit" id="qsofa-sbp" onclick="qsofaTog('sbp')">
+      <div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div>
+      <div><div class="crit-txt">АД систолическое ≤ 100 мм рт.ст.</div><div class="crit-hint">По тонометру, 
