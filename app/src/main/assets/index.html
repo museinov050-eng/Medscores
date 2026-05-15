@@ -1202,19 +1202,36 @@ function showScreen(name) {
 
 // ===== RENDER HOME =====
 function renderHome() {
-  showScreen('home');
-  var html = '<div class="cat-grid">';
-  for (var key in CATEGORIES) {
-    var cat = CATEGORIES[key];
-    html += '<div class="cat-card ' + cat.color + '" onclick="goCategory(\'' + key + '\')">';
-    html += '<div class="cat-icon">' + cat.icon + '</div>';
-    html += '<div class="cat-title">' + cat.title + '</div>';
-    html += '<div class="cat-desc">' + cat.desc + '</div>';
-    html += '<div class="cat-count">' + cat.tools.length + ' инструментов</div>';
+  try {
+    showScreen('home');
+    var html = '<div class="cat-grid">';
+    var count = 0;
+    for (var key in CATEGORIES) {
+      var cat = CATEGORIES[key];
+      html += '<div class="cat-card ' + cat.color + '" onclick="goCategory(\'' + key + '\')">';
+      html += '<div class="cat-icon">' + cat.icon + '</div>';
+      html += '<div class="cat-title">' + cat.title + '</div>';
+      html += '<div class="cat-desc">' + cat.desc + '</div>';
+      html += '<div class="cat-count">' + cat.tools.length + ' инструментов</div>';
+      html += '</div>';
+      count++;
+    }
     html += '</div>';
+    if (count === 0) {
+      html = '<div style="padding:20px;color:#ff3b30;font-family:monospace;font-size:12px;">renderHome: CATEGORIES пустые! count=0</div>';
+    }
+    var el = document.getElementById('screen-home');
+    if (!el) {
+      document.body.innerHTML = '<div style="padding:20px;color:#ff3b30;">screen-home element not found</div>';
+      return;
+    }
+    el.innerHTML = html;
+  } catch(e) {
+    var el = document.getElementById('screen-home');
+    if (el) {
+      el.innerHTML = '<div style="padding:20px;color:#ff3b30;font-family:monospace;font-size:11px;">renderHome ERROR: ' + e.message + '\n' + (e.stack || '') + '</div>';
+    }
   }
-  html += '</div>';
-  document.getElementById('screen-home').innerHTML = html;
 }
 
 // ===== RENDER CATEGORY =====
@@ -1270,7 +1287,10 @@ function renderTool(toolId) {
 }
 
 // ===== SEARCH =====
-document.getElementById('search').addEventListener('input', function(e) {
+function attachSearch() {
+  var s = document.getElementById('search');
+  if (!s) return;
+  s.addEventListener('input', function(e) {
   var q = e.target.value.toLowerCase().trim();
   if (!q) {
     if (currentScreen === 'home') renderHome();
@@ -1302,10 +1322,12 @@ document.getElementById('search').addEventListener('input', function(e) {
     html += '</div>';
   }
   document.getElementById('screen-sub').innerHTML = html;
-});
+  });
+}
 
 // ===== INIT =====
 function initApp() {
+  attachSearch();
   renderHome();
 }
 
@@ -2432,13 +2454,4 @@ TOOLS.algover = {
 
   render: function() {
     var html = '<div class="inp-grid">';
-    html += '<div class="inp-grp"><div class="inp-lbl">ЧСС <span class="inp-unit">уд/мин</span></div>';
-    html += '<input class="inp-f" type="number" id="alg-hr" placeholder="80" inputmode="numeric" oninput="TOOLS.algover.calc()"></div>';
-    html += '<div class="inp-grp"><div class="inp-lbl">АД сист. <span class="inp-unit">мм рт.ст.</span></div>';
-    html += '<input class="inp-f" type="number" id="alg-sbp" placeholder="120" inputmode="numeric" oninput="TOOLS.algover.calc()"></div>';
-    html += '</div>';
-    html += '<div class="res" id="alg-res"><div class="res-score" id="alg-sc">—</div>';
-    html += '<div class="res-lbl" id="alg-lb">Индекс шока</div>';
-    html += '<div class="res-act" id="alg-ac">Введите ЧСС и АД</div></div>';
-    var interp = [
-      ['<1
+    html += '<div class="inp-grp
