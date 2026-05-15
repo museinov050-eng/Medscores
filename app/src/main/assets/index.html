@@ -30,7 +30,8 @@
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bot: env(safe-area-inset-bottom, 0px);
 }
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+button, .crit, .kl-card-head, .kl-filter, .tab, .med-cat-tab, .drug-btn, .con-btn { cursor: pointer; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
 html { background: var(--bg); }
 body {
   background:
@@ -93,7 +94,123 @@ body {
 }
 .tab:active { transform:scale(0.96); }
 .tab.active { background:var(--accent); color:white; border-color:var(--accent); box-shadow:0 4px 16px rgba(10,132,255,0.4); }
-.tab.klinika-tab.active { background: linear-gradient(135deg,#bf5af2,#5ac8fa); border-color:transparent; box-shadow:0 4px 16px rgba(191,90,242,0.4); }
+.tab.palaty-tab.active { background: linear-gradient(135deg,#ff9f0a,#ff453a); border-color:transparent; box-shadow:0 4px 16px rgba(255,159,10,0.4); }
+
+/* ===== ПАЛАТЫ ===== */
+.ward-section { margin-bottom: 18px; }
+.ward-title {
+  font-size: 13px; font-weight: 700; color: var(--text-3);
+  text-transform: uppercase; letter-spacing: 0.1em;
+  margin-bottom: 10px; padding-left: 2px;
+  display: flex; align-items: center; gap: 8px;
+}
+.ward-title span { font-size: 16px; }
+
+.bed-card {
+  background: var(--glass-2); border: 1px solid var(--glass-border);
+  border-radius: 16px; padding: 14px; margin-bottom: 10px;
+  transition: border-color 0.2s;
+}
+.bed-card.active-inf { border-color: var(--green); background: rgba(48,209,88,0.05); }
+.bed-card.warn-inf { border-color: var(--orange); background: rgba(255,159,10,0.05); }
+.bed-card.done-inf { border-color: var(--red); background: rgba(255,69,58,0.08); }
+
+.bed-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 12px;
+}
+.bed-num {
+  display: flex; align-items: center; gap: 8px;
+}
+.bed-icon {
+  width: 32px; height: 32px; border-radius: 9px;
+  background: rgba(255,255,255,0.08);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; flex-shrink: 0;
+}
+.bed-label { font-size: 14px; font-weight: 700; color: white; }
+.bed-status {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; padding: 4px 10px; border-radius: 100px;
+  background: rgba(255,255,255,0.06); color: var(--text-3); border: 1px solid var(--glass-border);
+}
+.bed-status.running { background: rgba(48,209,88,0.15); color: var(--green); border-color: var(--green); }
+.bed-status.warning { background: rgba(255,159,10,0.15); color: var(--orange); border-color: var(--orange); }
+.bed-status.done { background: rgba(255,69,58,0.15); color: var(--red); border-color: var(--red); }
+
+.bed-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+.bed-field {
+  background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border);
+  border-radius: 10px; padding: 8px 10px;
+}
+.bed-field:focus-within { border-color: var(--accent); }
+.bed-field-lbl { font-size: 9px; font-weight: 700; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+.bed-field-inp {
+  width: 100%; background: transparent; border: none; outline: none;
+  color: white; font-family: var(--mono); font-size: 15px; font-weight: 700; padding: 0;
+}
+.bed-field-inp::placeholder { color: rgba(255,255,255,0.12); }
+.bed-field-inp.small { font-size: 12px; }
+
+.bed-drug-inp {
+  width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border);
+  border-radius: 10px; color: white; font-family: var(--sans); font-size: 13px;
+  font-weight: 600; padding: 9px 11px; outline: none; margin-bottom: 8px;
+}
+.bed-drug-inp:focus { border-color: var(--accent); }
+.bed-drug-inp::placeholder { color: rgba(255,255,255,0.2); }
+
+.bed-timer-row {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 8px;
+}
+.bed-timer-display {
+  flex: 1; text-align: center; padding: 10px;
+  background: rgba(0,0,0,0.25); border-radius: 10px;
+  font-family: var(--mono); font-size: 22px; font-weight: 700; color: var(--text-2);
+  border: 1px solid var(--glass-border);
+}
+.bed-timer-display.running { color: var(--green); }
+.bed-timer-display.warning { color: var(--orange); }
+.bed-timer-display.done { color: var(--red); animation: pulse 1s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+.bed-progress {
+  height: 4px; border-radius: 2px; background: rgba(255,255,255,0.08);
+  margin-bottom: 8px; overflow: hidden;
+}
+.bed-progress-bar {
+  height: 100%; border-radius: 2px;
+  background: var(--green); transition: width 10s linear;
+}
+.bed-progress-bar.warning { background: var(--orange); }
+.bed-progress-bar.done { background: var(--red); }
+
+.bed-reminder {
+  font-size: 11px; color: var(--text-3); line-height: 1.5;
+  padding: 7px 10px; background: rgba(0,0,0,0.15); border-radius: 8px; margin-bottom: 8px;
+}
+.bed-reminder.alert { background: rgba(255,69,58,0.1); color: var(--red); font-weight: 700; }
+.bed-reminder.warn { background: rgba(255,159,10,0.1); color: var(--orange); }
+
+.bed-btn-row { display: flex; gap: 7px; }
+.bed-btn {
+  flex: 1; padding: 9px 6px; border: 1px solid var(--glass-border);
+  border-radius: 10px; background: var(--glass-2); color: var(--text-2);
+  font-family: var(--sans); font-size: 12px; font-weight: 600; text-align: center;
+  cursor: pointer; transition: all 0.15s;
+}
+.bed-btn:active { transform: scale(0.96); }
+.bed-btn.start { border-color: var(--green); color: var(--green); background: rgba(48,209,88,0.1); }
+.bed-btn.stop  { border-color: var(--red);   color: var(--red);   background: rgba(255,69,58,0.1); }
+.bed-btn.clear { border-color: var(--text-3); color: var(--text-3); }
+
+.inf-calc-hint {
+  font-size: 11px; color: var(--teal); font-family: var(--mono);
+  padding: 6px 10px; background: rgba(90,200,250,0.06);
+  border: 1px solid rgba(90,200,250,0.15); border-radius: 8px; margin-bottom: 8px;
+  min-height: 22px;
+}
+
 .nav-divider { height:1px; background:var(--divider); margin:14px 0; }
 
 /* === CARD === */
@@ -384,47 +501,48 @@ body {
   <div class="nav-cat">
     <div class="nav-cat-label">Оценка тяжести</div>
     <div class="nav-row">
-      <button class="tab active" onclick="goTab('qsofa')">qSOFA</button>
-      <button class="tab" onclick="goTab('news')">NEWS2</button>
-      <button class="tab" onclick="goTab('gcs')">GCS</button>
-      <button class="tab" onclick="goTab('rass')">RASS</button>
+      <button class="tab active" data-tab="qsofa">qSOFA</button>
+      <button class="tab" data-tab="news">NEWS2</button>
+      <button class="tab" data-tab="gcs">GCS</button>
+      <button class="tab" data-tab="rass">RASS</button>
     </div>
   </div>
   <div class="nav-divider"></div>
   <div class="nav-cat">
     <div class="nav-cat-label">Диагностика</div>
     <div class="nav-row">
-      <button class="tab" onclick="goTab('wells')">Wells ТЭЛА</button>
-      <button class="tab" onclick="goTab('alg')">Альговер</button>
-      <button class="tab" onclick="goTab('cpss')">Инсульт</button>
-      <button class="tab" onclick="goTab('grace')">GRACE</button>
-      <button class="tab" onclick="goTab('alv')">Альварадо</button>
+      <button class="tab" data-tab="wells">Wells ТЭЛА</button>
+      <button class="tab" data-tab="alg">Альговер</button>
+      <button class="tab" data-tab="cpss">Инсульт</button>
+      <button class="tab" data-tab="grace">GRACE</button>
+      <button class="tab" data-tab="alv">Альварадо</button>
     </div>
   </div>
   <div class="nav-divider"></div>
   <div class="nav-cat">
     <div class="nav-cat-label">Лечение и расчёты</div>
     <div class="nav-row">
-      <button class="tab" onclick="goTab('inf')">Инфузомат</button>
-      <button class="tab" onclick="goTab('ped')">Педиатрия</button>
-      <button class="tab" onclick="goTab('ivl')">ИВЛ 4/40</button>
-      <button class="tab" onclick="goTab('cpr')">СЛР Таймер</button>
+      <button class="tab" data-tab="inf">Инфузомат</button>
+      <button class="tab" data-tab="ped">Педиатрия</button>
+      <button class="tab" data-tab="ivl">ИВЛ 4/40</button>
+      <button class="tab" data-tab="cpr">СЛР Таймер</button>
     </div>
   </div>
   <div class="nav-divider"></div>
   <div class="nav-cat">
     <div class="nav-cat-label">Препараты СМП</div>
     <div class="nav-row">
-      <button class="tab" onclick="goTab('meds')">Препараты</button>
-      <button class="tab klinika-tab" onclick="goTab('klinika')">🏥 Клиника</button>
+      <button class="tab" data-tab="meds">Препараты</button>
+      <button class="tab klinika-tab" data-tab="klinika">🏥 Клиника</button>
+      <button class="tab palaty-tab" data-tab="palaty">🛏 Палаты</button>
     </div>
   </div>
   <div class="nav-divider"></div>
   <div class="nav-cat">
     <div class="nav-cat-label">Антропометрия</div>
     <div class="nav-row">
-      <button class="tab" onclick="goTab('bmi')">ИМТ</button>
-      <button class="tab" onclick="goTab('norms')">Нормы детей</button>
+      <button class="tab" data-tab="bmi">ИМТ</button>
+      <button class="tab" data-tab="norms">Нормы детей</button>
     </div>
   </div>
 </div>
@@ -435,17 +553,17 @@ body {
   <div class="card-desc">Три критерия по 1 баллу. ≥2 баллов — высокий риск сепсиса.</div>
   <div class="info"><div class="info-text">Прикроватный тест для выявления риска органной дисфункции при подозрении на инфекцию. Не требует анализов — только клинические признаки.</div></div>
   <div class="crit-list">
-    <div class="crit" id="qsofa-rr" onclick="qsofaTog('rr')">
+    <div class="crit" id="qsofa-rr" data-action="qsofa" data-key="rr">
       <div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div>
       <div><div class="crit-txt">ЧДД ≥ 22 в минуту</div><div class="crit-hint">Считать 30 сек × 2</div></div></div>
       <div class="cbadge">+1</div>
     </div>
-    <div class="crit" id="qsofa-sbp" onclick="qsofaTog('sbp')">
+    <div class="crit" id="qsofa-sbp" data-action="qsofa" data-key="sbp">
       <div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div>
       <div><div class="crit-txt">АД систолическое ≤ 100 мм рт.ст.</div><div class="crit-hint">По тонометру</div></div></div>
       <div class="cbadge">+1</div>
     </div>
-    <div class="crit" id="qsofa-gc" onclick="qsofaTog('gc')">
+    <div class="crit" id="qsofa-gc" data-action="qsofa" data-key="gc">
       <div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div>
       <div><div class="crit-txt">Изменение сознания</div><div class="crit-hint">GCS &lt; 15 или спутанность</div></div></div>
       <div class="cbadge">+1</div>
@@ -467,27 +585,27 @@ body {
   <div class="card-title">NEWS2</div>
   <div class="card-desc">National Early Warning Score 2 — ранее предупреждение ухудшения.</div>
   <div class="inp-grid">
-    <div class="inp-grp"><div class="inp-lbl">ЧДД <span class="inp-unit">в мин</span></div><input class="inp-f" id="news-rr" type="number" placeholder="16" oninput="calcNews()"></div>
-    <div class="inp-grp"><div class="inp-lbl">SpO₂ <span class="inp-unit">%</span></div><input class="inp-f" id="news-spo2" type="number" placeholder="97" oninput="calcNews()"></div>
-    <div class="inp-grp"><div class="inp-lbl">АД сист. <span class="inp-unit">мм рт.ст.</span></div><input class="inp-f" id="news-sbp" type="number" placeholder="120" oninput="calcNews()"></div>
-    <div class="inp-grp"><div class="inp-lbl">ЧСС <span class="inp-unit">уд/мин</span></div><input class="inp-f" id="news-hr" type="number" placeholder="80" oninput="calcNews()"></div>
-    <div class="inp-grp"><div class="inp-lbl">Темп. <span class="inp-unit">°C</span></div><input class="inp-f" id="news-t" type="number" placeholder="36.6" step="0.1" oninput="calcNews()"></div>
+    <div class="inp-grp"><div class="inp-lbl">ЧДД <span class="inp-unit">в мин</span></div><input class="inp-f" id="news-rr" type="number" placeholder="16"></div>
+    <div class="inp-grp"><div class="inp-lbl">SpO₂ <span class="inp-unit">%</span></div><input class="inp-f" id="news-spo2" type="number" placeholder="97"></div>
+    <div class="inp-grp"><div class="inp-lbl">АД сист. <span class="inp-unit">мм рт.ст.</span></div><input class="inp-f" id="news-sbp" type="number" placeholder="120"></div>
+    <div class="inp-grp"><div class="inp-lbl">ЧСС <span class="inp-unit">уд/мин</span></div><input class="inp-f" id="news-hr" type="number" placeholder="80"></div>
+    <div class="inp-grp"><div class="inp-lbl">Темп. <span class="inp-unit">°C</span></div><input class="inp-f" id="news-t" type="number" placeholder="36.6" step="0.1"></div>
   </div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
     <div>
       <div class="inp-lbl" style="margin-bottom:6px">Сознание</div>
       <div style="display:flex;gap:6px">
-        <button class="con-btn on" id="news-avpu-a" onclick="setAvpu('A')" style="flex:1">А</button>
-        <button class="con-btn" id="news-avpu-v" onclick="setAvpu('V')" style="flex:1">V</button>
-        <button class="con-btn" id="news-avpu-p" onclick="setAvpu('P')" style="flex:1">P</button>
-        <button class="con-btn" id="news-avpu-u" onclick="setAvpu('U')" style="flex:1">U</button>
+        <button class="con-btn on" id="news-avpu-a" data-avpu="A" style="flex:1">А</button>
+        <button class="con-btn" id="news-avpu-v" data-avpu="V" style="flex:1">V</button>
+        <button class="con-btn" id="news-avpu-p" data-avpu="P" style="flex:1">P</button>
+        <button class="con-btn" id="news-avpu-u" data-avpu="U" style="flex:1">U</button>
       </div>
     </div>
     <div>
       <div class="inp-lbl" style="margin-bottom:6px">Кислород</div>
       <div style="display:flex;gap:6px">
-        <button class="con-btn on" id="news-o2-n" onclick="setO2(false)" style="flex:1">Воздух</button>
-        <button class="con-btn" id="news-o2-y" onclick="setO2(true)" style="flex:1">O₂</button>
+        <button class="con-btn on" id="news-o2-n" data-o2="false" style="flex:1">Воздух</button>
+        <button class="con-btn" id="news-o2-y" data-o2="true" style="flex:1">O₂</button>
       </div>
     </div>
   </div>
@@ -573,13 +691,13 @@ body {
   <div class="card-title">Wells — Риск ТЭЛА</div>
   <div class="card-desc">Клиническая вероятность тромбоэмболии лёгочной артерии.</div>
   <div class="crit-list" id="wells-list">
-    <div class="crit" onclick="wellsTog(this,3)"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Признаки ТГВ</div><div class="crit-hint">Отёк, боль по ходу вен ноги</div></div></div><div class="cbadge">+3</div></div>
-    <div class="crit" onclick="wellsTog(this,3)"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">ТЭЛА вероятнее альтернатив</div></div></div><div class="cbadge">+3</div></div>
-    <div class="crit" onclick="wellsTog(this,1.5)"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">ЧСС > 100 уд/мин</div></div></div><div class="cbadge">+1.5</div></div>
-    <div class="crit" onclick="wellsTog(this,1.5)"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Иммобилизация / операция ≤4 нед</div></div></div><div class="cbadge">+1.5</div></div>
-    <div class="crit" onclick="wellsTog(this,1.5)"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">ТГВ/ТЭЛА в анамнезе</div></div></div><div class="cbadge">+1.5</div></div>
-    <div class="crit" onclick="wellsTog(this,1)"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Кровохарканье</div></div></div><div class="cbadge">+1</div></div>
-    <div class="crit" onclick="wellsTog(this,1)"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Онкология (леч. ≤6 мес)</div></div></div><div class="cbadge">+1</div></div>
+    <div class="crit" data-action="wells" data-pts="3"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Признаки ТГВ</div><div class="crit-hint">Отёк, боль по ходу вен ноги</div></div></div><div class="cbadge">+3</div></div>
+    <div class="crit" data-action="wells" data-pts="3"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">ТЭЛА вероятнее альтернатив</div></div></div><div class="cbadge">+3</div></div>
+    <div class="crit" data-action="wells" data-pts="1.5"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">ЧСС > 100 уд/мин</div></div></div><div class="cbadge">+1.5</div></div>
+    <div class="crit" data-action="wells" data-pts="1.5"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Иммобилизация / операция ≤4 нед</div></div></div><div class="cbadge">+1.5</div></div>
+    <div class="crit" data-action="wells" data-pts="1.5"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">ТГВ/ТЭЛА в анамнезе</div></div></div><div class="cbadge">+1.5</div></div>
+    <div class="crit" data-action="wells" data-pts="1"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Кровохарканье</div></div></div><div class="cbadge">+1</div></div>
+    <div class="crit" data-action="wells" data-pts="1"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Онкология (леч. ≤6 мес)</div></div></div><div class="cbadge">+1</div></div>
   </div>
   <div class="res" id="wells-res">
     <div class="res-score" id="wells-n">0</div>
@@ -596,8 +714,8 @@ body {
   <div class="card-title">Индекс Альговера</div>
   <div class="card-desc">Шоковый индекс = ЧСС / АД сист. Оценка кровопотери.</div>
   <div class="inp-grid">
-    <div class="inp-grp"><div class="inp-lbl">ЧСС <span class="inp-unit">уд/мин</span></div><input class="inp-f" id="alg-hr" type="number" placeholder="80" oninput="calcAlg()"></div>
-    <div class="inp-grp"><div class="inp-lbl">АД сист. <span class="inp-unit">мм рт.ст.</span></div><input class="inp-f" id="alg-sbp" type="number" placeholder="120" oninput="calcAlg()"></div>
+    <div class="inp-grp"><div class="inp-lbl">ЧСС <span class="inp-unit">уд/мин</span></div><input class="inp-f" id="alg-hr" type="number" placeholder="80"></div>
+    <div class="inp-grp"><div class="inp-lbl">АД сист. <span class="inp-unit">мм рт.ст.</span></div><input class="inp-f" id="alg-sbp" type="number" placeholder="120"></div>
   </div>
   <div class="res" id="alg-res">
     <div class="res-score" id="alg-n">—</div>
@@ -617,9 +735,9 @@ body {
   <div class="card-title">Инсульт (CPSS)</div>
   <div class="card-desc">Cincinnati Prehospital Stroke Scale — 3 признака.</div>
   <div class="crit-list">
-    <div class="crit" id="cpss-face" onclick="cpssTog('face')"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Асимметрия лица</div><div class="crit-hint">Попросить улыбнуться</div></div></div><div class="cbadge">!</div></div>
-    <div class="crit" id="cpss-arm" onclick="cpssTog('arm')"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Слабость руки</div><div class="crit-hint">Держать руки вытянутыми 10 сек</div></div></div><div class="cbadge">!</div></div>
-    <div class="crit" id="cpss-sp" onclick="cpssTog('sp')"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Нарушение речи</div><div class="crit-hint">«Скорая помощь едет быстро»</div></div></div><div class="cbadge">!</div></div>
+    <div class="crit" id="cpss-face" data-action="cpss" data-key="face"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Асимметрия лица</div><div class="crit-hint">Попросить улыбнуться</div></div></div><div class="cbadge">!</div></div>
+    <div class="crit" id="cpss-arm" data-action="cpss" data-key="arm"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Слабость руки</div><div class="crit-hint">Держать руки вытянутыми 10 сек</div></div></div><div class="cbadge">!</div></div>
+    <div class="crit" id="cpss-sp" data-action="cpss" data-key="sp"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Нарушение речи</div><div class="crit-hint">«Скорая помощь едет быстро»</div></div></div><div class="cbadge">!</div></div>
   </div>
   <div class="res" id="cpss-res">
     <div class="res-score" id="cpss-n">0</div>
@@ -633,24 +751,24 @@ body {
   <div class="card-title">GRACE — ОКС</div>
   <div class="card-desc">Global Registry of Acute Coronary Events. Риск смерти при ОКС.</div>
   <div class="inp-grid">
-    <div class="inp-grp"><div class="inp-lbl">Возраст <span class="inp-unit">лет</span></div><input class="inp-f" id="grace-age" type="number" placeholder="65" oninput="calcGrace()"></div>
-    <div class="inp-grp"><div class="inp-lbl">ЧСС <span class="inp-unit">уд/мин</span></div><input class="inp-f" id="grace-hr" type="number" placeholder="90" oninput="calcGrace()"></div>
-    <div class="inp-grp"><div class="inp-lbl">АД сист. <span class="inp-unit">мм рт.ст.</span></div><input class="inp-f" id="grace-sbp" type="number" placeholder="130" oninput="calcGrace()"></div>
-    <div class="inp-grp"><div class="inp-lbl">Креатинин <span class="inp-unit">мкмоль/л</span></div><input class="inp-f" id="grace-cr" type="number" placeholder="90" oninput="calcGrace()"></div>
+    <div class="inp-grp"><div class="inp-lbl">Возраст <span class="inp-unit">лет</span></div><input class="inp-f" id="grace-age" type="number" placeholder="65"></div>
+    <div class="inp-grp"><div class="inp-lbl">ЧСС <span class="inp-unit">уд/мин</span></div><input class="inp-f" id="grace-hr" type="number" placeholder="90"></div>
+    <div class="inp-grp"><div class="inp-lbl">АД сист. <span class="inp-unit">мм рт.ст.</span></div><input class="inp-f" id="grace-sbp" type="number" placeholder="130"></div>
+    <div class="inp-grp"><div class="inp-lbl">Креатинин <span class="inp-unit">мкмоль/л</span></div><input class="inp-f" id="grace-cr" type="number" placeholder="90"></div>
   </div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
     <div>
       <div class="inp-lbl" style="margin-bottom:6px">Остановка сердца</div>
       <div style="display:flex;gap:6px">
-        <button class="con-btn" id="grace-ca-n" onclick="setGraceCa(false)" style="flex:1">Нет</button>
-        <button class="con-btn on" id="grace-ca-y" onclick="setGraceCa(true)" style="flex:1">Да</button>
+        <button class="con-btn" id="grace-ca-n" data-grace-ca="false" style="flex:1">Нет</button>
+        <button class="con-btn on" id="grace-ca-y" data-grace-ca="true" style="flex:1">Да</button>
       </div>
     </div>
     <div>
       <div class="inp-lbl" style="margin-bottom:6px">Отклон. ST</div>
       <div style="display:flex;gap:6px">
-        <button class="con-btn on" id="grace-st-n" onclick="setGraceSt(false)" style="flex:1">Нет</button>
-        <button class="con-btn" id="grace-st-y" onclick="setGraceSt(true)" style="flex:1">Да</button>
+        <button class="con-btn on" id="grace-st-n" data-grace-st="false" style="flex:1">Нет</button>
+        <button class="con-btn" id="grace-st-y" data-grace-st="true" style="flex:1">Да</button>
       </div>
     </div>
   </div>
@@ -670,14 +788,14 @@ body {
   <div class="card-title">Альварадо — Аппендицит</div>
   <div class="card-desc">MANTRELS Score. Клиническая вероятность острого аппендицита.</div>
   <div class="crit-list" id="alv-list">
-    <div class="crit" onclick="alvTog(this,1)"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Миграция боли в ПП</div></div></div><div class="cbadge">+1</div></div>
-    <div class="crit" onclick="alvTog(this,1)"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Анорексия</div></div></div><div class="cbadge">+1</div></div>
-    <div class="crit" onclick="alvTog(this,1)"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Тошнота/рвота</div></div></div><div class="cbadge">+1</div></div>
-    <div class="crit" onclick="alvTog(this,2)"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Болезненность в ПП</div></div></div><div class="cbadge">+2</div></div>
-    <div class="crit" onclick="alvTog(this,1)"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Симптом Щёткина–Блюмберга</div></div></div><div class="cbadge">+1</div></div>
-    <div class="crit" onclick="alvTog(this,1)"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Повышение температуры</div></div></div><div class="cbadge">+1</div></div>
-    <div class="crit" onclick="alvTog(this,2)"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Лейкоцитоз</div></div></div><div class="cbadge">+2</div></div>
-    <div class="crit" onclick="alvTog(this,1)"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Сдвиг формулы влево</div></div></div><div class="cbadge">+1</div></div>
+    <div class="crit" data-action="alv" data-pts="1"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Миграция боли в ПП</div></div></div><div class="cbadge">+1</div></div>
+    <div class="crit" data-action="alv" data-pts="1"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Анорексия</div></div></div><div class="cbadge">+1</div></div>
+    <div class="crit" data-action="alv" data-pts="1"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Тошнота/рвота</div></div></div><div class="cbadge">+1</div></div>
+    <div class="crit" data-action="alv" data-pts="2"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Болезненность в ПП</div></div></div><div class="cbadge">+2</div></div>
+    <div class="crit" data-action="alv" data-pts="1"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Симптом Щёткина–Блюмберга</div></div></div><div class="cbadge">+1</div></div>
+    <div class="crit" data-action="alv" data-pts="1"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Повышение температуры</div></div></div><div class="cbadge">+1</div></div>
+    <div class="crit" data-action="alv" data-pts="2"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Лейкоцитоз</div></div></div><div class="cbadge">+2</div></div>
+    <div class="crit" data-action="alv" data-pts="1"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Сдвиг формулы влево</div></div></div><div class="cbadge">+1</div></div>
   </div>
   <div class="res" id="alv-res">
     <div class="res-score" id="alv-n">0</div>
@@ -695,16 +813,16 @@ body {
   <div class="card-title">Инфузомат СМП</div>
   <div class="card-desc">Расчёт скорости введения вазопрессоров и диуретиков.</div>
   <div class="drug-grid">
-    <button class="drug-btn sel-d" id="db-d" onclick="selDrug('d')"><span class="dn">Допамин</span><span class="dc">400мг / 200мл</span></button>
-    <button class="drug-btn" id="db-n" onclick="selDrug('n')"><span class="dn">Норадреналин</span><span class="dc">4мг / 200мл</span></button>
-    <button class="drug-btn" id="db-novoc" onclick="selDrug('novoc')"><span class="dn">Новокаинамид</span><span class="dc">1000мг / 100мл</span></button>
-    <button class="drug-btn" id="db-furos" onclick="selDrug('furos')"><span class="dn">Фуросемид</span><span class="dc">40мг / 100мл</span></button>
+    <button class="drug-btn sel-d" id="db-d" data-drug="d"><span class="dn">Допамин</span><span class="dc">400мг / 200мл</span></button>
+    <button class="drug-btn" id="db-n" data-drug="n"><span class="dn">Норадреналин</span><span class="dc">4мг / 200мл</span></button>
+    <button class="drug-btn" id="db-novoc" data-drug="novoc"><span class="dn">Новокаинамид</span><span class="dc">1000мг / 100мл</span></button>
+    <button class="drug-btn" id="db-furos" data-drug="furos"><span class="dn">Фуросемид</span><span class="dc">40мг / 100мл</span></button>
   </div>
-  <div class="w-inp"><div class="w-lbl">Вес пациента (кг)</div><input class="w-field" id="inf-wt" type="number" placeholder="70" oninput="calcInf()"></div>
+  <div class="w-inp"><div class="w-lbl">Вес пациента (кг)</div><input class="w-field" id="inf-wt" type="number" placeholder="70"></div>
   <div id="inf-dose-wrap" style="margin-bottom:12px">
     <div class="w-lbl" id="inf-dose-lbl">Доза (мкг/кг/мин)</div>
     <div style="display:flex;gap:10px;align-items:center">
-      <input type="range" class="slider d" id="inf-sl" min="2" max="20" value="5" oninput="calcInf()">
+      <input type="range" class="slider d" id="inf-sl" min="2" max="20" value="5">
       <div style="font-family:var(--mono);font-size:20px;font-weight:700;color:var(--yellow);min-width:36px;text-align:right" id="inf-sl-val">5</div>
     </div>
   </div>
@@ -739,7 +857,7 @@ body {
 <div class="card" id="t-ivl">
   <div class="card-title">ИВЛ — Параметры 4/40</div>
   <div class="card-desc">Расчёт ДО и ЧД по весу. Протективная вентиляция.</div>
-  <div class="w-inp"><div class="w-lbl">Вес (кг)</div><input class="w-field" id="ivl-wt" type="number" placeholder="70" oninput="calcIvl()"></div>
+  <div class="w-inp"><div class="w-lbl">Вес (кг)</div><input class="w-field" id="ivl-wt" type="number" placeholder="70"></div>
   <div id="ivl-res" style="background:var(--glass-2);border:1px solid var(--glass-border);border-radius:14px;padding:16px;font-size:13px;line-height:1.9;color:var(--text-2)">Введите вес</div>
 </div>
 
@@ -753,8 +871,8 @@ body {
     <div style="font-size:12px;color:var(--red);font-weight:700;margin-top:6px" id="cpr-adr"></div>
   </div>
   <div style="display:flex;gap:10px">
-    <button class="con-btn" id="cpr-btn" onclick="cprToggle()" style="flex:2;padding:16px;font-size:15px;font-weight:700">▶ СТАРТ</button>
-    <button class="con-btn" onclick="cprReset()" style="flex:1;padding:16px">↺ Сброс</button>
+    <button class="con-btn" id="cpr-btn" data-action="cpr-toggle" style="flex:2;padding:16px;font-size:15px;font-weight:700">▶ СТАРТ</button>
+    <button class="con-btn" data-action="cpr-reset" style="flex:1;padding:16px">↺ Сброс</button>
   </div>
   <div style="background:rgba(255,69,58,0.08);border:1px solid rgba(255,69,58,0.2);border-radius:12px;padding:12px;margin-top:14px;font-size:12px;color:var(--text-2);line-height:1.7">
     <b style="color:var(--red)">Протокол СЛР:</b><br>
@@ -769,11 +887,11 @@ body {
   <div class="card-title">Препараты СМП</div>
   <div class="card-desc">Справочник основных препаратов бригады СМП.</div>
   <div class="med-cat-tabs" id="meds-tabs">
-    <button class="med-cat-tab on" onclick="setMedCat('all',this)">Все</button>
-    <button class="med-cat-tab" onclick="setMedCat('card',this)">Кардио</button>
-    <button class="med-cat-tab" onclick="setMedCat('neuro',this)">Нейро</button>
-    <button class="med-cat-tab" onclick="setMedCat('pain',this)">Анальгезия</button>
-    <button class="med-cat-tab" onclick="setMedCat('other',this)">Прочее</button>
+    <button class="med-cat-tab on" data-medcat="all">Все</button>
+    <button class="med-cat-tab" data-medcat="card">Кардио</button>
+    <button class="med-cat-tab" data-medcat="neuro">Нейро</button>
+    <button class="med-cat-tab" data-medcat="pain">Анальгезия</button>
+    <button class="med-cat-tab" data-medcat="other">Прочее</button>
   </div>
   <div id="meds-list"></div>
 </div>
@@ -782,8 +900,8 @@ body {
 <div class="card" id="t-bmi">
   <div class="card-title">ИМТ — Индекс массы тела</div>
   <div class="inp-grid">
-    <div class="inp-grp"><div class="inp-lbl">Рост <span class="inp-unit">см</span></div><input class="inp-f" id="bmi-h" type="number" placeholder="175" oninput="calcBmi()"></div>
-    <div class="inp-grp"><div class="inp-lbl">Вес <span class="inp-unit">кг</span></div><input class="inp-f" id="bmi-w" type="number" placeholder="70" oninput="calcBmi()"></div>
+    <div class="inp-grp"><div class="inp-lbl">Рост <span class="inp-unit">см</span></div><input class="inp-f" id="bmi-h" type="number" placeholder="175"></div>
+    <div class="inp-grp"><div class="inp-lbl">Вес <span class="inp-unit">кг</span></div><input class="inp-f" id="bmi-w" type="number" placeholder="70"></div>
   </div>
   <div class="res" id="bmi-res">
     <div class="res-score" id="bmi-n">—</div>
@@ -823,21 +941,41 @@ body {
   <!-- Search -->
   <div class="kl-search-wrap">
     <span class="kl-search-icon">🔍</span>
-    <input class="kl-search" id="kl-search" type="text" placeholder="Поиск препарата..." oninput="klFilter()">
+    <input class="kl-search" id="kl-search" type="text" placeholder="Поиск препарата...">
   </div>
 
   <!-- Filters -->
   <div class="kl-filter-row">
-    <button class="kl-filter on f-all" onclick="klSetFilter('all',this)">Все</button>
-    <button class="kl-filter f-inj" onclick="klSetFilter('inj',this)">💉 Инъекции</button>
-    <button class="kl-filter f-inf" onclick="klSetFilter('inf',this)">🧪 Инфузии</button>
-    <button class="kl-filter f-tab" onclick="klSetFilter('tab',this)">💊 Таблетки</button>
-    <button class="kl-filter f-card" onclick="klSetFilter('card',this)">❤️ Кардио</button>
-    <button class="kl-filter f-neuro" onclick="klSetFilter('neuro',this)">🧠 Нейро</button>
-    <button class="kl-filter f-psych" onclick="klSetFilter('psych',this)">🌀 Психо</button>
+    <button class="kl-filter on f-all" data-klfilter="all">Все</button>
+    <button class="kl-filter f-inj" data-klfilter="inj">💉 Инъекции</button>
+    <button class="kl-filter f-inf" data-klfilter="inf">🧪 Инфузии</button>
+    <button class="kl-filter f-tab" data-klfilter="tab">💊 Таблетки</button>
+    <button class="kl-filter f-card" data-klfilter="card">❤️ Кардио</button>
+    <button class="kl-filter f-neuro" data-klfilter="neuro">🧠 Нейро</button>
+    <button class="kl-filter f-psych" data-klfilter="psych">🌀 Психо</button>
   </div>
 
   <div id="kl-list"></div>
+</div>
+
+<!-- ====================================== -->
+<!-- ===== ПАЛАТЫ ========================= -->
+<!-- ====================================== -->
+<div class="card" id="t-palaty">
+  <div class="card-title">🛏 Палаты — Инфузии</div>
+  <div class="card-desc">Трекер инфузий по койкам. Препарат, скорость, объём, таймер завершения.</div>
+
+  <!-- Палата 1 -->
+  <div class="ward-section">
+    <div class="ward-title"><span>🚨</span> Палата 1 — Реанимационная</div>
+    <div id="ward1-beds"></div>
+  </div>
+
+  <!-- Палата 2 -->
+  <div class="ward-section">
+    <div class="ward-title"><span>🏥</span> Палата 2 — Общая</div>
+    <div id="ward2-beds"></div>
+  </div>
 </div>
 
 </div><!-- /wrap -->
@@ -1522,6 +1660,30 @@ const KL_DRUGS = [
     mech:'Длительная блокада μ-опиоидных рецепторов (T½ ~ 13 ч, активный метаболит ~ 96 ч) → нет эйфории от опиоидов',
     warn:'НЕЛЬЗЯ при наличии опиоидов в организме (острая отмена). Нельзя принимать при текущей опиоидной зависимости без предварительной детоксикации. Гепатотоксичность при высоких дозах.'
   },
+  {
+    id:'cytoflavin', name:'Цитофлавин 10 мл', latin:'Riboxinum + Acidum succinicum + Nicotinamidum + Riboflavinum', form:'inf',
+    tags:['inf','neuro'],
+    group:'Антигипоксант, метаболический цитопротектор (комбинированный)',
+    icon:'🧪', fi:'fi-neuro', gc:'gc-neuro',
+    dose:'10 мл в/в капельно 1–2 р/сут. Тяжёлые случаи: 20 мл/сут',
+    route:'ТОЛЬКО в/в капельно! Струйно нельзя — выраженное жжение по вене',
+    dilution:'10 мл + 100–200 мл глюкозы 5% или NaCl 0.9%. Скорость: 3–4 мл/мин (60 кап/мин)',
+    when:'ОНМК (ишемический инсульт, первые 12 сут), ЧМТ, острая алкогольная интоксикация, постреанимационная болезнь, критические состояния с гипоксией',
+    mech:'Четыре компонента: Янтарная кислота (сукцинат) → ↑аэробный АТФ. Инозин (рибоксин) → предшественник АТФ, ↑синтез нуклеотидов. Никотинамид → НАД⁺. Рибофлавин → ФАД. Совместно: ↑метаболизм в условиях гипоксии, ↓PerOL',
+    warn:'Быстрое введение → жжение, покраснение лица, головокружение — снизить скорость! Несовместим с другими препаратами в одном р-ре. При декомпенсированном СД — осторожно (содержит глюкозу при разведении). Подкисляет р-р → не смешивать со щелочными препаратами.'
+  },
+  {
+    id:'natrii_thiosulfat', name:'Натрия тиосульфат 10 мл', latin:'Natrii thiosulfas', form:'inf',
+    tags:['inf'],
+    group:'Антидот (донор серы), детоксикант, антиоксидант',
+    icon:'🧪', fi:'fi-inf', gc:'gc-inf',
+    dose:'30% р-р: 5–50 мл в/в медленно или капельно. Отравление цианидами: 50 мл 30% в/в за 10 мин',
+    route:'В/в медленно струйно (при отравлениях) или капельно (детоксикация)',
+    dilution:'Можно вводить без разведения (30% р-р) медленно. Или: 10 мл + 90 мл NaCl 0.9%',
+    when:'Отравление цианидами (антидот, вводят после нитрита натрия), отравление мышьяком/ртутью/свинцом/солями тяжёлых металлов, хронические интоксикации, дерматозы (чесотка — наружно), онкология (нефропротекция при XT цисплатином)',
+    mech:'Донор серы → реагирует с метгемоглобином и цианидом → тиоцианат (роданид) → выводится почками. Антиоксидант: связывает свободные радикалы. Комплексообразователь: связывает ионы тяжёлых металлов',
+    warn:'Относительно безопасен. При быстром в/в — жжение по ходу вены, головная боль, тошнота. Противопоказан при повышенной чувствительности к сульфатам. При отравлении цианидами — применять строго в паре с нитритом натрия (стандартный антидотный набор).'
+  },
 ];
 
 /* ============================================================
@@ -1541,7 +1703,7 @@ function klRender(){
   if(visible.length===0){ list.innerHTML='<div class="kl-empty">Ничего не найдено 🔍</div>'; return; }
   list.innerHTML = visible.map(d=>`
     <div class="kl-card" id="klc-${d.id}">
-      <div class="kl-card-head" onclick="klToggle('${d.id}')">
+      <div class="kl-card-head" data-klid="${d.id}">
         <div class="kl-badge-form ${d.fi}">${d.icon}</div>
         <div class="kl-card-names">
           <div class="kl-card-name">${d.name}</div>
@@ -1557,154 +1719,4 @@ function klRender(){
         </div>
         <div class="kl-row">
           <div class="kl-lbl">Путь введения</div>
-          <div class="kl-val">${d.route}</div>
-        </div>
-        ${d.dilution?`<div class="kl-mix-box">💧 Разведение: ${d.dilution}</div>`:''}
-        <div class="kl-row">
-          <div class="kl-lbl">Показания</div>
-          <div class="kl-val">${d.when}</div>
-        </div>
-        <div class="kl-mech-box"><b>⚙️ Механизм:</b> ${d.mech}</div>
-        ${d.warn?`<div class="kl-row" style="margin-top:8px"><div class="kl-lbl" style="color:var(--red)">⚠️ Важно</div><div class="kl-val"><span class="warn">${d.warn}</span></div></div>`:''}
-      </div>
-    </div>
-  `).join('');
-}
-
-function klToggle(id){
-  const card = document.getElementById('klc-'+id);
-  card.classList.toggle('open');
-}
-
-function klFilter(){
-  klActive.q = document.getElementById('kl-search').value;
-  klRender();
-}
-
-function klSetFilter(f, el){
-  klActive.filter = f;
-  document.querySelectorAll('.kl-filter').forEach(b=>b.classList.remove('on'));
-  el.classList.add('on');
-  klRender();
-}
-
-/* ============================================================
-   TAB NAVIGATION
-   ============================================================ */
-function goTab(id){
-  document.querySelectorAll('.card').forEach(c=>c.classList.remove('show'));
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById('t-'+id).classList.add('show');
-  event.target.classList.add('active');
-  if(id==='klinika') klRender();
-}
-
-/* ============================================================
-   qSOFA
-   ============================================================ */
-let qsofa={rr:false,sbp:false,gc:false};
-function qsofaTog(k){
-  qsofa[k]=!qsofa[k];
-  document.getElementById('qsofa-'+k).classList.toggle('on',qsofa[k]);
-  const s=Object.values(qsofa).filter(Boolean).length;
-  const el=document.getElementById('qsofa-res');
-  document.getElementById('qsofa-n').textContent=s;
-  if(s>=2){
-    el.className='res hi';
-    document.getElementById('qsofa-lbl').textContent='ВЫСОКИЙ РИСК СЕПСИСА';
-    document.getElementById('qsofa-act').textContent='Госпитализация, SOFA, анализы, антибиотики';
-  } else {
-    el.className='res low';
-    document.getElementById('qsofa-lbl').textContent='Низкий риск';
-    document.getElementById('qsofa-act').textContent='Продолжить наблюдение';
-  }
-}
-
-/* ============================================================
-   NEWS2
-   ============================================================ */
-let news={avpu:'A',o2:false};
-function setAvpu(v){news.avpu=v;['A','V','P','U'].forEach(x=>document.getElementById('news-avpu-'+x.toLowerCase()).classList.toggle('on',x===v));calcNews();}
-function setO2(v){news.o2=v;document.getElementById('news-o2-n').classList.toggle('on',!v);document.getElementById('news-o2-y').classList.toggle('on',v);calcNews();}
-function calcNews(){
-  const rr=+document.getElementById('news-rr').value||0;
-  const sp=+document.getElementById('news-spo2').value||0;
-  const sb=+document.getElementById('news-sbp').value||0;
-  const hr=+document.getElementById('news-hr').value||0;
-  const t=+document.getElementById('news-t').value||0;
-  if(!rr&&!sp&&!sb&&!hr&&!t)return;
-  let s=0;
-  if(rr<=8)s+=3; else if(rr<=11)s+=1; else if(rr<=20)s+=0; else if(rr<=24)s+=2; else s+=3;
-  if(sp<=91)s+=3; else if(sp<=93)s+=2; else if(sp<=95)s+=1;
-  if(sb<=90)s+=3; else if(sb<=100)s+=2; else if(sb<=110)s+=1; else if(sb<=219)s+=0; else s+=3;
-  if(hr<=40)s+=3; else if(hr<=50)s+=1; else if(hr<=90)s+=0; else if(hr<=110)s+=1; else if(hr<=130)s+=2; else s+=3;
-  if(t<=35.0)s+=3; else if(t<=36.0)s+=1; else if(t<=38.0)s+=0; else if(t<=39.0)s+=1; else s+=2;
-  if(news.avpu!=='A')s+=3;
-  if(news.o2)s+=2;
-  const el=document.getElementById('news-res');
-  document.getElementById('news-n').textContent=s;
-  if(s<=4){el.className='res low';document.getElementById('news-lbl').textContent='Низкий риск';document.getElementById('news-act').textContent='Мониторинг';}
-  else if(s<=6){el.className='res med';document.getElementById('news-lbl').textContent='Средний риск';document.getElementById('news-act').textContent='Усиленное наблюдение';}
-  else{el.className='res hi';document.getElementById('news-lbl').textContent='ВЫСОКИЙ РИСК';document.getElementById('news-act').textContent='Неотложная помощь!';}
-}
-
-/* ============================================================
-   GCS
-   ============================================================ */
-function calcGcs(){
-  const e=+document.getElementById('gcs-e').value;
-  const v=+document.getElementById('gcs-v').value;
-  const m=+document.getElementById('gcs-m').value;
-  const s=e+v+m;
-  document.getElementById('gcs-n').textContent=s;
-  document.getElementById('gcs-act').textContent=`E${e} V${v} M${m}`;
-  const el=document.getElementById('gcs-res');
-  if(s>=13){el.className='res low';document.getElementById('gcs-lbl').textContent='Ясное сознание';}
-  else if(s>=9){el.className='res med';document.getElementById('gcs-lbl').textContent='Умеренное нарушение';}
-  else{el.className='res hi';document.getElementById('gcs-lbl').textContent='Глубокая кома — интубация';}
-}
-
-/* ============================================================
-   WELLS
-   ============================================================ */
-let wellsScore=0;
-function wellsTog(el,pts){
-  el.classList.toggle('on');
-  wellsScore+=el.classList.contains('on')?pts:-pts;
-  document.getElementById('wells-n').textContent=wellsScore;
-  const likely=wellsScore>4;
-  const res=document.getElementById('wells-res');
-  res.className=likely?'res hi':'res low';
-  document.getElementById('wells-lbl').textContent=likely?'Высокая вероятность ТЭЛА':'Низкая/средняя вероятность';
-  document.getElementById('wp-unlikely').classList.toggle('on',!likely);
-  document.getElementById('wp-likely').classList.toggle('on',likely);
-}
-
-/* ============================================================
-   АЛЬГОВЕР
-   ============================================================ */
-function calcAlg(){
-  const hr=+document.getElementById('alg-hr').value;
-  const sbp=+document.getElementById('alg-sbp').value;
-  if(!hr||!sbp)return;
-  const idx=(hr/sbp).toFixed(2);
-  document.getElementById('alg-n').textContent=idx;
-  const el=document.getElementById('alg-res');
-  if(idx<0.5){el.className='res low';document.getElementById('alg-lbl').textContent='Норма';document.getElementById('alg-act').textContent='Кровопотеря отсутствует';}
-  else if(idx<1.0){el.className='res low';document.getElementById('alg-lbl').textContent='Лёгкий шок';document.getElementById('alg-act').textContent='До 15% ОЦК';}
-  else if(idx<1.5){el.className='res med';document.getElementById('alg-lbl').textContent='Средний шок';document.getElementById('alg-act').textContent='20–40% ОЦК — инфузия!';}
-  else{el.className='res hi';document.getElementById('alg-lbl').textContent='Тяжёлый шок';document.getElementById('alg-act').textContent='>40% ОЦК — реанимация!';}
-}
-
-/* ============================================================
-   CPSS
-   ============================================================ */
-let cpss={face:false,arm:false,sp:false};
-function cpssTog(k){
-  cpss[k]=!cpss[k];
-  document.getElementById('cpss-'+k).classList.toggle('on',cpss[k]);
-  const s=Object.values(cpss).filter(Boolean).length;
-  const el=document.getElementById('cpss-res');
-  document.getElementById('cpss-n').textContent=s;
-  if(s>=1){el.className='res hi';document.getElementById('cpss-lbl').textContent='ВЫСОКИЙ риск инсульта!';document.getElementById('cpss-act').textContent='Нейровизуализация + госпитализация НЕМЕДЛЕННО';}
-  else{el.className='res low';document.getElementById('cpss-lbl').textContent='Нет признаков инсульта';document.getElementById('cpss-act').textContent='Продолжить осмотр'
+       
