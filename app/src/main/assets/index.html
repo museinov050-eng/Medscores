@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#000008">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>МедШкалы 103 СМП</title>
 <style>
 :root {
@@ -561,11 +562,9 @@ body {
   <div class="nav-cat">
     <div class="nav-cat-label">Препараты СМП</div>
     <div class="nav-row">
-      <button class="tab" onclick="goTab('meds',this)">Препараты</button>
-      <button class="tab klinika-tab" onclick="goTab('klinika',this)">🏥 Клиника</button>
-    </div>
-    <div class="nav-row" style="margin-top:8px">
-      <button class="tab palaty-tab" onclick="goTab('palaty',this)">🛏 Палаты (капалки)</button>
+      <button class="tab" style="font-size:12px;padding:10px 12px" onclick="goTab('meds',this)">Препараты</button>
+      <button class="tab klinika-tab" style="font-size:12px;padding:10px 12px" onclick="goTab('klinika',this)">🏥 Клиника</button>
+      <button class="tab palaty-tab" style="font-size:12px;padding:10px 12px" onclick="goTab('palaty',this)">🛏 Палаты</button>
     </div>
   </div>
   <div class="nav-divider"></div>
@@ -998,13 +997,13 @@ body {
 
   <!-- Палата 1 -->
   <div class="ward-section">
-    <div class="ward-title"><span>🚨</span> Палата 1 — Реанимационная</div>
+    <div class="ward-title"><span>🚨</span> Палата 1</div>
     <div id="ward1-beds"></div>
   </div>
 
   <!-- Палата 2 -->
   <div class="ward-section">
-    <div class="ward-title"><span>🏥</span> Палата 2 — Общая</div>
+    <div class="ward-title"><span>🏥</span> Палата 2</div>
     <div id="ward2-beds"></div>
   </div>
 </div>
@@ -1711,5 +1710,4 @@ const KL_DRUGS = [
     route:'В/в медленно струйно (при отравлениях) или капельно (детоксикация)',
     dilution:'Можно вводить без разведения (30% р-р) медленно. Или: 10 мл + 90 мл NaCl 0.9%',
     when:'Отравление цианидами (антидот, вводят после нитрита натрия), отравление мышьяком/ртутью/свинцом/солями тяжёлых металлов, хронические интоксикации, дерматозы (чесотка — наружно), онкология (нефропротекция при XT цисплатином)',
-    mech:'Донор серы → реагирует с метгемоглобином и цианидом → тиоцианат (роданид) → выводится почками. Антиоксидант: связывает свободные радикалы. Комплексообразователь: связывает ионы тяжёлых металлов',
-    warn:'Относительно безопасен.
+    mech:'Донор серы → реагирует с метгемоглобином и цианидом → тиоцианат (роданид) → выводится почками. Антиоксидант: связывает свободные радикалы. Комплекс
