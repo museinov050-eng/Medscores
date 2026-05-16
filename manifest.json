@@ -1,0 +1,17 @@
+{
+  "name": "МедШкалы 103 СМП",
+  "short_name": "МедШкалы",
+  "description": "Клинические шкалы скорой медицинской помощи",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#000008",
+  "theme_color": "#000008",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' rx='40' fill='%23ff3b30'/><rect x='66' y='40' width='60' height='112' rx='8' fill='white'/><rect x='40' y='66' width='112' height='60' rx='8' fill='white'/></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    }
+  ]
+}

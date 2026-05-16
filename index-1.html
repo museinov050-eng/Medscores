@@ -1,0 +1,2439 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#000008">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link rel="manifest" href="./manifest.json">
+<title>МедШкалы 103 СМП</title>
+<script>
+// Service Worker для офлайн-режима
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('./sw.js').catch(function(e){ console.log('SW failed:', e); });
+  });
+}
+</script>
+<style>
+:root {
+  --bg: #000008;
+  --glass: rgba(255,255,255,0.06);
+  --glass-2: rgba(255,255,255,0.04);
+  --glass-border: rgba(255,255,255,0.12);
+  --accent: #0a84ff;
+  --emergency: #ff3b30;
+  --green: #30d158;
+  --yellow: #ffd60a;
+  --orange: #ff9f0a;
+  --red: #ff453a;
+  --purple: #bf5af2;
+  --teal: #5ac8fa;
+  --text: rgba(255,255,255,0.95);
+  --text-2: rgba(255,255,255,0.60);
+  --text-3: rgba(255,255,255,0.30);
+  --divider: rgba(255,255,255,0.08);
+  --mono: 'SF Mono','Courier New',monospace;
+  --sans: -apple-system,'SF Pro Display','Helvetica Neue',sans-serif;
+  --radius: 16px;
+  --blur: blur(40px) saturate(180%);
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bot: env(safe-area-inset-bottom, 0px);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+button, .crit, .kl-card-head, .kl-filter, .tab, .med-cat-tab, .drug-btn, .con-btn { cursor: pointer; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
+html { background: var(--bg); }
+body {
+  background:
+    radial-gradient(ellipse at 20% 10%, rgba(255,59,48,0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 30%, rgba(10,132,255,0.18) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 90%, rgba(94,92,230,0.12) 0%, transparent 50%),
+    #000008;
+  color: var(--text);
+  font-family: var(--sans);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+  padding: calc(var(--safe-top) + 20px) 0 calc(40px + var(--safe-bot));
+}
+
+/* === HEADER === */
+.hdr { text-align: center; padding: 0 20px 20px; }
+.hdr-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(10,132,255,0.12); border: 1px solid rgba(10,132,255,0.3);
+  border-radius: 100px; padding: 6px 16px; font-size: 11px; font-weight: 700;
+  color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px;
+}
+.hdr-badge::before { content:''; width:8px; height:8px; background:var(--accent); border-radius:50%; }
+.hdr-title-row { display:inline-flex; align-items:center; gap:12px; margin-bottom:6px; }
+.logo {
+  width:42px; height:42px; position:relative;
+  background: linear-gradient(135deg,#ff3b30 0%,#ff6b00 100%);
+  border-radius:12px; display:flex; align-items:center; justify-content:center;
+  box-shadow: 0 4px 16px rgba(255,59,48,0.4);
+}
+.logo::before,.logo::after { content:''; position:absolute; background:white; border-radius:2px; }
+.logo::before { width:20px; height:5px; }
+.logo::after { width:5px; height:20px; }
+.logo-103 {
+  position:absolute; bottom:-5px; right:-5px; background:#000; color:#ff3b30;
+  font-family:var(--mono); font-size:8px; font-weight:900; padding:2px 4px;
+  border-radius:4px; border:1px solid #ff3b30; letter-spacing:0.5px; z-index:2;
+}
+.hdr-name { font-size:28px; font-weight:700; letter-spacing:-0.02em; color:white; }
+.hdr-sub { font-size:14px; color:var(--text-3); }
+
+/* === WRAP === */
+.wrap { max-width:560px; margin:0 auto; padding:0 14px; }
+
+/* === NAV CARD === */
+.nav {
+  background:var(--glass); border:1px solid var(--glass-border); border-radius:20px;
+  padding:18px; margin-bottom:16px;
+  backdrop-filter:var(--blur); -webkit-backdrop-filter:var(--blur);
+}
+.nav-cat { margin-bottom:14px; }
+.nav-cat:last-child { margin-bottom:0; }
+.nav-cat-label { font-size:10px; font-weight:700; color:var(--text-3); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:10px; padding-left:4px; }
+.nav-row { display:flex; flex-wrap:wrap; gap:8px; }
+.tab {
+  background:rgba(255,255,255,0.04); border:1px solid var(--glass-border);
+  border-radius:100px; padding:10px 18px; color:var(--text-2);
+  font-family:var(--sans); font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s;
+}
+.tab:active { transform:scale(0.96); }
+.tab.active { background:var(--accent); color:white; border-color:var(--accent); box-shadow:0 4px 16px rgba(10,132,255,0.4); }
+.tab.palaty-tab { border-color: rgba(255,159,10,0.4); color: var(--orange); }
+.tab.palaty-tab.active { background: linear-gradient(135deg,#ff9f0a,#ff453a); border-color:transparent; color: white; box-shadow:0 4px 16px rgba(255,159,10,0.4); }
+.tab.klinika-tab { border-color: rgba(191,90,242,0.4); color: var(--purple); }
+.tab.klinika-tab.active { background: linear-gradient(135deg,#bf5af2,#5ac8fa); border-color:transparent; color: white; box-shadow:0 4px 16px rgba(191,90,242,0.4); }
+
+/* ===== ПАЛАТЫ ===== */
+.ward-section { margin-bottom: 18px; }
+.ward-title {
+  font-size: 13px; font-weight: 700; color: var(--text-3);
+  text-transform: uppercase; letter-spacing: 0.1em;
+  margin-bottom: 10px; padding-left: 2px;
+  display: flex; align-items: center; gap: 8px;
+}
+.ward-title span { font-size: 16px; }
+
+.bed-card {
+  background: var(--glass-2); border: 1px solid var(--glass-border);
+  border-radius: 16px; padding: 14px; margin-bottom: 10px;
+  transition: border-color 0.2s;
+}
+.bed-card.active-inf { border-color: var(--green); background: rgba(48,209,88,0.05); }
+.bed-card.warn-inf { border-color: var(--orange); background: rgba(255,159,10,0.05); }
+.bed-card.done-inf { border-color: var(--red); background: rgba(255,69,58,0.08); }
+
+.bed-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 12px;
+}
+.bed-num {
+  display: flex; align-items: center; gap: 8px;
+}
+.bed-icon {
+  width: 32px; height: 32px; border-radius: 9px;
+  background: rgba(255,255,255,0.08);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; flex-shrink: 0;
+}
+.bed-label { font-size: 14px; font-weight: 700; color: white; }
+.bed-status {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; padding: 4px 10px; border-radius: 100px;
+  background: rgba(255,255,255,0.06); color: var(--text-3); border: 1px solid var(--glass-border);
+}
+.bed-status.running { background: rgba(48,209,88,0.15); color: var(--green); border-color: var(--green); }
+.bed-status.warning { background: rgba(255,159,10,0.15); color: var(--orange); border-color: var(--orange); }
+.bed-status.done { background: rgba(255,69,58,0.15); color: var(--red); border-color: var(--red); }
+
+.bed-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+.bed-field {
+  background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border);
+  border-radius: 10px; padding: 8px 10px;
+}
+.bed-field:focus-within { border-color: var(--accent); }
+.bed-field-lbl { font-size: 9px; font-weight: 700; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+.bed-field-inp {
+  width: 100%; background: transparent; border: none; outline: none;
+  color: white; font-family: var(--mono); font-size: 15px; font-weight: 700; padding: 0;
+}
+.bed-field-inp::placeholder { color: rgba(255,255,255,0.12); }
+.bed-field-inp.small { font-size: 12px; }
+
+.bed-drug-inp {
+  width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border);
+  border-radius: 10px; color: white; font-family: var(--sans); font-size: 13px;
+  font-weight: 600; padding: 9px 11px; outline: none; margin-bottom: 8px;
+}
+.bed-drug-inp:focus { border-color: var(--accent); }
+.bed-drug-inp::placeholder { color: rgba(255,255,255,0.2); }
+
+.bed-timer-row {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 8px;
+}
+.bed-timer-display {
+  flex: 1; text-align: center; padding: 10px;
+  background: rgba(0,0,0,0.25); border-radius: 10px;
+  font-family: var(--mono); font-size: 22px; font-weight: 700; color: var(--text-2);
+  border: 1px solid var(--glass-border);
+}
+.bed-timer-display.running { color: var(--green); }
+.bed-timer-display.warning { color: var(--orange); }
+.bed-timer-display.done { color: var(--red); animation: pulse 1s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+.bed-progress {
+  height: 4px; border-radius: 2px; background: rgba(255,255,255,0.08);
+  margin-bottom: 8px; overflow: hidden;
+}
+.bed-progress-bar {
+  height: 100%; border-radius: 2px;
+  background: var(--green); transition: width 10s linear;
+}
+.bed-progress-bar.warning { background: var(--orange); }
+.bed-progress-bar.done { background: var(--red); }
+
+.bed-reminder {
+  font-size: 11px; color: var(--text-3); line-height: 1.5;
+  padding: 7px 10px; background: rgba(0,0,0,0.15); border-radius: 8px; margin-bottom: 8px;
+}
+.bed-reminder.alert { background: rgba(255,69,58,0.1); color: var(--red); font-weight: 700; }
+.bed-reminder.warn { background: rgba(255,159,10,0.1); color: var(--orange); }
+
+.bed-btn-row { display: flex; gap: 7px; }
+.bed-btn {
+  flex: 1; padding: 9px 6px; border: 1px solid var(--glass-border);
+  border-radius: 10px; background: var(--glass-2); color: var(--text-2);
+  font-family: var(--sans); font-size: 12px; font-weight: 600; text-align: center;
+  cursor: pointer; transition: all 0.15s;
+}
+.bed-btn:active { transform: scale(0.96); }
+.bed-btn.start { border-color: var(--green); color: var(--green); background: rgba(48,209,88,0.1); }
+.bed-btn.stop  { border-color: var(--red);   color: var(--red);   background: rgba(255,69,58,0.1); }
+.bed-btn.clear { border-color: var(--text-3); color: var(--text-3); }
+
+.bed-presets-lbl {
+  font-size: 9px; font-weight: 700; color: var(--text-3);
+  text-transform: uppercase; letter-spacing: 0.1em;
+  margin-bottom: 6px;
+}
+.bed-presets {
+  display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px;
+}
+.bed-preset {
+  padding: 6px 11px;
+  border: 1px solid rgba(90,200,250,0.25);
+  border-radius: 100px;
+  background: rgba(90,200,250,0.07);
+  color: var(--teal);
+  font-size: 11px; font-weight: 600;
+  font-family: var(--sans);
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.bed-preset:active { transform: scale(0.94); background: rgba(90,200,250,0.18); }
+.bed-preset.sel {
+  background: rgba(90,200,250,0.2);
+  border-color: var(--teal);
+  box-shadow: 0 0 0 1px var(--teal);
+}
+
+.inf-calc-hint {  font-size: 11px; color: var(--teal); font-family: var(--mono);
+  padding: 6px 10px; background: rgba(90,200,250,0.06);
+  border: 1px solid rgba(90,200,250,0.15); border-radius: 8px; margin-bottom: 8px;
+  min-height: 22px;
+}
+
+.nav-divider { height:1px; background:var(--divider); margin:14px 0; }
+
+/* === CARD === */
+.card {
+  background:var(--glass); border:1px solid var(--glass-border); border-radius:20px;
+  padding:18px; margin-bottom:16px;
+  backdrop-filter:var(--blur); -webkit-backdrop-filter:var(--blur);
+  display:none; animation:fadeIn 0.3s;
+}
+.card.show { display:block; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+.card-title { font-size:22px; font-weight:700; letter-spacing:-0.02em; color:white; margin-bottom:4px; }
+.card-desc { font-size:13px; color:var(--text-3); line-height:1.5; margin-bottom:14px; }
+.info {
+  background:rgba(10,132,255,0.06); border:1px solid rgba(10,132,255,0.15);
+  border-radius:12px; padding:12px; margin-bottom:16px; display:flex; gap:10px;
+}
+.info-text { font-size:12px; color:var(--text-3); line-height:1.6; }
+
+/* === CRITERIA === */
+.crit-list { display:flex; flex-direction:column; gap:8px; margin-bottom:16px; }
+.crit {
+  background:var(--glass-2); border:1px solid var(--glass-border); border-radius:14px;
+  padding:13px; display:flex; align-items:center; justify-content:space-between;
+  gap:10px; cursor:pointer; transition:all 0.2s;
+}
+.crit:active { transform:scale(0.98); }
+.crit.on { border-color:var(--accent); background:rgba(10,132,255,0.12); }
+.crit-l { display:flex; align-items:center; gap:12px; flex:1; min-width:0; }
+.chk {
+  width:24px; height:24px; border:2px solid var(--glass-border); border-radius:7px;
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0; font-size:14px; color:white; font-weight:900;
+}
+.crit.on .chk { background:var(--accent); border-color:var(--accent); }
+.chk-i { opacity:0; }
+.crit.on .chk-i { opacity:1; }
+.crit-txt { font-size:13px; font-weight:600; line-height:1.35; color:var(--text); }
+.crit-hint { font-size:11px; color:var(--text-3); margin-top:2px; line-height:1.3; }
+.cbadge {
+  font-family:var(--mono); font-size:12px; font-weight:700; color:var(--accent);
+  background:rgba(10,132,255,0.15); border:1px solid rgba(10,132,255,0.25);
+  border-radius:8px; padding:4px 10px; white-space:nowrap;
+}
+
+/* === INPUTS === */
+.inp-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px; }
+.inp-grp {
+  background:var(--glass-2); border:1px solid var(--glass-border); border-radius:14px; padding:11px 13px;
+}
+.inp-grp:focus-within { border-color:var(--accent); }
+.inp-lbl { font-size:10px; font-weight:600; color:var(--text-3); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:6px; }
+.inp-unit { font-family:var(--mono); font-size:9px; color:var(--text-3); font-weight:400; }
+.inp-f { width:100%; background:transparent; border:none; outline:none; color:white; font-family:var(--mono); font-size:22px; font-weight:700; padding:0; }
+.inp-f::placeholder { color:rgba(255,255,255,0.1); }
+.inp-sc { font-size:10px; color:var(--text-3); margin-top:4px; font-family:var(--mono); min-height:14px; }
+
+/* === BUTTONS === */
+.con-btn {
+  padding:10px 8px; border:1px solid var(--glass-border); border-radius:10px;
+  background:var(--glass-2); color:var(--text-2); font-family:var(--sans);
+  font-size:12px; font-weight:500; cursor:pointer; transition:all 0.2s; text-align:center;
+}
+.con-btn:active { transform:scale(0.96); }
+.con-btn.on { background:rgba(10,132,255,0.18); border-color:var(--accent); color:var(--accent); font-weight:600; }
+
+/* === RESULT === */
+.res {
+  border-radius:16px; padding:20px 16px; text-align:center;
+  background:var(--glass-2); border:1px solid var(--glass-border); margin-bottom:14px;
+}
+.res.low { border-color:var(--green); background:rgba(48,209,88,0.08); }
+.res.med { border-color:var(--orange); background:rgba(255,159,10,0.08); }
+.res.hi { border-color:var(--red); background:rgba(255,69,58,0.08); }
+.res-score { font-family:var(--mono); font-size:56px; font-weight:700; line-height:1; color:var(--text-2); }
+.res.low .res-score { color:var(--green); }
+.res.med .res-score { color:var(--orange); }
+.res.hi .res-score { color:var(--red); }
+.res-lbl { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; margin-top:8px; margin-bottom:8px; color:var(--text-2); }
+.res.low .res-lbl { color:var(--green); }
+.res.med .res-lbl { color:var(--orange); }
+.res.hi .res-lbl { color:var(--red); }
+.res-act { font-size:12px; color:var(--text-3); line-height:1.5; }
+.interp { background:var(--glass-2); border:1px solid var(--glass-border); border-radius:12px; padding:12px; margin-bottom:14px; }
+.interp-row { display:flex; justify-content:space-between; font-size:12px; padding:5px 0; border-bottom:1px solid var(--divider); }
+.interp-row:last-child { border-bottom:none; }
+.interp-range { color:var(--text-3); font-family:var(--mono); }
+.interp-val { font-weight:700; }
+.reset { display:block; width:100%; margin-top:12px; padding:12px; background:var(--glass-2); border:1px solid var(--glass-border); border-radius:14px; color:var(--text-3); font-family:var(--sans); font-size:13px; font-weight:500; cursor:pointer; }
+
+/* GCS */
+.gcs-sec { background:rgba(94,92,230,0.08); border:1px solid rgba(94,92,230,0.2); border-radius:14px; padding:13px; margin-bottom:10px; }
+.gcs-ttl { font-size:11px; font-weight:700; color:#a78bfa; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:10px; }
+.gcs-sel { width:100%; background:rgba(255,255,255,0.06); border:1px solid var(--glass-border); border-radius:10px; color:white; font-family:var(--sans); font-size:13px; font-weight:500; padding:10px 12px; outline:none; }
+
+/* Wells pills */
+.w-pills { display:flex; gap:8px; justify-content:center; margin-top:12px; flex-wrap:wrap; }
+.w-pill { padding:5px 13px; border-radius:100px; font-size:11px; font-weight:700; font-family:var(--mono); opacity:0.35; border:1px solid transparent; }
+.w-pill.on { opacity:1; }
+.w-pill.unlikely { background:rgba(48,209,88,0.1); border-color:var(--green); color:var(--green); }
+.w-pill.likely { background:rgba(255,69,58,0.1); border-color:var(--red); color:var(--red); }
+
+/* Infusomat */
+.drug-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:14px; }
+.drug-btn { padding:12px 8px; border:1px solid var(--glass-border); border-radius:14px; background:var(--glass-2); color:var(--text-2); font-family:var(--sans); font-size:12px; font-weight:600; cursor:pointer; text-align:center; }
+.drug-btn .dn { font-size:13px; color:var(--text); display:block; margin-bottom:3px; }
+.drug-btn .dc { font-size:10px; font-family:var(--mono); color:var(--text-3); }
+.drug-btn.sel-d { border-color:var(--yellow); background:rgba(255,214,10,0.08); }
+.drug-btn.sel-d .dn { color:var(--yellow); }
+.drug-btn.sel-n { border-color:var(--red); background:rgba(255,69,58,0.08); }
+.drug-btn.sel-n .dn { color:var(--red); }
+.drug-btn.sel-novoc { border-color:var(--purple); background:rgba(191,90,242,0.08); }
+.drug-btn.sel-novoc .dn { color:var(--purple); }
+.drug-btn.sel-furos { border-color:var(--green); background:rgba(48,209,88,0.08); }
+.drug-btn.sel-furos .dn { color:var(--green); }
+.w-inp { background:var(--glass-2); border:1px solid var(--glass-border); border-radius:14px; padding:12px 16px; margin-bottom:12px; }
+.w-lbl { font-size:10px; font-weight:600; color:var(--text-3); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:4px; }
+.w-field { width:100%; background:transparent; border:none; outline:none; color:white; font-family:var(--mono); font-size:26px; font-weight:700; }
+.slider { width:100%; height:4px; border-radius:2px; background:rgba(255,255,255,0.12); outline:none; -webkit-appearance:none; appearance:none; margin-bottom:8px; }
+.slider::-webkit-slider-thumb { -webkit-appearance:none; width:26px; height:26px; border-radius:50%; border:3px solid rgba(0,0,0,0.3); }
+.slider.d::-webkit-slider-thumb { background:var(--yellow); }
+.slider.n::-webkit-slider-thumb { background:var(--red); }
+.slider.novoc::-webkit-slider-thumb { background:var(--purple); }
+.slider.furos::-webkit-slider-thumb { background:var(--green); }
+.inf-res { background:var(--glass-2); border:2px solid var(--glass-border); border-radius:14px; padding:18px; text-align:center; margin-top:4px; }
+.inf-res.d { border-color:var(--yellow); background:rgba(255,214,10,0.06); }
+.inf-res.n { border-color:var(--red); background:rgba(255,69,58,0.06); }
+.inf-res.novoc { border-color:var(--purple); background:rgba(191,90,242,0.06); }
+.inf-res.furos { border-color:var(--green); background:rgba(48,209,88,0.06); }
+.inf-rate { font-family:var(--mono); font-size:52px; font-weight:700; line-height:1; }
+.inf-res.d .inf-rate { color:var(--yellow); }
+.inf-res.n .inf-rate { color:var(--red); }
+.inf-res.novoc .inf-rate { color:var(--purple); }
+.inf-res.furos .inf-rate { color:var(--green); }
+.inf-unit-lbl { font-size:15px; color:var(--text-3); margin-top:4px; font-family:var(--mono); }
+.inf-formula { font-size:11px; color:var(--text-3); margin-top:10px; font-family:var(--mono); line-height:1.6; background:rgba(0,0,0,0.15); border-radius:8px; padding:8px; }
+.inf-warn { margin-top:10px; font-size:11px; color:var(--text-3); line-height:1.5; white-space:pre-line; }
+.proto { margin-top:12px; border-radius:14px; padding:13px; }
+.proto.d { background:rgba(255,214,10,0.06); border:1px solid rgba(255,214,10,0.25); }
+.proto.n { background:rgba(255,69,58,0.06); border:1px solid rgba(255,69,58,0.25); }
+.proto.novoc { background:rgba(191,90,242,0.06); border:1px solid rgba(191,90,242,0.25); }
+.proto.furos { background:rgba(48,209,88,0.06); border:1px solid rgba(48,209,88,0.25); }
+.proto-ttl { font-size:12px; font-weight:700; margin-bottom:10px; }
+.proto.d .proto-ttl { color:var(--yellow); }
+.proto.n .proto-ttl { color:var(--red); }
+.proto.novoc .proto-ttl { color:var(--purple); }
+.proto.furos .proto-ttl { color:var(--green); }
+.proto-row { font-size:12px; color:var(--text-2); line-height:1.6; margin-bottom:5px; }
+.proto-row b.d { color:var(--yellow); }
+.proto-row b.n { color:var(--red); }
+.proto-row b.novoc { color:var(--purple); }
+.proto-row b.furos { color:var(--green); }
+.proto-mix { background:rgba(0,0,0,0.2); border-radius:8px; padding:8px 10px; font-family:var(--mono); font-size:11px; margin:5px 0; }
+.proto-warn { background:rgba(255,69,58,0.1); border-radius:8px; padding:7px 10px; margin:5px 0; }
+.proto-warn b { color:var(--red); }
+
+/* Med card */
+.med-card { background:var(--glass-2); border:1px solid var(--glass-border); border-radius:14px; padding:14px; margin-bottom:10px; }
+.med-name { font-size:14px; font-weight:700; color:white; margin-bottom:4px; }
+.med-class { font-size:11px; color:var(--accent); font-family:var(--mono); margin-bottom:10px; }
+.med-row { display:flex; gap:8px; font-size:12px; color:var(--text-2); line-height:1.5; margin-bottom:5px; }
+.med-row b { color:var(--text-3); min-width:110px; font-weight:600; font-size:11px; text-transform:uppercase; letter-spacing:0.05em; }
+.med-mech { background:rgba(94,92,230,0.06); border:1px solid rgba(94,92,230,0.15); border-radius:10px; padding:9px 11px; margin-top:8px; font-size:11px; color:var(--text-3); line-height:1.5; }
+.med-mech b { color:#a78bfa; }
+.med-cat-tabs { display:flex; gap:6px; margin-bottom:14px; overflow-x:auto; padding-bottom:4px; }
+.med-cat-tab { padding:8px 14px; border:1px solid var(--glass-border); border-radius:100px; background:var(--glass-2); color:var(--text-2); font-family:var(--sans); font-size:12px; font-weight:600; cursor:pointer; white-space:nowrap; flex-shrink:0; }
+.med-cat-tab.on { background:var(--accent); border-color:var(--accent); color:white; }
+
+/* ===== КЛИНИКА STYLES ===== */
+.kl-search-wrap { position:relative; margin-bottom:14px; }
+.kl-search {
+  width:100%; background:rgba(255,255,255,0.06); border:1px solid var(--glass-border);
+  border-radius:14px; color:white; font-family:var(--sans); font-size:14px;
+  padding:12px 16px 12px 40px; outline:none;
+}
+.kl-search:focus { border-color:var(--purple); }
+.kl-search::placeholder { color:rgba(255,255,255,0.2); }
+.kl-search-icon { position:absolute; left:13px; top:50%; transform:translateY(-50%); font-size:16px; opacity:0.4; pointer-events:none; }
+.kl-filter-row { display:flex; gap:6px; overflow-x:auto; padding-bottom:6px; margin-bottom:14px; }
+.kl-filter {
+  padding:7px 14px; border:1px solid var(--glass-border); border-radius:100px;
+  background:var(--glass-2); color:var(--text-2); font-size:12px; font-weight:600;
+  cursor:pointer; white-space:nowrap; flex-shrink:0; transition:all 0.2s;
+}
+.kl-filter:active { transform:scale(0.96); }
+.kl-filter.on { color:white; }
+.kl-filter.on.f-all  { background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.3); }
+.kl-filter.on.f-inj  { background:rgba(255,69,58,0.2); border-color:var(--red); color:var(--red); }
+.kl-filter.on.f-inf  { background:rgba(10,132,255,0.2); border-color:var(--accent); color:var(--accent); }
+.kl-filter.on.f-tab  { background:rgba(48,209,88,0.2); border-color:var(--green); color:var(--green); }
+.kl-filter.on.f-psych { background:rgba(191,90,242,0.2); border-color:var(--purple); color:var(--purple); }
+.kl-filter.on.f-card  { background:rgba(255,214,10,0.2); border-color:var(--yellow); color:var(--yellow); }
+.kl-filter.on.f-neuro { background:rgba(90,200,250,0.2); border-color:var(--teal); color:var(--teal); }
+
+/* Drug detail card */
+.kl-card {
+  background:var(--glass-2); border:1px solid var(--glass-border);
+  border-radius:16px; overflow:hidden; margin-bottom:10px;
+  transition:all 0.2s;
+}
+.kl-card-head {
+  padding:13px 14px; display:flex; align-items:center; gap:12px; cursor:pointer;
+}
+.kl-card-head:active { opacity:0.8; }
+.kl-badge-form {
+  width:38px; height:38px; border-radius:10px; display:flex; align-items:center;
+  justify-content:center; font-size:17px; flex-shrink:0;
+}
+.kl-card-names { flex:1; min-width:0; }
+.kl-card-name { font-size:14px; font-weight:700; color:white; }
+.kl-card-latin { font-size:11px; color:var(--text-3); font-style:italic; margin-top:1px; }
+.kl-card-group { font-size:10px; font-weight:600; letter-spacing:0.07em; text-transform:uppercase; margin-top:3px; }
+.kl-chevron { font-size:12px; color:var(--text-3); flex-shrink:0; transition:transform 0.2s; }
+.kl-card.open .kl-chevron { transform:rotate(90deg); }
+
+.kl-body { display:none; padding:0 14px 14px; border-top:1px solid var(--divider); }
+.kl-card.open .kl-body { display:block; animation:fadeIn 0.2s; }
+
+.kl-row { display:flex; gap:10px; margin-top:10px; align-items:flex-start; }
+.kl-lbl { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-3); min-width:90px; flex-shrink:0; padding-top:1px; }
+.kl-val { font-size:12px; color:var(--text-2); line-height:1.55; flex:1; }
+.kl-val b { color:white; font-weight:600; }
+.kl-val .warn { color:var(--red); font-weight:700; }
+.kl-val .ok { color:var(--green); font-weight:600; }
+.kl-val .note { color:var(--yellow); font-weight:600; }
+
+.kl-mech-box {
+  background:rgba(94,92,230,0.07); border:1px solid rgba(94,92,230,0.18);
+  border-radius:10px; padding:9px 11px; margin-top:10px;
+  font-size:11px; color:var(--text-3); line-height:1.55;
+}
+.kl-mech-box b { color:#a78bfa; }
+
+.kl-mix-box {
+  background:rgba(0,0,0,0.25); border-radius:8px;
+  padding:8px 11px; margin-top:8px;
+  font-family:var(--mono); font-size:11px; color:var(--text-2); line-height:1.7;
+}
+
+/* form icons */
+.fi-inj  { background:rgba(255,69,58,0.15); }
+.fi-inf  { background:rgba(10,132,255,0.15); }
+.fi-tab  { background:rgba(48,209,88,0.15); }
+.fi-psych { background:rgba(191,90,242,0.15); }
+.fi-card  { background:rgba(255,214,10,0.15); }
+.fi-neuro { background:rgba(90,200,250,0.15); }
+
+/* group colors */
+.gc-inj  { color:var(--red); }
+.gc-inf  { color:var(--accent); }
+.gc-tab  { color:var(--green); }
+.gc-psych { color:var(--purple); }
+.gc-card  { color:var(--yellow); }
+.gc-neuro { color:var(--teal); }
+
+.kl-empty { text-align:center; padding:40px 20px; color:var(--text-3); font-size:14px; }
+
+/* RASS table */
+.rass-table { width:100%; border-collapse:collapse; margin-bottom:12px; font-size:12px; }
+.rass-table th { background:rgba(255,255,255,0.06); color:var(--text-3); font-size:10px; text-transform:uppercase; letter-spacing:0.07em; padding:8px 10px; text-align:left; border-bottom:1px solid var(--divider); }
+.rass-table td { padding:8px 10px; border-bottom:1px solid var(--divider); }
+.rass-table tr:last-child td { border-bottom:none; }
+.rass-score { font-family:var(--mono); font-weight:700; }
+.rass-pos { color:var(--red); }
+.rass-0   { color:var(--green); }
+.rass-neg { color:var(--accent); }
+.rass-deep { color:var(--purple); }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-badge">СМП · Клинические шкалы</div>
+  <div class="hdr-title-row">
+    <div class="logo"><div class="logo-103">103</div></div>
+    <div>
+      <div class="hdr-name">МедШкалы СМП</div>
+    </div>
+  </div>
+  <div class="hdr-sub">Прогностические шкалы · Расчёты · Нормы</div>
+</div>
+
+<div class="wrap">
+
+<!-- NAVIGATION -->
+<div class="nav">
+  <div class="nav-cat">
+    <div class="nav-cat-label">Оценка тяжести</div>
+    <div class="nav-row">
+      <button class="tab active" onclick="goTab('qsofa',this)">qSOFA</button>
+      <button class="tab" onclick="goTab('news',this)">NEWS2</button>
+      <button class="tab" onclick="goTab('gcs',this)">GCS</button>
+      <button class="tab" onclick="goTab('rass',this)">RASS</button>
+    </div>
+  </div>
+  <div class="nav-divider"></div>
+  <div class="nav-cat">
+    <div class="nav-cat-label">Диагностика</div>
+    <div class="nav-row">
+      <button class="tab" onclick="goTab('wells',this)">Wells ТЭЛА</button>
+      <button class="tab" onclick="goTab('alg',this)">Альговер</button>
+      <button class="tab" onclick="goTab('cpss',this)">Инсульт</button>
+      <button class="tab" onclick="goTab('grace',this)">GRACE</button>
+      <button class="tab" onclick="goTab('alv',this)">Альварадо</button>
+    </div>
+  </div>
+  <div class="nav-divider"></div>
+  <div class="nav-cat">
+    <div class="nav-cat-label">Лечение и расчёты</div>
+    <div class="nav-row">
+      <button class="tab" onclick="goTab('inf',this)">Инфузомат</button>
+      <button class="tab" onclick="goTab('ped',this)">Педиатрия</button>
+      <button class="tab" onclick="goTab('ivl',this)">ИВЛ 4/40</button>
+      <button class="tab" onclick="goTab('cpr',this)">СЛР Таймер</button>
+    </div>
+  </div>
+  <div class="nav-divider"></div>
+  <div class="nav-cat">
+    <div class="nav-cat-label">Препараты СМП</div>
+    <div class="nav-row">
+      <button class="tab" style="font-size:12px;padding:10px 12px" onclick="goTab('meds',this)">Препараты</button>
+      <button class="tab klinika-tab" style="font-size:12px;padding:10px 12px" onclick="goTab('klinika',this)">🏥 Клиника</button>
+      <button class="tab palaty-tab" style="font-size:12px;padding:10px 12px" onclick="goTab('palaty',this)">🛏 Палаты</button>
+    </div>
+  </div>
+  <div class="nav-divider"></div>
+  <div class="nav-cat">
+    <div class="nav-cat-label">Антропометрия</div>
+    <div class="nav-row">
+      <button class="tab" onclick="goTab('bmi',this)">ИМТ</button>
+      <button class="tab" onclick="goTab('norms',this)">Нормы детей</button>
+    </div>
+  </div>
+</div>
+
+<!-- qSOFA -->
+<div class="card show" id="t-qsofa">
+  <div class="card-title">qSOFA — Экспресс-сепсис</div>
+  <div class="card-desc">Три критерия по 1 баллу. ≥2 баллов — высокий риск сепсиса.</div>
+  <div class="info"><div class="info-text">Прикроватный тест для выявления риска органной дисфункции при подозрении на инфекцию. Не требует анализов — только клинические признаки.</div></div>
+  <div class="crit-list">
+    <div class="crit" id="qsofa-rr" onclick="qsofaTog('rr')">
+      <div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div>
+      <div><div class="crit-txt">ЧДД ≥ 22 в минуту</div><div class="crit-hint">Считать 30 сек × 2</div></div></div>
+      <div class="cbadge">+1</div>
+    </div>
+    <div class="crit" id="qsofa-sbp" onclick="qsofaTog('sbp')">
+      <div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div>
+      <div><div class="crit-txt">АД систолическое ≤ 100 мм рт.ст.</div><div class="crit-hint">По тонометру</div></div></div>
+      <div class="cbadge">+1</div>
+    </div>
+    <div class="crit" id="qsofa-gc" onclick="qsofaTog('gc')">
+      <div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div>
+      <div><div class="crit-txt">Изменение сознания</div><div class="crit-hint">GCS &lt; 15 или спутанность</div></div></div>
+      <div class="cbadge">+1</div>
+    </div>
+  </div>
+  <div class="res" id="qsofa-res">
+    <div class="res-score" id="qsofa-n">0</div>
+    <div class="res-lbl" id="qsofa-lbl">Низкий риск</div>
+    <div class="res-act" id="qsofa-act">Продолжить наблюдение, пересмотреть при ухудшении</div>
+  </div>
+  <div class="interp">
+    <div class="interp-row"><span class="interp-range">0–1</span><span class="interp-val" style="color:var(--green)">Низкий риск</span></div>
+    <div class="interp-row"><span class="interp-range">≥ 2</span><span class="interp-val" style="color:var(--red)">Высокий риск сепсиса → SOFA, госпитализация</span></div>
+  </div>
+</div>
+
+<!-- NEWS2 placeholder -->
+<div class="card" id="t-news">
+  <div class="card-title">NEWS2</div>
+  <div class="card-desc">National Early Warning Score 2 — ранее предупреждение ухудшения.</div>
+  <div class="inp-grid">
+    <div class="inp-grp"><div class="inp-lbl">ЧДД <span class="inp-unit">в мин</span></div><input class="inp-f" id="news-rr" oninput="calcNews()" type="number" placeholder="16"></div>
+    <div class="inp-grp"><div class="inp-lbl">SpO₂ <span class="inp-unit">%</span></div><input class="inp-f" id="news-spo2" oninput="calcNews()" type="number" placeholder="97"></div>
+    <div class="inp-grp"><div class="inp-lbl">АД сист. <span class="inp-unit">мм рт.ст.</span></div><input class="inp-f" id="news-sbp" oninput="calcNews()" type="number" placeholder="120"></div>
+    <div class="inp-grp"><div class="inp-lbl">ЧСС <span class="inp-unit">уд/мин</span></div><input class="inp-f" id="news-hr" oninput="calcNews()" type="number" placeholder="80"></div>
+    <div class="inp-grp"><div class="inp-lbl">Темп. <span class="inp-unit">°C</span></div><input class="inp-f" id="news-t" oninput="calcNews()" type="number" placeholder="36.6" step="0.1"></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+    <div>
+      <div class="inp-lbl" style="margin-bottom:6px">Сознание</div>
+      <div style="display:flex;gap:6px">
+        <button class="con-btn on" id="news-avpu-a" onclick="setAvpu('A')" style="flex:1">А</button>
+        <button class="con-btn" id="news-avpu-v" onclick="setAvpu('V')" style="flex:1">V</button>
+        <button class="con-btn" id="news-avpu-p" onclick="setAvpu('P')" style="flex:1">P</button>
+        <button class="con-btn" id="news-avpu-u" onclick="setAvpu('U')" style="flex:1">U</button>
+      </div>
+    </div>
+    <div>
+      <div class="inp-lbl" style="margin-bottom:6px">Кислород</div>
+      <div style="display:flex;gap:6px">
+        <button class="con-btn on" id="news-o2-n" onclick="setO2(false)" style="flex:1">Воздух</button>
+        <button class="con-btn" id="news-o2-y" onclick="setO2(true)" style="flex:1">O₂</button>
+      </div>
+    </div>
+  </div>
+  <div class="res" id="news-res">
+    <div class="res-score" id="news-n">—</div>
+    <div class="res-lbl" id="news-lbl">Заполните данные</div>
+    <div class="res-act" id="news-act"></div>
+  </div>
+  <div class="interp">
+    <div class="interp-row"><span class="interp-range">0–4</span><span class="interp-val" style="color:var(--green)">Низкий → Мониторинг</span></div>
+    <div class="interp-row"><span class="interp-range">5–6</span><span class="interp-val" style="color:var(--orange)">Средний → Усиленный контроль</span></div>
+    <div class="interp-row"><span class="interp-range">≥7</span><span class="interp-val" style="color:var(--red)">Высокий → Неотложная помощь</span></div>
+  </div>
+</div>
+
+<!-- GCS -->
+<div class="card" id="t-gcs">
+  <div class="card-title">GCS — Шкала ком Глазго</div>
+  <div class="card-desc">Оценка уровня сознания. 3–15 баллов.</div>
+  <div class="gcs-sec">
+    <div class="gcs-ttl">E — Открывание глаз</div>
+    <select class="gcs-sel" id="gcs-e" onchange="calcGcs()" onchange="calcGcs()">
+      <option value="4">4 — Произвольное</option>
+      <option value="3">3 — На речь</option>
+      <option value="2">2 — На боль</option>
+      <option value="1">1 — Отсутствует</option>
+    </select>
+  </div>
+  <div class="gcs-sec">
+    <div class="gcs-ttl">V — Речевой ответ</div>
+    <select class="gcs-sel" id="gcs-v" onchange="calcGcs()" onchange="calcGcs()">
+      <option value="5">5 — Ориентирован</option>
+      <option value="4">4 — Спутанная речь</option>
+      <option value="3">3 — Отдельные слова</option>
+      <option value="2">2 — Звуки</option>
+      <option value="1">1 — Отсутствует</option>
+    </select>
+  </div>
+  <div class="gcs-sec">
+    <div class="gcs-ttl">M — Двигательный ответ</div>
+    <select class="gcs-sel" id="gcs-m" onchange="calcGcs()" onchange="calcGcs()">
+      <option value="6">6 — Выполняет команды</option>
+      <option value="5">5 — Локализует боль</option>
+      <option value="4">4 — Отдёргивает</option>
+      <option value="3">3 — Патол. сгибание</option>
+      <option value="2">2 — Разгибание</option>
+      <option value="1">1 — Отсутствует</option>
+    </select>
+  </div>
+  <div class="res" id="gcs-res" style="margin-top:14px">
+    <div class="res-score" id="gcs-n">15</div>
+    <div class="res-lbl" id="gcs-lbl">Ясное сознание</div>
+    <div class="res-act" id="gcs-act">E4 V5 M6</div>
+  </div>
+  <div class="interp">
+    <div class="interp-row"><span class="interp-range">13–15</span><span class="interp-val" style="color:var(--green)">Ясное / лёгкое нарушение</span></div>
+    <div class="interp-row"><span class="interp-range">9–12</span><span class="interp-val" style="color:var(--orange)">Умеренная кома</span></div>
+    <div class="interp-row"><span class="interp-range">3–8</span><span class="interp-val" style="color:var(--red)">Глубокая кома — интубация</span></div>
+  </div>
+</div>
+
+<!-- RASS -->
+<div class="card" id="t-rass">
+  <div class="card-title">RASS — Возбуждение/Седация</div>
+  <div class="card-desc">Richmond Agitation-Sedation Scale. От −5 до +4.</div>
+  <table class="rass-table">
+    <tr><th>Балл</th><th>Уровень</th><th>Описание</th></tr>
+    <tr><td class="rass-score rass-pos">+4</td><td>Комбативный</td><td>Агрессия, угроза персоналу</td></tr>
+    <tr><td class="rass-score rass-pos">+3</td><td>Очень возбуждён</td><td>Вырывает трубки, катетеры</td></tr>
+    <tr><td class="rass-score rass-pos">+2</td><td>Возбуждён</td><td>Частые беспорядочные движения</td></tr>
+    <tr><td class="rass-score rass-pos">+1</td><td>Беспокоен</td><td>Тревожен, но движения не агрессивны</td></tr>
+    <tr><td class="rass-score rass-0"> 0</td><td>Бодрствует</td><td>Спокоен и бодрствует</td></tr>
+    <tr><td class="rass-score rass-neg">−1</td><td>Сонлив</td><td>Не полностью бодр, но >10 сек на голос</td></tr>
+    <tr><td class="rass-score rass-neg">−2</td><td>Лёгкая седация</td><td>Просыпается <10 сек на голос</td></tr>
+    <tr><td class="rass-score rass-neg">−3</td><td>Умер. седация</td><td>Движение или открытие глаз (не взгляд)</td></tr>
+    <tr><td class="rass-score rass-deep">−4</td><td>Глубокая сед.</td><td>Нет ответа на голос, есть на боль</td></tr>
+    <tr><td class="rass-score rass-deep">−5</td><td>Нет пробуждения</td><td>Нет ответа на голос и боль</td></tr>
+  </table>
+</div>
+
+<!-- Wells ТЭЛА -->
+<div class="card" id="t-wells">
+  <div class="card-title">Wells — Риск ТЭЛА</div>
+  <div class="card-desc">Клиническая вероятность тромбоэмболии лёгочной артерии.</div>
+  <div class="crit-list" id="wells-list">
+    <div class="crit" onclick="wellsTog(this,3)"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Признаки ТГВ</div><div class="crit-hint">Отёк, боль по ходу вен ноги</div></div></div><div class="cbadge">+3</div></div>
+    <div class="crit" onclick="wellsTog(this,3)"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">ТЭЛА вероятнее альтернатив</div></div></div><div class="cbadge">+3</div></div>
+    <div class="crit" onclick="wellsTog(this,1.5)"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">ЧСС > 100 уд/мин</div></div></div><div class="cbadge">+1.5</div></div>
+    <div class="crit" onclick="wellsTog(this,1.5)"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Иммобилизация / операция ≤4 нед</div></div></div><div class="cbadge">+1.5</div></div>
+    <div class="crit" onclick="wellsTog(this,1.5)"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">ТГВ/ТЭЛА в анамнезе</div></div></div><div class="cbadge">+1.5</div></div>
+    <div class="crit" onclick="wellsTog(this,1)"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Кровохарканье</div></div></div><div class="cbadge">+1</div></div>
+    <div class="crit" onclick="wellsTog(this,1)"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Онкология (леч. ≤6 мес)</div></div></div><div class="cbadge">+1</div></div>
+  </div>
+  <div class="res" id="wells-res">
+    <div class="res-score" id="wells-n">0</div>
+    <div class="res-lbl" id="wells-lbl">Низкая вероятность</div>
+  </div>
+  <div class="w-pills">
+    <div class="w-pill unlikely on" id="wp-unlikely">UNLIKELY ≤4</div>
+    <div class="w-pill likely" id="wp-likely">LIKELY >4</div>
+  </div>
+</div>
+
+<!-- Альговер -->
+<div class="card" id="t-alg">
+  <div class="card-title">Индекс Альговера</div>
+  <div class="card-desc">Шоковый индекс = ЧСС / АД сист. Оценка кровопотери.</div>
+  <div class="inp-grid">
+    <div class="inp-grp"><div class="inp-lbl">ЧСС <span class="inp-unit">уд/мин</span></div><input class="inp-f" id="alg-hr" oninput="calcAlg()" type="number" placeholder="80"></div>
+    <div class="inp-grp"><div class="inp-lbl">АД сист. <span class="inp-unit">мм рт.ст.</span></div><input class="inp-f" id="alg-sbp" oninput="calcAlg()" type="number" placeholder="120"></div>
+  </div>
+  <div class="res" id="alg-res">
+    <div class="res-score" id="alg-n">—</div>
+    <div class="res-lbl" id="alg-lbl">Введите данные</div>
+    <div class="res-act" id="alg-act"></div>
+  </div>
+  <div class="interp">
+    <div class="interp-row"><span class="interp-range">&lt;0.5</span><span class="interp-val" style="color:var(--green)">Нормально</span></div>
+    <div class="interp-row"><span class="interp-range">0.5–0.9</span><span class="interp-val" style="color:var(--green)">Норма / лёгкий шок</span></div>
+    <div class="interp-row"><span class="interp-range">1.0–1.4</span><span class="interp-val" style="color:var(--orange)">Средний шок (~20–40% ОЦК)</span></div>
+    <div class="interp-row"><span class="interp-range">≥1.5</span><span class="interp-val" style="color:var(--red)">Тяжёлый шок (>40% ОЦК)</span></div>
+  </div>
+</div>
+
+<!-- CPSS Инсульт -->
+<div class="card" id="t-cpss">
+  <div class="card-title">Инсульт (CPSS)</div>
+  <div class="card-desc">Cincinnati Prehospital Stroke Scale — 3 признака.</div>
+  <div class="crit-list">
+    <div class="crit" id="cpss-face" onclick="cpssTog('face')"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Асимметрия лица</div><div class="crit-hint">Попросить улыбнуться</div></div></div><div class="cbadge">!</div></div>
+    <div class="crit" id="cpss-arm" onclick="cpssTog('arm')"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Слабость руки</div><div class="crit-hint">Держать руки вытянутыми 10 сек</div></div></div><div class="cbadge">!</div></div>
+    <div class="crit" id="cpss-sp" onclick="cpssTog('sp')"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Нарушение речи</div><div class="crit-hint">«Скорая помощь едет быстро»</div></div></div><div class="cbadge">!</div></div>
+  </div>
+  <div class="res" id="cpss-res">
+    <div class="res-score" id="cpss-n">0</div>
+    <div class="res-lbl" id="cpss-lbl">Нет признаков инсульта</div>
+    <div class="res-act" id="cpss-act">Продолжить осмотр</div>
+  </div>
+</div>
+
+<!-- GRACE placeholder -->
+<div class="card" id="t-grace">
+  <div class="card-title">GRACE — ОКС</div>
+  <div class="card-desc">Global Registry of Acute Coronary Events. Риск смерти при ОКС.</div>
+  <div class="inp-grid">
+    <div class="inp-grp"><div class="inp-lbl">Возраст <span class="inp-unit">лет</span></div><input class="inp-f" id="grace-age" oninput="calcGrace()" type="number" placeholder="65"></div>
+    <div class="inp-grp"><div class="inp-lbl">ЧСС <span class="inp-unit">уд/мин</span></div><input class="inp-f" id="grace-hr" oninput="calcGrace()" type="number" placeholder="90"></div>
+    <div class="inp-grp"><div class="inp-lbl">АД сист. <span class="inp-unit">мм рт.ст.</span></div><input class="inp-f" id="grace-sbp" oninput="calcGrace()" type="number" placeholder="130"></div>
+    <div class="inp-grp"><div class="inp-lbl">Креатинин <span class="inp-unit">мкмоль/л</span></div><input class="inp-f" id="grace-cr" oninput="calcGrace()" type="number" placeholder="90"></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+    <div>
+      <div class="inp-lbl" style="margin-bottom:6px">Остановка сердца</div>
+      <div style="display:flex;gap:6px">
+        <button class="con-btn" id="grace-ca-n" onclick="setGraceCa(false)" style="flex:1">Нет</button>
+        <button class="con-btn on" id="grace-ca-y" onclick="setGraceCa(true)" style="flex:1">Да</button>
+      </div>
+    </div>
+    <div>
+      <div class="inp-lbl" style="margin-bottom:6px">Отклон. ST</div>
+      <div style="display:flex;gap:6px">
+        <button class="con-btn on" id="grace-st-n" onclick="setGraceSt(false)" style="flex:1">Нет</button>
+        <button class="con-btn" id="grace-st-y" onclick="setGraceSt(true)" style="flex:1">Да</button>
+      </div>
+    </div>
+  </div>
+  <div class="res" id="grace-res">
+    <div class="res-score" id="grace-n">—</div>
+    <div class="res-lbl" id="grace-lbl">Заполните данные</div>
+  </div>
+  <div class="interp">
+    <div class="interp-row"><span class="interp-range">&lt;109</span><span class="interp-val" style="color:var(--green)">Низкий риск (&lt;1%)</span></div>
+    <div class="interp-row"><span class="interp-range">109–140</span><span class="interp-val" style="color:var(--orange)">Средний (1–3%)</span></div>
+    <div class="interp-row"><span class="interp-range">&gt;140</span><span class="interp-val" style="color:var(--red)">Высокий (&gt;3%)</span></div>
+  </div>
+</div>
+
+<!-- Альварадо -->
+<div class="card" id="t-alv">
+  <div class="card-title">Альварадо — Аппендицит</div>
+  <div class="card-desc">MANTRELS Score. Клиническая вероятность острого аппендицита.</div>
+  <div class="crit-list" id="alv-list">
+    <div class="crit" onclick="alvTog(this,1)"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Миграция боли в ПП</div></div></div><div class="cbadge">+1</div></div>
+    <div class="crit" onclick="alvTog(this,1)"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Анорексия</div></div></div><div class="cbadge">+1</div></div>
+    <div class="crit" onclick="alvTog(this,1)"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Тошнота/рвота</div></div></div><div class="cbadge">+1</div></div>
+    <div class="crit" onclick="alvTog(this,2)"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Болезненность в ПП</div></div></div><div class="cbadge">+2</div></div>
+    <div class="crit" onclick="alvTog(this,1)"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Симптом Щёткина–Блюмберга</div></div></div><div class="cbadge">+1</div></div>
+    <div class="crit" onclick="alvTog(this,1)"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Повышение температуры</div></div></div><div class="cbadge">+1</div></div>
+    <div class="crit" onclick="alvTog(this,2)"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Лейкоцитоз</div></div></div><div class="cbadge">+2</div></div>
+    <div class="crit" onclick="alvTog(this,1)"><div class="crit-l"><div class="chk"><span class="chk-i">✓</span></div><div><div class="crit-txt">Сдвиг формулы влево</div></div></div><div class="cbadge">+1</div></div>
+  </div>
+  <div class="res" id="alv-res">
+    <div class="res-score" id="alv-n">0</div>
+    <div class="res-lbl" id="alv-lbl">Аппендицит маловероятен</div>
+  </div>
+  <div class="interp">
+    <div class="interp-row"><span class="interp-range">1–4</span><span class="interp-val" style="color:var(--green)">Маловероятен</span></div>
+    <div class="interp-row"><span class="interp-range">5–6</span><span class="interp-val" style="color:var(--orange)">Возможен — наблюдение</span></div>
+    <div class="interp-row"><span class="interp-range">7–10</span><span class="interp-val" style="color:var(--red)">Вероятен — хирург</span></div>
+  </div>
+</div>
+
+<!-- Инфузомат -->
+<div class="card" id="t-inf">
+  <div class="card-title">Инфузомат СМП</div>
+  <div class="card-desc">Расчёт скорости введения вазопрессоров и диуретиков.</div>
+  <div class="drug-grid">
+    <button class="drug-btn sel-d" id="db-d" onclick="selDrug('d')"><span class="dn">Допамин</span><span class="dc">400мг / 200мл</span></button>
+    <button class="drug-btn" id="db-n" onclick="selDrug('n')"><span class="dn">Норадреналин</span><span class="dc">4мг / 200мл</span></button>
+    <button class="drug-btn" id="db-novoc" onclick="selDrug('novoc')"><span class="dn">Новокаинамид</span><span class="dc">1000мг / 100мл</span></button>
+    <button class="drug-btn" id="db-furos" onclick="selDrug('furos')"><span class="dn">Фуросемид</span><span class="dc">40мг / 100мл</span></button>
+  </div>
+  <div class="w-inp"><div class="w-lbl">Вес пациента (кг)</div><input class="w-field" id="inf-wt" oninput="calcInf()" type="number" placeholder="70"></div>
+  <div id="inf-dose-wrap" style="margin-bottom:12px">
+    <div class="w-lbl" id="inf-dose-lbl">Доза (мкг/кг/мин)</div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <input type="range" class="slider d" id="inf-sl" oninput="calcInf()" min="2" max="20" value="5">
+      <div style="font-family:var(--mono);font-size:20px;font-weight:700;color:var(--yellow);min-width:36px;text-align:right" id="inf-sl-val">5</div>
+    </div>
+  </div>
+  <div class="inf-res d" id="inf-res">
+    <div class="inf-rate" id="inf-rate">—</div>
+    <div class="inf-unit-lbl" id="inf-unit">мл/час</div>
+    <div class="inf-formula" id="inf-formula"></div>
+  </div>
+  <div id="inf-proto"></div>
+</div>
+
+<!-- Педиатрия -->
+<div class="card" id="t-ped">
+  <div class="card-title">Педиатрия — Нормы и расчёты</div>
+  <div class="card-desc">Возрастные дозы, вес по Брозеку, нормы ЧСС/АД/ЧДД.</div>
+  <div class="w-inp"><div class="w-lbl">Возраст ребёнка</div>
+    <select class="gcs-sel" id="ped-age" onchange="calcPed()" onchange="calcPed()">
+      <option value="0">Новорождённый (0–28 дн)</option>
+      <option value="1">1–3 месяца</option>
+      <option value="3">3–6 месяцев</option>
+      <option value="6">6–12 месяцев</option>
+      <option value="12">1–2 года</option>
+      <option value="24">2–5 лет</option>
+      <option value="60">5–10 лет</option>
+      <option value="120">10–14 лет</option>
+    </select>
+  </div>
+  <div id="ped-res" style="background:var(--glass-2);border:1px solid var(--glass-border);border-radius:14px;padding:14px;font-size:12px;line-height:1.8;color:var(--text-2)"></div>
+</div>
+
+<!-- ИВЛ 4/40 -->
+<div class="card" id="t-ivl">
+  <div class="card-title">ИВЛ — Параметры 4/40</div>
+  <div class="card-desc">Расчёт ДО и ЧД по весу. Протективная вентиляция.</div>
+  <div class="w-inp"><div class="w-lbl">Вес (кг)</div><input class="w-field" id="ivl-wt" oninput="calcIvl()" type="number" placeholder="70"></div>
+  <div id="ivl-res" style="background:var(--glass-2);border:1px solid var(--glass-border);border-radius:14px;padding:16px;font-size:13px;line-height:1.9;color:var(--text-2)">Введите вес</div>
+</div>
+
+<!-- СЛР Таймер -->
+<div class="card" id="t-cpr">
+  <div class="card-title">СЛР Таймер</div>
+  <div class="card-desc">2-минутные циклы. Адреналин каждые 3–5 мин. Шок каждые 2 мин при ФЖ.</div>
+  <div style="text-align:center;padding:20px 0">
+    <div style="font-family:var(--mono);font-size:72px;font-weight:700;color:white;line-height:1" id="cpr-time">02:00</div>
+    <div style="font-size:13px;color:var(--text-3);margin-top:8px" id="cpr-cycle">Цикл 1</div>
+    <div style="font-size:12px;color:var(--red);font-weight:700;margin-top:6px" id="cpr-adr"></div>
+  </div>
+  <div style="display:flex;gap:10px">
+    <button class="con-btn" id="cpr-btn" onclick="cprToggle()" style="flex:2;padding:16px;font-size:15px;font-weight:700">▶ СТАРТ</button>
+    <button class="con-btn" onclick="cprReset()" style="flex:1;padding:16px">↺ Сброс</button>
+  </div>
+  <div style="background:rgba(255,69,58,0.08);border:1px solid rgba(255,69,58,0.2);border-radius:12px;padding:12px;margin-top:14px;font-size:12px;color:var(--text-2);line-height:1.7">
+    <b style="color:var(--red)">Протокол СЛР:</b><br>
+    30 компрессий → 2 вдоха (без ИВЛ трубки)<br>
+    Адреналин 1мг в/в каждые 3–5 мин<br>
+    ФЖ/ЖТ без пульса → дефибрилляция 360Дж
+  </div>
+</div>
+
+<!-- Meds -->
+<div class="card" id="t-meds">
+  <div class="card-title">Препараты СМП</div>
+  <div class="card-desc">Справочник основных препаратов бригады СМП.</div>
+  <div class="med-cat-tabs" id="meds-tabs">
+    <button class="med-cat-tab on" onclick="setMedCat('all',this)">Все</button>
+    <button class="med-cat-tab" onclick="setMedCat('card',this)">Кардио</button>
+    <button class="med-cat-tab" onclick="setMedCat('neuro',this)">Нейро</button>
+    <button class="med-cat-tab" onclick="setMedCat('pain',this)">Анальгезия</button>
+    <button class="med-cat-tab" onclick="setMedCat('other',this)">Прочее</button>
+  </div>
+  <div id="meds-list"></div>
+</div>
+
+<!-- ИМТ -->
+<div class="card" id="t-bmi">
+  <div class="card-title">ИМТ — Индекс массы тела</div>
+  <div class="inp-grid">
+    <div class="inp-grp"><div class="inp-lbl">Рост <span class="inp-unit">см</span></div><input class="inp-f" id="bmi-h" oninput="calcBmi()" type="number" placeholder="175"></div>
+    <div class="inp-grp"><div class="inp-lbl">Вес <span class="inp-unit">кг</span></div><input class="inp-f" id="bmi-w" oninput="calcBmi()" type="number" placeholder="70"></div>
+  </div>
+  <div class="res" id="bmi-res">
+    <div class="res-score" id="bmi-n">—</div>
+    <div class="res-lbl" id="bmi-lbl">Введите данные</div>
+  </div>
+  <div class="interp">
+    <div class="interp-row"><span class="interp-range">&lt;18.5</span><span class="interp-val" style="color:var(--accent)">Дефицит массы</span></div>
+    <div class="interp-row"><span class="interp-range">18.5–24.9</span><span class="interp-val" style="color:var(--green)">Норма</span></div>
+    <div class="interp-row"><span class="interp-range">25–29.9</span><span class="interp-val" style="color:var(--yellow)">Избыточная масса</span></div>
+    <div class="interp-row"><span class="interp-range">30–34.9</span><span class="interp-val" style="color:var(--orange)">Ожирение I</span></div>
+    <div class="interp-row"><span class="interp-range">≥35</span><span class="interp-val" style="color:var(--red)">Ожирение II–III</span></div>
+  </div>
+</div>
+
+<!-- Нормы детей -->
+<div class="card" id="t-norms">
+  <div class="card-title">Нормы детей</div>
+  <div class="card-desc">ЧСС, АД, ЧДД по возрасту.</div>
+  <div class="interp">
+    <div class="interp-row"><span class="interp-range" style="min-width:120px">Возраст</span><span style="font-weight:700;font-size:11px;color:var(--text-3)">ЧСС</span><span style="font-weight:700;font-size:11px;color:var(--text-3)">АД сист.</span><span style="font-weight:700;font-size:11px;color:var(--text-3)">ЧДД</span></div>
+    <div class="interp-row"><span class="interp-range" style="min-width:120px">0–1 мес</span><span>120–160</span><span>60–80</span><span>40–60</span></div>
+    <div class="interp-row"><span class="interp-range" style="min-width:120px">1–12 мес</span><span>100–140</span><span>70–95</span><span>30–40</span></div>
+    <div class="interp-row"><span class="interp-range" style="min-width:120px">1–3 года</span><span>90–120</span><span>80–100</span><span>25–30</span></div>
+    <div class="interp-row"><span class="interp-range" style="min-width:120px">3–7 лет</span><span>80–110</span><span>85–105</span><span>20–25</span></div>
+    <div class="interp-row"><span class="interp-range" style="min-width:120px">7–12 лет</span><span>70–100</span><span>90–110</span><span>18–22</span></div>
+    <div class="interp-row"><span class="interp-range" style="min-width:120px">12–15 лет</span><span>60–90</span><span>100–120</span><span>16–20</span></div>
+  </div>
+</div>
+
+<!-- ====================================== -->
+<!-- ===== КЛИНИКА TAB =================== -->
+<!-- ====================================== -->
+<div class="card" id="t-klinika">
+  <div class="card-title">🏥 Клиника — Препараты</div>
+  <div class="card-desc">Справочник препаратов подстанции. Группа, механизм, дозы, введение.</div>
+
+  <!-- Search -->
+  <div class="kl-search-wrap">
+    <span class="kl-search-icon">🔍</span>
+    <input class="kl-search" id="kl-search" oninput="klFilter()" type="text" placeholder="Поиск препарата...">
+  </div>
+
+  <!-- Filters -->
+  <div class="kl-filter-row">
+    <button class="kl-filter on f-all" onclick="klSetFilter('all',this)">Все</button>
+    <button class="kl-filter f-inj" onclick="klSetFilter('inj',this)">💉 Инъекции</button>
+    <button class="kl-filter f-inf" onclick="klSetFilter('inf',this)">🧪 Инфузии</button>
+    <button class="kl-filter f-tab" onclick="klSetFilter('tab',this)">💊 Таблетки</button>
+    <button class="kl-filter f-card" onclick="klSetFilter('card',this)">❤️ Кардио</button>
+    <button class="kl-filter f-neuro" onclick="klSetFilter('neuro',this)">🧠 Нейро</button>
+    <button class="kl-filter f-psych" onclick="klSetFilter('psych',this)">🌀 Психо</button>
+  </div>
+
+  <div id="kl-list"></div>
+</div>
+
+<!-- ====================================== -->
+<!-- ===== ПАЛАТЫ ========================= -->
+<!-- ====================================== -->
+<div class="card" id="t-palaty">
+  <div class="card-title">🛏 Палаты — Инфузии</div>
+  <div class="card-desc">Трекер инфузий по койкам. Препарат, скорость, объём, таймер завершения.</div>
+
+  <!-- Палата 1 -->
+  <div class="ward-section">
+    <div class="ward-title"><span>🚨</span> Палата 1</div>
+    <div id="ward1-beds"></div>
+  </div>
+
+  <!-- Палата 2 -->
+  <div class="ward-section">
+    <div class="ward-title"><span>🏥</span> Палата 2</div>
+    <div id="ward2-beds"></div>
+  </div>
+</div>
+
+</div><!-- /wrap -->
+
+<script>
+
+
+const KL_DRUGS = [
+  // ───── ИНЪЕКЦИИ / АМПУЛЫ ─────
+  {
+    id:'adrenalin', name:'Адреналин', latin:'Epinephrinum', form:'inj',
+    tags:['inj','card'],
+    group:'Катехоламин, α+β-адреномиметик',
+    icon:'💉', fi:'fi-inj', gc:'gc-inj',
+    dose:'СЛР: 1 мг (1 мл 0.1%) каждые 3–5 мин в/в. Анафилаксия: 0.5 мг в/м (бедро)',
+    route:'В/в болюс при СЛР, в/м при анафилаксии. При в/в — развести в 9–10 мл NaCl 0.9%',
+    dilution:'1 мл 0.1% + 9 мл NaCl 0.9% → 10 мл = 0.1 мг/мл',
+    when:'Остановка сердца (ФЖ, асистолия), анафилаксия, выраженная брадикардия',
+    mech:'Стимулирует α₁ → вазоконстрикция ↑АД; β₁ → ↑ЧСС, ↑сократимость; β₂ → бронходилатация',
+    warn:'Не смешивать со щелочными р-рами! Тахикардия, аритмии. Контроль ЭКГ.'
+  },
+  {
+    id:'dexameta', name:'Дексаметазон', latin:'Dexamethasonum', form:'inj',
+    tags:['inj','card'],
+    group:'ГКС (глюкокортикостероид)',
+    icon:'💉', fi:'fi-inj', gc:'gc-inj',
+    dose:'4–8–16–24 мг в/в в зависимости от показания. Шок: 8–24 мг',
+    route:'В/в медленно 3–5 мин или в/м. Разводить в 10–20 мл NaCl 0.9%',
+    dilution:'Ампула 4 мг/мл. В/в — 4 мг + 10 мл NaCl или без разведения (медленно)',
+    when:'Анафилаксия, отёк мозга, тяжёлая бронхообструкция, надпочечниковая недостаточность, рвота при ХТ',
+    mech:'Угнетает фосфолипазу А₂ → ↓простагландины и лейкотриены. Стабилизация мембран лизосом. Противоотёчный эффект',
+    warn:'Однократно допустимо без ограничений. При СД — гипергликемия. Не вводить быстро струйно (коллапс).'
+  },
+  {
+    id:'dimedrol', name:'Димедрол', latin:'Diphenhydraminum', form:'inj',
+    tags:['inj','psych'],
+    group:'H₁-антигистаминный, холинолитик, седатик',
+    icon:'💉', fi:'fi-psych', gc:'gc-psych',
+    dose:'1% — 1–2 мл в/м или в/в медленно',
+    route:'В/м или в/в. В/в — обязательно разводить!',
+    dilution:'1 мл 1% + 9–19 мл NaCl 0.9%',
+    when:'Аллергические реакции (I тип), усиление анальгезии (литическая смесь), тошнота, нейролепт-аналгезия (+ дроперидол)',
+    mech:'Блокирует H₁-рецепторы → ↓гистамин-эффекты. М-холинолитик → сухость. ЦНС-депрессия',
+    warn:'Тахикардия, задержка мочи у пожилых, сухость рта, сонливость. Не управлять ТС!'
+  },
+  {
+    id:'ketorol', name:'Кеторол (Кеторолак)', latin:'Ketorolacum', form:'inj',
+    tags:['inj'],
+    group:'НПВП, неселективный ЦОГ-1/2 ингибитор',
+    icon:'💉', fi:'fi-inj', gc:'gc-inj',
+    dose:'30 мг (1 мл) в/м. Максимум: 120 мг/сут, не более 5 дней',
+    route:'В/м или в/в. В/в — медленно ≥15 сек. Можно без разведения',
+    dilution:'Можно не разводить. В/в медленно или в 10–20 мл NaCl',
+    when:'Боли высокой интенсивности: почечная колика, травма, послеопер. боль. НЕ при ОИМ (риск кровотечения)',
+    mech:'Ингибирует ЦОГ → ↓арахидоновая к-та → ↓простагландины → обезболивание, жаропонижение',
+    warn:'Абсолютно НЕЛЬЗЯ при: язве ЖКТ, кровотечении, тяжёлой ХПН, беременности, ОНМК! Не сочетать с другими НПВП.'
+  },
+  {
+    id:'kordiamin', name:'Кордиамин', latin:'Nikethamidum', form:'inj',
+    tags:['inj'],
+    group:'Аналептик (стимулятор дыхательного и вазомоторного центра)',
+    icon:'💉', fi:'fi-inj', gc:'gc-inj',
+    dose:'1–2 мл в/м или п/к. При острой СС недостаточности 3–5 мл в/в медленно',
+    route:'В/м, п/к, в/в медленно. В/в — разводить в NaCl',
+    dilution:'При в/в: развести в 10 мл NaCl 0.9%, вводить медленно',
+    when:'Острая СС недостаточность, коллапс, нарушение дыхания, послеоперационное угнетение ЦНС',
+    mech:'Прямая стимуляция хеморецепторов каротидного синуса → активация дыхательного центра. Рефлекторное ↑АД',
+    warn:'При быстром в/в введении: судороги, резкое ↑АД. Применять осторожно при эпилепсии.'
+  },
+  {
+    id:'nalokon', name:'Налоксон', latin:'Naloxonum', form:'inj',
+    tags:['inj','neuro'],
+    group:'Антагонист опиоидных рецепторов (μ, κ, δ)',
+    icon:'💉', fi:'fi-neuro', gc:'gc-neuro',
+    dose:'0.4–2 мг в/в, в/м, п/к. Повторять каждые 2–3 мин. Макс 10 мг',
+    route:'Предпочтительно в/в болюс. В/м или п/к если нет доступа',
+    dilution:'Можно без разведения (0.4 мг/мл). В/в: развести в 5–10 мл NaCl',
+    when:'Передозировка опиоидов (морфин, героин, трамадол, фентанил). Кома неясной этиологии',
+    mech:'Конкурентно блокирует опиоидные μ-рецепторы → устраняет угнетение дыхания, ЦНС, ↑АД',
+    warn:'Короткое действие (30–90 мин) — опиоид может пережить налоксон! Повторные дозы обязательны. Может вызвать острую боль у наркоманов → агрессия.'
+  },
+  {
+    id:'piridoksin', name:'Пиридоксин (В₆)', latin:'Pyridoxinum', form:'inj',
+    tags:['inj','neuro'],
+    group:'Витамин группы В (кофермент аминокислотного обмена)',
+    icon:'💉', fi:'fi-neuro', gc:'gc-neuro',
+    dose:'50–100 мг (1–2 мл 5%) в/в или в/м',
+    route:'В/в медленно или в/м',
+    dilution:'В/в: развести в 20 мл NaCl 0.9%',
+    when:'Судороги при отравлении изониазидом, алкогольная полинейропатия, токсикоз беременных (рвота)',
+    mech:'Кофермент декарбоксилаз и трансаминаз. При отравлении изониазидом восстанавливает синтез ГАМК',
+    warn:'Вводить медленно (↑ АД при быстром в/в). Редко — периферическая нейропатия при длительном приёме.'
+  },
+  {
+    id:'prednisolon', name:'Преднизолон', latin:'Prednisolonum', form:'inj',
+    tags:['inj','card'],
+    group:'ГКС (глюкокортикостероид)',
+    icon:'💉', fi:'fi-inj', gc:'gc-inj',
+    dose:'60–90–120–300 мг в/в. Астматический статус: 90–120 мг. Анафилаксия: 90–150 мг. Шок: 10–15 мг/кг',
+    route:'В/в струйно медленно (2–3 мин) или капельно. В/м при недоступности вены',
+    dilution:'30 мг/мл ампула. В/в: развести в 10–20 мл NaCl 0.9% или ввести без разведения медленно',
+    when:'Анафилаксия, астматический статус, отёк Квинке, шок, аутоиммунные кризы',
+    mech:'ГКС-рецептор → изменение транскрипции → ↓воспаление, ↓иммунный ответ, ↑глюкоза, стабилизация мембран',
+    warn:'Аналогично дексаметазону. Задержка жидкости. Язва ЖКТ при систематическом приёме. Гипергликемия.'
+  },
+  {
+    id:'suprastin', name:'Супрастин', latin:'Chloropyramininum', form:'inj',
+    tags:['inj','tab'],
+    group:'H₁-антигистаминный I поколения',
+    icon:'💉', fi:'fi-inj', gc:'gc-inj',
+    dose:'1–2 мл 2% в/м или в/в медленно',
+    route:'В/м или в/в (разводить)',
+    dilution:'1 мл 2% + 9 мл NaCl 0.9% для в/в введения',
+    when:'Крапивница, отёк Квинке, аллергический ринит, аллергические реакции на укусы, зуд',
+    mech:'Конкурентная блокада H₁-гистаминовых рецепторов → ↓сосудистая проницаемость, ↓зуд, ↓спазм ГМК',
+    warn:'Сонливость, сухость во рту. При в/в быстром введении — гипотензия. Осторожно при глаукоме, ДГПЖ.'
+  },
+  {
+    id:'tiamin', name:'Тиамин (В₁)', latin:'Thiaminum', form:'inj',
+    tags:['inj','neuro'],
+    group:'Витамин группы В (кофермент энергетического обмена)',
+    icon:'💉', fi:'fi-neuro', gc:'gc-neuro',
+    dose:'100 мг (2 мл 5%) в/м. До глюкозы при алкогольной коме!',
+    route:'В/м (предпочтительно). В/в медленно при энцефалопатии Вернике',
+    dilution:'В/в: развести в 100 мл NaCl 0.9%, капать 30 мин',
+    when:'Алкогольная кома/интоксикация (ОБЯЗАТЕЛЬНО до глюкозы!), энцефалопатия Вернике, истощение',
+    mech:'Кофермент пируватдегидрогеназы. Дефицит → накопление пирувата → лактат-ацидоз, некроз нейронов',
+    warn:'НИКОГДА не вводить глюкозу при алкогольном пациенте без тиамина — риск острой энцефалопатии Вернике!'
+  },
+  {
+    id:'cyanocobalamin', name:'Цианокобаламин (В₁₂)', latin:'Cyanocobalaminum', form:'inj',
+    tags:['inj','neuro'],
+    group:'Витамин В₁₂ (участник синтеза ДНК и миелина)',
+    icon:'💉', fi:'fi-neuro', gc:'gc-neuro',
+    dose:'500–1000 мкг (0.5–1 мл 0.1%) в/м',
+    route:'В/м',
+    dilution:'Без разведения',
+    when:'Полинейропатия (алкогольная, диабетическая), В₁₂-дефицитная анемия, болевой синдром в комплексе',
+    mech:'Участвует в синтезе нуклеиновых кислот, созревании эритроцитов, миелинизации нервных волокон',
+    warn:'Редко — аллергические реакции. При онкологии — осторожно (стимулирует пролиферацию).'
+  },
+  {
+    id:'aminazin', name:'Аминазин (Хлорпромазин)', latin:'Chlorpromazinum', form:'inj',
+    tags:['inj','psych'],
+    group:'Типичный антипсихотик I поколения, фенотиазин',
+    icon:'💉', fi:'fi-psych', gc:'gc-psych',
+    dose:'25–50 мг (1–2 мл 2.5%) в/м. В/в: 12.5–25 мг медленно',
+    route:'В/м глубоко. В/в только в условиях возможности реанимации (гипотензия!)',
+    dilution:'В/в: 1 мл 2.5% + 9 мл NaCl 0.9%, вводить ≥5 мин',
+    when:'Психомоторное возбуждение, острый психоз, рвота неукротимая (икота), нейролептаналгезия',
+    mech:'Блокада D₂-рецепторов → антипсихотический эффект. Блокада α₁, H₁, M → седация, гипотензия, сухость',
+    warn:'РЕЗКАЯ ГИПОТЕНЗИЯ при в/в! Длительный эффект (6–8 ч). Экстрапирамидные симптомы. Противопоказан при угнетении ЦНС, коме, алкогольной интоксикации.'
+  },
+  {
+    id:'amidaron', name:'Амиодарон', latin:'Amiodaronum', form:'inj',
+    tags:['inj','card'],
+    group:'Антиаритмик III класса (по Vaughan-Williams)',
+    icon:'💉', fi:'fi-card', gc:'gc-card',
+    dose:'При ФЖ/ЖТ (СЛР): 300 мг в/в болюс → 150 мг повторно. Стабильная ЖТ/ФП: 5 мг/кг за 1 ч → 10–20 мг/кг/сут',
+    route:'В/в. ТОЛЬКО через центральный катетер или быструю в/в при реанимации',
+    dilution:'300 мг + 20 мл глюкозы 5% (болюс при СЛР). Инфузия: 300 мг в 250 мл глюкозы 5%',
+    when:'Желудочковая фибрилляция, жел. тахикардия без пульса (СЛР), ФП с быстрым желудочковым ответом, стабильная ЖТ',
+    mech:'Блокирует K⁺-каналы → ↑реполяризация → ↑ЭРП. Также блокирует Na⁺, Ca²⁺-каналы и β-рецепторы. Замедляет все фазы АП',
+    warn:'Флебит периферической вены → предпочтителен центральный катетер. Гипотензия при быстром введении. Тиреотоксикоз при длительном приёме. Фотосенсибилизация. QT ↑.'
+  },
+  {
+    id:'analgin', name:'Анальгин (Метамизол)', latin:'Metamizolum', form:'inj',
+    tags:['inj'],
+    group:'НПВП (пиразолон), ненаркотический анальгетик',
+    icon:'💉', fi:'fi-inj', gc:'gc-inj',
+    dose:'50% р-р: 1–2 мл (500–1000 мг) в/в медленно или в/м. Макс 2 г однократно, 4 г/сут',
+    route:'В/м глубоко или в/в МЕДЛЕННО (≥2–3 мин). Быстрое в/в — коллапс!',
+    dilution:'В/в: 2 мл 50% + 8 мл NaCl или ввести медленно без разведения',
+    when:'Болевой синдром (почечная колика, головная боль, лихорадка), лихорадка при неэффективности других средств',
+    mech:'Ингибирование ЦОГ-3 (центральная). Прямое угнетение синтеза простагландинов. Спазмолитический компонент',
+    warn:'Агранулоцитоз при систематическом применении. Коллапс при быстром в/в. Запрещён в ряде стран ЕС. Не применять при почечной недостаточности.'
+  },
+  {
+    id:'askorbinka', name:'Аскорбиновая кислота', latin:'Acidum ascorbicum', form:'inj',
+    tags:['inj'],
+    group:'Витамин С (антиоксидант, кофактор ферментов)',
+    icon:'💉', fi:'fi-inj', gc:'gc-inj',
+    dose:'5% — 2–5 мл в/в или в/м',
+    route:'В/в (добавляют в капельницу) или в/м',
+    dilution:'Добавить в инфузионный раствор (совместима с NaCl, глюкозой)',
+    when:'Интоксикации (отравления, алкоголь), септические состояния (в/в большие дозы — протокол CITRIS-ALI), геморрагические диатезы',
+    mech:'Антиоксидант, участвует в синтезе коллагена, усиливает иммунный ответ, улучшает всасывание железа',
+    warn:'Большие дозы при нефролитиазе. При ОПН — осторожно (оксалаты). Несовместима со щелочными р-рами.'
+  },
+  {
+    id:'droperidol', name:'Дроперидол', latin:'Droperidolum', form:'inj',
+    tags:['inj','psych'],
+    group:'Антипсихотик (бутирофенон), нейролептик',
+    icon:'💉', fi:'fi-psych', gc:'gc-psych',
+    dose:'2.5–5 мг (1–2 мл 0.25%) в/в или в/м',
+    route:'В/в медленно или в/м. В/в — медленно за 3–5 мин',
+    dilution:'В/в: 1–2 мл + 8–18 мл NaCl 0.9%',
+    when:'Психомоторное возбуждение, нейролептаналгезия (+ фентанил/анальгин), упорная рвота, подготовка к процедурам',
+    mech:'D₂-блокатор → антипсихотический, противорвотный эффект. α-блокада → гипотензия. Седация.',
+    warn:'Гипотензия! ЭКГ контроль (QT↑). Экстрапирамидные симптомы. Не применять при тяжёлой депрессии ЦНС.'
+  },
+  {
+    id:'meksikor', name:'Мексикор/Мексидол', latin:'Aethylmethylhydroxypyridini succinat', form:'inj',
+    tags:['inj','neuro'],
+    group:'Антиоксидант, антигипоксант (сукцинат)',
+    icon:'💉', fi:'fi-neuro', gc:'gc-neuro',
+    dose:'100–200–500 мг в/в медленно или в/м. Инфаркт: 200 мг 2 р/сут в/в',
+    route:'В/в медленно (3–5 мин) или капельно. В/м — без разведения',
+    dilution:'В/в: развести в 100 мл NaCl 0.9% или глюкозы 5%',
+    when:'ОКС (вспомогательная терапия), ОНМК, острая алкогольная интоксикация, черепно-мозговая травма',
+    mech:'Ингибирует ПОЛ (перекисное окисление липидов), активирует сукцинатдегидрогеназу → ↑аэробный метаболизм клеток в условиях гипоксии',
+    warn:'Вводить медленно! Быстрое в/в — тошнота, металлический привкус. Противопоказан при печёночной/почечной недостаточности.'
+  },
+  {
+    id:'metoklopramid', name:'Метоклопрамид (Церукал)', latin:'Metoclopramidum', form:'inj',
+    tags:['inj','tab'],
+    group:'Противорвотный (D₂-антагонист, прокинетик)',
+    icon:'💉', fi:'fi-inj', gc:'gc-inj',
+    dose:'10 мг (2 мл 0.5%) в/в или в/м. Детям: 0.1–0.15 мг/кг',
+    route:'В/в медленно или в/м',
+    dilution:'В/в: 2 мл + 10 мл NaCl 0.9%, вводить 3–5 мин',
+    when:'Тошнота и рвота любого генеза, диабетический гастропарез, мигрень (повышает всасывание НПВП)',
+    mech:'Блокада D₂-рецепторов ХТЗ и кишечника → ↑перистальтика, ↑тонус сфинктера пищевода, противорвотный эффект',
+    warn:'Экстрапирамидные нарушения (особенно у детей и молодых!) — вводить медленно. Дистония, акатизия. Длительный приём → поздняя дискинезия.'
+  },
+  {
+    id:'noshpa', name:'Но-шпа (Дротаверин)', latin:'Drotaverinum', form:'inj',
+    tags:['inj','tab'],
+    group:'Миотропный спазмолитик (ингибитор ФДЭ)',
+    icon:'💉', fi:'fi-inj', gc:'gc-inj',
+    dose:'2% — 2–4 мл в/в медленно или в/м',
+    route:'В/в очень медленно (1–2 мин) или в/м',
+    dilution:'В/в: 4 мл + 10 мл NaCl 0.9%, вводить медленно',
+    when:'Почечная колика, желчная колика, кишечная колика, спастическая дискинезия жёлчного пузыря, головная боль (сосудистая)',
+    mech:'Ингибирует ФДЭ IV → ↑цАМФ в ГМК → расслабление. Блокирует кальциевые каналы ГМК',
+    warn:'Гипотензия при быстром в/в введении! Не применять при закрытоугольной глаукоме, ОСН, А-В блокаде.'
+  },
+  {
+    id:'ondansetron', name:'Ондасетрон', latin:'Ondansetronum', form:'inj',
+    tags:['inj'],
+    group:'Противорвотный (5-HT₃-антагонист)',
+    icon:'💉', fi:'fi-inj', gc:'gc-inj',
+    dose:'4–8 мг в/в медленно или в/м. Детям >6 мес: 0.1 мг/кг (макс 4 мг)',
+    route:'В/в за 30 сек или в/м',
+    dilution:'В/в: 4–8 мг в 50 мл NaCl 0.9% (5 мин); при необходимости быстро — можно неразведённый',
+    when:'Рвота при химиотерапии, послеоперационная рвота, тяжёлая рвота беременных, вирусный гастроэнтерит с неукротимой рвотой',
+    mech:'Блокада 5-HT₃ рецепторов в ЦНС (area postrema) и периферических нейронах ЖКТ → ↓рвотный рефлекс',
+    warn:'QT удлинение (особенно при ≥32 мг разово). Не применять при гипокалиемии, гипомагниемии, удлиннённом QT.'
+  },
+  {
+    id:'furosemid', name:'Фуросемид', latin:'Furosemidum', form:'inj',
+    tags:['inj','tab','card'],
+    group:'Петлевой диуретик',
+    icon:'💉', fi:'fi-card', gc:'gc-card',
+    dose:'20–40–80–120 мг в/в. ОЛ: 40–80 мг в/в. Гипертонический криз: 40 мг в/в',
+    route:'В/в струйно МЕДЛЕННО (≥2 мг/мин, т.е. 40 мг не быстрее 20 сек). В/м возможно',
+    dilution:'Можно вводить без разведения медленно. Инфузия: 40 мг в 100 мл NaCl 0.9%',
+    when:'Острая левожелудочковая недостаточность (отёк лёгких), гипертонический криз с отёком, почечная недостаточность с гиперволемией, гиперкалиемия',
+    mech:'Блокирует Na⁺/K⁺/2Cl⁻ котранспортёр в петле Генле → массивный натрийурез, диурез. Веноделятирующий эффект (первые минуты)',
+    warn:'Гипокалиемия, гипонатриемия, ototoxicity при высоких дозах. Нельзя быстро! Обезвоживание, коллапс. Слышимость снижается при >4 мг/мин.'
+  },
+  {
+    id:'piracetam5', name:'Пирацетам 5 мл', latin:'Piracetamum', form:'inj',
+    tags:['inj','neuro'],
+    group:'Ноотроп (циклическое производное ГАМК)',
+    icon:'💉', fi:'fi-neuro', gc:'gc-neuro',
+    dose:'4–12 г/сут в/в. Острый инсульт: 12 г/сут в 2 введения',
+    route:'В/в медленно или капельно. Первые 2 нед при инсульте — в/в',
+    dilution:'20% р-р: 60 мл (12 г) + 200 мл NaCl 0.9% или глюкоза 5%',
+    when:'ОНМК (ранние сроки), черепно-мозговая травма, постреанимационная болезнь, деменция',
+    mech:'Улучшает метаболизм нейронов, текучесть мембран, ↑АТФ, модулирует AMPA-рецепторы. Антитромботический эффект (↓агрегация тромбоцитов)',
+    warn:'Возбуждение, бессонница при высоких дозах. Осторожно при эпилепсии (↑судорожная готовность). ХПН → снизить дозу.'
+  },
+  {
+    id:'samelik5', name:'Самелик/Актовегин 5 мл', latin:'Actoveginum', form:'inj',
+    tags:['inj','neuro'],
+    group:'Антигипоксант, метаболическая терапия',
+    icon:'💉', fi:'fi-neuro', gc:'gc-neuro',
+    dose:'5–10 мл в/в или в/м, или 250–500 мл инфузионный р-р',
+    route:'В/в медленно или капельно. В/м — не более 5 мл за одно введение',
+    dilution:'В/в: 10–20 мл в 200–500 мл NaCl 0.9% или глюкозы 5%',
+    when:'Ишемический инсульт, диабетическая нейропатия, ЧМТ, периферическая сосудистая недостаточность, трофические язвы',
+    mech:'Гемодиализат из телячьей крови. ↑утилизация глюкозы, ↑кислородный обмен, стимуляция регенерации',
+    warn:'Редко — анафилаксия (тест-доза 2 мл в/м). Не применять при отёке лёгких, олигурии. Нет доказательной базы уровня А.'
+  },
+  {
+    id:'asparkam5', name:'Аспаркам 5 мл', latin:'Potassii et Magnesii asparaginas', form:'inj',
+    tags:['inj','card'],
+    group:'Препарат калия и магния (аспартат)',
+    icon:'💉', fi:'fi-card', gc:'gc-card',
+    dose:'5–10 мл в/в медленно (в 100–200 мл NaCl или глюкозы)',
+    route:'ТОЛЬКО в/в капельно! Струйно НЕЛЬЗЯ — остановка сердца!',
+    dilution:'5–10 мл + 200 мл NaCl 0.9% или глюкоза 5%',
+    when:'Гипокалиемия, гипомагниемия, сердечные аритмии на фоне электролитных нарушений, ОКС (коктейль)',
+    mech:'Аспартат — переносчик ионов через мембраны. K⁺ и Mg²⁺ необходимы для нормальной деполяризации, работы Na⁺/K⁺-АТФазы',
+    warn:'НИКОГДА не вводить струйно! Скорость не более 5 мл/мин. Брадикардия, АВ-блокада при быстром введении. Контроль ЭКГ.'
+  },
+  {
+    id:'konvulex', name:'Конвулекс (Вальпроат)', latin:'Acidum valproicum', form:'inj',
+    tags:['inj','neuro'],
+    group:'Антиэпилептик, стабилизатор мембран',
+    icon:'💉', fi:'fi-neuro', gc:'gc-neuro',
+    dose:'15–45 мг/кг в/в. Нагрузочная доза при статусе: 25–30 мг/кг за 10–15 мин, затем 1 мг/кг/ч',
+    route:'В/в медленно (нагрузочная) или инфузионно (поддерживающая)',
+    dilution:'Нагруз.: 25 мг/кг + 100 мл NaCl 0.9%, за 10–15 мин. Поддерж.: 1 мг/кг/ч в 250 мл',
+    when:'Эпилептический статус (альтернатива диазепаму), парциальные и генерализованные приступы',
+    mech:'Блокирует Na⁺-каналы, усиливает ГАМКергическую передачу (↑ГАМК), ингибирует вольтажзависимые Ca²⁺-каналы',
+    warn:'Гепатотоксичность (базовые печёночные функции!). Тромбоцитопения. Тератоген — не применять при беременности! Взаимодействие с карбапенемами (↓уровень вальпроата).'
+  },
+  {
+    id:'magnesia5', name:'Магнезия 5 мл', latin:'Magnesii sulfas', form:'inj',
+    tags:['inj','card'],
+    group:'Физиологический антагонист кальция, спазмолитик, антиаритмик',
+    icon:'💉', fi:'fi-card', gc:'gc-card',
+    dose:'Эклампсия: 4–6 г нагруз. в/в за 20 мин → 1–2 г/ч. Аритмия (torsades): 2 г за 5 мин. Бронхоспазм: 2–3 г за 20 мин',
+    route:'В/в капельно (большинство показаний). Быстрый болюс — только при torsades и судорогах',
+    dilution:'25% р-р: 4 г (16 мл 25%) + 84 мл NaCl 0.9% = 100 мл. Вводить по скорости, указанной по показанию',
+    when:'Преэклампсия/эклампсия, torsades de pointes, рефрактерный бронхоспазм, гипомагниемия, отравление Ba²⁺',
+    mech:'Конкурентный антагонист Ca²⁺ → расслабление ГМК, ↓нейромышечная передача, ↑ЭРП (антиаритмический), блокада NMDA',
+    warn:'Контроль рефлексов и ЧДД! При потере коленного рефлекса — СТОП. Антидот: глюконат Ca 1 г в/в. Угнетение дыхания при высоких уровнях Mg.'
+  },
+  {
+    id:'kokarboksilaza', name:'Кокарбоксилаза', latin:'Cocarboxylasae hydrochloridum', form:'inj',
+    tags:['inj'],
+    group:'Кофермент (тиаминпирофосфат)',
+    icon:'💉', fi:'fi-inj', gc:'gc-inj',
+    dose:'50–100 мг в/в или в/м 1–2 р/сут',
+    route:'В/м или в/в медленно',
+    dilution:'Растворить во флаконе с прилагаемым растворителем. В/в: + 10 мл NaCl',
+    when:'Сердечная недостаточность, диабетический кетоацидоз, печёночная недостаточность, метаболический ацидоз',
+    mech:'Кофермент декарбоксилаз → активирует окисление пирувата → ↑аэробный синтез АТФ → уменьшение лактат-ацидоза',
+    warn:'Редко — аллергические реакции. Несовместима с пенициллинами.'
+  },
+  {
+    id:'kombilipen', name:'Комбилипен', latin:'Thiaminum + Cyanocobalaminum + Pyridoxinum', form:'inj',
+    tags:['inj','neuro'],
+    group:'Комплекс витаминов В₁+В₆+В₁₂ с лидокаином',
+    icon:'💉', fi:'fi-neuro', gc:'gc-neuro',
+    dose:'2 мл в/м 1 р/сут. Курс: 5–10 дней',
+    route:'В/м глубоко',
+    dilution:'Без разведения',
+    when:'Полинейропатии (диабетическая, алкогольная), радикулопатия, невралгия, болевой синдром',
+    mech:'Тиамин (В₁): кофермент декарбоксилаз. Пиридоксин (В₆): синтез ГАМК, серотонина. Цианокобаламин (В₁₂): миелин. Лидокаин: местная анестезия (безболезненное введение)',
+    warn:'Не вводить в/в! Аллергия на лидокаин — противопоказание. Скорость введения медленная.'
+  },
+  {
+    id:'meksiprим', name:'Мексиприм 2 мл', latin:'Aethylmethylhydroxypyridini maleat', form:'inj',
+    tags:['inj','neuro'],
+    group:'Антиоксидант (малеат этилметилгидроксипиридина)',
+    icon:'💉', fi:'fi-neuro', gc:'gc-neuro',
+    dose:'100–200 мг в/в или в/м',
+    route:'В/в медленно (3 мин) или в/м',
+    dilution:'В/в: 2 мл + 10 мл NaCl 0.9%',
+    when:'Аналогично мексикору: ОКС, ОНМК, алкогольная интоксикация, ЧМТ',
+    mech:'Аналог мексидола на малеате. Антиоксидант, ингибирует ПОЛ',
+    warn:'Те же, что у мексикора. Медленное введение обязательно.'
+  },
+  {
+    id:'galoperidol', name:'Галоперидол', latin:'Haloperidolum', form:'inj',
+    tags:['inj','psych'],
+    group:'Типичный антипсихотик (бутирофенон)',
+    icon:'💉', fi:'fi-psych', gc:'gc-psych',
+    dose:'5–10 мг в/м или в/в медленно. При острой агрессии: 5 мг каждые 30–60 мин (макс 30 мг/сут)',
+    route:'В/м или в/в. В/в — медленно (3–5 мин)',
+    dilution:'В/в: 2 мл 0.5% + 8 мл NaCl 0.9%',
+    when:'Острый психоз, психомоторное возбуждение, делирий, агрессия. Седация при реанимации (в/в)',
+    mech:'Мощная блокада D₂ → антипсихотик. Блокада α₁ → гипотензия. Слабое M-, H₁-блокирование',
+    warn:'Удлинение QT → torsades! Нейролептический злокачественный синдром (редко). Экстрапирамидные р-ции. Противопоказан при болезни Паркинсона.'
+  },
+  {
+    id:'nicotinovaya', name:'Никотиновая кислота (В₃, РР)', latin:'Acidum nicotinicum', form:'inj',
+    tags:['inj'],
+    group:'Витамин В₃, сосудорасширяющий, гиполипидемический',
+    icon:'💉', fi:'fi-inj', gc:'gc-inj',
+    dose:'1–2 мл 1% в/м или в/в медленно. Гиполипидемия (таб): 0.5–2 г/сут',
+    route:'В/м или в/в медленно (≥5 мин)',
+    dilution:'В/в: 2 мл 1% + 10 мл NaCl 0.9%',
+    when:'Сосудистые нарушения (периферические), гиперлипидемия IIа–V, пеллагра (дефицит РР)',
+    mech:'Предшественник НАД⁺ и НАДФ⁺. В высоких дозах ингибирует синтез ЛПОНП в печени, ↓ЛПНП, ↑ЛПВП',
+    warn:'Прилив крови к лицу (flush — норма), гипотензия при в/в. При язве ЖКТ — осторожно. Гепатотоксичность при длительном приёме.'
+  },
+  {
+    id:'kofein', name:'Кофеин-бензоат натрия', latin:'Coffeinum-natrii benzoas', form:'inj',
+    tags:['inj'],
+    group:'Аналептик, стимулятор ЦНС (ксантин)',
+    icon:'💉', fi:'fi-inj', gc:'gc-inj',
+    dose:'1–2 мл 20% п/к или в/м',
+    route:'П/к или в/м. Редко — в/в при коллапсе',
+    dilution:'Без разведения',
+    when:'Коллапс, угнетение ЦНС, гипотензия, вялость при инфекционных заболеваниях, мигрень (в сочетании)',
+    mech:'Блокирует аденозиновые рецепторы → стимуляция ЦНС, ↑ЧСС, ↑АД, бронходилатация, ↑диурез',
+    warn:'Тахикардия, аритмии, бессонница. Противопоказан при выраженном атеросклерозе, возбуждении, тяжёлой гипертензии.'
+  },
+  // ───── ИНФУЗИИ ─────
+  {
+    id:'mannit', name:'Маннит 400 мл', latin:'Mannitolum', form:'inf',
+    tags:['inf','neuro'],
+    group:'Осмотический диуретик',
+    icon:'🧪', fi:'fi-neuro', gc:'gc-neuro',
+    dose:'0.5–1.5 г/кг (1–2 мл/кг 20%) в/в за 30–60 мин. Разово при отёке мозга',
+    route:'Только в/в капельно через фильтр! Быстро — 30–60 мин',
+    dilution:'Готовый р-р 15–20%. Не смешивать с другими препаратами',
+    when:'Отёк мозга (ЧМТ, ОНМК), острая глаукома, форсированный диурез при отравлениях, ОПН (ранняя стадия)',
+    mech:'Осмотически активный → удерживает жидкость в сосудистом русле → ↑ОЦК → ↑диурез. Снижает ВЧД и ВГД',
+    warn:'При ХПН, декомпенсированной ХСН — НЕЛЬЗЯ (гиперволемия). Кристаллизация при охлаждении — согреть перед введением. Контроль ОЦК и электролитов.'
+  },
+  {
+    id:'nacl09_100', name:'NaCl 0.9% — 100 мл', latin:'Natrii chloridum', form:'inf',
+    tags:['inf'],
+    group:'Изотонический кристаллоид, р-р для разведения',
+    icon:'🧪', fi:'fi-inf', gc:'gc-inf',
+    dose:'По потребности. Болюс при шоке: 500–1000 мл быстро',
+    route:'В/в капельно или струйно',
+    dilution:'Основной растворитель для большинства препаратов СМП',
+    when:'Гиповолемия, шок (кристаллоидная инфузия), разведение препаратов, поддерживающая инфузия',
+    mech:'Изотонический р-р (308 мОсм/л) → поддерживает ОЦК без сдвига воды между секторами. 154 ммоль/л Na⁺ и Cl⁻',
+    warn:'При больших объёмах — гиперхлоремический ацидоз, ↑Cl⁻. При ОЛ и тяжёлой ХСН — ограниченно.'
+  },
+  {
+    id:'nacl09_200', name:'NaCl 0.9% — 200 мл', latin:'Natrii chloridum', form:'inf',
+    tags:['inf'],
+    group:'Изотонический кристаллоид',
+    icon:'🧪', fi:'fi-inf', gc:'gc-inf',
+    dose:'Болюс при шоке: 500–1000 мл. Развод препаратов — по объёму',
+    route:'В/в капельно',
+    dilution:'Как NaCl 100 мл',
+    when:'Гиповолемия, шок, инфузионная терапия при тяжёлых состояниях',
+    mech:'Изотонический кристаллоид. Аналогично 100 мл',
+    warn:'Аналогично 100 мл'
+  },
+  {
+    id:'reamber', name:'Реамберин 250 мл', latin:'Meglumini natrii succinat', form:'inf',
+    tags:['inf','neuro'],
+    group:'Антигипоксант (сукцинат-содержащий кристаллоид)',
+    icon:'🧪', fi:'fi-neuro', gc:'gc-neuro',
+    dose:'400–800 мл/сут в/в капельно',
+    route:'В/в капельно (60–90 кап/мин)',
+    dilution:'Готовый р-р. Не смешивать с другими препаратами',
+    when:'Острый инфаркт, ОНМК, отравления, операции, сепсис, острая почечная и печёночная недостаточность',
+    mech:'Сукцинат → субстрат для сукцинатдегидрогеназы → ↑синтез АТФ в условиях гипоксии. Содержит Na⁺, K⁺, Mg²⁺',
+    warn:'Не применять при ЧМТ с отёком (гиперволемия). Вводить только готовый р-р, не смешивать.'
+  },
+  {
+    id:'remaksol', name:'Ремаксол 400 мл', latin:'Meglumini succinat + Methioninum', form:'inf',
+    tags:['inf'],
+    group:'Гепатопротектор + антигипоксант',
+    icon:'🧪', fi:'fi-inf', gc:'gc-inf',
+    dose:'400 мл 1–2 р/сут в/в капельно (60–90 кап/мин)',
+    route:'В/в капельно',
+    dilution:'Готовый р-р',
+    when:'Острая и хроническая печёночная недостаточность, гепатит, холестаз, интоксикация (алкоголь, лекарства)',
+    mech:'Сукцинат (антигипоксант) + метионин (донор CH₃ групп, участвует в синтезе фосфолипидов гепатоцитов) + рибоксин (↑синтез АТФ)',
+    warn:'Осторожно при ОПН. Возможно незначительное потепление в месте введения.'
+  },
+  {
+    id:'ringer', name:'Рингер 200 мл', latin:'Solutio Ringeri', form:'inf',
+    tags:['inf'],
+    group:'Сбалансированный кристаллоид',
+    icon:'🧪', fi:'fi-inf', gc:'gc-inf',
+    dose:'200–500–1000 мл в/в по клинической ситуации',
+    route:'В/в капельно',
+    dilution:'Готовый р-р. Разводить препараты возможно',
+    when:'Гиповолемия, ожоговая болезнь, потери жидкости (рвота, понос), предпочтительнее NaCl при больших объёмах',
+    mech:'Na⁺ 147, K⁺ 4, Ca²⁺ 2.25, Cl⁻ 155 ммоль/л. Более физиологичный состав, чем NaCl 0.9%. Нет риска гиперхлоремии',
+    warn:'При гиперкалиемии — ограниченно (содержит K⁺). Не смешивать с кровью (осаждение из-за Ca²⁺).'
+  },
+  {
+    id:'glyukoza5', name:'Глюкоза 5%', latin:'Glucosum', form:'inf',
+    tags:['inf'],
+    group:'Источник энергии, р-р для разведения',
+    icon:'🧪', fi:'fi-inf', gc:'gc-inf',
+    dose:'По показанию. Гипогликемия (лёгкая) — пить. Тяжёлая — 40% в/в',
+    route:'В/в капельно (5%). Струйно — только 40% при гипогликемии',
+    dilution:'Растворитель для амиодарона, реамберина. Не совместима с NaCl в одном шприце с некоторыми АБ',
+    when:'Разведение препаратов (амиодарон!), гипогликемия (в/в 40%), парентеральное питание, обезвоживание',
+    mech:'Гипотонический р-р (278 мОсм/л) → быстро метаболизируется, вода распределяется во все секторы. 5% = изотонична по осмоляльности, но не по ионному составу',
+    warn:'При гипергликемии, диабете — осторожно! Не применять при ОНМК в острейшем периоде (↑лактат в ишемических зонах). НЕЛЬЗЯ вводить до тиамина при алкогольной коме!'
+  },
+  // ───── ТАБЛЕТКИ ─────
+  {
+    id:'aspirin', name:'Аспирин (ТромбоАСС)', latin:'Acidum acetylsalicylicum', form:'tab',
+    tags:['tab','card'],
+    group:'НПВП, антиагрегант (необратимый ингибитор ЦОГ)',
+    icon:'💊', fi:'fi-tab', gc:'gc-tab',
+    dose:'ОКС: 300–500 мг (разжевать). Поддерживающая доза: 75–100 мг/сут',
+    route:'Внутрь. При ОКС — разжевать и проглотить (быстрее всасывается)',
+    dilution:'—',
+    when:'ОКС (обязательно при подозрении на ИМ!), профилактика тромбозов, лихорадка (как жаропонижающее)',
+    mech:'Необратимо ацетилирует ЦОГ-1 тромбоцитов → ↓тромбоксан А₂ → ↓агрегация на весь срок жизни тромбоцита (7–10 дней)',
+    warn:'Язвенная болезнь, геморрагический инсульт — НЕЛЬЗЯ! Синдром Рейе у детей до 12 лет при вирусных инфекциях. Аллергия на аспирин (аспириновая триада — астма, полипоз носа).'
+  },
+  {
+    id:'nitroglitserin', name:'Нитроглицерин (Нитросорбид)', latin:'Nitroglycerolum', form:'tab',
+    tags:['tab','card'],
+    group:'Органический нитрат, венодилататор',
+    icon:'💊', fi:'fi-card', gc:'gc-card',
+    dose:'0.5 мг под язык, повторить через 5–10 мин (макс 3 раза). АД сист. >90!',
+    route:'Сублингвально (таблетка/спрей под язык)',
+    dilution:'—',
+    when:'Стенокардия (приступ), ОКС (обезболивание, ↓нагрузка на сердце), острая левожелудочковая недостаточность',
+    mech:'NO → активирует гуанилатциклазу → ↑цГМФ → расслабление ГМК вен → ↓преднагрузка → ↓потребность миокарда в O₂',
+    warn:'НЕЛЬЗЯ при АД<90 мм рт.ст., инфаркте ПЖ (нижний ИМ), приёме ингибиторов ФДЭ-5 (силденафил)! Головная боль (норма). Резкое ↓АД при вертикальном положении.'
+  },
+  {
+    id:'kaptoprіl', name:'Каптоприл (Капотен)', latin:'Captoprilum', form:'tab',
+    tags:['tab','card'],
+    group:'иАПФ (ингибитор ангиотензинпревращающего фермента)',
+    icon:'💊', fi:'fi-card', gc:'gc-card',
+    dose:'Гипертонический криз: 25 мг под язык. Плановая: 12.5–50 мг 2–3 р/сут',
+    route:'Под язык (криз) или внутрь',
+    dilution:'—',
+    when:'Гипертонический криз, ХСН, постинфарктный период, диабетическая нефропатия',
+    mech:'Ингибирует АПФ → ↓ангиотензин II → ↓АД (дилатация сосудов), ↓альдостерон → ↓задержка Na⁺ и воды',
+    warn:'Ангионевротический отёк (Квинке) — немедленно отменить! Кашель. Нельзя при двустороннем стенозе почечных артерий, беременности. Гиперкалиемия.'
+  },
+  {
+    id:'enalapril', name:'Эналаприл 5 мг', latin:'Enalaprilum', form:'tab',
+    tags:['tab','card'],
+    group:'иАПФ',
+    icon:'💊', fi:'fi-card', gc:'gc-card',
+    dose:'5–20 мг 1–2 р/сут. Начало с 5 мг. При ХСН: 2.5 мг',
+    route:'Внутрь. Не для сублингвального применения (медленное начало)',
+    dilution:'—',
+    when:'АГ, ХСН, постинфарктная дисфункция ЛЖ, профилактика ИМ и инсульта у пациентов высокого риска',
+    mech:'Пролекарство → эналаприлат (активный). Механизм как у каптоприла, но длительность 24 ч',
+    warn:'Аналогично каптоприлу. Начало через 1–2 ч (не для кризов с немедленным эффектом).'
+  },
+  {
+    id:'bisoprolol', name:'Бисопролол', latin:'Bisoprololum', form:'tab',
+    tags:['tab','card'],
+    group:'Кардиоселективный β₁-адреноблокатор',
+    icon:'💊', fi:'fi-card', gc:'gc-card',
+    dose:'2.5–10 мг 1 р/сут утром',
+    route:'Внутрь',
+    dilution:'—',
+    when:'АГ, ХСН (↓смертность), стабильная стенокардия, ФП (контроль ЧЖС), ИМ (снижение риска)',
+    mech:'Блокирует β₁-рецепторы сердца → ↓ЧСС, ↓АД, ↓сократимость. При ХСН: ↓активация РААС, ↓ремоделирование',
+    warn:'Брадикардия, АВ-блокада. НЕЛЬЗЯ при кардиогенном шоке, декомпенсированной ХСН, острой бронхиальной астме. Отменять постепенно (синдром отмены)!'
+  },
+  {
+    id:'metoprolol', name:'Метопролол 25 мг', latin:'Metoprololi tartras', form:'tab',
+    tags:['tab','card'],
+    group:'Кардиоселективный β₁-адреноблокатор',
+    icon:'💊', fi:'fi-card', gc:'gc-card',
+    dose:'25–200 мг/сут в 1–2 приёма. ОКС: 25–50 мг 3–4 р/сут',
+    route:'Внутрь',
+    dilution:'—',
+    when:'АГ, ФП (контроль ЧЖС), профилактика ИМ, мигрень, тиреотоксикоз (тахикардия)',
+    mech:'β₁-блокатор. Аналогично бисопрололу. Короче действует (8–12 ч), нужен 2р/сут',
+    warn:'Аналогично бисопрололу.'
+  },
+  {
+    id:'lorazepam', name:'Атаракс (Гидроксизин)', latin:'Hydroxyzinum', form:'tab',
+    tags:['tab','psych'],
+    group:'Анксиолитик, антигистаминный I поколения',
+    icon:'💊', fi:'fi-psych', gc:'gc-psych',
+    dose:'25–100 мг/сут в 2–4 приёма. Разово 25 мг',
+    route:'Внутрь',
+    dilution:'—',
+    when:'Тревога, психомоторное возбуждение (умеренное), алкогольная абстиненция, зуд, премедикация',
+    mech:'Блокада H₁-рецепторов + центральное антихолинергическое действие → анксиолиз, седация. Не бензодиазепин, нет зависимости',
+    warn:'Сонливость. Синергизм с алкоголем и другими ЦНС-депрессантами. Не управлять ТС!'
+  },
+  {
+    id:'tofizopam', name:'Тофизопам (Грандаксин)', latin:'Tofisopamum', form:'tab',
+    tags:['tab','psych'],
+    group:'Атипичный бензодиазепин, дневной транквилизатор',
+    icon:'💊', fi:'fi-psych', gc:'gc-psych',
+    dose:'50–100 мг 1–3 р/сут',
+    route:'Внутрь',
+    dilution:'—',
+    when:'Вегетативные расстройства (панические атаки, ВСД), климактерический синдром, тревога без выраженной седации',
+    mech:'Бензодиазепиновый рецептор, но атипичный → анксиолиз без миорелаксации и сонливости. Вегетостабилизирующий эффект',
+    warn:'Меньше риска зависимости, чем у классических БЗД. Не применять при острых психозах, депрессии с суицидальностью.'
+  },
+  {
+    id:'ibuprofen', name:'Ибупрофен', latin:'Ibuprofenum', form:'tab',
+    tags:['tab'],
+    group:'НПВП (неселективный ЦОГ-1/2)',
+    icon:'💊', fi:'fi-tab', gc:'gc-tab',
+    dose:'400 мг 3–4 р/сут после еды. Жаропонижающий эффект',
+    route:'Внутрь после еды',
+    dilution:'—',
+    when:'Лихорадка, воспалительные боли, мигрень, ОРВИ (симптоматическая терапия)',
+    mech:'ЦОГ-1/2 ингибитор → ↓простагландины → жаропонижение, обезболивание, противовоспалительный эффект',
+    warn:'Язва ЖКТ, ХПН, сердечная недостаточность — осторожно. Не давать детям до 6 месяцев.'
+  },
+  {
+    id:'loratadin', name:'Лоратадин (Кларитин)', latin:'Loratadinum', form:'tab',
+    tags:['tab'],
+    group:'H₁-антигистаминный II поколения (без седации)',
+    icon:'💊', fi:'fi-tab', gc:'gc-tab',
+    dose:'10 мг 1 р/сут',
+    route:'Внутрь',
+    dilution:'—',
+    when:'Аллергический ринит, крапивница, кожный зуд — неотложная симптоматическая помощь',
+    mech:'Высокоселективная блокада периферических H₁ рецепторов. Не проникает через ГЭБ → нет седации',
+    warn:'Очень хорошо переносится. Осторожно при тяжёлой печёночной недостаточности.'
+  },
+  {
+    id:'omeprazol', name:'Омез (Омепразол)', latin:'Omeprazolum', form:'tab',
+    tags:['tab'],
+    group:'Ингибитор протонной помпы (ИПП)',
+    icon:'💊', fi:'fi-tab', gc:'gc-tab',
+    dose:'20 мг 1–2 р/сут натощак. При язве: 40 мг/сут',
+    route:'Внутрь натощак, не разжёвывать',
+    dilution:'—',
+    when:'Язвенная болезнь, ГЭРБ, профилактика НПВП-гастропатии, Н. pylori (тройная терапия), синдром Золлингера–Эллисона',
+    mech:'Необратимо ингибирует Н⁺/К⁺-АТФазу обкладочных клеток → ↓секреция HCl на 90–95%',
+    warn:'Не разрезать/разжёвывать кишечнорастворимые капсулы. Повышает pH → ↓всасывание B₁₂, железа, кальция при длительном применении.'
+  },
+  {
+    id:'valparin', name:'Вальпарин ХР 500', latin:'Natrii valproat', form:'tab',
+    tags:['tab','neuro'],
+    group:'Антиэпилептик, стабилизатор настроения',
+    icon:'💊', fi:'fi-neuro', gc:'gc-neuro',
+    dose:'500–2000 мг/сут в 1–2 приёма. ХР — форма пролонгированного действия',
+    route:'Внутрь. ХР — не разрезать!',
+    dilution:'—',
+    when:'Эпилепсия (все формы), биполярное расстройство, профилактика мигрени',
+    mech:'Аналогично конвулексу в/в: Na⁺-каналы + ГАМК',
+    warn:'Тератоген! Женщинам репродуктивного возраста — контрацепция. Гепатотоксичность. Масса тела ↑.'
+  },
+  {
+    id:'karbamazepin', name:'Карбамазепин', latin:'Carbamazepinum', form:'tab',
+    tags:['tab','neuro'],
+    group:'Антиэпилептик, стабилизатор настроения (производное иминостилбена)',
+    icon:'💊', fi:'fi-neuro', gc:'gc-neuro',
+    dose:'200–400 мг 2 р/сут. Невралгия: начать 200 мг/сут, ↑до 400–800 мг/сут',
+    route:'Внутрь',
+    dilution:'—',
+    when:'Фокальные эпилептические приступы, невралгия тройничного нерва, биполярное расстройство, болевой синдром',
+    mech:'Блокирует Na⁺-каналы в состоянии инактивации → стабилизирует нейрональные мембраны → ↓возбудимость',
+    warn:'Много лекарственных взаимодействий (индуктор CYP3A4)! Кожная сыпь (Стивенс-Джонсон у носителей HLA-B*1502). Гипонатриемия. Апластическая анемия (редко).'
+  },
+  {
+    id:'gabapentin', name:'Габапентин 400 мг', latin:'Gabapentinum', form:'tab',
+    tags:['tab','neuro'],
+    group:'Антиэпилептик, антиноцицептив',
+    icon:'💊', fi:'fi-neuro', gc:'gc-neuro',
+    dose:'300–3600 мг/сут в 3 приёма. При невропатической боли: 300 мг/сут → ↑до 1800–3600 мг',
+    route:'Внутрь с едой или без',
+    dilution:'—',
+    when:'Невропатическая боль (диабетическая, постгерпетическая), фокальная эпилепсия, синдром беспокойных ног',
+    mech:'Связывается с α₂δ-субъединицей Ca²⁺-каналов → ↓высвобождение глутамата, субстанции Р → анальгезия. НЕ действует через ГАМК-рецептор несмотря на название',
+    warn:'Сонливость, головокружение. Отменять постепенно. При ХПН → снизить дозу (выводится почками). Риск злоупотребления (контролируемый препарат в некоторых странах).'
+  },
+  {
+    id:'meldony', name:'Мельдоний 250 мг', latin:'Meldronii dihydras', form:'tab',
+    tags:['tab','card'],
+    group:'Антиангинальный, кардиометаболический препарат',
+    icon:'💊', fi:'fi-card', gc:'gc-card',
+    dose:'250–500 мг 2 р/сут (курс 4–6 нед)',
+    route:'Внутрь',
+    dilution:'—',
+    when:'Хроническая ИБС, ХСН (вспомогательная терапия), восстановительный период после ИМ, снижение переносимости физической нагрузки',
+    mech:'Ингибирует γ-бутиробетаин-гидроксилазу → ↓синтез карнитина → ↓транспорт длинноцепочечных ЖК в митохондрии → ↑доля аэробного гликолиза при ишемии (более экономичный путь)',
+    warn:'ВАДА — запрещён в спорте. Доказательная база ограничена (не входит в международные гайдлайны). Головная боль, диспепсия.'
+  },
+  {
+    id:'mexiсor_tab', name:'Мексикор 100 мг (таб)', latin:'Aethylmethylhydroxypyridini succinat', form:'tab',
+    tags:['tab','neuro'],
+    group:'Антиоксидант (сукцинат)',
+    icon:'💊', fi:'fi-neuro', gc:'gc-neuro',
+    dose:'125–250 мг 3 р/сут',
+    route:'Внутрь',
+    dilution:'—',
+    when:'Перевод с в/в мексикора/мексидола на таблетированную форму',
+    mech:'Аналогично в/в форме',
+    warn:'Аналогично в/в форме'
+  },
+  {
+    id:'naltrexon', name:'Налтрексон 50 мг', latin:'Naltrexonum', form:'tab',
+    tags:['tab','psych'],
+    group:'Антагонист опиоидных рецепторов (длительного действия)',
+    icon:'💊', fi:'fi-psych', gc:'gc-psych',
+    dose:'50 мг 1 р/сут (после полной детоксикации!)',
+    route:'Внутрь',
+    dilution:'—',
+    when:'Поддержание ремиссии при опиоидной зависимости, снижение тяги к алкоголю',
+    mech:'Длительная блокада μ-опиоидных рецепторов (T½ ~ 13 ч, активный метаболит ~ 96 ч) → нет эйфории от опиоидов',
+    warn:'НЕЛЬЗЯ при наличии опиоидов в организме (острая отмена). Нельзя принимать при текущей опиоидной зависимости без предварительной детоксикации. Гепатотоксичность при высоких дозах.'
+  },
+  {
+    id:'cytoflavin', name:'Цитофлавин 10 мл', latin:'Riboxinum + Acidum succinicum + Nicotinamidum + Riboflavinum', form:'inf',
+    tags:['inf','neuro'],
+    group:'Антигипоксант, метаболический цитопротектор (комбинированный)',
+    icon:'🧪', fi:'fi-neuro', gc:'gc-neuro',
+    dose:'10 мл в/в капельно 1–2 р/сут. Тяжёлые случаи: 20 мл/сут',
+    route:'ТОЛЬКО в/в капельно! Струйно нельзя — выраженное жжение по вене',
+    dilution:'10 мл + 100–200 мл NaCl 0.9%. Скорость: 3–4 мл/мин (60 кап/мин)',
+    when:'ОНМК (ишемический инсульт, первые 12 сут), ЧМТ, острая алкогольная интоксикация, постреанимационная болезнь, критические состояния с гипоксией',
+    mech:'Четыре компонента: Янтарная кислота (сукцинат) → ↑аэробный АТФ. Инозин (рибоксин) → предшественник АТФ, ↑синтез нуклеотидов. Никотинамид → НАД⁺. Рибофлавин → ФАД. Совместно: ↑метаболизм в условиях гипоксии, ↓PerOL',
+    warn:'Быстрое введение → жжение, покраснение лица, головокружение — снизить скорость! Несовместим с другими препаратами в одном р-ре. Не разводить на глюкозе — только NaCl 0.9%!'
+  },
+  {
+    id:'natrii_thiosulfat', name:'Натрия тиосульфат 10 мл', latin:'Natrii thiosulfas', form:'inf',
+    tags:['inf'],
+    group:'Антидот (донор серы), детоксикант, антиоксидант',
+    icon:'🧪', fi:'fi-inf', gc:'gc-inf',
+    dose:'30% р-р: 5–50 мл в/в медленно или капельно. Отравление цианидами: 50 мл 30% в/в за 10 мин',
+    route:'В/в медленно струйно (при отравлениях) или капельно (детоксикация)',
+    dilution:'Можно вводить без разведения (30% р-р) медленно. Или: 10 мл + 90 мл NaCl 0.9%',
+    when:'Отравление цианидами (антидот, вводят после нитрита натрия), отравление мышьяком/ртутью/свинцом/солями тяжёлых металлов, хронические интоксикации, дерматозы (чесотка — наружно), онкология (нефропротекция при XT цисплатином)',
+    mech:'Донор серы → реагирует с метгемоглобином и цианидом → тиоцианат (роданид) → выводится почками. Антиоксидант: связывает свободные радикалы. Комплексообразователь: связывает ионы тяжёлых металлов',
+    warn:'Относительно безопасен. При быстром в/в — жжение по ходу вены, головная боль, тошнота. Противопоказан при повышенной чувствительности к сульфатам. При отравлении цианидами — применять строго в паре с нитритом натрия (стандартный антидотный набор).'
+  },
+];
+
+/* ============================================================
+   RENDER KLINIKA
+   ============================================================ */
+let klActive = {filter:'all', q:''};
+
+function klRender(){
+  var list = document.getElementById('kl-list');
+  if(!list) return;
+  var q = klActive.q.toLowerCase().trim();
+  var f = klActive.filter;
+  var visible = KL_DRUGS.filter(function(d){
+    var matchQ = !q || d.name.toLowerCase().indexOf(q) >= 0 || (d.latin||'').toLowerCase().indexOf(q) >= 0 || (d.group||'').toLowerCase().indexOf(q) >= 0 || (d.when||'').toLowerCase().indexOf(q) >= 0;
+    var matchF = f === 'all' || (d.tags && d.tags.indexOf(f) >= 0);
+    return matchQ && matchF;
+  });
+  if(visible.length === 0){
+    list.innerHTML = '<div class="kl-empty">Ничего не найдено 🔍</div>';
+    return;
+  }
+  var html = '';
+  for(var i = 0; i < visible.length; i++){
+    var d = visible[i];
+    html += '<div class="kl-card" id="klc-' + d.id + '">' +
+      '<div class="kl-card-head" onclick="klToggle(\'' + d.id + '\')">' +
+        '<div class="kl-badge-form ' + d.fi + '">' + d.icon + '</div>' +
+        '<div class="kl-card-names">' +
+          '<div class="kl-card-name">' + d.name + '</div>' +
+          '<div class="kl-card-latin">' + (d.latin||'') + '</div>' +
+          '<div class="kl-card-group ' + d.gc + '">' + d.group + '</div>' +
+        '</div>' +
+        '<div class="kl-chevron">›</div>' +
+      '</div>' +
+      '<div class="kl-body">' +
+        '<div class="kl-row"><div class="kl-lbl">Доза</div><div class="kl-val">' + (d.dose||'') + '</div></div>' +
+        '<div class="kl-row"><div class="kl-lbl">Путь введения</div><div class="kl-val">' + (d.route||'') + '</div></div>' +
+        (d.dilution ? '<div class="kl-mix-box">💧 Разведение: ' + d.dilution + '</div>' : '') +
+        '<div class="kl-row"><div class="kl-lbl">Показания</div><div class="kl-val">' + (d.when||'') + '</div></div>' +
+        '<div class="kl-mech-box"><b>⚙️ Механизм:</b> ' + (d.mech||'') + '</div>' +
+        (d.warn ? '<div class="kl-row" style="margin-top:8px"><div class="kl-lbl" style="color:var(--red)">⚠️ Важно</div><div class="kl-val"><span class="warn">' + d.warn + '</span></div></div>' : '') +
+      '</div>' +
+    '</div>';
+  }
+  list.innerHTML = html;
+}
+
+function klToggle(id){
+  var card = document.getElementById('klc-' + id);
+  if(card) card.classList.toggle('open');
+}
+
+function klFilter(){
+  var ks = document.getElementById('kl-search');
+  klActive.q = ks ? ks.value : '';
+  klRender();
+}
+
+function klSetFilter(f, btn){
+  klActive.filter = f;
+  var btns = document.querySelectorAll('.kl-filter');
+  for(var i = 0; i < btns.length; i++) btns[i].classList.remove('on');
+  if(btn) btn.classList.add('on');
+  klRender();
+}
+
+function goTab(id, btn){
+  document.querySelectorAll('.card').forEach(function(c){ c.classList.remove('show'); });
+  document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
+  var card = document.getElementById('t-'+id);
+  if(card) card.classList.add('show');
+  if(btn) btn.classList.add('active');
+  if(id==='klinika') setTimeout(function(){ try{ klRender(); }catch(e){ console.error(e); document.getElementById('kl-list').innerHTML='<div class="kl-empty">Ошибка: '+e.message+'</div>'; } }, 50);
+  if(id==='palaty') setTimeout(function(){ try{ initPalaty(); }catch(e){ console.error(e); } }, 50);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function qsofaTog(k){
+  qsofa[k]=!qsofa[k];
+  document.getElementById('qsofa-'+k).classList.toggle('on',qsofa[k]);
+  const s=Object.values(qsofa).filter(Boolean).length;
+  const el=document.getElementById('qsofa-res');
+  document.getElementById('qsofa-n').textContent=s;
+  if(s>=2){
+    el.className='res hi';
+    document.getElementById('qsofa-lbl').textContent='ВЫСОКИЙ РИСК СЕПСИСА';
+    document.getElementById('qsofa-act').textContent='Госпитализация, SOFA, анализы, антибиотики';
+  } else {
+    el.className='res low';
+    document.getElementById('qsofa-lbl').textContent='Низкий риск';
+    document.getElementById('qsofa-act').textContent='Продолжить наблюдение';
+  }
+}
+
+/* ============================================================
+   NEWS2
+   ============================================================ */
+let news={avpu:'A',o2:false};
+function setAvpu(v){news.avpu=v;['A','V','P','U'].forEach(x=>document.getElementById('news-avpu-'+x.toLowerCase()).classList.toggle('on',x===v));calcNews();}
+function setO2(v){news.o2=v;document.getElementById('news-o2-n').classList.toggle('on',!v);document.getElementById('news-o2-y').classList.toggle('on',v);calcNews();}
+function calcNews(){
+  const rr=+document.getElementById('news-rr').value||0;
+  const sp=+document.getElementById('news-spo2').value||0;
+  const sb=+document.getElementById('news-sbp').value||0;
+  const hr=+document.getElementById('news-hr').value||0;
+  const t=+document.getElementById('news-t').value||0;
+  if(!rr&&!sp&&!sb&&!hr&&!t)return;
+  let s=0;
+  if(rr<=8)s+=3; else if(rr<=11)s+=1; else if(rr<=20)s+=0; else if(rr<=24)s+=2; else s+=3;
+  if(sp<=91)s+=3; else if(sp<=93)s+=2; else if(sp<=95)s+=1;
+  if(sb<=90)s+=3; else if(sb<=100)s+=2; else if(sb<=110)s+=1; else if(sb<=219)s+=0; else s+=3;
+  if(hr<=40)s+=3; else if(hr<=50)s+=1; else if(hr<=90)s+=0; else if(hr<=110)s+=1; else if(hr<=130)s+=2; else s+=3;
+  if(t<=35.0)s+=3; else if(t<=36.0)s+=1; else if(t<=38.0)s+=0; else if(t<=39.0)s+=1; else s+=2;
+  if(news.avpu!=='A')s+=3;
+  if(news.o2)s+=2;
+  const el=document.getElementById('news-res');
+  document.getElementById('news-n').textContent=s;
+  if(s<=4){el.className='res low';document.getElementById('news-lbl').textContent='Низкий риск';document.getElementById('news-act').textContent='Мониторинг';}
+  else if(s<=6){el.className='res med';document.getElementById('news-lbl').textContent='Средний риск';document.getElementById('news-act').textContent='Усиленное наблюдение';}
+  else{el.className='res hi';document.getElementById('news-lbl').textContent='ВЫСОКИЙ РИСК';document.getElementById('news-act').textContent='Неотложная помощь!';}
+}
+
+/* ============================================================
+   GCS
+   ============================================================ */
+function calcGcs(){
+  const e=+document.getElementById('gcs-e').value;
+  const v=+document.getElementById('gcs-v').value;
+  const m=+document.getElementById('gcs-m').value;
+  const s=e+v+m;
+  document.getElementById('gcs-n').textContent=s;
+  document.getElementById('gcs-act').textContent=`E${e} V${v} M${m}`;
+  const el=document.getElementById('gcs-res');
+  if(s>=13){el.className='res low';document.getElementById('gcs-lbl').textContent='Ясное сознание';}
+  else if(s>=9){el.className='res med';document.getElementById('gcs-lbl').textContent='Умеренное нарушение';}
+  else{el.className='res hi';document.getElementById('gcs-lbl').textContent='Глубокая кома — интубация';}
+}
+
+/* ============================================================
+   WELLS
+   ============================================================ */
+let wellsScore=0;
+function wellsTog(el,pts){
+  el.classList.toggle('on');
+  wellsScore+=el.classList.contains('on')?pts:-pts;
+  document.getElementById('wells-n').textContent=wellsScore;
+  const likely=wellsScore>4;
+  const res=document.getElementById('wells-res');
+  res.className=likely?'res hi':'res low';
+  document.getElementById('wells-lbl').textContent=likely?'Высокая вероятность ТЭЛА':'Низкая/средняя вероятность';
+  document.getElementById('wp-unlikely').classList.toggle('on',!likely);
+  document.getElementById('wp-likely').classList.toggle('on',likely);
+}
+
+/* ============================================================
+   АЛЬГОВЕР
+   ============================================================ */
+function calcAlg(){
+  const hr=+document.getElementById('alg-hr').value;
+  const sbp=+document.getElementById('alg-sbp').value;
+  if(!hr||!sbp)return;
+  const idx=(hr/sbp).toFixed(2);
+  document.getElementById('alg-n').textContent=idx;
+  const el=document.getElementById('alg-res');
+  if(idx<0.5){el.className='res low';document.getElementById('alg-lbl').textContent='Норма';document.getElementById('alg-act').textContent='Кровопотеря отсутствует';}
+  else if(idx<1.0){el.className='res low';document.getElementById('alg-lbl').textContent='Лёгкий шок';document.getElementById('alg-act').textContent='До 15% ОЦК';}
+  else if(idx<1.5){el.className='res med';document.getElementById('alg-lbl').textContent='Средний шок';document.getElementById('alg-act').textContent='20–40% ОЦК — инфузия!';}
+  else{el.className='res hi';document.getElementById('alg-lbl').textContent='Тяжёлый шок';document.getElementById('alg-act').textContent='>40% ОЦК — реанимация!';}
+}
+
+/* ============================================================
+   CPSS
+   ============================================================ */
+let cpss={face:false,arm:false,sp:false};
+function cpssTog(k){
+  cpss[k]=!cpss[k];
+  document.getElementById('cpss-'+k).classList.toggle('on',cpss[k]);
+  const s=Object.values(cpss).filter(Boolean).length;
+  const el=document.getElementById('cpss-res');
+  document.getElementById('cpss-n').textContent=s;
+  if(s>=1){el.className='res hi';document.getElementById('cpss-lbl').textContent='ВЫСОКИЙ риск инсульта!';document.getElementById('cpss-act').textContent='Нейровизуализация + госпитализация НЕМЕДЛЕННО';}
+  else{el.className='res low';document.getElementById('cpss-lbl').textContent='Нет признаков инсульта';document.getElementById('cpss-act').textContent='Продолжить осмотр';}
+}
+
+/* ============================================================
+   GRACE
+   ============================================================ */
+let grace={ca:true,st:false};
+function setGraceCa(v){grace.ca=v;document.getElementById('grace-ca-n').classList.toggle('on',!v);document.getElementById('grace-ca-y').classList.toggle('on',v);calcGrace();}
+function setGraceSt(v){grace.st=v;document.getElementById('grace-st-n').classList.toggle('on',!v);document.getElementById('grace-st-y').classList.toggle('on',v);calcGrace();}
+function calcGrace(){
+  const age=+document.getElementById('grace-age').value||0;
+  const hr=+document.getElementById('grace-hr').value||0;
+  const sbp=+document.getElementById('grace-sbp').value||0;
+  const cr=+document.getElementById('grace-cr').value||0;
+  if(!age||!hr||!sbp)return;
+  let s=0;
+  if(age<40)s+=0;else if(age<50)s+=18;else if(age<60)s+=36;else if(age<70)s+=55;else if(age<80)s+=73;else s+=91;
+  if(hr<70)s+=0;else if(hr<80)s+=3;else if(hr<90)s+=9;else if(hr<100)s+=14;else if(hr<110)s+=20;else if(hr<150)s+=26;else s+=46;
+  if(sbp<80)s+=63;else if(sbp<100)s+=43;else if(sbp<120)s+=34;else if(sbp<140)s+=24;else if(sbp<160)s+=16;else if(sbp<200)s+=10;else s+=0;
+  if(cr<35)s+=1;else if(cr<70)s+=4;else if(cr<105)s+=7;else if(cr<140)s+=10;else if(cr<176)s+=13;else if(cr<350)s+=21;else s+=28;
+  if(grace.ca)s+=39;
+  if(grace.st)s+=28;
+  document.getElementById('grace-n').textContent=s;
+  const el=document.getElementById('grace-res');
+  if(s<109){el.className='res low';document.getElementById('grace-lbl').textContent='Низкий риск (<1%)';}
+  else if(s<=140){el.className='res med';document.getElementById('grace-lbl').textContent='Средний риск (1–3%)';}
+  else{el.className='res hi';document.getElementById('grace-lbl').textContent='Высокий риск (>3%)';}
+}
+
+/* ============================================================
+   АЛЬВАРАДО
+   ============================================================ */
+let alvScore=0;
+function alvTog(el,pts){
+  el.classList.toggle('on');
+  alvScore+=el.classList.contains('on')?pts:-pts;
+  document.getElementById('alv-n').textContent=alvScore;
+  const el2=document.getElementById('alv-res');
+  if(alvScore<=4){el2.className='res low';document.getElementById('alv-lbl').textContent='Аппендицит маловероятен';}
+  else if(alvScore<=6){el2.className='res med';document.getElementById('alv-lbl').textContent='Возможен — наблюдение';}
+  else{el2.className='res hi';document.getElementById('alv-lbl').textContent='ВЕРОЯТЕН → хирург!';}
+}
+
+/* ============================================================
+   INFUSOMAT
+   ============================================================ */
+let curDrug='d';
+const DRUG_CFG={
+  d:{label:'Допамин',conc:2000,unit:'мкг/кг/мин',min:2,max:20,def:5,cl:'d',mix:'400 мг в 200 мл NaCl 0.9% = 2000 мкг/мл'},
+  n:{label:'Норадреналин',conc:20,unit:'мкг/кг/мин',min:0.01,max:2,def:0.1,cl:'n',mix:'4 мг в 200 мл NaCl 0.9% = 20 мкг/мл',step:0.01},
+  novoc:{label:'Новокаинамид',conc:10,unit:'мг/кг/ч',min:1,max:25,def:10,cl:'novoc',mix:'1000 мг в 100 мл NaCl 0.9% = 10 мг/мл'},
+  furos:{label:'Фуросемид',conc:0.4,unit:'мг/кг/ч',min:0.1,max:2,def:0.5,cl:'furos',mix:'40 мг в 100 мл NaCl 0.9% = 0.4 мг/мл'},
+};
+function selDrug(d){
+  curDrug=d;
+  Object.keys(DRUG_CFG).forEach(k=>{
+    const btn=document.getElementById('db-'+k);
+    btn.className='drug-btn'+(k===d?' sel-'+k:'');
+  });
+  const cfg=DRUG_CFG[d];
+  const sl=document.getElementById('inf-sl');
+  sl.className='slider '+d;
+  sl.min=cfg.min;sl.max=cfg.max;sl.step=cfg.step||1;sl.value=cfg.def;
+  document.getElementById('inf-dose-lbl').textContent='Доза ('+cfg.unit+')';
+  document.getElementById('inf-sl-val').textContent=cfg.def;
+  document.getElementById('inf-sl-val').style.color=`var(--${d==='novoc'?'purple':d==='furos'?'green':d==='n'?'red':'yellow'})`;
+  calcInf();
+}
+function calcInf(){
+  const cfg=DRUG_CFG[curDrug];
+  const wt=+document.getElementById('inf-wt').value||0;
+  const dose=+document.getElementById('inf-sl').value||cfg.def;
+  document.getElementById('inf-sl-val').textContent=dose;
+  const res=document.getElementById('inf-res');
+  res.className='inf-res '+curDrug;
+  if(!wt){document.getElementById('inf-rate').textContent='—';document.getElementById('inf-formula').textContent='Введите вес';return;}
+  let rate;
+  if(curDrug==='d') rate=(dose*wt*60)/cfg.conc;
+  else if(curDrug==='n') rate=(dose*wt*60)/cfg.conc;
+  else if(curDrug==='novoc') rate=(dose*wt)/cfg.conc;
+  else rate=(dose*wt)/cfg.conc;
+  document.getElementById('inf-rate').textContent=rate.toFixed(1);
+  document.getElementById('inf-formula').textContent=`${dose} ${cfg.unit} × ${wt} кг\n÷ ${cfg.conc} мкг(мг)/мл × 60\n= ${rate.toFixed(1)} мл/час\n\nСостав: ${cfg.mix}`;
+}
+
+/* ============================================================
+   ПЕДИАТРИЯ
+   ============================================================ */
+function calcPed(){
+  const age=+document.getElementById('ped-age').value;
+  const data={
+    0:{wt:'3–4 кг',hr:'120–160',bp:'60–80',rr:'40–60',tube:'3.0–3.5 без манжеты',atrop:'0.01 мг/кг',adr:'0.01 мг/кг',flud:'10 мл/кг'},
+    1:{wt:'4–6 кг',hr:'110–150',bp:'70–90',rr:'30–40',tube:'3.5',atrop:'0.01 мг/кг',adr:'0.01 мг/кг',flud:'10 мл/кг'},
+    3:{wt:'6–8 кг',hr:'100–140',bp:'75–95',rr:'28–35',tube:'4.0',atrop:'0.01 мг/кг',adr:'0.01 мг/кг',flud:'10 мл/кг'},
+    6:{wt:'8–10 кг',hr:'90–130',bp:'80–100',rr:'25–30',tube:'4.0',atrop:'0.01 мг/кг',adr:'0.01 мг/кг',flud:'10 мл/кг'},
+    12:{wt:'10–14 кг',hr:'80–120',bp:'85–105',rr:'22–28',tube:'4.5',atrop:'0.01 мг/кг',adr:'0.01 мг/кг',flud:'10 мл/кг'},
+    24:{wt:'14–18 кг',hr:'80–110',bp:'90–110',rr:'20–24',tube:'5.0',atrop:'0.02 мг/кг',adr:'0.01 мг/кг',flud:'10 мл/кг'},
+    60:{wt:'18–30 кг',hr:'70–100',bp:'95–115',rr:'18–22',tube:'5.5',atrop:'0.02 мг/кг',adr:'0.01 мг/кг',flud:'10 мл/кг'},
+    120:{wt:'30–50 кг',hr:'60–90',bp:'100–120',rr:'16–20',tube:'6.0–6.5',atrop:'0.02 мг/кг',adr:'0.01 мг/кг',flud:'10 мл/кг'},
+  };
+  const d=data[age];
+  document.getElementById('ped-res').innerHTML=`
+    <span style="color:var(--text-3)">⚖️ Вес:</span> <b style="color:white">${d.wt}</b><br>
+    <span style="color:var(--text-3)">❤️ ЧСС норма:</span> <b style="color:white">${d.hr} уд/мин</b><br>
+    <span style="color:var(--text-3)">🩺 АД сист.:</span> <b style="color:white">${d.bp} мм рт.ст.</b><br>
+    <span style="color:var(--text-3)">🫁 ЧДД:</span> <b style="color:white">${d.rr} в мин</b><br>
+    <span style="color:var(--text-3)">🔧 Трубка:</span> <b style="color:var(--yellow)">${d.tube}</b><br>
+    <span style="color:var(--text-3)">💉 Атропин:</span> <b>${d.atrop}</b><br>
+    <span style="color:var(--text-3)">💉 Адреналин:</span> <b>${d.adr}</b><br>
+    <span style="color:var(--text-3)">🧪 Болюс жидкости:</span> <b>${d.flud}</b>
+  `;
+}
+
+/* ============================================================
+   ИВЛ 4/40
+   ============================================================ */
+function calcIvl(){
+  const w=+document.getElementById('ivl-wt').value||0;
+  if(!w){document.getElementById('ivl-res').textContent='Введите вес';return;}
+  const ibw=w;
+  const tv4=Math.round(ibw*4);
+  const tv6=Math.round(ibw*6);
+  const tv8=Math.round(ibw*8);
+  const peep=5;
+  document.getElementById('ivl-res').innerHTML=`
+    <b style="color:var(--accent)">Протективная вентиляция:</b><br>
+    ДО (4 мл/кг): <b style="color:var(--green)">${tv4} мл</b><br>
+    ДО (6 мл/кг): <b style="color:var(--yellow)">${tv6} мл</b><br>
+    ДО (8 мл/кг): <b style="color:var(--orange)">${tv8} мл</b><br>
+    ЧД: <b>12–16 в мин</b><br>
+    ПДКВ: <b>5–8 см H₂O</b><br>
+    I:E: <b>1:2</b><br>
+    FiO₂: <b>0.4–1.0 (начало)</b><br>
+    Целевой SpO₂: <b>≥94%</b>, PetCO₂ <b>35–45 мм рт.ст.</b>
+  `;
+}
+
+/* ============================================================
+   СЛР ТАЙМЕР
+   ============================================================ */
+let cprInt=null,cprSec=120,cprCycle=1,cprTotal=0;
+function cprToggle(){
+  if(cprInt){clearInterval(cprInt);cprInt=null;document.getElementById('cpr-btn').textContent='▶ ПРОДОЛЖИТЬ';}
+  else{cprInt=setInterval(cprTick,1000);document.getElementById('cpr-btn').textContent='⏸ ПАУЗА';}
+}
+function cprTick(){
+  cprSec--;cprTotal++;
+  if(cprSec<=0){cprSec=120;cprCycle++;document.getElementById('cpr-cycle').textContent='Цикл '+cprCycle;}
+  const m=Math.floor(cprSec/60);const s=cprSec%60;
+  document.getElementById('cpr-time').textContent=(m<10?'0':'')+m+':'+(s<10?'0':'')+s;
+  const adrMins=Math.floor(cprTotal/60);
+  document.getElementById('cpr-adr').textContent=adrMins>=3&&adrMins%2===1?'💉 АДРЕНАЛИН СЕЙЧАС!':'';
+}
+function cprReset(){
+  clearInterval(cprInt);cprInt=null;cprSec=120;cprCycle=1;cprTotal=0;
+  document.getElementById('cpr-time').textContent='02:00';
+  document.getElementById('cpr-cycle').textContent='Цикл 1';
+  document.getElementById('cpr-adr').textContent='';
+  document.getElementById('cpr-btn').textContent='▶ СТАРТ';
+}
+
+/* ============================================================
+   MEDS (SIMPLE)
+   ============================================================ */
+const MEDS_DATA = {
+  card:[
+    {name:'Нитроглицерин',class:'Нитрат',dose:'0.5 мг сублингвально каждые 5 мин × 3',ind:'Стенокардия, ОКС'},
+    {name:'Аспирин',class:'Антиагрегант',dose:'300–500 мг разжевать (ОКС)',ind:'ОКС, тромбоз'},
+    {name:'Амиодарон',class:'Антиаритмик III',dose:'300 мг в/в при ФЖ/ЖТ',ind:'Фибрилляция желудочков, ЖТ'},
+    {name:'Фуросемид',class:'Петлевой диуретик',dose:'40–80 мг в/в',ind:'ОСН, отёк лёгких'},
+    {name:'Допамин',class:'Катехоламин',dose:'5–20 мкг/кг/мин капельно',ind:'Кардиогенный шок'},
+  ],
+  neuro:[
+    {name:'Магнезия сульфат',class:'Антагонист Ca²⁺',dose:'4 г в/в за 20 мин (эклампсия)',ind:'Эклампсия, судороги, torsades'},
+    {name:'Конвулекс',class:'Вальпроат',dose:'25–30 мг/кг за 10 мин (эп. статус)',ind:'Эпилептический статус'},
+    {name:'Пирацетам',class:'Ноотроп',dose:'12 г/сут в/в (ОНМК)',ind:'Острый инсульт'},
+  ],
+  pain:[
+    {name:'Кеторол',class:'НПВП',dose:'30 мг в/м',ind:'Острая боль, почечная колика'},
+    {name:'Анальгин',class:'НПВП (пиразолон)',dose:'500–1000 мг в/в медленно',ind:'Болевой синдром, лихорадка'},
+    {name:'Но-шпа',class:'Спазмолитик',dose:'2–4 мл в/в медленно',ind:'Колики, спастические боли'},
+  ],
+  other:[
+    {name:'Адреналин',class:'Катехоламин',dose:'1 мг в/в при СЛР; 0.5 мг в/м при анафилаксии',ind:'СЛР, анафилаксия'},
+    {name:'Налоксон',class:'Антагонист опиоидов',dose:'0.4–2 мг в/в каждые 2–3 мин',ind:'Передозировка опиоидов'},
+    {name:'Метоклопрамид',class:'Противорвотный',dose:'10 мг в/в или в/м',ind:'Тошнота, рвота'},
+    {name:'Дексаметазон',class:'ГКС',dose:'4–16 мг в/в',ind:'Анафилаксия, бронхоспазм, отёк мозга'},
+  ]
+};
+let medCat='all';
+function setMedCat(cat,el){
+  medCat=cat;
+  document.querySelectorAll('#meds-tabs .med-cat-tab').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+  renderMeds();
+}
+function renderMeds(){
+  const cats=medCat==='all'?['card','neuro','pain','other']:[medCat];
+  const catNames={card:'Кардиология',neuro:'Неврология',pain:'Анальгезия',other:'Прочее'};
+  let html='';
+  cats.forEach(c=>{
+    html+=`<div style="font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.1em;margin:12px 0 8px;font-weight:700">${catNames[c]}</div>`;
+    (MEDS_DATA[c]||[]).forEach(m=>{
+      html+=`<div class="med-card">
+        <div class="med-name">${m.name}</div>
+        <div class="med-class">${m.class}</div>
+        <div class="med-row"><b>Доза</b>${m.dose}</div>
+        <div class="med-row"><b>Показания</b>${m.ind}</div>
+      </div>`;
+    });
+  });
+  document.getElementById('meds-list').innerHTML=html;
+}
+
+/* ============================================================
+   BMI
+   ============================================================ */
+function calcBmi(){
+  const h=+document.getElementById('bmi-h').value/100;
+  const w=+document.getElementById('bmi-w').value;
+  if(!h||!w)return;
+  const bmi=(w/(h*h)).toFixed(1);
+  document.getElementById('bmi-n').textContent=bmi;
+  const el=document.getElementById('bmi-res');
+  if(bmi<18.5){el.className='res med';document.getElementById('bmi-lbl').textContent='Дефицит массы';}
+  else if(bmi<25){el.className='res low';document.getElementById('bmi-lbl').textContent='Нормальная масса';}
+  else if(bmi<30){el.className='res med';document.getElementById('bmi-lbl').textContent='Избыточная масса';}
+  else if(bmi<35){el.className='res hi';document.getElementById('bmi-lbl').textContent='Ожирение I степени';}
+  else{el.className='res hi';document.getElementById('bmi-lbl').textContent='Ожирение II–III степени';}
+}
+
+
+
+const WARDS = [
+  { id: 'ward1', el: 'ward1-beds', label: '1', beds: [1, 2] },
+  { id: 'ward2', el: 'ward2-beds', label: '2', beds: [1, 2, 3, 4, 5, 6] },
+];
+
+// State: bedStates[wardId][bedNum] = { drug, vol, rate, startTime, endTime, timerID }
+const bedStates = {};
+
+function bedKey(wardIdx, bedNum){ return `w${wardIdx}b${bedNum}`; }
+
+function calcEndTime(vol, rate){
+  // vol мл / rate мл/ч → часы
+  if(!vol || !rate || rate <= 0) return null;
+  const hours = vol / rate;
+  const ms = hours * 3600 * 1000;
+  return Date.now() + ms;
+}
+
+function formatDuration(ms){
+  if(ms <= 0) return 'ГОТОВО';
+  const totalSec = Math.floor(ms / 1000);
+  const h = Math.floor(totalSec / 3600);
+  const m = Math.floor((totalSec % 3600) / 60);
+  const s = totalSec % 60;
+  if(h > 0) return `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+
+function formatTime(ts){
+  if(!ts) return '—';
+  const d = new Date(ts);
+  return d.getHours().toString().padStart(2,'0') + ':' + d.getMinutes().toString().padStart(2,'0');
+}
+
+function getProgress(startTs, endTs){
+  if(!startTs || !endTs) return 0;
+  const total = endTs - startTs;
+  const elapsed = Date.now() - startTs;
+  return Math.min(100, Math.max(0, (elapsed / total) * 100));
+}
+
+function renderBed(wardIdx, bedNum){
+  const key = bedKey(wardIdx, bedNum);
+  const state = bedStates[key] || {};
+  const card = document.getElementById('bed-card-' + key);
+  if(!card) return;
+
+  const remaining = state.endTime ? state.endTime - Date.now() : null;
+  const isRunning = state.running && remaining !== null;
+  const isDone = state.running && remaining !== null && remaining <= 0;
+  const isWarn = isRunning && remaining < 15 * 60 * 1000; // < 15 мин
+
+  // Card border
+  card.className = 'bed-card' + (isDone ? ' done-inf' : isWarn ? ' warn-inf' : isRunning ? ' active-inf' : '');
+
+  // Status badge
+  const statusEl = card.querySelector('.bed-status');
+  if(isDone){
+    statusEl.textContent = '✓ ОТКАПАЛО'; statusEl.className = 'bed-status done';
+  } else if(isWarn){
+    statusEl.textContent = '⚠ СКОРО'; statusEl.className = 'bed-status warning';
+  } else if(isRunning){
+    statusEl.textContent = '▶ ИДЁТ'; statusEl.className = 'bed-status running';
+  } else {
+    statusEl.textContent = 'Свободно'; statusEl.className = 'bed-status';
+  }
+
+  // Timer display
+  const timerEl = card.querySelector('.bed-timer-display');
+  if(isDone){
+    timerEl.textContent = '✓ ГОТОВО'; timerEl.className = 'bed-timer-display done';
+  } else if(isRunning){
+    timerEl.textContent = formatDuration(remaining);
+    timerEl.className = 'bed-timer-display' + (isWarn ? ' warning' : ' running');
+  } else {
+    timerEl.textContent = '—:——';
+    timerEl.className = 'bed-timer-display';
+  }
+
+  // Progress bar
+  const bar = card.querySelector('.bed-progress-bar');
+  if(isRunning && state.startTime){
+    const pct = getProgress(state.startTime, state.endTime);
+    bar.style.width = pct + '%';
+    bar.className = 'bed-progress-bar' + (isDone ? ' done' : isWarn ? ' warning' : '');
+  } else {
+    bar.style.width = '0%';
+    bar.className = 'bed-progress-bar';
+  }
+
+  // Hint calc
+  const hintEl = card.querySelector('.inf-calc-hint');
+  const vol = parseFloat(card.querySelector('.bed-vol').value) || 0;
+  const rate = parseFloat(card.querySelector('.bed-rate').value) || 0;
+  if(vol && rate){
+    const hrs = vol / rate;
+    const mins = Math.round(hrs * 60);
+    hintEl.textContent = `⏱ ${vol} мл ÷ ${rate} мл/ч = ${hrs < 1 ? mins + ' мин' : (Math.floor(hrs) + 'ч ' + Math.round((hrs % 1)*60) + 'мин')}`;
+  } else {
+    hintEl.textContent = 'Введите объём и скорость для расчёта';
+  }
+
+  // Reminder
+  const remEl = card.querySelector('.bed-reminder');
+  if(isDone){
+    remEl.className = 'bed-reminder alert';
+    remEl.textContent = `🔴 ИНФУЗИЯ ЗАВЕРШЕНА! Начало: ${formatTime(state.startTime)} → Конец: ${formatTime(state.endTime)}`;
+  } else if(isWarn){
+    remEl.className = 'bed-reminder warn';
+    remEl.textContent = `⚠️ Осталось < 15 мин. Начало ${formatTime(state.startTime)}, конец ${formatTime(state.endTime)}`;
+  } else if(isRunning){
+    remEl.className = 'bed-reminder';
+    remEl.textContent = `▶ Начало: ${formatTime(state.startTime)} · Конец: ${formatTime(state.endTime)}`;
+  } else {
+    remEl.className = 'bed-reminder';
+    remEl.textContent = 'Введите препарат, объём и скорость → нажмите Старт';
+  }
+
+  // Buttons
+  const startBtn = card.querySelector('.bed-btn.start');
+  const stopBtn  = card.querySelector('.bed-btn.stop');
+  if(isRunning || isDone){
+    startBtn.style.display = 'none'; stopBtn.style.display = '';
+  } else {
+    startBtn.style.display = ''; stopBtn.style.display = 'none';
+  }
+}
+
+function startBed(wardIdx, bedNum){
+  const key = bedKey(wardIdx, bedNum);
+  const card = document.getElementById('bed-card-' + key);
+  if(!card) return;
+
+  const vol  = parseFloat(card.querySelector('.bed-vol').value) || 0;
+  const rate = parseFloat(card.querySelector('.bed-rate').value) || 0;
+  const drug = card.querySelector('.bed-drug').value || '';
+  const note = card.querySelector('.bed-note').value || '';
+
+  if(!vol || !rate){ alert('Введите объём и скорость!'); return; }
+
+  const now = Date.now();
+  const endTs = calcEndTime(vol, rate);
+
+  if(!bedStates[key]) bedStates[key] = {};
+  Object.assign(bedStates[key], { drug, vol, rate, note, startTime: now, endTime: endTs, running: true });
+
+  // Clear old interval
+  if(bedStates[key].timerID) clearInterval(bedStates[key].timerID);
+  bedStates[key].timerID = setInterval(function(){
+    renderBed(wardIdx, bedNum);
+  }, 1000);
+
+  renderBed(wardIdx, bedNum);
+}
+
+function stopBed(wardIdx, bedNum){
+  const key = bedKey(wardIdx, bedNum);
+  if(bedStates[key] && bedStates[key].timerID){
+    clearInterval(bedStates[key].timerID);
+    bedStates[key].timerID = null;
+  }
+  if(bedStates[key]) bedStates[key].running = false;
+  renderBed(wardIdx, bedNum);
+}
+
+function clearBed(wardIdx, bedNum){
+  const key = bedKey(wardIdx, bedNum);
+  if(bedStates[key] && bedStates[key].timerID) clearInterval(bedStates[key].timerID);
+  bedStates[key] = {};
+  const card = document.getElementById('bed-card-' + key);
+  if(!card) return;
+  card.querySelector('.bed-drug').value = '';
+  card.querySelector('.bed-vol').value = '';
+  card.querySelector('.bed-rate').value = '';
+  card.querySelector('.bed-note').value = '';
+  renderBed(wardIdx, bedNum);
+}
+
+function buildBed(wardIdx, bedNum){
+  const key = bedKey(wardIdx, bedNum);
+  const wardLabel = wardIdx === 0 ? '1' : '2';
+  return `
+<div class="bed-card" id="bed-card-${key}">
+  <div class="bed-header">
+    <div class="bed-num">
+      <div class="bed-icon">🛏</div>
+      <div class="bed-label">Койка ${bedNum} · Пал.${wardLabel}</div>
+    </div>
+    <div class="bed-status">Свободно</div>
+  </div>
+
+  <div class="bed-presets-lbl">⚡ Быстрый выбор</div>
+  <div class="bed-presets">
+    <button class="bed-preset" data-drug="Цитофлавин 10мл + NaCl 0.9% 200мл" data-vol="210" data-rate="60" onclick="presetClick(this)">Цитофлавин</button>
+    <button class="bed-preset" data-drug="Натрия тиосульфат 30% 10мл + NaCl 0.9% 100мл" data-vol="110" data-rate="60" onclick="presetClick(this)">Na тиосульфат</button>
+    <button class="bed-preset" data-drug="NaCl 0.9% 200мл" data-vol="200" data-rate="60" onclick="presetClick(this)">NaCl 200</button>
+    <button class="bed-preset" data-drug="NaCl 0.9% 100мл" data-vol="100" data-rate="60" onclick="presetClick(this)">NaCl 100</button>
+    <button class="bed-preset" data-drug="Глюкоза 5% 200мл" data-vol="200" data-rate="60" onclick="presetClick(this)">Глюкоза 5%</button>
+    <button class="bed-preset" data-drug="Рингер 200мл" data-vol="200" data-rate="60" onclick="presetClick(this)">Рингер</button>
+    <button class="bed-preset" data-drug="Реамберин 250мл" data-vol="250" data-rate="60" onclick="presetClick(this)">Реамберин</button>
+    <button class="bed-preset" data-drug="Ремаксол 400мл" data-vol="400" data-rate="60" onclick="presetClick(this)">Ремаксол</button>
+    <button class="bed-preset" data-drug="Маннит 400мл 15%" data-vol="400" data-rate="200" onclick="presetClick(this)">Маннит</button>
+    <button class="bed-preset" data-drug="Магнезия 25% 20мл + NaCl 0.9% 200мл" data-vol="220" data-rate="30" onclick="presetClick(this)">Магнезия</button>
+    <button class="bed-preset" data-drug="Аспаркам 10мл + NaCl 0.9% 200мл" data-vol="210" data-rate="40" onclick="presetClick(this)">Аспаркам</button>
+    <button class="bed-preset" data-drug="Актовегин 10мл + NaCl 0.9% 200мл" data-vol="210" data-rate="60" onclick="presetClick(this)">Актовегин</button>
+  </div>
+
+  <input class="bed-drug-inp bed-drug" type="text" placeholder="Препарат / р-р — или выбери выше">
+
+  <div class="bed-fields">
+    <div class="bed-field">
+      <div class="bed-field-lbl">Объём мл</div>
+      <input class="bed-field-inp bed-vol" type="number" placeholder="200" inputmode="numeric" oninput="bedVolInput(this)">
+    </div>
+    <div class="bed-field">
+      <div class="bed-field-lbl">Скорость мл/ч</div>
+      <input class="bed-field-inp bed-rate" type="number" placeholder="60" inputmode="numeric" oninput="bedRateInput(this)">
+    </div>
+    <div class="bed-field">
+      <div class="bed-field-lbl">Примечание</div>
+      <input class="bed-field-inp small bed-note" type="text" placeholder="доп. информация">
+    </div>
+    <div class="bed-field">
+      <div class="bed-field-lbl">Кап/мин → мл/ч</div>
+      <input class="bed-field-inp bed-drops" type="number" placeholder="20 кап" inputmode="numeric" oninput="bedDropsInput(this)">
+    </div>
+  </div>
+
+  <div class="inf-calc-hint">Введите объём и скорость для расчёта</div>
+
+  <div class="bed-timer-row">
+    <div class="bed-timer-display">—:——</div>
+  </div>
+
+  <div class="bed-progress"><div class="bed-progress-bar" style="width:0%"></div></div>
+
+  <div class="bed-reminder">Введите препарат, объём и скорость → нажмите Старт</div>
+
+  <div class="bed-btn-row">
+    <button class="bed-btn start" onclick="startBed(${wardIdx},${bedNum})">▶ Старт</button>
+    <button class="bed-btn stop" onclick="stopBed(${wardIdx},${bedNum})" style="display:none">⏹ Стоп</button>
+    <button class="bed-btn clear" onclick="clearBed(${wardIdx},${bedNum})">✕ Сброс</button>
+  </div>
+</div>`;
+}
+
+var _palatyBuilt = false;
+function initPalaty(){
+  if(_palatyBuilt) return;
+  _palatyBuilt = true;
+  WARDS.forEach(function(ward, wi){
+    var container = document.getElementById(ward.el);
+    if(!container){ _palatyBuilt = false; return; }
+    container.innerHTML = ward.beds.map(function(bn){ return buildBed(wi, bn); }).join('');
+  });
+}
+
+function presetClick(btn){
+  var card = btn.closest('.bed-card');
+  card.querySelectorAll('.bed-preset').forEach(function(b){ b.classList.remove('sel'); });
+  btn.classList.add('sel');
+  card.querySelector('.bed-drug').value = btn.getAttribute('data-drug');
+  card.querySelector('.bed-vol').value  = btn.getAttribute('data-vol');
+  card.querySelector('.bed-rate').value = btn.getAttribute('data-rate');
+  var key = card.id.replace('bed-card-','');
+  var wi = parseInt(btn.getAttribute('data-drug') ? card.id.match(/w(\d)/)[1] : 0);
+  bedCalcHint(card);
+}
+
+function bedVolInput(inp){ bedCalcHint(inp.closest('.bed-card')); }
+function bedRateInput(inp){ bedCalcHint(inp.closest('.bed-card')); }
+function bedDropsInput(inp){
+  var drops = parseFloat(inp.value) || 0;
+  var mlh = Math.round(drops * 3);
+  if(mlh > 0){
+    inp.closest('.bed-card').querySelector('.bed-rate').value = mlh;
+    bedCalcHint(inp.closest('.bed-card'));
+  }
+}
+
+function bedCalcHint(card){
+  var vol = parseFloat(card.querySelector('.bed-vol').value) || 0;
+  var rate = parseFloat(card.querySelector('.bed-rate').value) || 0;
+  var hint = card.querySelector('.inf-calc-hint');
+  if(vol && rate){
+    var hrs = vol / rate;
+    var mins = Math.round(hrs * 60);
+    hint.textContent = hrs < 1 ? '⏱ ' + vol + ' мл ÷ ' + rate + ' мл/ч = ' + mins + ' мин' :
+      '⏱ ' + vol + ' мл ÷ ' + rate + ' мл/ч = ' + Math.floor(hrs) + 'ч ' + Math.round((hrs%1)*60) + 'мин';
+  } else {
+    hint.textContent = 'Введите объём и скорость для расчёта';
+  }
+}
+
+
+/* === AUTO INIT === */
+calcGcs();
+renderMeds();
+calcPed();
+</script>
+</body>
+</html>
