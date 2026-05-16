@@ -9,8 +9,6 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,7 +18,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Edge-to-edge display
         WindowCompat.setDecorFitsSystemWindows(window, false)
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
 
@@ -30,12 +27,12 @@ class MainActivity : AppCompatActivity() {
 
         webView.settings.apply {
             javaScriptEnabled = true
-            allowFileAccessFromFileURLs = true  
+            domStorageEnabled = true
+            allowFileAccess = true
+            allowFileAccessFromFileURLs = true
             allowUniversalAccessFromFileURLs = true
             mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
-            domStorageEnabled = true
             cacheMode = WebSettings.LOAD_DEFAULT
-            allowFileAccess = true
             loadWithOverviewMode = true
             useWideViewPort = true
             setSupportZoom(false)
@@ -46,7 +43,6 @@ class MainActivity : AppCompatActivity() {
         webView.webViewClient = WebViewClient()
         webView.setBackgroundColor(0xFF0A0E1A.toInt())
 
-        // Load from assets
         webView.loadUrl("file:///android_asset/index.html")
     }
 
