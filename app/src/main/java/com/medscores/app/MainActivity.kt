@@ -30,6 +30,9 @@ class MainActivity : AppCompatActivity() {
 
         webView.settings.apply {
             javaScriptEnabled = true
+            allowFileAccessFromFileURLs = true  
+            allowUniversalAccessFromFileURLs = true
+            mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
             domStorageEnabled = true
             cacheMode = WebSettings.LOAD_DEFAULT
             allowFileAccess = true
