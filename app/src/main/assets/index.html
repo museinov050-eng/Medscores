@@ -61,7 +61,45 @@ body{background:#000810;color:#fff;font-family:-apple-system,Roboto,sans-serif;m
 .med-c{font-size:11px;color:#0a84ff;margin-bottom:8px}
 .med-r{font-size:12px;color:rgba(255,255,255,.65);line-height:1.5;margin-bottom:3px}
 .med-r b{color:rgba(255,255,255,.4);font-size:11px;text-transform:uppercase;letter-spacing:.05em;margin-right:5px}
+.sp-item{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:10px 12px;margin-bottom:6px}
+.sp-name{font-size:13px;font-weight:700;color:#fff;margin-bottom:2px;word-wrap:break-word}
+.sp-lat{font-size:10px;color:rgba(255,255,255,.35);font-style:italic;margin-bottom:8px;word-wrap:break-word}
+.sp-row{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center;padding-top:6px;border-top:1px solid rgba(255,255,255,.05)}
+.sp-dose{font-family:monospace;font-size:11px;color:rgba(255,255,255,.75);word-wrap:break-word;flex:1;min-width:0}
+.sp-route{font-size:10px;color:#5ac8fa;font-weight:600;background:rgba(90,200,250,.1);padding:3px 8px;border-radius:100px;white-space:nowrap;flex-shrink:0}
 .ks{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;color:#fff;font:14px inherit;padding:11px 14px;outline:none;margin-bottom:12px}
+
+.dg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.db{padding:14px 8px;border:1px solid rgba(255,255,255,.1);border-radius:12px;background:rgba(255,255,255,.04);color:rgba(255,255,255,.7);font:600 13px inherit;cursor:pointer;text-align:center}
+.db small{display:block;font-size:10px;color:rgba(255,255,255,.4);margin-top:3px;font-family:monospace}
+.db.d{border-color:#ffd60a;background:rgba(255,214,10,.08);color:#ffd60a}
+.db.n{border-color:#ff453a;background:rgba(255,69,58,.08);color:#ff453a}
+.db.f{border-color:#30d158;background:rgba(48,209,88,.08);color:#30d158}
+.db.no{border-color:#bf5af2;background:rgba(191,90,242,.08);color:#bf5af2}
+.sld{width:100%;margin:14px 0 6px;height:6px;-webkit-appearance:none;appearance:none;background:rgba(255,255,255,.1);border-radius:3px;outline:none}
+.sld::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border-radius:50%;background:#ffd60a;border:3px solid rgba(0,0,0,.4);cursor:pointer}
+.sld.n::-webkit-slider-thumb{background:#ff453a}
+.sld.f::-webkit-slider-thumb{background:#30d158}
+.sld.no::-webkit-slider-thumb{background:#bf5af2}
+.sld-r{display:flex;justify-content:space-between;font-size:10px;color:rgba(255,255,255,.4);font-family:monospace;margin-bottom:14px}
+.sld-v{font-size:22px;font-weight:700;font-family:monospace;color:#ffd60a}
+.infr{border-radius:14px;padding:20px 14px;text-align:center;border:2px solid #ffd60a;background:rgba(255,214,10,.06);margin:10px 0}
+.infr.n{border-color:#ff453a;background:rgba(255,69,58,.06)}
+.infr.f{border-color:#30d158;background:rgba(48,209,88,.06)}
+.infr.no{border-color:#bf5af2;background:rgba(191,90,242,.06)}
+.infr-r{font:700 48px monospace;line-height:1;color:#ffd60a}
+.infr.n .infr-r{color:#ff453a}
+.infr.f .infr-r{color:#30d158}
+.infr.no .infr-r{color:#bf5af2}
+.infr-u{font-size:14px;color:rgba(255,255,255,.5);margin-top:4px;font-family:monospace}
+.infr-f{font-size:11px;color:rgba(255,255,255,.5);margin-top:10px;font-family:monospace;background:rgba(0,0,0,.2);border-radius:8px;padding:8px;line-height:1.6;white-space:pre-wrap;text-align:left}
+.infeff{margin-top:12px;background:rgba(0,0,0,.2);border-radius:12px;padding:12px}
+.infeff-t{font-size:11px;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.infeff-r{font-size:12px;color:rgba(255,255,255,.7);line-height:1.6;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.infeff-r:last-child{border-bottom:none}
+.infeff-r b{color:#fff}
+.infeff-r.act{color:#ffd60a;font-weight:600}
+.infeff-r.act b{color:#ffd60a}
 .kfr{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:12px}
 .kf{padding:7px 13px;border:1px solid rgba(255,255,255,.1);border-radius:100px;background:rgba(255,255,255,.04);color:rgba(255,255,255,.6);font:600 12px inherit;cursor:pointer;white-space:nowrap;flex-shrink:0}
 .kf.on{background:rgba(10,132,255,.2);border-color:#0a84ff;color:#0a84ff}
@@ -113,54 +151,6 @@ body{background:#000810;color:#fff;font-family:-apple-system,Roboto,sans-serif;m
 .bb{flex:1;padding:9px;border:1px solid rgba(255,255,255,.1);border-radius:10px;background:rgba(255,255,255,.04);color:rgba(255,255,255,.6);font:600 12px inherit;cursor:pointer}
 .bb.s{border-color:#30d158;color:#30d158;background:rgba(48,209,88,.1)}
 .bb.st{border-color:#ff453a;color:#ff453a;background:rgba(255,69,58,.1)}
-/* === Инфузомат styles === */
-.dg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
-.db{padding:14px 8px;border:1px solid rgba(255,255,255,.1);border-radius:12px;background:rgba(255,255,255,.04);color:rgba(255,255,255,.7);font:inherit;cursor:pointer;text-align:center;font-size:13px;font-weight:600}
-.db small{display:block;font-size:10px;color:rgba(255,255,255,.4);margin-top:3px;font-family:monospace}
-.db.d{border-color:#ffd60a;background:rgba(255,214,10,.08);color:#ffd60a}
-.db.n{border-color:#ff453a;background:rgba(255,69,58,.08);color:#ff453a}
-.db.f{border-color:#30d158;background:rgba(48,209,88,.08);color:#30d158}
-.db.no{border-color:#bf5af2;background:rgba(191,90,242,.08);color:#bf5af2}
-.sld{width:100%;margin:14px 0 6px;height:6px;-webkit-appearance:none;appearance:none;background:rgba(255,255,255,.1);border-radius:3px;outline:none}
-.sld::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border-radius:50%;background:#ffd60a;border:3px solid rgba(0,0,0,.4);cursor:pointer}
-.sld.d::-webkit-slider-thumb{background:#ffd60a}
-.sld.n::-webkit-slider-thumb{background:#ff453a}
-.sld.f::-webkit-slider-thumb{background:#30d158}
-.sld.no::-webkit-slider-thumb{background:#bf5af2}
-.sld-r{display:flex;justify-content:space-between;font-size:10px;color:rgba(255,255,255,.4);font-family:monospace;margin-bottom:14px}
-.sld-v{font-size:22px;font-weight:700;font-family:monospace;color:#ffd60a;float:right}
-.infr{border-radius:14px;padding:20px 14px;text-align:center;border:2px solid rgba(255,255,255,.1);margin:10px 0}
-.infr.d{border-color:#ffd60a;background:rgba(255,214,10,.06)}
-.infr.n{border-color:#ff453a;background:rgba(255,69,58,.06)}
-.infr.f{border-color:#30d158;background:rgba(48,209,88,.06)}
-.infr.no{border-color:#bf5af2;background:rgba(191,90,242,.06)}
-.infr-r{font:700 48px monospace;line-height:1}
-.infr.d .infr-r{color:#ffd60a}
-.infr.n .infr-r{color:#ff453a}
-.infr.f .infr-r{color:#30d158}
-.infr.no .infr-r{color:#bf5af2}
-.infr-u{font-size:14px;color:rgba(255,255,255,.5);margin-top:4px;font-family:monospace}
-.infr-f{font-size:11px;color:rgba(255,255,255,.5);margin-top:10px;font-family:monospace;background:rgba(0,0,0,.2);border-radius:8px;padding:8px;line-height:1.6}
-.infeff{margin-top:12px;background:rgba(0,0,0,.2);border-radius:12px;padding:12px}
-.infeff-t{font-size:11px;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
-.infeff-r{font-size:12px;color:rgba(255,255,255,.7);line-height:1.6;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.05)}
-.infeff-r:last-child{border-bottom:none}
-.infeff-r b{color:#fff}
-.infeff-r.act{color:#ffd60a;font-weight:600}
-.infeff-r.act b{color:#ffd60a}
-/* Spravochnik table styles */
-.tbl{width:100%;border-collapse:collapse;font-size:11px}
-.tbl tr{border-bottom:1px solid rgba(255,255,255,.05)}
-.tbl tr:last-child{border-bottom:none}
-.tbl td{padding:8px 4px;vertical-align:top}
-.tbl-n{font-weight:700;color:#fff}
-.tbl-l{font-style:italic;color:rgba(255,255,255,.35);font-size:10px}
-.tbl-d{color:rgba(255,255,255,.7);font-family:monospace;font-size:11px;text-align:right;white-space:nowrap}
-.tbl-r{color:#5ac8fa;text-align:right;font-size:10px;font-weight:600;white-space:nowrap}
-.sub-hdr{font-size:11px;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.08em;padding:12px 0 6px;border-bottom:2px solid rgba(255,255,255,.1)}
-.pedsel{display:grid;grid-template-columns:1fr;gap:8px;margin-bottom:12px}
-.pedbox{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:14px;font-size:13px;line-height:1.8}
-.pedbox b{color:#0a84ff;display:inline-block;min-width:140px}
 </style>
 </head>
 <body>
@@ -184,215 +174,155 @@ body{background:#000810;color:#fff;font-family:-apple-system,Roboto,sans-serif;m
 <button class="tab" onclick="g('wl',this)">Wells ТЭЛА</button>
 <button class="tab" onclick="g('al',this)">Альговер</button>
 <button class="tab" onclick="g('cp',this)">Инсульт</button>
-<button class="tab" onclick="g('gr',this)">GRACE</button>
 <button class="tab" onclick="g('av',this)">Альварадо</button>
 </div>
-<div class="nav-lbl">Лечение и расчёты</div>
+<div class="nav-lbl">Расчёты</div>
 <div class="nav-row">
 <button class="tab" onclick="g('inf',this)">Инфузомат</button>
-<button class="tab" onclick="g('pd',this)">Педиатрия</button>
 <button class="tab" onclick="g('vl',this)">ИВЛ 4/40</button>
+<button class="tab" onclick="g('bm',this)">ИМТ</button>
 <button class="tab" onclick="g('cr',this)">СЛР Таймер</button>
 </div>
-<div class="nav-lbl">Препараты СМП</div>
+<div class="nav-lbl">💊 Лечение</div>
 <div class="nav-row">
-<button class="tab" onclick="g('md',this)">Препараты</button>
-<button class="tab" onclick="g('kl',this)">🏥 Клиника</button>
+<button class="tab" onclick="g('tx',this)">Протоколы лечения</button>
+</div>
+<div class="nav-lbl">Препараты</div>
+<div class="nav-row">
+<button class="tab" onclick="g('md',this)">Препараты СМП</button>
 <button class="tab" onclick="g('sp',this)">📋 Подстанция</button>
+<button class="tab" onclick="g('kl',this)">🏥 Клиника</button>
 <button class="tab" onclick="g('pal',this)">🛏 Палаты</button>
 </div>
-<div class="nav-lbl">Антропометрия</div>
+<div class="nav-lbl">Дети</div>
 <div class="nav-row">
-<button class="tab" onclick="g('bm',this)">ИМТ</button>
+<button class="tab" onclick="g('nr',this)">Нормы детей</button>
 </div>
 </div>
 
 <div class="card show" id="t-qs">
 <div class="card-t">qSOFA — Экспресс-сепсис</div>
 <div class="card-d">Три критерия по 1 баллу. ≥2 баллов — высокий риск.</div>
-<div class="info"><b>Что это:</b> quick Sequential Organ Failure Assessment. Прикроватный скрининг для выявления риска органной дисфункции и смерти у пациентов с подозрением на инфекцию. <b>Не требует анализов</b> — только клинические признаки. ≥2 баллов = 10-кратное повышение риска смерти, экстренная госпитализация в ОРИТ.</div>
-<div class="crit" onclick="qt('rr',this)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">ЧДД ≥ 22/мин<div class="crit-h">Считать 30 сек × 2</div></div><div class="bd">+1</div></div>
-<div class="crit" onclick="qt('sb',this)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">АД сист. ≤ 100 мм рт.ст.</div><div class="bd">+1</div></div>
-<div class="crit" onclick="qt('gc',this)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Изменение сознания<div class="crit-h">GCS &lt; 15 или спутанность</div></div><div class="bd">+1</div></div>
-<div class="res" id="qs-r"><div class="res-n" id="qs-n">0</div><div class="res-l" id="qs-l">Низкий риск</div><div class="res-a" id="qs-a">Наблюдение</div></div>
+<div class="info"><b>Что это:</b> Прикроватный скрининг для выявления риска органной дисфункции при подозрении на инфекцию. ≥2 баллов = госпитализация в ОРИТ.</div>
+<div class="crit" onclick="qt('rr',this)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">ЧДД ≥ 22/мин</div><div class="bd">+1</div></div>
+<div class="crit" onclick="qt('sb',this)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">АД сист. ≤ 100</div><div class="bd">+1</div></div>
+<div class="crit" onclick="qt('gc',this)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Изменение сознания</div><div class="bd">+1</div></div>
+<div class="res" id="qs-r"><div class="res-n" id="qs-n">0</div><div class="res-l" id="qs-l">Низкий риск</div></div>
 </div>
 
 <div class="card" id="t-nw">
-<div class="card-t">NEWS2 — Раннее предупреждение</div>
-<div class="card-d">National Early Warning Score 2. Объективная оценка тяжести.</div>
-<div class="info"><b>Что это:</b> Стандартизированная шкала Королевского колледжа врачей (Великобритания) для ранней детекции ухудшения у острых пациентов. Учитывает 7 параметров. <b>0–4</b> — низкий риск, обычное наблюдение. <b>5–6</b> — средний, усиленный мониторинг, вызов реанимационной бригады. <b>≥7</b> — критический, немедленная помощь в ОРИТ.</div>
+<div class="card-t">NEWS2</div>
+<div class="card-d">Раннее предупреждение ухудшения.</div>
 <div class="ig">
-<div class="if"><div class="il">ЧДД <span class="iu">/мин</span></div><input class="in" id="n-rr" type="number" oninput="cN()"></div>
-<div class="if"><div class="il">SpO₂ <span class="iu">%</span></div><input class="in" id="n-sp" type="number" oninput="cN()"></div>
+<div class="if"><div class="il">ЧДД</div><input class="in" id="n-rr" type="number" oninput="cN()"></div>
+<div class="if"><div class="il">SpO₂ %</div><input class="in" id="n-sp" type="number" oninput="cN()"></div>
 <div class="if"><div class="il">АД сист.</div><input class="in" id="n-sb" type="number" oninput="cN()"></div>
 <div class="if"><div class="il">ЧСС</div><input class="in" id="n-hr" type="number" oninput="cN()"></div>
-<div class="if"><div class="il">Темп <span class="iu">°C</span></div><input class="in" id="n-tm" type="number" step="0.1" oninput="cN()"></div>
-</div>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
-<div><div class="il" style="margin-bottom:6px">Сознание</div><div class="brow"><button class="cb on" id="na-a" onclick="sA('A')">А</button><button class="cb" id="na-v" onclick="sA('V')">V</button><button class="cb" id="na-p" onclick="sA('P')">P</button><button class="cb" id="na-u" onclick="sA('U')">U</button></div></div>
-<div><div class="il" style="margin-bottom:6px">Кислород</div><div class="brow"><button class="cb on" id="no-n" onclick="sO(0)">Воздух</button><button class="cb" id="no-y" onclick="sO(1)">O₂</button></div></div>
+<div class="if"><div class="il">Темп °C</div><input class="in" id="n-tm" type="number" step="0.1" oninput="cN()"></div>
 </div>
 <div class="res" id="n-r"><div class="res-n" id="n-n">—</div><div class="res-l" id="n-l">Введите данные</div></div>
 </div>
 
 <div class="card" id="t-gc">
 <div class="card-t">GCS — Шкала Глазго</div>
-<div class="card-d">Оценка уровня сознания. 3–15 баллов.</div>
-<div class="gsec"><div class="gt">E — Открывание глаз</div><select class="sl" id="ge" onchange="cG()"><option value="4">4 — Произвольное</option><option value="3">3 — На речь</option><option value="2">2 — На боль</option><option value="1">1 — Отсутствует</option></select></div>
-<div class="gsec"><div class="gt">V — Речь</div><select class="sl" id="gv" onchange="cG()"><option value="5">5 — Ориентирован</option><option value="4">4 — Спутанная</option><option value="3">3 — Отдельные слова</option><option value="2">2 — Звуки</option><option value="1">1 — Отсутствует</option></select></div>
-<div class="gsec"><div class="gt">M — Движения</div><select class="sl" id="gm" onchange="cG()"><option value="6">6 — Выполняет команды</option><option value="5">5 — Локализует боль</option><option value="4">4 — Отдёргивает</option><option value="3">3 — Сгибание</option><option value="2">2 — Разгибание</option><option value="1">1 — Отсутствует</option></select></div>
-<div class="res" id="g-r"><div class="res-n" id="g-n">15</div><div class="res-l" id="g-l">Ясное сознание</div><div class="res-a" id="g-a">E4 V5 M6</div></div>
+<div class="card-d">Уровень сознания. 3–15 баллов.</div>
+<div class="gsec"><div class="gt">E — Глаза</div><select class="sl" id="ge" onchange="cG()"><option value="4">4 — Произвольное</option><option value="3">3 — На речь</option><option value="2">2 — На боль</option><option value="1">1 — Нет</option></select></div>
+<div class="gsec"><div class="gt">V — Речь</div><select class="sl" id="gv" onchange="cG()"><option value="5">5 — Ориентирован</option><option value="4">4 — Спутанная</option><option value="3">3 — Отд. слова</option><option value="2">2 — Звуки</option><option value="1">1 — Нет</option></select></div>
+<div class="gsec"><div class="gt">M — Движения</div><select class="sl" id="gm" onchange="cG()"><option value="6">6 — Команды</option><option value="5">5 — Локализует</option><option value="4">4 — Отдёргивает</option><option value="3">3 — Сгибание</option><option value="2">2 — Разгибание</option><option value="1">1 — Нет</option></select></div>
+<div class="res" id="g-r"><div class="res-n" id="g-n">15</div><div class="res-l" id="g-l">Ясное сознание</div></div>
 </div>
 
 <div class="card" id="t-rs">
-<div class="card-t">RASS — Шкала возбуждения-седации</div>
-<div class="card-d">Richmond Agitation-Sedation Scale.</div>
-<div class="info"><b>Что это:</b> Стандартная 10-балльная шкала оценки уровня седации/возбуждения у пациентов в ОРИТ и на ИВЛ. Применяется для титрования седативных препаратов, оценки делирия. <b>Целевой уровень для большинства пациентов на ИВЛ: 0 ÷ −2</b>. <b>Положительные значения</b> — возбуждение (требует седации), <b>отрицательные</b> — седация (возможна избыточная). Глубокая седация (−4, −5) повышает риск осложнений и удлиняет ИВЛ.</div>
+<div class="card-t">RASS</div>
+<div class="card-d">Шкала возбуждения-седации Richmond.</div>
+<div class="info"><b>Что это:</b> Оценка уровня сознания при седации. <b>0</b> — норма. <b>+</b> возбуждение. <b>−</b> седация. Цель на ИВЛ: 0 ÷ −2.</div>
 <div class="itp">
-<div class="itp-r"><span class="itp-rng">+4</span><span class="itp-v" style="color:#ff453a">Агрессивный — опасен</span></div>
-<div class="itp-r"><span class="itp-rng">+3</span><span class="itp-v" style="color:#ff453a">Возбуждён — тянет трубки</span></div>
-<div class="itp-r"><span class="itp-rng">+2</span><span class="itp-v" style="color:#ff9f0a">Возбуждён — частые движения</span></div>
+<div class="itp-r"><span class="itp-rng">+4</span><span class="itp-v" style="color:#ff453a">Боевой — опасен</span></div>
+<div class="itp-r"><span class="itp-rng">+3</span><span class="itp-v" style="color:#ff453a">Тянет трубки</span></div>
+<div class="itp-r"><span class="itp-rng">+2</span><span class="itp-v" style="color:#ff9f0a">Возбуждён</span></div>
 <div class="itp-r"><span class="itp-rng">+1</span><span class="itp-v" style="color:#ffd60a">Беспокоен</span></div>
-<div class="itp-r"><span class="itp-rng">0</span><span class="itp-v" style="color:#30d158">Бодрствует, спокоен</span></div>
-<div class="itp-r"><span class="itp-rng">−1</span><span class="itp-v" style="color:#0a84ff">Сонлив, открыв. глаза &gt;10 сек</span></div>
-<div class="itp-r"><span class="itp-rng">−2</span><span class="itp-v" style="color:#0a84ff">Лёгкая седация &lt;10 сек</span></div>
-<div class="itp-r"><span class="itp-rng">−3</span><span class="itp-v" style="color:#0a84ff">Умеренная — движ. на голос</span></div>
-<div class="itp-r"><span class="itp-rng">−4</span><span class="itp-v" style="color:#bf5af2">Глубокая — только на боль</span></div>
+<div class="itp-r"><span class="itp-rng">0</span><span class="itp-v" style="color:#30d158">Спокоен</span></div>
+<div class="itp-r"><span class="itp-rng">−1</span><span class="itp-v" style="color:#0a84ff">Сонлив</span></div>
+<div class="itp-r"><span class="itp-rng">−2</span><span class="itp-v" style="color:#0a84ff">Лёгкая седация</span></div>
+<div class="itp-r"><span class="itp-rng">−3</span><span class="itp-v" style="color:#0a84ff">Умеренная</span></div>
+<div class="itp-r"><span class="itp-rng">−4</span><span class="itp-v" style="color:#bf5af2">Глубокая</span></div>
 <div class="itp-r"><span class="itp-rng">−5</span><span class="itp-v" style="color:#bf5af2">Нет реакции</span></div>
 </div>
 </div>
 
 <div class="card" id="t-wl">
-<div class="card-t">Wells — Риск ТЭЛА</div>
-<div class="card-d">Клиническая вероятность тромбоэмболии лёгочной артерии.</div>
-<div class="info"><b>Что это:</b> Шкала предтестовой вероятности ТЭЛА. <b>≤4</b> — низкая вероятность (можно начать с D-димера), <b>&gt;4</b> — высокая (сразу КТ-ангиография лёгких или вентиляционно-перфузионная сцинтиграфия).</div>
-<div class="crit" onclick="wt(this,3)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Признаки ТГВ<div class="crit-h">Отёк голени, болезненность по ходу вены</div></div><div class="bd">+3</div></div>
+<div class="card-t">Wells — ТЭЛА</div>
+<div class="card-d">Вероятность тромбоэмболии.</div>
+<div class="crit" onclick="wt(this,3)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Признаки ТГВ</div><div class="bd">+3</div></div>
 <div class="crit" onclick="wt(this,3)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">ТЭЛА вероятнее альтернатив</div><div class="bd">+3</div></div>
-<div class="crit" onclick="wt(this,1.5)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">ЧСС &gt; 100</div><div class="bd">+1.5</div></div>
-<div class="crit" onclick="wt(this,1.5)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Иммобилизация / операция ≤4 нед</div><div class="bd">+1.5</div></div>
+<div class="crit" onclick="wt(this,1.5)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">ЧСС > 100</div><div class="bd">+1.5</div></div>
+<div class="crit" onclick="wt(this,1.5)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Иммобилизация ≤4 нед</div><div class="bd">+1.5</div></div>
 <div class="crit" onclick="wt(this,1.5)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">ТГВ/ТЭЛА в анамнезе</div><div class="bd">+1.5</div></div>
 <div class="crit" onclick="wt(this,1)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Кровохарканье</div><div class="bd">+1</div></div>
-<div class="crit" onclick="wt(this,1)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Онкология (леч. ≤6 мес)</div><div class="bd">+1</div></div>
-<div class="res" id="w-r"><div class="res-n" id="w-n">0</div><div class="res-l" id="w-l">Низкая вероятность</div></div>
+<div class="crit" onclick="wt(this,1)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Онкология ≤6 мес</div><div class="bd">+1</div></div>
+<div class="res" id="w-r"><div class="res-n" id="w-n">0</div><div class="res-l" id="w-l">Низкая</div></div>
 </div>
 
 <div class="card" id="t-al">
-<div class="card-t">Альговер — Шоковый индекс</div>
+<div class="card-t">Альговер</div>
 <div class="card-d">Шоковый индекс = ЧСС / АД сист.</div>
-<div class="info"><b>Что это:</b> Простой расчёт степени гиповолемии/шока. <b>&lt;1</b> — норма или лёгкая кровопотеря, <b>1.0–1.5</b> — средний шок (20–40% ОЦК), <b>&gt;1.5</b> — тяжёлый (&gt;40% ОЦК) — реанимация, кристаллоиды, гемотрансфузия.</div>
 <div class="ig">
 <div class="if"><div class="il">ЧСС</div><input class="in" id="a-hr" type="number" oninput="cA()"></div>
 <div class="if"><div class="il">АД сист.</div><input class="in" id="a-sb" type="number" oninput="cA()"></div>
 </div>
-<div class="res" id="a-r"><div class="res-n" id="a-n">—</div><div class="res-l" id="a-l">Введите данные</div><div class="res-a" id="a-a"></div></div>
+<div class="res" id="a-r"><div class="res-n" id="a-n">—</div><div class="res-l" id="a-l">Введите данные</div></div>
 </div>
 
 <div class="card" id="t-cp">
 <div class="card-t">CPSS — Инсульт</div>
 <div class="card-d">Cincinnati Prehospital Stroke Scale.</div>
-<div class="info"><b>Что это:</b> Догоспитальный скрининг инсульта. <b>1 любой признак</b> — вероятность инсульта ~72%. <b>Все 3 признака</b> — ~85%. Экстренная транспортировка в стационар с возможностью тромболизиса! «Терапевтическое окно» — 4.5 часа от начала симптомов.</div>
-<div class="crit" onclick="ct('f',this)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Асимметрия лица<div class="crit-h">Попросить улыбнуться/оскалить зубы. Опущенный угол рта, сглаженность носогубной складки, девиация языка в сторону поражения</div></div><div class="bd">!</div></div>
-<div class="crit" onclick="ct('a',this)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Слабость руки<div class="crit-h">Закрыть глаза, вытянуть обе руки вперёд на 10 сек. Одна рука опускается / совершает гребущие движения / не поднимается</div></div><div class="bd">!</div></div>
-<div class="crit" onclick="ct('s',this)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Нарушение речи<div class="crit-h">«Скорая помощь едет быстро по улицам». Дизартрия (смазанная речь), афазия (не понимает / не произносит слова), парафазии</div></div><div class="bd">!</div></div>
+<div class="info"><b>1 признак</b> — ~72%. <b>3 признака</b> — ~85%. Окно тромболизиса 4.5 часа.</div>
+<div class="crit" onclick="ct('f',this)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Асимметрия лица<div class="crit-h">Опущенный угол рта при улыбке</div></div><div class="bd">!</div></div>
+<div class="crit" onclick="ct('a',this)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Слабость руки<div class="crit-h">Рука опускается за 10 сек</div></div><div class="bd">!</div></div>
+<div class="crit" onclick="ct('s',this)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Нарушение речи<div class="crit-h">Дизартрия, афазия</div></div><div class="bd">!</div></div>
 <div class="res" id="c-r"><div class="res-n" id="c-n">0</div><div class="res-l" id="c-l">Нет признаков</div></div>
-<div class="info" style="margin-top:14px"><b>📋 Доп. признаки инсульта (FAST + расширение):</b><br>
-• <b>Внезапная</b> сильная головная боль (САК)<br>
-• Нарушение чувствительности половины тела<br>
-• Внезапное головокружение, потеря равновесия<br>
-• Нарушение зрения (двоение, выпадение полей)<br>
-• Внезапная спутанность сознания<br>
-• Девиация взора в сторону очага<br>
-• Анизокория, нистагм</div>
-</div>
-
-<div class="card" id="t-gr">
-<div class="card-t">GRACE — ОКС</div>
-<div class="card-d">Риск внутрибольничной смерти при ОКС.</div>
-<div class="info"><b>Что это:</b> Global Registry of Acute Coronary Events. Прогноз смертности у пациентов с ИМ/нестабильной стенокардией. <b>&lt;109</b> — низкий риск (&lt;1%), <b>109–140</b> — средний (1–3%), <b>&gt;140</b> — высокий (&gt;3%) → ранняя инвазивная стратегия (КАГ ≤24 ч).</div>
-<div class="ig">
-<div class="if"><div class="il">Возраст</div><input class="in" id="r-ag" type="number" oninput="cR()"></div>
-<div class="if"><div class="il">ЧСС</div><input class="in" id="r-hr" type="number" oninput="cR()"></div>
-<div class="if"><div class="il">АД сист.</div><input class="in" id="r-sb" type="number" oninput="cR()"></div>
-<div class="if"><div class="il">Креат. <span class="iu">мкмоль/л</span></div><input class="in" id="r-cr" type="number" oninput="cR()"></div>
-</div>
-<div class="res" id="rg-r"><div class="res-n" id="rg-n">—</div><div class="res-l" id="rg-l">Введите данные</div></div>
 </div>
 
 <div class="card" id="t-av">
 <div class="card-t">Альварадо — Аппендицит</div>
 <div class="card-d">MANTRELS Score.</div>
-<div class="info"><b>Что это:</b> Клинический скор для оценки вероятности острого аппендицита. <b>1–4</b> — маловероятен, <b>5–6</b> — возможен (наблюдение, повторный осмотр через 4–6 ч), <b>7–10</b> — вероятен — консультация хирурга, УЗИ/КТ.</div>
 <div class="crit" onclick="vt(this,1)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Миграция боли в ПП</div><div class="bd">+1</div></div>
 <div class="crit" onclick="vt(this,1)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Анорексия</div><div class="bd">+1</div></div>
 <div class="crit" onclick="vt(this,1)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Тошнота/рвота</div><div class="bd">+1</div></div>
 <div class="crit" onclick="vt(this,2)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Болезненность в ПП</div><div class="bd">+2</div></div>
-<div class="crit" onclick="vt(this,1)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Щёткина–Блюмберга</div><div class="bd">+1</div></div>
-<div class="crit" onclick="vt(this,1)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Температура &gt; 37.3</div><div class="bd">+1</div></div>
-<div class="crit" onclick="vt(this,2)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Лейкоцитоз &gt; 10×10⁹</div><div class="bd">+2</div></div>
+<div class="crit" onclick="vt(this,1)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Щёткина-Блюмберга</div><div class="bd">+1</div></div>
+<div class="crit" onclick="vt(this,1)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Температура > 37.3</div><div class="bd">+1</div></div>
+<div class="crit" onclick="vt(this,2)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Лейкоцитоз > 10×10⁹</div><div class="bd">+2</div></div>
 <div class="crit" onclick="vt(this,1)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Сдвиг формулы влево</div><div class="bd">+1</div></div>
 <div class="res" id="av-r"><div class="res-n" id="av-n">0</div><div class="res-l" id="av-l">Маловероятен</div></div>
-</div>
-
-<div class="card" id="t-inf">
-<div class="card-t">Инфузомат СМП</div>
-<div class="card-d">Расчёт скорости введения вазопрессоров и диуретиков.</div>
-<div class="dg">
-<button class="db d" id="db-d" onclick="sD('d')">Допамин<small>400мг / 200мл</small></button>
-<button class="db" id="db-n" onclick="sD('n')">Норадреналин<small>4мг / 200мл</small></button>
-<button class="db" id="db-no" onclick="sD('no')">Новокаинамид<small>1000мг / 100мл</small></button>
-<button class="db" id="db-f" onclick="sD('f')">Фуросемид<small>40мг / 100мл</small></button>
-</div>
-<div class="if" style="margin-bottom:12px"><div class="il">Вес пациента (кг)</div><input class="in" id="i-wt" type="number" value="70" oninput="cI()"></div>
-<div class="if" style="padding:14px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><div class="il" id="i-dlbl" style="margin:0">Доза (мкг/кг/мин)</div><div class="sld-v" id="i-sv">5</div></div>
-<input type="range" class="sld d" id="i-sld" min="2" max="20" value="5" step="1" oninput="cI()">
-<div class="sld-r"><span id="i-mn">2</span><span id="i-mx">20</span></div>
-</div>
-<div class="infr d" id="i-r"><div class="infr-r" id="i-n">—</div><div class="infr-u">мл/час</div><div class="infr-f" id="i-f"></div></div>
-<div class="infeff" id="i-eff"></div>
-</div>
-
-<div class="card" id="t-pd">
-<div class="card-t">Педиатрия и нормы детей</div>
-<div class="card-d">Возрастные нормы, дозы препаратов, расчёты.</div>
-<select class="sl" id="p-ag" onchange="cP()">
-<option value="0">Новорождённый (0–28 дн)</option>
-<option value="1">1–3 месяца</option>
-<option value="3">3–6 месяцев</option>
-<option value="6">6–12 месяцев</option>
-<option value="12">1–2 года</option>
-<option value="24">2–5 лет</option>
-<option value="60">5–10 лет</option>
-<option value="120">10–14 лет</option>
-</select>
-<div id="p-r" class="pedbox"></div>
-<div class="sub-hdr">📋 Таблица норм по возрастам</div>
-<div class="itp" style="margin-top:8px">
-<div class="itp-r"><span class="itp-rng" style="min-width:80px">0–1 мес</span><span style="font-size:11px">ЧСС 120-160 · АД 60-80 · ЧДД 40-60</span></div>
-<div class="itp-r"><span class="itp-rng" style="min-width:80px">1–12 мес</span><span style="font-size:11px">ЧСС 100-140 · АД 70-95 · ЧДД 30-40</span></div>
-<div class="itp-r"><span class="itp-rng" style="min-width:80px">1–3 года</span><span style="font-size:11px">ЧСС 90-120 · АД 80-100 · ЧДД 25-30</span></div>
-<div class="itp-r"><span class="itp-rng" style="min-width:80px">3–7 лет</span><span style="font-size:11px">ЧСС 80-110 · АД 85-105 · ЧДД 20-25</span></div>
-<div class="itp-r"><span class="itp-rng" style="min-width:80px">7–12 лет</span><span style="font-size:11px">ЧСС 70-100 · АД 90-110 · ЧДД 18-22</span></div>
-<div class="itp-r"><span class="itp-rng" style="min-width:80px">12–15 лет</span><span style="font-size:11px">ЧСС 60-90 · АД 100-120 · ЧДД 16-20</span></div>
-</div>
 </div>
 
 <div class="card" id="t-vl">
 <div class="card-t">ИВЛ 4/40</div>
 <div class="card-d">Протективная вентиляция.</div>
-<div class="if" style="margin-bottom:12px"><div class="il">Вес <span class="iu">кг</span></div><input class="in" id="vl-wt" type="number" oninput="cV()"></div>
+<div class="if" style="margin-bottom:12px"><div class="il">Вес кг</div><input class="in" id="vl-wt" type="number" oninput="cV()"></div>
 <div id="vl-r" style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:14px;font-size:13px;line-height:1.9;color:rgba(255,255,255,.7)">Введите вес</div>
+</div>
+
+<div class="card" id="t-bm">
+<div class="card-t">ИМТ</div>
+<div class="ig">
+<div class="if"><div class="il">Рост см</div><input class="in" id="b-h" type="number" oninput="cB()"></div>
+<div class="if"><div class="il">Вес кг</div><input class="in" id="b-w" type="number" oninput="cB()"></div>
+</div>
+<div class="res" id="b-r"><div class="res-n" id="b-n">—</div><div class="res-l" id="b-l">Введите данные</div></div>
 </div>
 
 <div class="card" id="t-cr">
 <div class="card-t">СЛР Таймер</div>
-<div class="card-d">2-минутные циклы. Адреналин каждые 3–5 мин.</div>
+<div class="card-d">2-минутные циклы. Адреналин каждые 3-5 мин.</div>
 <div style="text-align:center;padding:20px 0">
-<div style="font:700 60px monospace;color:#fff" id="cr-t">02:00</div>
+<div style="font:700 60px monospace" id="cr-t">02:00</div>
 <div style="font-size:13px;color:rgba(255,255,255,.4);margin-top:6px" id="cr-c">Цикл 1</div>
 <div style="font-size:13px;color:#ff453a;font-weight:700;margin-top:6px;min-height:18px" id="cr-a"></div>
 </div>
 <div class="brow">
-<button class="cb" id="cr-b" onclick="cT()" style="flex:2;padding:14px;font-weight:700">▶ СТАРТ</button>
+<button class="cb" onclick="cT()" style="flex:2;padding:14px;font-weight:700" id="cr-b">▶ СТАРТ</button>
 <button class="cb" onclick="cZ()" style="padding:14px">↺ Сброс</button>
 </div>
 </div>
@@ -403,9 +333,34 @@ body{background:#000810;color:#fff;font-family:-apple-system,Roboto,sans-serif;m
 <div id="m-list"></div>
 </div>
 
+<div class="card" id="t-sp">
+<div class="card-t">📋 Препараты подстанции</div>
+<div class="card-d">Полный справочник с латынью.</div>
+<input class="ks" id="sp-s" placeholder="🔍 Поиск..." oninput="spR()">
+<div id="sp-list"></div>
+</div>
+
+<div class="card" id="t-inf">
+<div class="card-t">Инфузомат СМП</div>
+<div class="card-d">Расчёт скорости в каплях/мин (1 мл = 20 капель).</div>
+<div class="dg">
+<button class="db d" id="db-d" onclick="sD('d')">Допамин<small>40 мг/мл × 5 мл = 200 мг</small></button>
+<button class="db" id="db-n" onclick="sD('n')">Норадреналин<small>2 мг/мл × 4 мл = 8 мг</small></button>
+<button class="db" id="db-no" onclick="sD('no')">Новокаинамид<small>100 мг/мл × 5 мл = 500 мг</small></button>
+<button class="db" id="db-f" onclick="sD('f')">Фуросемид<small>10 мг/мл × 2 мл = 20 мг</small></button>
+</div>
+<div class="if" style="margin-bottom:12px"><div class="il">Вес кг</div><input class="in" id="i-wt" type="number" value="70" oninput="cI()"></div>
+<div class="if" style="padding:14px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><div class="il" id="i-dlbl" style="margin:0">Доза (мкг/кг/мин)</div><div class="sld-v" id="i-sv">5</div></div>
+<input type="range" class="sld" id="i-sld" min="2" max="20" value="5" step="1" oninput="cI()">
+<div class="sld-r"><span id="i-mn">2</span><span id="i-mx">20</span></div>
+</div>
+<div class="infr" id="i-r"><div class="infr-r" id="i-n">—</div><div class="infr-u">капель / минуту</div><div class="infr-f" id="i-f"></div></div>
+<div class="infeff" id="i-eff"></div>
+</div>
+
 <div class="card" id="t-kl">
 <div class="card-t">🏥 Клиника</div>
-<div class="card-d">Препараты подстанции: группа, механизм, доза, разведение.</div>
+<div class="card-d">Препараты: механизм, доза, разведение.</div>
 <input class="ks" id="k-s" placeholder="🔍 Поиск..." oninput="kR()">
 <div class="kfr">
 <button class="kf on" onclick="kF('all',this)">Все</button>
@@ -416,26 +371,380 @@ body{background:#000810;color:#fff;font-family:-apple-system,Roboto,sans-serif;m
 <div id="k-list"></div>
 </div>
 
-<div class="card" id="t-sp">
-<div class="card-t">📋 Препараты подстанции</div>
-<div class="card-d">Полный справочник с латынью и дозировками.</div>
-<input class="ks" id="sp-s" placeholder="🔍 Поиск по названию..." oninput="spR()">
-<div id="sp-list"></div>
-</div>
-
 <div class="card" id="t-pal">
 <div class="card-t">🛏 Палаты — Капалки</div>
 <div class="card-d">Трекер инфузий по койкам.</div>
 <div id="pl-list"></div>
 </div>
 
-<div class="card" id="t-bm">
-<div class="card-t">ИМТ</div>
-<div class="ig">
-<div class="if"><div class="il">Рост <span class="iu">см</span></div><input class="in" id="b-h" type="number" oninput="cB()"></div>
-<div class="if"><div class="il">Вес <span class="iu">кг</span></div><input class="in" id="b-w" type="number" oninput="cB()"></div>
+<div class="card" id="t-tx">
+<div class="card-t">💊 Протоколы лечения</div>
+<div class="card-d">Клинические рекомендации по группам заболеваний.</div>
+<div class="kfr">
+<button class="kf on" onclick="txF('all',this)">Все</button>
+<button class="kf" onclick="txF('card',this)">❤️ Кардио</button>
+<button class="kf" onclick="txF('neuro',this)">🧠 Неврология</button>
+<button class="kf" onclick="txF('tox',this)">☠ Интоксикации</button>
+<button class="kf" onclick="txF('pain',this)">🩹 Боль</button>
+<button class="kf" onclick="txF('resp',this)">🫁 Дыхание</button>
 </div>
-<div class="res" id="b-r"><div class="res-n" id="b-n">—</div><div class="res-l" id="b-l">Введите данные</div></div>
+<div id="tx-list"></div>
+</div>
+
+<div class="card" id="t-nr">
+<div class="card-t">Нормы детей</div>
+<div class="card-d">ЧСС · АД · ЧДД по возрасту.</div>
+<div class="itp">
+<div class="itp-r"><span class="itp-rng" style="min-width:75px">0-1 мес</span><span style="font-size:11px">ЧСС 120-160 · АД 60-80 · ЧДД 40-60</span></div>
+<div class="itp-r"><span class="itp-rng" style="min-width:75px">1-12 мес</span><span style="font-size:11px">ЧСС 100-140 · АД 70-95 · ЧДД 30-40</span></div>
+<div class="itp-r"><span class="itp-rng" style="min-width:75px">1-3 года</span><span style="font-size:11px">ЧСС 90-120 · АД 80-100 · ЧДД 25-30</span></div>
+<div class="itp-r"><span class="itp-rng" style="min-width:75px">3-7 лет</span><span style="font-size:11px">ЧСС 80-110 · АД 85-105 · ЧДД 20-25</span></div>
+<div class="itp-r"><span class="itp-rng" style="min-width:75px">7-12 лет</span><span style="font-size:11px">ЧСС 70-100 · АД 90-110 · ЧДД 18-22</span></div>
+<div class="itp-r"><span class="itp-rng" style="min-width:75px">12-15</span><span style="font-size:11px">ЧСС 60-90 · АД 100-120 · ЧДД 16-20</span></div>
+</div>
 </div>
 
 </div>
+
+<script>
+function g(id,btn){var c=document.getElementsByClassName('card');for(var i=0;i<c.length;i++)c[i].classList.remove('show');var t=document.getElementsByClassName('tab');for(var i=0;i<t.length;i++)t[i].classList.remove('act');var x=document.getElementById('t-'+id);if(x)x.classList.add('show');if(btn)btn.classList.add('act');try{if(id==='md')rM()}catch(e){}try{if(id==='sp')spR()}catch(e){}try{if(id==='inf')cI()}catch(e){}try{if(id==='kl')kR()}catch(e){}try{if(id==='pal')iP()}catch(e){}try{if(id==='tx')txR()}catch(e){}window.scrollTo(0,0)}
+
+var qs={rr:0,sb:0,gc:0};
+function qt(k,e){qs[k]=qs[k]?0:1;e.classList.toggle('on',qs[k]);var s=qs.rr+qs.sb+qs.gc;var r=document.getElementById('qs-r');document.getElementById('qs-n').textContent=s;if(s>=2){r.className='res hi';document.getElementById('qs-l').textContent='Высокий риск'}else{r.className='res low';document.getElementById('qs-l').textContent='Низкий риск'}}
+
+function cN(){var rr=+document.getElementById('n-rr').value||0,sp=+document.getElementById('n-sp').value||0,sb=+document.getElementById('n-sb').value||0,hr=+document.getElementById('n-hr').value||0,t=+document.getElementById('n-tm').value||0;if(!rr&&!sp&&!sb&&!hr&&!t)return;var s=0;if(rr<=8)s+=3;else if(rr<=11)s+=1;else if(rr<=20)s+=0;else if(rr<=24)s+=2;else s+=3;if(sp<=91)s+=3;else if(sp<=93)s+=2;else if(sp<=95)s+=1;if(sb<=90)s+=3;else if(sb<=100)s+=2;else if(sb<=110)s+=1;else if(sb<=219)s+=0;else s+=3;if(hr<=40)s+=3;else if(hr<=50)s+=1;else if(hr<=90)s+=0;else if(hr<=110)s+=1;else if(hr<=130)s+=2;else s+=3;if(t<=35)s+=3;else if(t<=36)s+=1;else if(t<=38)s+=0;else if(t<=39)s+=1;else s+=2;document.getElementById('n-n').textContent=s;var r=document.getElementById('n-r');if(s<=4){r.className='res low';document.getElementById('n-l').textContent='Низкий'}else if(s<=6){r.className='res med';document.getElementById('n-l').textContent='Средний'}else{r.className='res hi';document.getElementById('n-l').textContent='ВЫСОКИЙ'}}
+
+function cG(){var e=+document.getElementById('ge').value,v=+document.getElementById('gv').value,m=+document.getElementById('gm').value,s=e+v+m;document.getElementById('g-n').textContent=s;var r=document.getElementById('g-r');if(s>=13){r.className='res low';document.getElementById('g-l').textContent='Ясное'}else if(s>=9){r.className='res med';document.getElementById('g-l').textContent='Умеренное'}else{r.className='res hi';document.getElementById('g-l').textContent='Кома'}}
+
+var wS=0;
+function wt(e,p){e.classList.toggle('on');wS+=e.classList.contains('on')?p:-p;document.getElementById('w-n').textContent=wS;var r=document.getElementById('w-r');if(wS>4){r.className='res hi';document.getElementById('w-l').textContent='Высокая'}else{r.className='res low';document.getElementById('w-l').textContent='Низкая'}}
+
+function cA(){var h=+document.getElementById('a-hr').value,s=+document.getElementById('a-sb').value;if(!h||!s)return;var i=(h/s).toFixed(2);document.getElementById('a-n').textContent=i;var r=document.getElementById('a-r');if(i<1){r.className='res low';document.getElementById('a-l').textContent='Норма'}else if(i<1.5){r.className='res med';document.getElementById('a-l').textContent='Средний шок'}else{r.className='res hi';document.getElementById('a-l').textContent='Тяжёлый шок'}}
+
+var cs={f:0,a:0,s:0};
+function ct(k,e){cs[k]=cs[k]?0:1;e.classList.toggle('on',cs[k]);var n=cs.f+cs.a+cs.s;document.getElementById('c-n').textContent=n;var r=document.getElementById('c-r');if(n>=1){r.className='res hi';document.getElementById('c-l').textContent='Высокий риск'}else{r.className='res low';document.getElementById('c-l').textContent='Нет признаков'}}
+
+var vS=0;
+function vt(e,p){e.classList.toggle('on');vS+=e.classList.contains('on')?p:-p;document.getElementById('av-n').textContent=vS;var r=document.getElementById('av-r');if(vS<=4){r.className='res low';document.getElementById('av-l').textContent='Маловероятен'}else if(vS<=6){r.className='res med';document.getElementById('av-l').textContent='Возможен'}else{r.className='res hi';document.getElementById('av-l').textContent='ВЕРОЯТЕН'}}
+
+function cV(){var w=+document.getElementById('vl-wt').value||0;if(!w){document.getElementById('vl-r').textContent='Введите вес';return}document.getElementById('vl-r').innerHTML='<b style="color:#0a84ff">Протективная вентиляция:</b><br>ДО 4 мл/кг: <b style="color:#30d158">'+Math.round(w*4)+' мл</b><br>ДО 6 мл/кг: <b style="color:#ffd60a">'+Math.round(w*6)+' мл</b><br>ДО 8 мл/кг: <b style="color:#ff9f0a">'+Math.round(w*8)+' мл</b><br>ЧД: 12-16/мин<br>ПДКВ: 5-8 см H₂O'}
+
+function cB(){var h=(+document.getElementById('b-h').value)/100,w=+document.getElementById('b-w').value;if(!h||!w)return;var b=(w/(h*h)).toFixed(1);document.getElementById('b-n').textContent=b;var r=document.getElementById('b-r');if(b<18.5){r.className='res med';document.getElementById('b-l').textContent='Дефицит'}else if(b<25){r.className='res low';document.getElementById('b-l').textContent='Норма'}else if(b<30){r.className='res med';document.getElementById('b-l').textContent='Избыточная'}else{r.className='res hi';document.getElementById('b-l').textContent='Ожирение'}}
+
+var crI=null,crS=120,crC=1,crT=0;
+function cT(){if(crI){clearInterval(crI);crI=null;document.getElementById('cr-b').textContent='▶ ПРОДОЛЖИТЬ'}else{crI=setInterval(cTk,1000);document.getElementById('cr-b').textContent='⏸ ПАУЗА'}}
+function cTk(){crS--;crT++;if(crS<=0){crS=120;crC++;document.getElementById('cr-c').textContent='Цикл '+crC}var m=Math.floor(crS/60),s=crS%60;document.getElementById('cr-t').textContent=(m<10?'0':'')+m+':'+(s<10?'0':'')+s;var mn=Math.floor(crT/60);document.getElementById('cr-a').textContent=(mn>=3&&mn%2===1)?'💉 АДРЕНАЛИН!':''}
+function cZ(){clearInterval(crI);crI=null;crS=120;crC=1;crT=0;document.getElementById('cr-t').textContent='02:00';document.getElementById('cr-c').textContent='Цикл 1';document.getElementById('cr-a').textContent='';document.getElementById('cr-b').textContent='▶ СТАРТ'}
+
+var MEDS=[
+{n:'Нитроглицерин',c:'Нитрат',d:'0.5 мг под язык × 3 каждые 5 мин',i:'ОКС. АД>90!'},
+{n:'Аспирин',c:'Антиагрегант',d:'300-500 мг разжевать',i:'ОКС'},
+{n:'Адреналин',c:'Катехоламин',d:'1 мг в/в (СЛР); 0.5 мг в/м (анафилаксия)',i:'СЛР, анафилаксия'},
+{n:'Атропин',c:'М-холиноблокатор',d:'0.5-1 мг в/в',i:'Брадикардия, ФОС'},
+{n:'Магнезия 25%',c:'Антиаритмик',d:'4 г в/в за 20 мин',i:'Эклампсия'},
+{n:'Фуросемид',c:'Диуретик',d:'40-80 мг в/в',i:'Отёк лёгких'},
+{n:'Преднизолон',c:'ГКС',d:'60-120 мг в/в',i:'Анафилаксия, шок'},
+{n:'Дексаметазон',c:'ГКС',d:'4-16 мг в/в',i:'Отёк мозга'},
+{n:'Кеторол',c:'НПВП',d:'30 мг в/м',i:'Боль'},
+{n:'Анальгин',c:'НПВП',d:'500-1000 мг в/в МЕДЛЕННО',i:'Боль'},
+{n:'Но-шпа',c:'Спазмолитик',d:'2-4 мл в/в',i:'Колики'},
+{n:'Метоклопрамид',c:'Противорвотный',d:'10 мг в/в',i:'Рвота'},
+{n:'Налоксон',c:'Антагонист опиоидов',d:'0.4-2 мг в/в',i:'Передозировка'},
+{n:'Амиодарон',c:'Антиаритмик',d:'300 мг в/в при ФЖ/ЖТ',i:'Аритмии'},
+{n:'Допамин',c:'Катехоламин',d:'5-20 мкг/кг/мин',i:'Шок'},
+{n:'Тиамин (B1)',c:'Витамин',d:'100 мг в/м ДО глюкозы',i:'Вернике'},
+{n:'Супрастин',c:'H1-блокатор',d:'1-2 мл в/в',i:'Аллергия'},
+{n:'Димедрол',c:'H1-блокатор',d:'1-2 мл в/в',i:'Аллергия'}
+];
+function rM(){var h='';for(var i=0;i<MEDS.length;i++){var m=MEDS[i];h+='<div class="med"><div class="med-n">'+m.n+'</div><div class="med-c">'+m.c+'</div><div class="med-r"><b>Доза:</b>'+m.d+'</div><div class="med-r"><b>Показания:</b>'+m.i+'</div></div>'}document.getElementById('m-list').innerHTML=h}
+
+var SP=[
+{n:'Адреналин',l:'Sol. Adrenalini',d:'1 мг/мл – 1 мл',r:'п/к, в/м, в/в'},
+{n:'Амиодарон',l:'Sol. Amiodaroni',d:'50 мг/мл – 3 мл',r:'в/в'},
+{n:'Аммиак',l:'Sol. Ammonii caustici',d:'100 мг/мл – 40 мл',r:'Наружно'},
+{n:'Анальгин',l:'Sol. Analgini',d:'500 мг/мл – 2 мл',r:'в/в, в/м'},
+{n:'Анаприлин',l:'Tab. Anaprilini',d:'40 мг',r:'Внутрь'},
+{n:'Аспаркам',l:'Sol. Asparcam',d:'5 мл',r:'в/в'},
+{n:'Атропин',l:'Sol. Atropini',d:'1 мг/мл – 1 мл',r:'в/в'},
+{n:'Аспирин',l:'Tab. Acidi acetylsalicylici',d:'500 мг',r:'Внутрь'},
+{n:'Гепарин',l:'Sol. Heparini',d:'5000 ЕД/мл',r:'в/в, п/к'},
+{n:'Глюкоза 40%',l:'Sol. Glucosae 40%',d:'10 мл',r:'в/в'},
+{n:'Глюкоза 5%',l:'Sol. Glucosae 5%',d:'250 мл',r:'в/в'},
+{n:'Дексаметазон',l:'Sol. Dexamethasoni',d:'4 мг/мл – 1 мл',r:'в/в, в/м'},
+{n:'Димедрол',l:'Sol. Dimedroli',d:'10 мг/мл – 1 мл',r:'в/м'},
+{n:'Допамин',l:'Sol. Dopamini',d:'40 мг/мл – 5 мл',r:'в/в'},
+{n:'Дроперидол',l:'Sol. Droperidoli',d:'2.5 мг/мл – 2 мл',r:'в/в'},
+{n:'Но-шпа (Дротаверин)',l:'Sol. Drotaverini',d:'20 мг/мл – 2 мл',r:'в/в, в/м'},
+{n:'Каптоприл',l:'Tab. Captoprili',d:'25 мг',r:'Внутрь, под язык'},
+{n:'Кеторолак',l:'Sol. Ketorolaci',d:'30 мг/мл – 1 мл',r:'в/в, в/м'},
+{n:'Кетопрофен',l:'Sol. Ketoprofeni',d:'50 мг/мл – 2 мл',r:'в/в, в/м'},
+{n:'Клопидогрел',l:'Tab. Clopidogreli',d:'75 мг',r:'Внутрь'},
+{n:'Лидокаин',l:'Sol. Lidocaini',d:'100 мг/мл – 2 мл',r:'в/в'},
+{n:'Магнезия 25%',l:'Sol. Magnesii sulfatis',d:'25% – 10 мл',r:'в/в'},
+{n:'Маннит',l:'Sol. Mannitoli',d:'15% – 400 мл',r:'в/в'},
+{n:'Метоклопрамид',l:'Sol. Metoclopramidi',d:'5 мг/мл – 2 мл',r:'в/в, в/м'},
+{n:'Метопролол',l:'Sol. Metoprololi',d:'1 мг/мл – 5 мл',r:'в/в'},
+{n:'Морфин',l:'Sol. Morphini',d:'10 мг/мл – 1 мл',r:'в/в'},
+{n:'Налоксон',l:'Sol. Naloxoni',d:'0.4 мг/мл – 1 мл',r:'в/в'},
+{n:'Натрия гидрокарбонат',l:'Sol. Natrii hydrocarbonatis',d:'40 мг/мл – 200 мл',r:'в/в'},
+{n:'Натрия тиосульфат',l:'Sol. Natrii thiosulfatis',d:'300 мг/мл – 10 мл',r:'в/в'},
+{n:'NaCl 0.9%',l:'Sol. Natrii chloridi',d:'0.9% – 200/400 мл',r:'в/в'},
+{n:'Нитроглицерин',l:'Tab. Nitroglycerini',d:'0.5 мг',r:'Подъязычно'},
+{n:'Нитроспрей',l:'Aer. Nitroglycerini',d:'0.4 мг/доза',r:'Подъязычно'},
+{n:'Новокаин',l:'Sol. Novocaini',d:'0.5% – 5 мл',r:'п/к, местно'},
+{n:'Новокаинамид',l:'Sol. Novocainamidi',d:'100 мг/мл – 5 мл',r:'в/в, в/м'},
+{n:'Норадреналин',l:'Sol. Norepinephrini',d:'2 мг/мл – 4 мл',r:'в/в'},
+{n:'Парацетамол',l:'Tab. Paracetamoli',d:'500 мг',r:'Внутрь'},
+{n:'Пиридоксин (B6)',l:'Sol. Pyridoxini',d:'50 мг/мл – 1 мл',r:'в/в, в/м'},
+{n:'Преднизолон',l:'Sol. Prednisoloni',d:'30 мг/мл – 1 мл',r:'в/в, в/м'},
+{n:'Пропофол',l:'Emulsi Propofoli',d:'10 мг/мл – 20 мл',r:'в/в'},
+{n:'Пульмикорт',l:'Susp. Pulmicort',d:'0.25 мг/мл – 2 мл',r:'Ингаляция'},
+{n:'Реамберин',l:'Sol. Reambern',d:'250 мл',r:'в/в'},
+{n:'Реополиглюкин',l:'Sol. Rheopolyglucini',d:'100 мг/мл – 200 мл',r:'в/в'},
+{n:'Рингер',l:'Sol. Ringer',d:'250 мл',r:'в/в'},
+{n:'Сальбутамол',l:'Aer. Salbutamoli',d:'0.1 мг/доза',r:'Ингаляция'},
+{n:'Сибазон (Реланиум)',l:'Sol. Sibazoni',d:'5 мг/мл – 2 мл',r:'в/в, в/м'},
+{n:'Супрастин',l:'Sol. Chloropyramini',d:'20 мг/мл – 1 мл',r:'в/в, в/м'},
+{n:'Тиамин (B1)',l:'Sol. Thiamini',d:'50 мг/мл – 1 мл',r:'в/в, в/м'},
+{n:'Трамадол',l:'Sol. Tramadoli',d:'50 мг/мл – 2 мл',r:'в/в, в/м'},
+{n:'Транексам',l:'Sol. Acidi tranexamici',d:'50 мг/мл – 5 мл',r:'в/в, в/м'},
+{n:'Унитиол',l:'Sol. Unithioli',d:'50 мг/мл – 5 мл',r:'в/м, п/к'},
+{n:'Фентанил',l:'Sol. Phentanyli',d:'50 мкг/мл – 2 мл',r:'в/в, в/м'},
+{n:'Фуросемид',l:'Sol. Furosemidi',d:'10 мг/мл – 2 мл',r:'в/в, в/м'},
+{n:'Цитофлавин',l:'Sol. Cytoflavin',d:'10 мл',r:'в/в'},
+{n:'Эуфиллин',l:'Sol. Aminophyllini',d:'24 мг/мл – 10 мл',r:'в/в'},
+{n:'Этамзилат',l:'Sol. Etamsylati',d:'125 мг/мл – 2 мл',r:'в/в, в/м'},
+{n:'Кетамин',l:'Sol. Ketamini',d:'50 мг/мл – 2 мл',r:'в/в, в/м'},
+{n:'Дексмедетомидин',l:'Sol. Dexmedetomidini',d:'100 мкг/мл – 2 мл',r:'в/в'}
+];
+function spR(){var q=(document.getElementById('sp-s').value||'').toLowerCase(),h='',n=0;for(var i=0;i<SP.length;i++){var d=SP[i];if(q&&d.n.toLowerCase().indexOf(q)===-1&&d.l.toLowerCase().indexOf(q)===-1)continue;h+='<div class="sp-item"><div class="sp-name">'+d.n+'</div><div class="sp-lat">'+d.l+'</div><div class="sp-row"><div class="sp-dose">'+d.d+'</div><div class="sp-route">'+d.r+'</div></div></div>';n++}if(n===0)h='<div style="text-align:center;padding:30px;color:rgba(255,255,255,.3)">Не найдено</div>';document.getElementById('sp-list').innerHTML=h}
+
+
+// ============ ИНФУЗОМАТ ============
+// Все концентрации в мг/мл, дозы → мг/мин
+// мл/час = (мг/мин × 60) / (мг/мл)
+// кап/мин = мл/час / 3 (1мл = 20кап, 20/60 = 1/3)
+var INF={
+  d:{cnc:0.8,u:'мкг/кг/мин',min:2,max:20,def:5,col:'d',
+     amp:'40 мг/мл × 5 мл = 200 мг',
+     mix:'200 мг + 250 мл NaCl 0.9% → 0.8 мг/мл',
+     eff:[{r:[2,5],t:'Низкая (2-5 мкг/кг/мин)',d:'Дофаминерг. эффект: ↑почечный кровоток'},
+          {r:[5,10],t:'Средняя (5-10 мкг/кг/мин)',d:'β1: ↑ЧСС, ↑сократимость. Кардиогенный шок'},
+          {r:[10,20],t:'Высокая (10-20 мкг/кг/мин)',d:'α1: вазоконстрикция, ↑АД'}],
+     warn:'Контроль ЭКГ, АД, диуреза'},
+  n:{cnc:0.032,u:'мкг/мин',min:2,max:30,def:8,col:'n',
+     amp:'2 мг/мл × 4 мл = 8 мг',
+     mix:'8 мг + 250 мл NaCl 0.9% → 32 мкг/мл',
+     eff:[{r:[2,8],t:'Стартовая (2-8 мкг/мин)',d:'Умеренная вазоконстрикция'},
+          {r:[8,16],t:'Средняя (8-16 мкг/мин)',d:'Поддержание САД >65'},
+          {r:[16,30],t:'Высокая (16-30 мкг/мин)',d:'Максимум. Риск ишемии!'}],
+     warn:'Желательно в центральную вену'},
+  no:{cnc:2,u:'мг/мин',min:1,max:50,def:20,col:'no',
+     amp:'100 мг/мл × 5 мл = 500 мг',
+     mix:'500 мг + 250 мл NaCl 0.9% → 2 мг/мл',
+     eff:[{r:[1,20],t:'Поддерживающая (1-20 мг/мин)',d:'Длительная антиаритмическая инфузия'},
+          {r:[20,50],t:'Загрузочная (20-50 мг/мин)',d:'Купирование ФП/ТП. Макс 17 мг/кг'}],
+     warn:'Контроль АД и QRS'},
+  f:{cnc:0.32,u:'мг/час',min:5,max:60,def:10,col:'f',
+     amp:'10 мг/мл × 2 мл = 20 мг',
+     mix:'80 мг + 250 мл NaCl → 0.32 мг/мл',
+     eff:[{r:[5,10],t:'Низкая (5-10 мг/час)',d:'Поддержка при ХСН'},
+          {r:[10,20],t:'Средняя (10-20 мг/час)',d:'Активный диурез'},
+          {r:[20,60],t:'Высокая (20-60 мг/час)',d:'Рефрактерный отёк'}],
+     warn:'Контроль К+! Гипокалиемия → аритмии'}
+};
+var iD='d';
+function sD(d){iD=d;var btns=['d','n','no','f'];for(var i=0;i<btns.length;i++){var b=document.getElementById('db-'+btns[i]);if(b){b.className='db';if(btns[i]===d)b.classList.add(d)}}var inf=INF[d];document.getElementById('i-dlbl').textContent='Доза ('+inf.u+')';var sld=document.getElementById('i-sld');sld.className='sld '+(d==='d'?'':d);sld.min=inf.min;sld.max=inf.max;sld.value=inf.def;sld.step=(inf.max-inf.min)/100;document.getElementById('i-mn').textContent=inf.min;document.getElementById('i-mx').textContent=inf.max;cI()}
+function cI(){var d=iD,inf=INF[d],w=+document.getElementById('i-wt').value||70,dose=+document.getElementById('i-sld').value||inf.def;document.getElementById('i-sv').textContent=dose;var mgMin;if(d==='d')mgMin=(dose*w)/1000;else if(d==='n')mgMin=dose/1000;else if(d==='no')mgMin=dose;else if(d==='f')mgMin=dose/60;var ml=(mgMin*60)/inf.cnc,drops=ml/3;document.getElementById('i-n').textContent=drops.toFixed(0);var r=document.getElementById('i-r');r.className='infr '+(d==='d'?'':d);document.getElementById('i-f').textContent='🧪 '+inf.amp+'\n💧 '+inf.mix+'\n⚡ '+ml.toFixed(1)+' мл/час = '+drops.toFixed(0)+' кап/мин';var eh='<div class="infeff-t">Эффекты в зависимости от дозы</div>';for(var i=0;i<inf.eff.length;i++){var e=inf.eff[i],act=dose>=e.r[0]&&dose<=e.r[1];eh+='<div class="infeff-r'+(act?' act':'')+'"><b>'+e.t+'</b><br>'+e.d+'</div>'}eh+='<div class="infeff-r" style="background:rgba(255,69,58,.08);color:#ff453a;margin-top:8px;border-radius:8px;padding:8px"><b>⚠ '+inf.warn+'</b></div>';document.getElementById('i-eff').innerHTML=eh}
+
+// ============ КЛИНИКА ============
+var KL=[
+{id:'adr',n:'Адреналин',l:'Sol. Adrenalini',f:'inj',i:'💉',g:'Катехоламин α+β',ds:'СЛР: 1 мг в/в каждые 3-5 мин. Анафилаксия: 0.5 мг в/м',rt:'В/в, в/м',dl:'1 мл 0.1% + 9 мл NaCl = 0.1 мг/мл',wh:'Остановка сердца, анафилаксия',mc:'α1→↑АД, β1→↑ЧСС, β2→бронходилатация',wr:'Не смешивать со щелочами!'},
+{id:'dex',n:'Дексаметазон',l:'Sol. Dexamethasoni',f:'inj',i:'💉',g:'ГКС',ds:'4-16 мг в/в',rt:'В/в, в/м',dl:'Без разведения',wh:'Анафилаксия, отёк мозга',mc:'↓фосфолипаза А2',wr:'Не быстро струйно'},
+{id:'dim',n:'Димедрол',l:'Sol. Dimedroli',f:'inj',i:'💉',g:'H1-блокатор',ds:'1% — 1-2 мл в/м или в/в',rt:'В/м, в/в',dl:'+ 9-19 мл NaCl',wh:'Аллергия',mc:'Блок H1',wr:'Сонливость'},
+{id:'ket',n:'Кеторолак',l:'Sol. Ketorolaci',f:'inj',i:'💉',g:'НПВП',ds:'30 мг в/м. Макс 120 мг/сут',rt:'В/м, в/в',dl:'Без разведения',wh:'Боль. НЕ при ОИМ!',mc:'Блок ЦОГ',wr:'НЕЛЬЗЯ при язве, кровотечении!'},
+{id:'nal',n:'Налоксон',l:'Sol. Naloxoni',f:'inj',i:'💉',g:'Антагонист опиоидов',ds:'0.4-2 мг в/в каждые 2-3 мин',rt:'В/в, в/м',dl:'Без разведения',wh:'Передозировка опиоидов',mc:'Блок μ-рецепторов',wr:'Короткое действие!'},
+{id:'pre',n:'Преднизолон',l:'Sol. Prednisoloni',f:'inj',i:'💉',g:'ГКС',ds:'60-120 мг в/в',rt:'В/в струйно',dl:'Без разведения',wh:'Анафилаксия, шок',mc:'ГКС-рецептор',wr:'Гипергликемия'},
+{id:'sup',n:'Супрастин',l:'Sol. Chloropyramini',f:'inj',i:'💉',g:'H1-блокатор',ds:'1-2 мл 2% в/м или в/в',rt:'В/м, в/в',dl:'+ 9 мл NaCl',wh:'Аллергия',mc:'Блок H1',wr:'Сонливость'},
+{id:'tia',n:'Тиамин (B1)',l:'Sol. Thiamini',f:'inj',i:'💉',g:'Витамин',ds:'100 мг в/м',rt:'В/м, в/в',dl:'+ 100 мл NaCl',wh:'Алк. кома, Вернике',mc:'Кофермент',wr:'ДО глюкозы алкоголику!'},
+{id:'ami',n:'Амиодарон',l:'Sol. Amiodaroni',f:'inj',i:'💉',g:'Антиаритмик III',ds:'ФЖ/ЖТ: 300 мг в/в',rt:'В/в',dl:'300 мг + 20 мл глюкозы 5%',wh:'ФЖ, ЖТ, ФП',mc:'Блок K+-каналов',wr:'Гипотензия. QT↑'},
+{id:'an',n:'Анальгин',l:'Sol. Analgini',f:'inj',i:'💉',g:'НПВП',ds:'50% — 1-2 мл в/в МЕДЛЕННО',rt:'В/в медленно, в/м',dl:'+ 8 мл NaCl',wh:'Боль, лихорадка',mc:'ЦОГ-3',wr:'Быстро в/в — коллапс!'},
+{id:'mag',n:'Магнезия 25%',l:'Sol. Magnesii sulfatis',f:'inj',i:'💉',g:'Антагонист Ca',ds:'Эклампсия: 4-6 г за 20 мин',rt:'В/в капельно',dl:'4 г + 84 мл NaCl',wh:'Эклампсия, torsades',mc:'Антагонист Ca',wr:'Контроль рефлексов!'},
+{id:'fur',n:'Фуросемид',l:'Sol. Furosemidi',f:'inj',i:'💉',g:'Петлевой диуретик',ds:'20-80 мг в/в',rt:'В/в МЕДЛЕННО',dl:'Без разведения',wh:'Отёк лёгких',mc:'Блок Na/K/2Cl',wr:'Гипокалиемия'},
+{id:'comb',n:'Комбилипен',l:'Sol. Combilipen',f:'inj',i:'💉',g:'Витамины B1+B6+B12',ds:'2 мл в/м глубоко',rt:'В/м',dl:'Без разведения',wh:'Полинейропатии, невралгии',mc:'B1+B6+B12 — нерв. проводимость, миелин',wr:'Только в/м! Болезненный'},
+{id:'mex',n:'Мексидол',l:'Sol. Mexidoli 5%',f:'inj',i:'💉',g:'Антиоксидант',ds:'2-5 мл 5% в/в. ОНМК: 200-500 мг',rt:'В/в, в/м',dl:'+ 100-200 мл NaCl',wh:'ОНМК, ЧМТ, абстиненция',mc:'Антиоксидант, мембраностабилизатор',wr:'Сонливость'},
+{id:'cyt',n:'Цитофлавин',l:'Sol. Cytoflavin',f:'inf',i:'🧪',g:'Антигипоксант',ds:'10 мл в/в капельно',rt:'В/в капельно',dl:'10 мл + 100-200 мл NaCl 0.9%',wh:'ОНМК (12 сут), ЧМТ',mc:'Сукцинат+рибоксин+B3+B2',wr:'Только на NaCl, НЕ на глюкозе!'},
+{id:'ncl',n:'NaCl 0.9%',l:'Sol. Natrii chloridi',f:'inf',i:'🧪',g:'Кристаллоид',ds:'Болюс: 500-1000 мл',rt:'В/в',dl:'—',wh:'Гиповолемия, шок',mc:'Изотонический',wr:''},
+{id:'glu',n:'Глюкоза 5%',l:'Sol. Glucosae 5%',f:'inf',i:'🧪',g:'Энергия',ds:'По показаниям',rt:'В/в капельно',dl:'—',wh:'Гипогликемия',mc:'Метаболизируется',wr:'НЕЛЬЗЯ при алк. коме до тиамина!'},
+{id:'mnt',n:'Маннит',l:'Sol. Mannitoli',f:'inf',i:'🧪',g:'Осмодиуретик',ds:'0.5-1.5 г/кг за 30-60 мин',rt:'В/в капельно',dl:'Готовый 15-20%',wh:'Отёк мозга',mc:'Осмотический',wr:'НЕЛЬЗЯ при ХПН, ХСН'},
+{id:'asp',n:'Аспирин',l:'Tab. Acidi acetylsalicylici',f:'tab',i:'💊',g:'Антиагрегант',ds:'ОКС: 300-500 мг разжевать',rt:'Внутрь',dl:'—',wh:'ОКС',mc:'Блок ЦОГ-1',wr:'НЕ при язве, геморр. инсульте!'},
+{id:'nit',n:'Нитроглицерин',l:'Tab. Nitroglycerini',f:'tab',i:'💊',g:'Нитрат',ds:'0.5 мг под язык каждые 5 мин',rt:'Сублингвально',dl:'—',wh:'Стенокардия, ОКС',mc:'NO → расширение вен',wr:'НЕЛЬЗЯ при АД<90!'},
+{id:'cap',n:'Каптоприл',l:'Tab. Captoprili',f:'tab',i:'💊',g:'иАПФ',ds:'Криз: 25 мг под язык',rt:'Под язык',dl:'—',wh:'Гипертонический криз',mc:'↓АПФ',wr:'Отёк Квинке'}
+];
+var kFlt='all';
+function kF(f,b){kFlt=f;var bs=document.querySelectorAll('#t-kl .kf');for(var i=0;i<bs.length;i++)bs[i].classList.remove('on');if(b)b.classList.add('on');kR()}
+function kR(){var q=(document.getElementById('k-s').value||'').toLowerCase(),h='';for(var i=0;i<KL.length;i++){var d=KL[i];if(kFlt!=='all'&&d.f!==kFlt)continue;if(q&&d.n.toLowerCase().indexOf(q)===-1&&d.l.toLowerCase().indexOf(q)===-1&&d.g.toLowerCase().indexOf(q)===-1)continue;h+='<div class="kc" id="kc-'+d.id+'"><div class="kch" onclick="kO(\''+d.id+'\')"><div class="kci">'+d.i+'</div><div class="kcn"><div class="kcN">'+d.n+'</div><div class="kcL">'+d.l+'</div><div class="kcG">'+d.g+'</div></div><div class="kcv">›</div></div><div class="kb"><div class="kfd"><div class="kfl">Доза</div><div class="kfv">'+d.ds+'</div></div><div class="kfd"><div class="kfl">Путь</div><div class="kfv">'+d.rt+'</div></div>'+(d.dl&&d.dl!=='—'?'<div class="kmx">💧 '+d.dl+'</div>':'')+'<div class="kfd"><div class="kfl">Показания</div><div class="kfv">'+d.wh+'</div></div><div class="kmc"><b>⚙</b> '+d.mc+'</div>'+(d.wr?'<div class="kwr">⚠ '+d.wr+'</div>':'')+'</div></div>'}document.getElementById('k-list').innerHTML=h||'<div style="text-align:center;padding:30px;color:rgba(255,255,255,.3)">Не найдено</div>'}
+function kO(id){var c=document.getElementById('kc-'+id);if(c)c.classList.toggle('opn')}
+
+// ============ ПАЛАТЫ ============
+var PR=[
+{n:'Цитофлавин',d:'Цитофлавин 10мл + NaCl 200мл',v:210,r:60},
+{n:'NaCl 200',d:'NaCl 0.9% 200мл',v:200,r:60},
+{n:'NaCl 100',d:'NaCl 0.9% 100мл',v:100,r:60},
+{n:'Глюкоза 5%',d:'Глюкоза 5% 200мл',v:200,r:60},
+{n:'Рингер',d:'Рингер 200мл',v:200,r:60},
+{n:'Реамберин',d:'Реамберин 250мл',v:250,r:60},
+{n:'Маннит',d:'Маннит 400мл',v:400,r:200},
+{n:'Магнезия',d:'Магнезия 25% 20мл + NaCl 200мл',v:220,r:30}
+];
+var BD={},plB=0;
+function iP(){if(plB)return;plB=1;var h='<div class="wt">🚨 Палата 1</div>';for(var i=1;i<=2;i++)h+=bB('w1b'+i,'1',i);h+='<div class="wt">🏥 Палата 2</div>';for(var i=1;i<=6;i++)h+=bB('w2b'+i,'2',i);document.getElementById('pl-list').innerHTML=h}
+function bB(k,w,n){var ph='';for(var i=0;i<PR.length;i++)ph+='<button class="p" onclick="pB(\''+k+'\','+i+')">'+PR[i].n+'</button>';return '<div class="bed" id="bd-'+k+'"><div class="bh"><div class="bn">🛏 Койка '+n+' · П'+w+'</div><div class="bs" id="bs-'+k+'">Свободно</div></div><div class="pl">⚡ Быстрый выбор</div><div class="ps">'+ph+'</div><input class="bi" id="bdr-'+k+'" placeholder="Препарат"><div class="bf"><div class="bff"><div class="bfl">Объём мл</div><input class="bfn" id="bv-'+k+'" type="number" oninput="uB(\''+k+'\')"></div><div class="bff"><div class="bfl">Скорость мл/ч</div><input class="bfn" id="br-'+k+'" type="number" oninput="uB(\''+k+'\')"></div></div><div class="bhn" id="bh-'+k+'">Введите объём и скорость</div><div class="bt" id="bt-'+k+'">—:——</div><div class="bm" id="bm-'+k+'">Нажми Старт</div><div class="bbs"><button class="bb s" id="bst-'+k+'" onclick="stB(\''+k+'\')">▶ Старт</button><button class="bb st" id="bsp-'+k+'" onclick="spB(\''+k+'\')" style="display:none">⏹ Стоп</button><button class="bb" onclick="clB(\''+k+'\')">✕ Сброс</button></div></div>'}
+function pB(k,i){var p=PR[i];document.getElementById('bdr-'+k).value=p.d;document.getElementById('bv-'+k).value=p.v;document.getElementById('br-'+k).value=p.r;uB(k)}
+function uB(k){var v=+document.getElementById('bv-'+k).value||0,r=+document.getElementById('br-'+k).value||0,h=document.getElementById('bh-'+k);if(v&&r){var hr=v/r,m=Math.round(hr*60);h.textContent=hr<1?'⏱ '+m+' мин':'⏱ '+Math.floor(hr)+'ч '+Math.round((hr%1)*60)+'мин'}else h.textContent='Введите объём и скорость'}
+function stB(k){var v=+document.getElementById('bv-'+k).value||0,r=+document.getElementById('br-'+k).value||0;if(!v||!r){alert('Введите объём и скорость!');return}var now=Date.now(),end=now+(v/r)*3600000;BD[k]={v:v,r:r,s:now,e:end};BD[k].t=setInterval(function(){tB(k)},1000);document.getElementById('bst-'+k).style.display='none';document.getElementById('bsp-'+k).style.display='';tB(k)}
+function tB(k){var b=BD[k];if(!b)return;var rm=b.e-Date.now(),cd=document.getElementById('bd-'+k),ss=document.getElementById('bs-'+k),tm=document.getElementById('bt-'+k),mm=document.getElementById('bm-'+k);function f(t){var d=new Date(t);return (d.getHours()<10?'0':'')+d.getHours()+':'+(d.getMinutes()<10?'0':'')+d.getMinutes()}if(rm<=0){cd.className='bed d';ss.className='bs d';ss.textContent='ОТКАПАЛО';tm.className='bt d';tm.textContent='✓ ГОТОВО';mm.className='bm a';mm.textContent='🔴 ЗАВЕРШЕНА! '+f(b.s)+' → '+f(b.e)}else if(rm<900000){cd.className='bed w';ss.className='bs w';ss.textContent='СКОРО';tm.className='bt w';mm.className='bm w';mm.textContent='⚠ <15 мин. До '+f(b.e);var s=Math.floor(rm/1000),mn=Math.floor(s/60),sc=s%60;tm.textContent=(mn<10?'0':'')+mn+':'+(sc<10?'0':'')+sc}else{cd.className='bed r';ss.className='bs r';ss.textContent='ИДЁТ';tm.className='bt r';mm.className='bm';mm.textContent='▶ '+f(b.s)+' → '+f(b.e);var s=Math.floor(rm/1000),mn=Math.floor(s/60),sc=s%60,hr=Math.floor(mn/60);mn=mn%60;tm.textContent=hr>0?hr+':'+(mn<10?'0':'')+mn+':'+(sc<10?'0':'')+sc:(mn<10?'0':'')+mn+':'+(sc<10?'0':'')+sc}}
+function spB(k){if(BD[k]&&BD[k].t){clearInterval(BD[k].t);BD[k].t=null}document.getElementById('bst-'+k).style.display='';document.getElementById('bsp-'+k).style.display='none';document.getElementById('bd-'+k).className='bed';document.getElementById('bs-'+k).className='bs';document.getElementById('bs-'+k).textContent='Свободно';document.getElementById('bt-'+k).className='bt';document.getElementById('bt-'+k).textContent='—:——';document.getElementById('bm-'+k).className='bm';document.getElementById('bm-'+k).textContent='Остановлено'}
+function clB(k){if(BD[k]&&BD[k].t)clearInterval(BD[k].t);BD[k]={};document.getElementById('bdr-'+k).value='';document.getElementById('bv-'+k).value='';document.getElementById('br-'+k).value='';spB(k);document.getElementById('bm-'+k).textContent='Нажми Старт';document.getElementById('bh-'+k).textContent='Введите объём и скорость'}
+
+
+// ============ ПРОТОКОЛЫ ЛЕЧЕНИЯ ============
+var TX=[
+{id:'okc',cat:'card',i:'❤️',n:'ОКС / Инфаркт миокарда',sub:'Острый коронарный синдром',
+ steps:[
+  {l:'1️⃣ Стартовая терапия (MONA)',d:'<b>Морфин</b> 2-5 мг в/в дробно при боли<br><b>Кислород</b> при SpO₂ <90%<br><b>Нитроглицерин</b> 0.5 мг под язык × 3 каждые 5 мин (НЕ при АД<90)<br><b>Аспирин</b> 250-500 мг разжевать'},
+  {l:'2️⃣ Антикоагулянт',d:'<b>Клопидогрел</b> 300-600 мг внутрь<br>+ <b>Гепарин</b> 5000 ЕД в/в болюс'},
+  {l:'3️⃣ Обезболивание',d:'<b>Фентанил</b> 0.05-0.1 мг в/в медленно + <b>Дроперидол</b> 2.5-5 мг'},
+  {l:'4️⃣ При гипертензии',d:'<b>Метопролол</b> 5 мг в/в (до 15 мг). НЕ при брадикардии, АВ-блокаде, бронхоспазме'},
+  {l:'5️⃣ При кардиогенном шоке',d:'<b>Допамин</b> 5-15 мкг/кг/мин или <b>Норадреналин</b> 2-20 мкг/мин'},
+  {l:'⚠ Транспортировка',d:'STEMI → ЧКВ-центр ≤90-120 мин<br>NSTEMI высокого риска → ЧКВ ≤24 ч'}
+ ]},
+{id:'gk',cat:'card',i:'❤️',n:'Гипертонический криз',sub:'Осложнённый / неосложнённый',
+ steps:[
+  {l:'1️⃣ Неосложнённый',d:'Снижение АД на 25% за 2-6 ч<br><b>Каптоприл</b> 25-50 мг под язык<br><b>Моксонидин</b> 0.4 мг под язык<br><b>Нифедипин</b> 10 мг под язык (осторожно у пожилых!)'},
+  {l:'2️⃣ Осложнённый — снижение за 1 час',d:'<b>Энап Р</b> 1.25 мг в/в — препарат выбора<br>или <b>Магнезия 25%</b> 5-10 мл в/в (энцефалопатия)'},
+  {l:'3️⃣ Криз + отёк лёгких',d:'<b>Фуросемид</b> 40-80 мг в/в<br>+ <b>Нитроглицерин</b> 0.5 мг под язык<br>+ Кислород, положение сидя'},
+  {l:'4️⃣ Криз + тахикардия',d:'<b>Метопролол</b> 5 мг в/в дробно или <b>Анаприлин</b> 20-40 мг под язык'},
+  {l:'⚠ Транспортировка',d:'Осложнённый криз → госпитализация'}
+ ]},
+{id:'xsn',cat:'card',i:'❤️',n:'Острая ХСН / Отёк лёгких',sub:'Острая декомпенсация',
+ steps:[
+  {l:'1️⃣ Положение и кислород',d:'Сидя со спущенными ногами<br>Кислород 4-8 л/мин<br>Жгуты на 3 конечности'},
+  {l:'2️⃣ Морфин',d:'<b>Морфин 1%</b> 0.5-1 мл в/в дробно. НЕ при ХОБЛ'},
+  {l:'3️⃣ Диуретик',d:'<b>Фуросемид</b> 40-80 мг в/в струйно'},
+  {l:'4️⃣ Нитраты (АД>100)',d:'<b>Нитроглицерин</b> 0.5 мг под язык каждые 5 мин или в/в инфузия'},
+  {l:'5️⃣ Кардиогенный шок (САД<90)',d:'<b>Допамин</b> 5-15 мкг/кг/мин. НЕ нитраты!'},
+  {l:'6️⃣ Бронхоспазм',d:'<b>Эуфиллин 2.4%</b> 10 мл в/в медленно'}
+ ]},
+{id:'ar',cat:'card',i:'❤️',n:'Пароксизм ФП / Тахиаритмии',sub:'ФП, ЖТ',
+ steps:[
+  {l:'1️⃣ Оценка стабильности',d:'Нестабильный → ЭИТ<br>Стабильный → медикаментозно'},
+  {l:'2️⃣ ФП до 48 ч',d:'<b>Амиодарон</b> 300 мг в/в за 1 час<br>или <b>Новокаинамид</b> 500-1000 мг в/в медленно'},
+  {l:'3️⃣ Контроль ЧСС',d:'<b>Метопролол</b> 5 мг в/в<br>или <b>Верапамил</b> 5 мг в/в (НЕ при WPW)<br>или <b>Дигоксин</b> 0.25 мг'},
+  {l:'4️⃣ ЖТ стабильная',d:'<b>Амиодарон</b> 300 мг или <b>Лидокаин</b> 1-1.5 мг/кг в/в болюс'},
+  {l:'5️⃣ Torsades',d:'<b>Магнезия 25%</b> 2-4 г в/в за 5 мин'}
+ ]},
+{id:'ins',cat:'neuro',i:'🧠',n:'ОНМК (инсульт)',sub:'Ишемический и геморрагический',
+ steps:[
+  {l:'1️⃣ Стабилизация',d:'Голова приподнята 30°<br>Кислород при SpO₂ <94%<br><b>НЕ снижать АД</b> до 185/110<br><b>Глюкоза крови ОБЯЗАТЕЛЬНО</b>'},
+  {l:'2️⃣ Нейропротекция',d:'<b>Цитофлавин</b> 10 мл + 200 мл NaCl в/в кап.<br>или <b>Мексидол</b> 200-500 мг в/в'},
+  {l:'3️⃣ Высокое АД',d:'<b>Энап Р</b> 1.25 мг в/в или <b>Магнезия 25%</b> 5-10 мл в/в. НЕ нифедипин!'},
+  {l:'4️⃣ Судороги',d:'<b>Сибазон</b> 0.5% 2-4 мл в/в'},
+  {l:'5️⃣ Отёк мозга',d:'<b>Маннит 15%</b> 0.5-1 г/кг в/в за 15-30 мин'},
+  {l:'⚠ Транспортировка',d:'Срочно в инсультный центр!<br>Тромболизис ≤4.5 ч<br>Тромбэкстракция ≤6-24 ч'}
+ ]},
+{id:'jud',cat:'neuro',i:'🧠',n:'Эпистатус / Судороги',sub:'Купирование судорожного приступа',
+ steps:[
+  {l:'1️⃣ Безопасность',d:'На бок, защитить голову<br>НЕ вставлять в рот ничего!<br>Кислород'},
+  {l:'2️⃣ Первая линия',d:'<b>Сибазон 0.5%</b> 2-4 мл в/в медленно<br>Можно повторить через 5-10 мин'},
+  {l:'3️⃣ Вторая линия',d:'<b>Конвулекс (вальпроат)</b> 15-25 мг/кг в/в за 5 мин'},
+  {l:'4️⃣ Рефрактерный',d:'<b>Пропофол</b> 1-2 мг/кг + ИВЛ → ОРИТ'},
+  {l:'5️⃣ Метаболические',d:'Гипогликемия → <b>Глюкоза 40%</b> 40-60 мл (после <b>тиамина</b>!)<br>Эклампсия → <b>Магнезия 25%</b> 4-6 г'}
+ ]},
+{id:'mig',cat:'neuro',i:'🧠',n:'Мигрень / Цефалгия',sub:'Острая головная боль',
+ steps:[
+  {l:'1️⃣ Красные флаги',d:'⚠ Исключить САК, инсульт, менингит:<br>Внезапная "громоподобная" боль<br>Лихорадка, ригидность затылка<br>Очаговая симптоматика'},
+  {l:'2️⃣ Лёгкая мигрень',d:'<b>Кеторолак</b> 30 мг в/м<br>или <b>Парацетамол</b> 1000 мг<br>или <b>Анальгин 50%</b> 2 мл в/в'},
+  {l:'3️⃣ Тяжёлая мигрень',d:'<b>Кеторолак</b> 30 мг в/м + <b>Метоклопрамид</b> 10 мг в/в<br>или <b>Спазматен</b> 5 мл в/м'},
+  {l:'4️⃣ Рефрактерная',d:'<b>Дексаметазон</b> 8 мг в/в + <b>Сибазон</b> 5-10 мг'},
+  {l:'5️⃣ Кластерная',d:'<b>Кислород 100%</b> 7-12 л/мин<br>+ <b>Суматриптан</b> 6 мг п/к'}
+ ]},
+{id:'vrt',cat:'neuro',i:'🧠',n:'Головокружение / Вертиго',sub:'Острое головокружение',
+ steps:[
+  {l:'1️⃣ Дифф. диагноз',d:'⚠ Исключить ОНМК ствола/мозжечка:<br>Очаговая симптоматика<br>Атаксия, дизартрия'},
+  {l:'2️⃣ ДППГ',d:'Манёвр Эпли. <b>Метоклопрамид</b> 10 мг при рвоте'},
+  {l:'3️⃣ Меньер',d:'<b>Бетагистин</b> 24 мг внутрь + <b>Метоклопрамид</b>'},
+  {l:'4️⃣ Вест. нейронит',d:'<b>Дексаметазон</b> 8 мг в/м'}
+ ]},
+{id:'alc',cat:'tox',i:'🍷',n:'Алкогольная интоксикация',sub:'Опьянение, абстиненция, делирий',
+ steps:[
+  {l:'1️⃣ Острое опьянение',d:'<b>Тиамин (B1)</b> 100 мг в/м — ПЕРВЫМ!<br>Промывание желудка<br><b>Глюкоза 40%</b> 40-60 мл в/в (ТОЛЬКО ПОСЛЕ тиамина!)'},
+  {l:'2️⃣ Алк. кома',d:'<b>Налоксон</b> 0.4-0.8 мг в/в (дифф. с опиоидами)<br><b>Тиамин</b> 100 мг + <b>Пиридоксин</b> 2 мл<br><b>Цитофлавин</b> 10 мл + NaCl<br>Реамберин 250-400 мл'},
+  {l:'3️⃣ Абстиненция',d:'<b>Сибазон</b> 10-20 мг в/в (профил. судорог)<br><b>Тиамин + Пиридоксин</b><br><b>Магнезия 25%</b> 5-10 мл в/в'},
+  {l:'4️⃣ Делирий',d:'<b>Сибазон</b> 20-40 мг в/в<br>+ <b>Галоперидол</b> 5-10 мг в/м<br>+ <b>Тиамин</b> 200-300 мг<br>→ Госпитализация'},
+  {l:'5️⃣ Метанол',d:'Антидот — <b>этанол</b><br>Срочно в токсикологию для диализа'}
+ ]},
+{id:'opi',cat:'tox',i:'💊',n:'Передозировка опиоидов',sub:'Героин, морфин, фентанил',
+ steps:[
+  {l:'1️⃣ Триада',d:'Угнетение дыхания (ЧДД <8)<br>Точечные зрачки (миоз)<br>Кома'},
+  {l:'2️⃣ Антидот',d:'<b>Налоксон</b> 0.4 мг в/в (или в/м/интраназально)<br>Повторять каждые 2-3 мин до 10 мг<br>Цель — восстановить дыхание'},
+  {l:'3️⃣ Поддержка',d:'ИВЛ Амбу при апноэ<br>Венозный доступ<br>NaCl 0.9% 500 мл<br>Кислород'},
+  {l:'⚠ Транспортировка',d:'ОБЯЗАТЕЛЬНО госпитализация! Налоксон 60-90 мин, опиоид 4-12 ч → повторное угнетение!'}
+ ]},
+{id:'fos',cat:'tox',i:'☠',n:'ФОС-отравление',sub:'Фосфорорганические соединения',
+ steps:[
+  {l:'1️⃣ Симптомы',d:'<b>DUMBELS:</b> Диарея, Мочеиспускание, Миоз, Брадикардия, Бронхорея, Возбуждение, Саливация'},
+  {l:'2️⃣ Атропинизация',d:'<b>Атропин</b> 2-4 мг в/в каждые 5-10 мин до сухости, мидриаза, тахикардии<br>Может потребоваться 40-100 мг!'},
+  {l:'3️⃣ Реактиватор',d:'<b>Карбоксим</b> 150 мг в/м<br>Эффективен первые 24 часа'},
+  {l:'4️⃣ Поддержка',d:'Промывание желудка<br>Удалить с кожи/одежды<br>Кислород, ИВЛ<br><b>Сибазон</b> 5-10 мг при возбуждении'}
+ ]},
+{id:'bp',cat:'pain',i:'🦴',n:'Боль в спине / Радикулит',sub:'Дорсалгия, люмбаго, ишиас',
+ steps:[
+  {l:'1️⃣ Красные флаги',d:'⚠ Исключить:<br>Травму, опухоль, инфекцию<br>Нарушение функции тазовых органов<br>Прогрессирующий неврол. дефицит'},
+  {l:'2️⃣ НПВП — первая линия',d:'<b>Кеторолак</b> 30 мг в/м (макс 120/сут)<br>или <b>Кетопрофен</b> 100 мг в/м<br>или <b>Анальгин 50%</b> 2 мл в/в'},
+  {l:'3️⃣ Миорелаксант',d:'<b>Мидокалм</b> 100 мг в/м (снимает спазм)'},
+  {l:'4️⃣ Витамины B',d:'<b>Комбилипен</b> 2 мл в/м (B1+B6+B12)<br>Курс 5-10 дней'},
+  {l:'5️⃣ Рефрактерная',d:'<b>Трамадол</b> 50-100 мг в/в<br>+ <b>Дексаметазон</b> 4-8 мг<br>+ <b>Сибазон</b> 5 мг'}
+ ]},
+{id:'nrg',cat:'pain',i:'⚡',n:'Невралгии',sub:'Тройничная, межрёберная, постгерпетическая',
+ steps:[
+  {l:'1️⃣ НПВП + миорелаксант',d:'<b>Кеторолак</b> 30 мг в/м + <b>Мидокалм</b> 100 мг'},
+  {l:'2️⃣ Антиконвульсанты',d:'<b>Карбамазепин</b> 200 мг 2-3 р/сут — препарат выбора для тригеминальной'},
+  {l:'3️⃣ Витамины B',d:'<b>Комбилипен</b> 2 мл в/м №10'},
+  {l:'4️⃣ Рефрактерная',d:'<b>Трамадол</b> 50-100 мг<br>+ <b>Дексаметазон</b> 8 мг (опоясывающий лишай)'}
+ ]},
+{id:'clc',cat:'pain',i:'😖',n:'Колика (почечная/жёлчная)',sub:'Острая абдоминальная боль',
+ steps:[
+  {l:'1️⃣ Дифф. диагноз',d:'⚠ Исключить:<br>Аппендицит (Альварадо)<br>Перфорацию ЯБ<br>Расслоение аорты<br>Непроходимость<br>→ При неясности — НЕ обезболивать!'},
+  {l:'2️⃣ Спазмолитик',d:'<b>Но-шпа</b> 2-4 мл в/в медленно'},
+  {l:'3️⃣ НПВП',d:'<b>Кеторолак</b> 30 мг в/м или <b>Кетопрофен</b> 100 мг в/м'},
+  {l:'4️⃣ Комбинированный',d:'<b>Спазматен/Спазмалгон</b> 5 мл в/м'},
+  {l:'5️⃣ Рефрактерная',d:'<b>Трамадол</b> 50-100 мг в/в + <b>Метоклопрамид</b> 10 мг'}
+ ]},
+{id:'bra',cat:'resp',i:'🫁',n:'Приступ БА / Бронхообструкция',sub:'Бронхиальная астма, ХОБЛ',
+ steps:[
+  {l:'1️⃣ Лёгкий',d:'<b>Сальбутамол</b> 2-4 вдоха через спейсер каждые 20 мин<br>Кислород при SpO₂ <94%'},
+  {l:'2️⃣ Среднетяжёлый',d:'<b>Беродуал</b> через небулайзер 2.5 мг<br>+ <b>Пульмикорт</b> 0.5-1 мг небулайзер<br>+ <b>Преднизолон</b> 60-90 мг в/в'},
+  {l:'3️⃣ Тяжёлый',d:'<b>Эуфиллин 2.4%</b> 10 мл в/в МЕДЛЕННО<br>+ <b>Дексаметазон</b> 8-12 мг в/в<br>+ <b>Магнезия 25%</b> 10 мл в/в'},
+  {l:'4️⃣ Статус',d:'<b>Адреналин</b> 0.3-0.5 мг п/к<br>+ <b>Преднизолон</b> 120-180 мг в/в<br>→ ОРИТ'},
+  {l:'⚠ НЕ ДЕЛАТЬ',d:'НЕ морфин (угнетение дыхания)<br>НЕ бензодиазепины<br>НЕ β-блокаторы'}
+ ]},
+{id:'anf',cat:'resp',i:'⚠',n:'Анафилактический шок',sub:'Тяжёлая аллергическая реакция',
+ steps:[
+  {l:'1️⃣ АДРЕНАЛИН — НЕМЕДЛЕННО',d:'<b>Адреналин 0.1%</b> 0.3-0.5 мл В/М в бедро<br>Повторить через 5-15 мин<br>При шоке — 0.1-0.3 мл в/в на NaCl'},
+  {l:'2️⃣ Положение',d:'Лёжа с приподнятыми ногами<br>Кислород 6-8 л/мин<br>2 венозных доступа'},
+  {l:'3️⃣ Инфузия',d:'<b>NaCl 0.9%</b> 1000-2000 мл быстро в/в'},
+  {l:'4️⃣ ГКС',d:'<b>Преднизолон</b> 90-150 мг в/в<br>или <b>Дексаметазон</b> 8-16 мг в/в'},
+  {l:'5️⃣ H1-блокатор',d:'<b>Супрастин</b> 1-2 мл в/в<br>или <b>Димедрол</b> 1-2 мл в/в'},
+  {l:'6️⃣ Бронхоспазм',d:'<b>Эуфиллин 2.4%</b> 10 мл в/в медленно'},
+  {l:'⚠ Транспортировка',d:'ВСЕГДА в ОРИТ — возможна вторая фаза через 4-12 ч!'}
+ ]}
+];
+var txFlt='all';
+function txF(f,b){txFlt=f;var bs=document.querySelectorAll('#t-tx .kf');for(var i=0;i<bs.length;i++)bs[i].classList.remove('on');if(b)b.classList.add('on');txR()}
+function txR(){var h='';for(var i=0;i<TX.length;i++){var t=TX[i];if(txFlt!=='all'&&t.cat!==txFlt)continue;h+='<div class="kc" id="tx-'+t.id+'"><div class="kch" onclick="txO(\''+t.id+'\')"><div class="kci">'+t.i+'</div><div class="kcn"><div class="kcN">'+t.n+'</div><div class="kcL" style="font-style:normal">'+t.sub+'</div></div><div class="kcv">›</div></div><div class="kb">';for(var j=0;j<t.steps.length;j++){var s=t.steps[j];h+='<div style="background:rgba(10,132,255,.04);border:1px solid rgba(10,132,255,.15);border-radius:10px;padding:11px;margin-top:8px"><div style="font-weight:700;color:#0a84ff;font-size:12px;margin-bottom:6px">'+s.l+'</div><div style="font-size:12px;color:rgba(255,255,255,.75);line-height:1.6">'+s.d+'</div></div>'}h+='</div></div>'}document.getElementById('tx-list').innerHTML=h||'<div style="text-align:center;padding:30px;color:rgba(255,255,255,.3)">Не найдено</div>'}
+function txO(id){var c=document.getElementById('tx-'+id);if(c)c.classList.toggle('opn')}
+
+</script>
+</body>
+</html>
