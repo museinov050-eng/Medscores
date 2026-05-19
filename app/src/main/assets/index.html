@@ -2,1551 +2,170 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>МедШкалы СМП</title>
+
 <style>
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{background:#000810;color:#fff;font-family:-apple-system,Roboto,sans-serif;min-height:100vh;padding:16px 12px 40px;background-image:radial-gradient(at 20% 10%,rgba(255,59,48,.12),transparent 50%),radial-gradient(at 80% 30%,rgba(10,132,255,.15),transparent 55%)}
-.wrap{max-width:600px;margin:0 auto}
-.hdr{text-align:center;padding:20px 0 24px}
-.hdr-badge{display:inline-block;background:rgba(10,132,255,.15);border:1px solid rgba(10,132,255,.3);border-radius:100px;padding:6px 16px;font-size:11px;font-weight:700;color:#0a84ff;letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px}
-.hdr-name{font-size:28px;font-weight:700;margin-bottom:4px}
-.hdr-sub{font-size:13px;color:rgba(255,255,255,.4)}
-.nav{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:16px;margin-bottom:14px}
-.nav-lbl{font-size:10px;font-weight:700;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.1em;margin:14px 0 8px 4px}
-.nav-lbl:first-child{margin-top:0}
-.nav-row{display:flex;flex-wrap:wrap;gap:7px}
-.tab{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:100px;padding:10px 18px;color:rgba(255,255,255,.6);font:600 13px inherit;cursor:pointer}
-.tab.act{background:#0a84ff;color:#fff;border-color:#0a84ff}
-.card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:18px;margin-bottom:14px;display:none}
+body{background:#000;color:#fff;font-family:sans-serif;padding:20px}
+.tab{padding:10px 15px;margin:5px;border-radius:10px;border:1px solid #333;cursor:pointer}
+.tab.act{background:#0a84ff}
+.card{display:none;margin-top:20px;padding:15px;border:1px solid #333;border-radius:10px}
 .card.show{display:block}
-.card-t{font-size:22px;font-weight:700;margin-bottom:6px}
-.card-d{font-size:13px;color:rgba(255,255,255,.5);margin-bottom:14px;line-height:1.5}
-.info{background:rgba(10,132,255,.07);border:1px solid rgba(10,132,255,.18);border-radius:12px;padding:12px;margin-bottom:14px;font-size:12px;color:rgba(255,255,255,.7);line-height:1.6}
-.info b{color:#0a84ff}
-.crit{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:12px;display:flex;align-items:center;gap:12px;cursor:pointer;margin-bottom:8px}
-.crit.on{border-color:#0a84ff;background:rgba(10,132,255,.12)}
-.chk{width:22px;height:22px;border:2px solid rgba(255,255,255,.2);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:900}
-.crit.on .chk{background:#0a84ff;border-color:#0a84ff}
-.chk-i{opacity:0}.crit.on .chk-i{opacity:1}
-.crit-t{font-size:13px;font-weight:600;flex:1}
-.crit-h{font-size:11px;color:rgba(255,255,255,.4);margin-top:2px}
-.bd{font-size:11px;font-weight:700;color:#0a84ff;background:rgba(10,132,255,.15);border-radius:6px;padding:3px 8px}
-.res{border-radius:14px;padding:18px 14px;text-align:center;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);margin:12px 0}
-.res.low{border-color:#30d158;background:rgba(48,209,88,.08)}
-.res.med{border-color:#ff9f0a;background:rgba(255,159,10,.08)}
-.res.hi{border-color:#ff453a;background:rgba(255,69,58,.08)}
-.res-n{font-size:46px;font-weight:700;line-height:1;font-family:monospace}
-.res.low .res-n{color:#30d158}.res.med .res-n{color:#ff9f0a}.res.hi .res-n{color:#ff453a}
-.res-l{font-size:12px;font-weight:700;text-transform:uppercase;margin-top:8px;letter-spacing:.1em}
-.res-a{font-size:12px;color:rgba(255,255,255,.5);margin-top:6px}
-.itp{background:rgba(255,255,255,.03);border-radius:12px;padding:12px;margin-bottom:10px}
-.itp-r{display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.05);gap:8px}
-.itp-r:last-child{border-bottom:none}
-.itp-rng{color:rgba(255,255,255,.4);font-family:monospace;flex-shrink:0;min-width:50px}
-.itp-v{font-weight:700;text-align:right}
-.ig{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
-.if{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:11px 13px}
-.il{font-size:10px;font-weight:600;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px}
-.iu{font-size:9px;color:rgba(255,255,255,.3)}
-.in{width:100%;background:transparent;border:none;outline:none;color:#fff;font:700 20px monospace}
-.sl{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#fff;font:500 13px inherit;padding:10px 12px;outline:none;margin-bottom:8px}
-.gsec{background:rgba(94,92,230,.08);border:1px solid rgba(94,92,230,.2);border-radius:12px;padding:12px;margin-bottom:8px}
-.gt{font-size:11px;font-weight:700;color:#a78bfa;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
-.brow{display:flex;gap:6px;margin-bottom:10px}
-.cb{flex:1;padding:10px 8px;border:1px solid rgba(255,255,255,.1);border-radius:10px;background:rgba(255,255,255,.04);color:rgba(255,255,255,.6);font:500 12px inherit;cursor:pointer;text-align:center}
-.cb.on{background:rgba(10,132,255,.18);border-color:#0a84ff;color:#0a84ff;font-weight:600}
-.med{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:13px;margin-bottom:8px}
-.med-n{font-size:14px;font-weight:700;margin-bottom:4px}
-.med-c{font-size:11px;color:#0a84ff;margin-bottom:8px}
-.med-r{font-size:12px;color:rgba(255,255,255,.65);line-height:1.5;margin-bottom:3px}
-.med-r b{color:rgba(255,255,255,.4);font-size:11px;text-transform:uppercase;letter-spacing:.05em;margin-right:5px}
-.sp-item{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:10px 12px;margin-bottom:6px}
-.sp-name{font-size:13px;font-weight:700;color:#fff;margin-bottom:2px;word-wrap:break-word}
-.sp-lat{font-size:10px;color:rgba(255,255,255,.35);font-style:italic;margin-bottom:8px;word-wrap:break-word}
-.sp-row{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center;padding-top:6px;border-top:1px solid rgba(255,255,255,.05)}
-.sp-dose{font-family:monospace;font-size:11px;color:rgba(255,255,255,.75);word-wrap:break-word;flex:1;min-width:0}
-.sp-route{font-size:10px;color:#5ac8fa;font-weight:600;background:rgba(90,200,250,.1);padding:3px 8px;border-radius:100px;white-space:nowrap;flex-shrink:0}
-.ks{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;color:#fff;font:14px inherit;padding:11px 14px;outline:none;margin-bottom:12px}
-
-.dg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
-.db{padding:14px 8px;border:1px solid rgba(255,255,255,.1);border-radius:12px;background:rgba(255,255,255,.04);color:rgba(255,255,255,.7);font:600 13px inherit;cursor:pointer;text-align:center}
-.db small{display:block;font-size:10px;color:rgba(255,255,255,.4);margin-top:3px;font-family:monospace}
-.db.d{border-color:#ffd60a;background:rgba(255,214,10,.08);color:#ffd60a}
-.db.n{border-color:#ff453a;background:rgba(255,69,58,.08);color:#ff453a}
-.db.f{border-color:#30d158;background:rgba(48,209,88,.08);color:#30d158}
-.db.no{border-color:#bf5af2;background:rgba(191,90,242,.08);color:#bf5af2}
-.sld{width:100%;margin:14px 0 6px;height:6px;-webkit-appearance:none;appearance:none;background:rgba(255,255,255,.1);border-radius:3px;outline:none}
-.sld::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border-radius:50%;background:#ffd60a;border:3px solid rgba(0,0,0,.4);cursor:pointer}
-.sld.n::-webkit-slider-thumb{background:#ff453a}
-.sld.f::-webkit-slider-thumb{background:#30d158}
-.sld.no::-webkit-slider-thumb{background:#bf5af2}
-.sld-r{display:flex;justify-content:space-between;font-size:10px;color:rgba(255,255,255,.4);font-family:monospace;margin-bottom:14px}
-.sld-v{font-size:22px;font-weight:700;font-family:monospace;color:#ffd60a}
-.infr{border-radius:14px;padding:20px 14px;text-align:center;border:2px solid #ffd60a;background:rgba(255,214,10,.06);margin:10px 0}
-.infr.n{border-color:#ff453a;background:rgba(255,69,58,.06)}
-.infr.f{border-color:#30d158;background:rgba(48,209,88,.06)}
-.infr.no{border-color:#bf5af2;background:rgba(191,90,242,.06)}
-.infr-r{font:700 48px monospace;line-height:1;color:#ffd60a}
-.infr.n .infr-r{color:#ff453a}
-.infr.f .infr-r{color:#30d158}
-.infr.no .infr-r{color:#bf5af2}
-.infr-u{font-size:14px;color:rgba(255,255,255,.5);margin-top:4px;font-family:monospace}
-.infr-f{font-size:11px;color:rgba(255,255,255,.5);margin-top:10px;font-family:monospace;background:rgba(0,0,0,.2);border-radius:8px;padding:8px;line-height:1.6;white-space:pre-wrap;text-align:left}
-.infeff{margin-top:12px;background:rgba(0,0,0,.2);border-radius:12px;padding:12px}
-.infeff-t{font-size:11px;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
-.infeff-r{font-size:12px;color:rgba(255,255,255,.7);line-height:1.6;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.05)}
-.infeff-r:last-child{border-bottom:none}
-.infeff-r b{color:#fff}
-.infeff-r.act{color:#ffd60a;font-weight:600}
-.infeff-r.act b{color:#ffd60a}
-.kfr{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:12px}
-.kf{padding:7px 13px;border:1px solid rgba(255,255,255,.1);border-radius:100px;background:rgba(255,255,255,.04);color:rgba(255,255,255,.6);font:600 12px inherit;cursor:pointer;white-space:nowrap;flex-shrink:0}
-.kf.on{background:rgba(10,132,255,.2);border-color:#0a84ff;color:#0a84ff}
-.kc{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:14px;margin-bottom:8px;overflow:hidden}
-.kch{padding:12px;display:flex;align-items:center;gap:10px;cursor:pointer}
-.kci{width:34px;height:34px;border-radius:9px;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
-.kcn{flex:1;min-width:0}
-.kcN{font-size:13px;font-weight:700}
-.kcL{font-size:11px;color:rgba(255,255,255,.3);font-style:italic}
-.kcG{font-size:10px;font-weight:600;color:#0a84ff;margin-top:2px;text-transform:uppercase;letter-spacing:.05em}
-.kcv{font-size:14px;color:rgba(255,255,255,.3);transition:transform .2s}
-.kc.opn .kcv{transform:rotate(90deg)}
-.kb{display:none;padding:0 12px 12px}
-.kc.opn .kb{display:block}
-.kfd{margin-top:8px}
-.kfl{font-size:10px;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
-.kfv{font-size:12px;color:rgba(255,255,255,.7);line-height:1.5}
-.kmx{background:rgba(0,0,0,.25);border-radius:8px;padding:8px 10px;font:11px monospace;margin-top:8px;color:rgba(255,255,255,.7)}
-.kwr{background:rgba(255,69,58,.1);border-radius:8px;padding:8px 10px;margin-top:8px;font-size:11px;color:#ff453a}
-.kmc{background:rgba(94,92,230,.07);border:1px solid rgba(94,92,230,.18);border-radius:8px;padding:8px 10px;margin-top:8px;font-size:11px;color:rgba(255,255,255,.6);line-height:1.5}
-.kmc b{color:#a78bfa}
-.wt{font-size:13px;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em;margin:16px 0 10px 2px}
-.wt:first-child{margin-top:4px}
-.bed{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:13px;margin-bottom:10px}
-.bed.r{border-color:#30d158;background:rgba(48,209,88,.06)}
-.bed.w{border-color:#ff9f0a;background:rgba(255,159,10,.06)}
-.bed.d{border-color:#ff453a;background:rgba(255,69,58,.08)}
-.bh{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.bn{font-size:14px;font-weight:700}
-.bs{font-size:10px;font-weight:700;padding:3px 9px;border-radius:100px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.4)}
-.bs.r{background:rgba(48,209,88,.15);color:#30d158}
-.bs.w{background:rgba(255,159,10,.15);color:#ff9f0a}
-.bs.d{background:rgba(255,69,58,.15);color:#ff453a}
-.pl{font-size:9px;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
-.ps{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
-.p{padding:5px 10px;border:1px solid rgba(90,200,250,.25);border-radius:100px;background:rgba(90,200,250,.07);color:#5ac8fa;font:600 11px inherit;cursor:pointer}
-.bi{width:100%;background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#fff;font:13px inherit;padding:9px 11px;outline:none;margin-bottom:8px}
-.bf{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px}
-.bff{background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:7px 9px}
-.bfl{font-size:9px;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;margin-bottom:3px}
-.bfn{width:100%;background:transparent;border:none;outline:none;color:#fff;font:700 15px monospace}
-.bhn{font-size:11px;color:#5ac8fa;padding:6px 9px;background:rgba(90,200,250,.06);border-radius:8px;margin-bottom:8px;min-height:20px}
-.bt{text-align:center;padding:10px;background:rgba(0,0,0,.2);border-radius:10px;font:700 22px monospace;color:rgba(255,255,255,.6);margin-bottom:8px}
-.bt.r{color:#30d158}.bt.w{color:#ff9f0a}.bt.d{color:#ff453a}
-.bm{font-size:11px;padding:7px 10px;background:rgba(0,0,0,.15);border-radius:8px;color:rgba(255,255,255,.5);margin-bottom:8px;line-height:1.4}
-.bm.a{background:rgba(255,69,58,.1);color:#ff453a;font-weight:700}
-.bm.w{background:rgba(255,159,10,.1);color:#ff9f0a}
-.bbs{display:flex;gap:6px}
-.bb{flex:1;padding:9px;border:1px solid rgba(255,255,255,.1);border-radius:10px;background:rgba(255,255,255,.04);color:rgba(255,255,255,.6);font:600 12px inherit;cursor:pointer}
-.bb.s{border-color:#30d158;color:#30d158;background:rgba(48,209,88,.1)}
-.bb.st{border-color:#ff453a;color:#ff453a;background:rgba(255,69,58,.1)}
-
-.an-it{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:13px;margin-bottom:10px}
-.an-n{font-size:14px;font-weight:700;margin-bottom:4px}
-.an-u{font-size:11px;color:rgba(255,255,255,.4);margin-bottom:8px}
-.an-rng{font-size:12px;color:#0a84ff;background:rgba(10,132,255,.08);border-radius:8px;padding:6px 10px;margin-bottom:8px;font-family:monospace}
-.an-rng b{color:#fff}
-.an-in{width:100%;background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:9px 12px;color:#fff;font:600 14px monospace;outline:none;margin-bottom:8px}
-.an-res{font-size:12px;padding:8px 10px;border-radius:8px;font-weight:600;line-height:1.5}
-.an-res.n{background:rgba(48,209,88,.1);color:#30d158;border:1px solid rgba(48,209,88,.2)}
-.an-res.lo{background:rgba(255,159,10,.1);color:#ff9f0a;border:1px solid rgba(255,159,10,.2)}
-.an-res.hi{background:rgba(255,69,58,.1);color:#ff453a;border:1px solid rgba(255,69,58,.2)}
-.an-info{margin-top:8px;font-size:11px;color:rgba(255,255,255,.6);line-height:1.5;background:rgba(0,0,0,.2);border-radius:8px;padding:8px 10px}
-.an-info b{color:#fff}
-.an-cause{margin-top:6px;font-size:11px;color:rgba(255,255,255,.55);line-height:1.5}
-.an-cause b{color:#0a84ff}
-
-.an-ref{background:rgba(10,132,255,.06);border:1px solid rgba(10,132,255,.2);border-radius:12px;padding:0;margin-bottom:14px;overflow:hidden}
-.an-ref-h{background:rgba(10,132,255,.15);padding:10px 12px;font-size:12px;font-weight:700;color:#0a84ff;text-transform:uppercase;letter-spacing:.08em}
-.an-ref-t{width:100%;border-collapse:collapse;font-size:11px}
-.an-ref-t th{background:rgba(255,255,255,.04);text-align:left;padding:7px 10px;color:rgba(255,255,255,.4);font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid rgba(255,255,255,.08)}
-.an-ref-t td{padding:7px 10px;border-bottom:1px solid rgba(255,255,255,.05);color:rgba(255,255,255,.8);vertical-align:top}
-.an-ref-t td:nth-child(2){font-family:monospace;color:#30d158;white-space:nowrap;font-weight:600}
-.an-ref-t td:nth-child(3){color:rgba(255,255,255,.4);font-size:10px;white-space:nowrap}
-.an-ref-t tr:last-child td{border-bottom:none}
-.an-ref-c{background:rgba(0,0,0,.15);padding:8px 12px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(255,255,255,.05)}
-.an-ref-c.opn{background:rgba(0,0,0,.25)}
-.an-ref-c-t{font-size:13px;font-weight:600;color:#fff}
-.an-ref-c-v{color:rgba(255,255,255,.3);font-size:14px;transition:transform .2s}
-.an-ref-c.opn .an-ref-c-v{transform:rotate(90deg)}
-.an-ref-c-b{display:none;padding:0}
-.an-ref-c.opn + .an-ref-c-b{display:block}
+.crit{padding:10px;border:1px solid #333;margin:5px 0;border-radius:10px;cursor:pointer}
+.crit.on{background:#0a84ff}
+.res{margin-top:15px;font-size:20px}
 </style>
 </head>
+
 <body>
-<div class="wrap">
-<div class="hdr">
-<div class="hdr-badge">● СМП · КЛИНИЧЕСКИЕ ШКАЛЫ</div>
-<div class="hdr-name">МедШкалы СМП</div>
-<div class="hdr-sub">Прогностические шкалы · Расчёты · Нормы</div>
-</div>
-
-<div class="nav">
-<div class="nav-lbl">Оценка тяжести</div>
-<div class="nav-row">
-<button class="tab act" onclick="g('qs',this)">qSOFA</button>
-<button class="tab" onclick="g('nw',this)">NEWS2</button>
-<button class="tab" onclick="g('gc',this)">GCS</button>
-<button class="tab" onclick="g('rs',this)">RASS</button>
-<button class="tab" onclick="g('sh',this)">ШОКС</button>
-</div>
-<div class="nav-lbl">Диагностика</div>
-<div class="nav-row">
-<button class="tab" onclick="g('wl',this)">Wells ТЭЛА</button>
-<button class="tab" onclick="g('al',this)">Альговер</button>
-<button class="tab" onclick="g('cp',this)">Инсульт</button>
-<button class="tab" onclick="g('av',this)">Альварадо</button>
-</div>
-<div class="nav-lbl">Расчёты</div>
-<div class="nav-row">
-<button class="tab" onclick="g('inf',this)">Инфузомат</button>
-<button class="tab" onclick="g('vl',this)">ИВЛ 4/40</button>
-<button class="tab" onclick="g('bm',this)">ИМТ</button>
-<button class="tab" onclick="g('cr',this)">СЛР Таймер</button>
-</div>
-<div class="nav-lbl">💊 Лечение</div>
-<div class="nav-row">
-<button class="tab" onclick="g('tx',this)">Протоколы лечения</button>
-</div>
-<div class="nav-lbl">Препараты</div>
-<div class="nav-row">
-<button class="tab" onclick="g('md',this)">Препараты СМП</button>
-<button class="tab" onclick="g('sp',this)">📋 Подстанция</button>
-<button class="tab" onclick="g('kl',this)">🏥 Клиника</button>
-<button class="tab" onclick="g('pal',this)">🛏 Палаты</button>
-</div>
-<div class="nav-lbl">📕 Заболевания (клинреки)</div>
-<div class="nav-row">
-<button class="tab" onclick="g('op',this)">Острый панкреатит</button>
-<button class="tab" onclick="g('gb',this)">Гипертония</button>
-<button class="tab" onclick="g('okp',this)">ОКС с ST↑</button>
-<button class="tab" onclick="g('okb',this)">ОКС без ST↑</button>
-</div>
-<div class="nav-lbl">🧪 Лаб. нормы</div>
-<div class="nav-row">
-<button class="tab" onclick="g('la',this)">Анализы взр.</button>
-<button class="tab" onclick="g('ld',this)">Анализы детей</button>
-</div>
-<div class="nav-lbl">Дети</div>
-<div class="nav-row">
-<button class="tab" onclick="g('nr',this)">Нормы детей</button>
-</div>
-</div>
-
-<div class="card show" id="t-qs">
-<div class="card-t">qSOFA — Экспресс-сепсис</div>
-<div class="card-d">Три критерия по 1 баллу. ≥2 баллов — высокий риск.</div>
-<div class="info"><b>Что это:</b> Прикроватный скрининг для выявления риска органной дисфункции при подозрении на инфекцию. ≥2 баллов = госпитализация в ОРИТ.</div>
-<div class="crit" onclick="qt('rr',this)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">ЧДД ≥ 22/мин</div><div class="bd">+1</div></div>
-<div class="crit" onclick="qt('sb',this)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">АД сист. ≤ 100</div><div class="bd">+1</div></div>
-<div class="crit" onclick="qt('gc',this)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Изменение сознания</div><div class="bd">+1</div></div>
-<div class="res" id="qs-r"><div class="res-n" id="qs-n">0</div><div class="res-l" id="qs-l">Низкий риск</div></div>
-</div>
-
-<div class="card" id="t-nw">
-<div class="card-t">NEWS2</div>
-<div class="card-d">Раннее предупреждение ухудшения.</div>
-<div class="ig">
-<div class="if"><div class="il">ЧДД</div><input class="in" id="n-rr" type="number" oninput="cN()"></div>
-<div class="if"><div class="il">SpO₂ %</div><input class="in" id="n-sp" type="number" oninput="cN()"></div>
-<div class="if"><div class="il">АД сист.</div><input class="in" id="n-sb" type="number" oninput="cN()"></div>
-<div class="if"><div class="il">ЧСС</div><input class="in" id="n-hr" type="number" oninput="cN()"></div>
-<div class="if"><div class="il">Темп °C</div><input class="in" id="n-tm" type="number" step="0.1" oninput="cN()"></div>
-</div>
-<div class="res" id="n-r"><div class="res-n" id="n-n">—</div><div class="res-l" id="n-l">Введите данные</div></div>
-</div>
-
-<div class="card" id="t-gc">
-<div class="card-t">GCS — Шкала Глазго</div>
-<div class="card-d">Уровень сознания. 3–15 баллов.</div>
-<div class="gsec"><div class="gt">E — Глаза</div><select class="sl" id="ge" onchange="cG()"><option value="4">4 — Произвольное</option><option value="3">3 — На речь</option><option value="2">2 — На боль</option><option value="1">1 — Нет</option></select></div>
-<div class="gsec"><div class="gt">V — Речь</div><select class="sl" id="gv" onchange="cG()"><option value="5">5 — Ориентирован</option><option value="4">4 — Спутанная</option><option value="3">3 — Отд. слова</option><option value="2">2 — Звуки</option><option value="1">1 — Нет</option></select></div>
-<div class="gsec"><div class="gt">M — Движения</div><select class="sl" id="gm" onchange="cG()"><option value="6">6 — Команды</option><option value="5">5 — Локализует</option><option value="4">4 — Отдёргивает</option><option value="3">3 — Сгибание</option><option value="2">2 — Разгибание</option><option value="1">1 — Нет</option></select></div>
-<div class="res" id="g-r"><div class="res-n" id="g-n">15</div><div class="res-l" id="g-l">Ясное сознание</div></div>
-</div>
-
-<div class="card" id="t-rs">
-<div class="card-t">RASS</div>
-<div class="card-d">Шкала возбуждения-седации Richmond.</div>
-<div class="info"><b>Что это:</b> Оценка уровня сознания при седации. <b>0</b> — норма. <b>+</b> возбуждение. <b>−</b> седация. Цель на ИВЛ: 0 ÷ −2.</div>
-<div class="itp">
-<div class="itp-r"><span class="itp-rng">+4</span><span class="itp-v" style="color:#ff453a">Боевой — опасен</span></div>
-<div class="itp-r"><span class="itp-rng">+3</span><span class="itp-v" style="color:#ff453a">Тянет трубки</span></div>
-<div class="itp-r"><span class="itp-rng">+2</span><span class="itp-v" style="color:#ff9f0a">Возбуждён</span></div>
-<div class="itp-r"><span class="itp-rng">+1</span><span class="itp-v" style="color:#ffd60a">Беспокоен</span></div>
-<div class="itp-r"><span class="itp-rng">0</span><span class="itp-v" style="color:#30d158">Спокоен</span></div>
-<div class="itp-r"><span class="itp-rng">−1</span><span class="itp-v" style="color:#0a84ff">Сонлив</span></div>
-<div class="itp-r"><span class="itp-rng">−2</span><span class="itp-v" style="color:#0a84ff">Лёгкая седация</span></div>
-<div class="itp-r"><span class="itp-rng">−3</span><span class="itp-v" style="color:#0a84ff">Умеренная</span></div>
-<div class="itp-r"><span class="itp-rng">−4</span><span class="itp-v" style="color:#bf5af2">Глубокая</span></div>
-<div class="itp-r"><span class="itp-rng">−5</span><span class="itp-v" style="color:#bf5af2">Нет реакции</span></div>
-</div>
-</div>
-
-<div class="card" id="t-sh">
-<div class="card-t">ШОКС — Шкала оценки клин. состояния ХСН</div>
-<div class="card-d">Регламент маршрутизации пациентов с ХСН. Отметь степень выраженности признаков.</div>
-
-<div class="info"><b>Что это:</b> Прикроватная оценка тяжести ХСН. Помогает определить — амбулаторно или госпитализация. Чем больше баллов — тем тяжелее декомпенсация.</div>
-
-<div class="gsec"><div class="gt">Одышка</div><select class="sl" id="sh-1" onchange="shC()">
-<option value="0">0 — нет</option>
-<option value="1">1 — при нагрузке</option>
-<option value="2">2 — в покое</option>
-</select></div>
-
-<div class="gsec"><div class="gt">Изменение веса за неделю</div><select class="sl" id="sh-2" onchange="shC()">
-<option value="0">0 — нет</option>
-<option value="1">1 — увеличился</option>
-</select></div>
-
-<div class="gsec"><div class="gt">Перебои в работе сердца</div><select class="sl" id="sh-3" onchange="shC()">
-<option value="0">0 — нет</option>
-<option value="1">1 — есть</option>
-</select></div>
-
-<div class="gsec"><div class="gt">Положение в постели</div><select class="sl" id="sh-4" onchange="shC()">
-<option value="0">0 — горизонтально</option>
-<option value="1">1 — приподнятый головной конец (2+ подушки)</option>
-<option value="2">2 — плюс просыпается от удушья</option>
-<option value="3">3 — сидя</option>
-</select></div>
-
-<div class="gsec"><div class="gt">Набухшие шейные вены</div><select class="sl" id="sh-5" onchange="shC()">
-<option value="0">0 — нет</option>
-<option value="1">1 — лёжа</option>
-<option value="2">2 — стоя</option>
-</select></div>
-
-<div class="gsec"><div class="gt">Хрипы в лёгких</div><select class="sl" id="sh-6" onchange="shC()">
-<option value="0">0 — нет</option>
-<option value="1">1 — нижние отделы (до 1/3)</option>
-<option value="2">2 — до лопаток (до 2/3)</option>
-<option value="3">3 — над всей поверхностью</option>
-</select></div>
-
-<div class="gsec"><div class="gt">Ритм галопа</div><select class="sl" id="sh-7" onchange="shC()">
-<option value="0">0 — нет</option>
-<option value="1">1 — есть</option>
-</select></div>
-
-<div class="gsec"><div class="gt">Печень</div><select class="sl" id="sh-8" onchange="shC()">
-<option value="0">0 — не увеличена</option>
-<option value="1">1 — до 5 см</option>
-<option value="2">2 — более 5 см</option>
-</select></div>
-
-<div class="gsec"><div class="gt">Отёки</div><select class="sl" id="sh-9" onchange="shC()">
-<option value="0">0 — нет</option>
-<option value="1">1 — пастозность</option>
-<option value="2">2 — отёки</option>
-<option value="3">3 — анасарка</option>
-</select></div>
-
-<div class="gsec"><div class="gt">Уровень САД</div><select class="sl" id="sh-10" onchange="shC()">
-<option value="0">0 — >120 мм рт.ст.</option>
-<option value="1">1 — 100-120 мм рт.ст.</option>
-<option value="2">2 — <100 мм рт.ст.</option>
-</select></div>
-
-<div class="res" id="sh-r"><div class="res-n" id="sh-n">0</div><div class="res-l" id="sh-l">I ФК</div><div class="res-a" id="sh-a">Компенсация</div></div>
-
-<div class="info" style="margin-top:14px"><b>Интерпретация (по NYHA):</b><br>
-• <b>≤3 балла</b> — I ФК (компенсация)<br>
-• <b>4-6 баллов</b> — II ФК (лёгкая декомпенсация)<br>
-• <b>7-9 баллов</b> — III ФК (умеренная)<br>
-• <b>≥10 баллов</b> — IV ФК (тяжёлая декомпенсация) → госпитализация
-</div>
-</div>
-
-<div class="card" id="t-wl">
-<div class="card-t">Wells — ТЭЛА</div>
-<div class="card-d">Вероятность тромбоэмболии.</div>
-<div class="crit" onclick="wt(this,3)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Признаки ТГВ</div><div class="bd">+3</div></div>
-<div class="crit" onclick="wt(this,3)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">ТЭЛА вероятнее альтернатив</div><div class="bd">+3</div></div>
-<div class="crit" onclick="wt(this,1.5)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">ЧСС > 100</div><div class="bd">+1.5</div></div>
-<div class="crit" onclick="wt(this,1.5)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Иммобилизация ≤4 нед</div><div class="bd">+1.5</div></div>
-<div class="crit" onclick="wt(this,1.5)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">ТГВ/ТЭЛА в анамнезе</div><div class="bd">+1.5</div></div>
-<div class="crit" onclick="wt(this,1)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Кровохарканье</div><div class="bd">+1</div></div>
-<div class="crit" onclick="wt(this,1)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Онкология ≤6 мес</div><div class="bd">+1</div></div>
-<div class="res" id="w-r"><div class="res-n" id="w-n">0</div><div class="res-l" id="w-l">Низкая</div></div>
-</div>
-
-<div class="card" id="t-al">
-<div class="card-t">Альговер</div>
-<div class="card-d">Шоковый индекс = ЧСС / АД сист.</div>
-<div class="ig">
-<div class="if"><div class="il">ЧСС</div><input class="in" id="a-hr" type="number" oninput="cA()"></div>
-<div class="if"><div class="il">АД сист.</div><input class="in" id="a-sb" type="number" oninput="cA()"></div>
-</div>
-<div class="res" id="a-r"><div class="res-n" id="a-n">—</div><div class="res-l" id="a-l">Введите данные</div></div>
-</div>
-
-<div class="card" id="t-cp">
-<div class="card-t">CPSS — Инсульт</div>
-<div class="card-d">Cincinnati Prehospital Stroke Scale.</div>
-<div class="info"><b>1 признак</b> — ~72%. <b>3 признака</b> — ~85%. Окно тромболизиса 4.5 часа.</div>
-<div class="crit" onclick="ct('f',this)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Асимметрия лица<div class="crit-h">Опущенный угол рта при улыбке</div></div><div class="bd">!</div></div>
-<div class="crit" onclick="ct('a',this)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Слабость руки<div class="crit-h">Рука опускается за 10 сек</div></div><div class="bd">!</div></div>
-<div class="crit" onclick="ct('s',this)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Нарушение речи<div class="crit-h">Дизартрия, афазия</div></div><div class="bd">!</div></div>
-<div class="res" id="c-r"><div class="res-n" id="c-n">0</div><div class="res-l" id="c-l">Нет признаков</div></div>
-</div>
-
-<div class="card" id="t-av">
-<div class="card-t">Альварадо — Аппендицит</div>
-<div class="card-d">MANTRELS Score.</div>
-<div class="crit" onclick="vt(this,1)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Миграция боли в ПП</div><div class="bd">+1</div></div>
-<div class="crit" onclick="vt(this,1)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Анорексия</div><div class="bd">+1</div></div>
-<div class="crit" onclick="vt(this,1)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Тошнота/рвота</div><div class="bd">+1</div></div>
-<div class="crit" onclick="vt(this,2)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Болезненность в ПП</div><div class="bd">+2</div></div>
-<div class="crit" onclick="vt(this,1)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Щёткина-Блюмберга</div><div class="bd">+1</div></div>
-<div class="crit" onclick="vt(this,1)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Температура > 37.3</div><div class="bd">+1</div></div>
-<div class="crit" onclick="vt(this,2)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Лейкоцитоз > 10×10⁹</div><div class="bd">+2</div></div>
-<div class="crit" onclick="vt(this,1)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Сдвиг формулы влево</div><div class="bd">+1</div></div>
-<div class="res" id="av-r"><div class="res-n" id="av-n">0</div><div class="res-l" id="av-l">Маловероятен</div></div>
-</div>
-
-<div class="card" id="t-vl">
-<div class="card-t">ИВЛ 4/40</div>
-<div class="card-d">Протективная вентиляция.</div>
-<div class="if" style="margin-bottom:12px"><div class="il">Вес кг</div><input class="in" id="vl-wt" type="number" oninput="cV()"></div>
-<div id="vl-r" style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:14px;font-size:13px;line-height:1.9;color:rgba(255,255,255,.7)">Введите вес</div>
-</div>
-
-<div class="card" id="t-bm">
-<div class="card-t">ИМТ</div>
-<div class="ig">
-<div class="if"><div class="il">Рост см</div><input class="in" id="b-h" type="number" oninput="cB()"></div>
-<div class="if"><div class="il">Вес кг</div><input class="in" id="b-w" type="number" oninput="cB()"></div>
-</div>
-<div class="res" id="b-r"><div class="res-n" id="b-n">—</div><div class="res-l" id="b-l">Введите данные</div></div>
-</div>
-
-<div class="card" id="t-cr">
-<div class="card-t">СЛР Таймер</div>
-<div class="card-d">2-минутные циклы. Адреналин каждые 3-5 мин.</div>
-<div style="text-align:center;padding:20px 0">
-<div style="font:700 60px monospace" id="cr-t">02:00</div>
-<div style="font-size:13px;color:rgba(255,255,255,.4);margin-top:6px" id="cr-c">Цикл 1</div>
-<div style="font-size:13px;color:#ff453a;font-weight:700;margin-top:6px;min-height:18px" id="cr-a"></div>
-</div>
-<div class="brow">
-<button class="cb" onclick="cT()" style="flex:2;padding:14px;font-weight:700" id="cr-b">▶ СТАРТ</button>
-<button class="cb" onclick="cZ()" style="padding:14px">↺ Сброс</button>
-</div>
-</div>
-
-<div class="card" id="t-md">
-<div class="card-t">Препараты СМП</div>
-<div class="card-d">Краткий справочник.</div>
-<div id="m-list"></div>
-</div>
-
-<div class="card" id="t-sp">
-<div class="card-t">📋 Препараты подстанции</div>
-<div class="card-d">Полный справочник с латынью.</div>
-<input class="ks" id="sp-s" placeholder="🔍 Поиск..." oninput="spR()">
-<div id="sp-list"></div>
-</div>
-
-<div class="card" id="t-inf">
-<div class="card-t">Инфузомат СМП</div>
-<div class="card-d">Расчёт скорости в каплях/мин (1 мл = 20 капель).</div>
-<div class="dg">
-<button class="db d" id="db-d" onclick="sD('d')">Допамин<small>40 мг/мл × 5 мл = 200 мг</small></button>
-<button class="db" id="db-n" onclick="sD('n')">Норадреналин<small>2 мг/мл × 4 мл = 8 мг</small></button>
-<button class="db" id="db-no" onclick="sD('no')">Новокаинамид<small>100 мг/мл × 5 мл = 500 мг</small></button>
-<button class="db" id="db-f" onclick="sD('f')">Фуросемид<small>10 мг/мл × 2 мл = 20 мг</small></button>
-</div>
-<div class="if" style="margin-bottom:12px"><div class="il">Вес кг</div><input class="in" id="i-wt" type="number" value="70" oninput="cI()"></div>
-<div class="if" style="padding:14px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><div class="il" id="i-dlbl" style="margin:0">Доза (мкг/кг/мин)</div><div class="sld-v" id="i-sv">5</div></div>
-<input type="range" class="sld" id="i-sld" min="2" max="20" value="5" step="1" oninput="cI()">
-<div class="sld-r"><span id="i-mn">2</span><span id="i-mx">20</span></div>
-</div>
-<div class="infr" id="i-r"><div class="infr-r" id="i-n">—</div><div class="infr-u">капель / минуту</div><div class="infr-f" id="i-f"></div></div>
-<div class="infeff" id="i-eff"></div>
-</div>
-
-<div class="card" id="t-kl">
-<div class="card-t">🏥 Клиника</div>
-<div class="card-d">Препараты: механизм, доза, разведение.</div>
-<input class="ks" id="k-s" placeholder="🔍 Поиск..." oninput="kR()">
-<div class="kfr">
-<button class="kf on" onclick="kF('all',this)">Все</button>
-<button class="kf" onclick="kF('inj',this)">💉 Инъекции</button>
-<button class="kf" onclick="kF('inf',this)">🧪 Инфузии</button>
-<button class="kf" onclick="kF('tab',this)">💊 Таблетки</button>
-</div>
-<div id="k-list"></div>
-</div>
-
-<div class="card" id="t-pal">
-<div class="card-t">🛏 Палаты — Капалки</div>
-<div class="card-d">Трекер инфузий по койкам.</div>
-<div id="pl-list"></div>
-</div>
-
-<div class="card" id="t-tx">
-<div class="card-t">💊 Протоколы лечения</div>
-<div class="card-d">Клинические рекомендации по группам заболеваний.</div>
-<div class="kfr">
-<button class="kf on" onclick="txF('all',this)">Все</button>
-<button class="kf" onclick="txF('card',this)">❤️ Кардио</button>
-<button class="kf" onclick="txF('neuro',this)">🧠 Неврология</button>
-<button class="kf" onclick="txF('tox',this)">☠ Интоксикации</button>
-<button class="kf" onclick="txF('pain',this)">🩹 Боль</button>
-<button class="kf" onclick="txF('resp',this)">🫁 Дыхание</button>
-</div>
-<div id="tx-list"></div>
-</div>
-
-<div class="card" id="t-op">
-<div class="card-t">📕 Острый панкреатит</div>
-<div class="card-d">Согласно клиническим рекомендациям РОХ 2024 (K85.0-K85.9).</div>
-
-<div class="info"><b>Что это:</b> Асептическое воспаление поджелудочной железы с некрозом ацинарных клеток и ферментной агрессией. Может приводить к поражению окружающих тканей, ПОН и присоединению гнойной инфекции. <b>Лёгкий ОП</b> (80-85%) — отёчный, без некроза. <b>Среднетяжёлый/тяжёлый</b> (15-20%) — панкреонекроз, фазовое течение.</div>
-
-<div class="card-d" style="font-weight:700;color:#fff;margin-top:14px">🔍 Триада симптомов (СМП)</div>
-<div class="info">Отметь признаки, которые есть у пациента:</div>
-<div class="crit" onclick="opT('p',this)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Боль в эпигастрии<div class="crit-h">Опоясывающая, с иррадиацией в спину, интенсивная, стойкая</div></div><div class="bd">!</div></div>
-<div class="crit" onclick="opT('v',this)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Многократная рвота<div class="crit-h">Неукротимая, не приносит облегчения</div></div><div class="bd">!</div></div>
-<div class="crit" onclick="opT('m',this)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Напряжение мышц<div class="crit-h">Резистентность в верхней половине живота</div></div><div class="bd">!</div></div>
-
-<div class="card-d" style="font-weight:700;color:#fff;margin-top:14px">⚠ Признаки тяжёлого ОП</div>
-<div class="info">Шкала первичной экспресс-оценки (СПб НИИ СП им. Джанелидзе). Если ≥2 признаков — среднетяжёлый/тяжёлый ОП → ОРИТ.</div>
-<div class="crit" onclick="opT('t1',this)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Перитонеальный синдром</div><div class="bd">+1</div></div>
-<div class="crit" onclick="opT('t2',this)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Олигурия<div class="crit-h">&lt;250 мл за 12 часов</div></div><div class="bd">+1</div></div>
-<div class="crit" onclick="opT('t3',this)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Кожные симптомы<div class="crit-h">Гиперемия лица, "мраморность", цианоз (Мондор, Грей-Турнер, Грюнвальд)</div></div><div class="bd">+1</div></div>
-<div class="crit" onclick="opT('t4',this)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">САД &lt; 100 мм рт.ст.</div><div class="bd">+1</div></div>
-<div class="crit" onclick="opT('t5',this)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Энцефалопатия</div><div class="bd">+1</div></div>
-<div class="crit" onclick="opT('t6',this)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Hb &gt; 160 г/л<div class="crit-h">Гемоконцентрация</div></div><div class="bd">+1</div></div>
-<div class="crit" onclick="opT('t7',this)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Лейкоциты &gt; 14×10⁹/л</div><div class="bd">+1</div></div>
-<div class="crit" onclick="opT('t8',this)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Глюкоза &gt; 10 ммоль/л</div><div class="bd">+1</div></div>
-<div class="crit" onclick="opT('t9',this)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Мочевина &gt; 12 ммоль/л</div><div class="bd">+1</div></div>
-<div class="crit" onclick="opT('t10',this)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Метаб. нарушения на ЭКГ</div><div class="bd">+1</div></div>
-<div class="crit" onclick="opT('t11',this)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Нет эффекта от базисной терапии<div class="crit-h">После 6 часов</div></div><div class="bd">+1</div></div>
-
-<div class="res" id="op-r"><div class="res-n" id="op-n">0</div><div class="res-l" id="op-l">Введите данные</div><div class="res-a" id="op-a"></div></div>
-
-<div class="card-d" style="font-weight:700;color:#fff;margin-top:14px">📋 Этиология</div>
-<div class="info">
-• <b>Алкогольно-алиментарный</b> — 55% (приём алкоголя + жирная/острая пища)<br>
-• <b>Билиарный</b> — 35% (ЖКБ, холедохолитиаз, дивертикул, описторхоз)<br>
-• <b>Травматический</b> — 2-4% (травма ПЖ, после ЭРХПГ)<br>
-• <b>Другие</b> — 6-8%: лекарства (гидрохлортиазид, ГКС, азатиоприн), инфекции (паротит, гепатит, ЦМВ), аутоиммунные, дисгормональные, заболевания соседних органов
-</div>
-
-<div class="card-d" style="font-weight:700;color:#fff;margin-top:14px">🩺 Объективные симптомы</div>
-<div class="info">
-• <b>Симптом Мондора</b> — фиолетовые пятна на лице<br>
-• <b>Симптом Грея-Турнера</b> — цианоз боковых стенок живота<br>
-• <b>Симптом Грюнвальда</b> — цианоз околопупочной области<br>
-• <b>Симптом Воскресенского</b> — отсутствие пульсации брюшной аорты<br>
-• <b>Симптом Мейо-Робсона</b> — болезненность в левом рёберно-позвоночном углу<br>
-• <b>Симптом Керте</b> — поперечная резистентность в проекции ПЖ<br>
-• <b>Щёткина-Блюмберга</b> — при перитоните<br>
-• Язык сухой, обложен. Тимпанит (парез кишки), ослабление кишечных шумов
-</div>
-
-<div class="card-d" style="font-weight:700;color:#fff;margin-top:14px">🧪 Лабораторная диагностика</div>
-<div class="info">
-<b>Критерий диагноза:</b> гиперамилаземия или гиперлипаземия &gt; <u>3 норм</u> + клиника + УЗИ-признаки (минимум 2 из 3).<br><br>
-<b>Всем (легкий ОП):</b><br>
-• ОАК, ОАМ<br>
-• Биохимия: общий белок, билирубин (своб./связ.), АСТ, АЛТ, амилаза, мочевина, креатинин, глюкоза<br><br>
-<b>Дополнительно при средне-тяжёлом/тяжёлом:</b><br>
-• Коагулограмма (МНО, ПТИ, АЧТВ)<br>
-• С-реактивный белок (СРБ)<br>
-• Липаза<br>
-• У детей: КЩС, электролиты (Na+, K+, Cl-)
-</div>
-
-<div class="card-d" style="font-weight:700;color:#fff;margin-top:14px">📷 Инструментальная диагностика</div>
-<div class="info">
-<b>УЗИ ОБП всем:</b> увеличение размеров ПЖ, ↓эхогенность, нечёткость контуров, жидкость в сальниковой сумке/брюшной полости.<br><br>
-<b>КТ/МРТ с в/в контрастом</b> в 24-96 ч: при неясности диагноза, дифф. диагностике, оценке тяжести, отсутствии эффекта от терапии. <i>Повторять каждые 7-10 дней при прогрессировании.</i><br><br>
-<b>Лапароскопия диагностическая</b> — при перитонеальном синдроме, наличии свободной жидкости.
-</div>
-
-<div class="card-d" style="font-weight:700;color:#fff;margin-top:14px">🚑 Лечение СМП (догоспитальный этап)</div>
-<div style="background:rgba(255,69,58,.08);border:1px solid rgba(255,69,58,.2);border-radius:12px;padding:12px;margin-bottom:8px;font-size:12px;color:rgba(255,255,255,.75);line-height:1.7">
-<b style="color:#ff453a">1. Госпитализация ОБЯЗАТЕЛЬНА</b> — абсолютное показание для экстренной госпитализации.<br><br>
-<b style="color:#ff453a">2. Обезболивание:</b><br>
-• <b>Кеторолак</b> 30 мг в/м (НЕ при ОПН!)<br>
-• или <b>Анальгин 50%</b> 2 мл в/в медленно<br>
-• Если нет эффекта — <b>Трамадол</b> 50-100 мг в/м или <b>Морфин</b> 10 мг в/м (опиоиды НЕ ухудшают исход!)<br><br>
-<b style="color:#ff453a">3. Спазмолитик:</b><br>
-• <b>Но-шпа</b> 2-4 мл в/в медленно<br>
-• или <b>Платифиллин</b> 0.2% 2 мл п/к<br><br>
-<b style="color:#ff453a">4. Инфузия (при тяжёлом):</b><br>
-• <b>NaCl 0.9%</b> 400-800 мл в/в капельно<br>
-• или <b>Рингер</b> / стерофундин<br>
-• Темп 30-40 мл/кг в первые часы<br><br>
-<b style="color:#ff453a">5. Антиэметик:</b><br>
-• <b>Метоклопрамид</b> 10 мг в/в<br><br>
-<b style="color:#ff453a">6. Куда везти:</b><br>
-• Лёгкий ОП (триада симптомов) → хирургия 1 уровня<br>
-• ≥2 признака тяжести → хирургия 2 уровня<br>
-• Тяжёлый/панкреонекроз → 3 уровень (региональный центр)<br><br>
-<b style="color:#ff9f0a">⚠ ЧЕГО НЕ ДЕЛАТЬ:</b><br>
-• НЕ давать есть и пить (голод!)<br>
-• НЕ грелку на живот (только холод!)<br>
-• НЕ антибиотики (профилактика НЕ показана)<br>
-• НЕ антисекреторные/антипротеазные препараты — доказательств эффективности нет
-</div>
-
-<div class="card-d" style="font-weight:700;color:#fff;margin-top:14px">🏥 Лечение в стационаре</div>
-<div style="background:rgba(10,132,255,.06);border:1px solid rgba(10,132,255,.18);border-radius:12px;padding:12px;margin-bottom:8px;font-size:12px;color:rgba(255,255,255,.75);line-height:1.7">
-<b style="color:#0a84ff">Лёгкий ОП (хирургия):</b><br>
-• Голод 24 ч<br>
-• Инфузия NaCl 0.9% 24-48 ч<br>
-• ИПП (омепразол, пантопразол)<br>
-• Анальгетики по требованию<br>
-• Раннее питание (сипинг — питательные смеси) после купирования боли<br><br>
-<b style="color:#0a84ff">Среднетяжёлый/тяжёлый (ОРИТ):</b><br>
-• Объёмная инфузия 30-40 мл/кг, контроль гематокрита, лактата, диуреза<br>
-• Цель: АД сред. 65-85, ЧСС &lt;120, диурез 0.5-1 мл/кг/ч<br>
-• Назогастральный зонд для декомпрессии<br>
-• Назоинтестинальный зонд → раннее зондовое питание (Нутриэн, Нутризон, Фрезубин)<br>
-• Парентеральное питание при невозможности энтерального &gt;3-5 сут (25-30 ккал/кг, белок 1.3-1.5 г/кг)<br>
-• Обезболивание — опиоиды разрешены<br>
-• Респираторная поддержка при ДН (НИВЛ → ИВЛ)<br>
-• Оценка органной недостаточности — <b>шкала SOFA</b><br><br>
-<b style="color:#0a84ff">При вклиненном камне БДС:</b><br>
-• Срочное ЭРПСТ с литоэкстракцией (6-24 ч)<br><br>
-<b style="color:#0a84ff">Антибиотики:</b><br>
-• <b>НЕ профилактически!</b> Только при доказанной инфекции (холангит, холецистит, инфицированный панкреонекроз, экстрапанкреатическая инфекция)<br>
-• Препараты, проникающие в зону некроза: карбапенемы, фторхинолоны + метронидазол<br><br>
-<b style="color:#0a84ff">Хирургия:</b><br>
-• Стерильный панкреонекроз → консервативно<br>
-• Инфицированный панкреонекроз (фаза секвестрации, обычно 3-4 неделя) → дренирование, секвестрэктомия<br>
-• Минимально инвазивный подход: пункция/дренирование под УЗ, ретроперитонеоскопия, минилапаротомия (step-up approach)<br>
-• Открытая операция — при неэффективности минимально инвазивных
-</div>
-
-<div class="card-d" style="font-weight:700;color:#fff;margin-top:14px">📅 Фазы заболевания</div>
-<div class="info">
-<b>I фаза (ранняя):</b><br>
-• <b>IA</b> (1 неделя) — формирование некроза, эндотоксикоз, ферментативный перитонит<br>
-• <b>IB</b> (2 неделя) — резорбтивная лихорадка, перипанкреатический инфильтрат<br><br>
-<b>II фаза (поздняя, секвестрация):</b> с 3 недели<br>
-• <b>Асептическая</b> → псевдокиста ПЖ<br>
-• <b>Септическая</b> → инфицированный панкреонекроз (ГНПП), абсцессы, сепсис
-</div>
-
-<div class="kwr" style="margin-top:14px;font-size:11px"><b>⚠ Источник:</b> Клинические рекомендации "Острый панкреатит" 2024, Российское общество хирургов, Ассоциация хирургов-гепатологов и др. (K85.0-K85.9)</div>
-</div>
-
-<div class="card" id="t-gb">
-<div class="card-t">📕 Гипертоническая болезнь</div>
-<div class="card-d">Клин. реки РКО 2024 (I10-I15). Артериальная гипертензия и гипертонический криз.</div>
-
-<div class="info"><b>Определение:</b> АД ≥140/90 мм рт.ст. при измерении в мед. учреждении на двух разных визитах. <b>Гипертонический криз (ГК)</b> — значительное повышение АД с острым поражением органов-мишеней, требующее немедленных действий. Понятия "неосложнённый криз" больше нет — теперь "недостижение целевых цифр АД" (без ПОМ) и "ГК" (с ПОМ).</div>
-
-<div class="card-d" style="font-weight:700;color:#fff;margin-top:14px">📊 Классификация по уровню АД</div>
-<div class="itp">
-<div class="itp-r"><span class="itp-rng" style="min-width:90px">Оптимальное</span><span style="font-size:11px;color:#30d158">&lt;120 / &lt;80</span></div>
-<div class="itp-r"><span class="itp-rng" style="min-width:90px">Нормальное</span><span style="font-size:11px;color:#30d158">120-129 / 80-84</span></div>
-<div class="itp-r"><span class="itp-rng" style="min-width:90px">Высокое норм.</span><span style="font-size:11px;color:#ffd60a">130-139 / 85-89</span></div>
-<div class="itp-r"><span class="itp-rng" style="min-width:90px">АГ 1 степ.</span><span style="font-size:11px;color:#ff9f0a">140-159 / 90-99</span></div>
-<div class="itp-r"><span class="itp-rng" style="min-width:90px">АГ 2 степ.</span><span style="font-size:11px;color:#ff453a">160-179 / 100-109</span></div>
-<div class="itp-r"><span class="itp-rng" style="min-width:90px">АГ 3 степ.</span><span style="font-size:11px;color:#ff453a">≥180 / ≥110</span></div>
-<div class="itp-r"><span class="itp-rng" style="min-width:90px">ИСАГ</span><span style="font-size:11px;color:#ff9f0a">≥140 / &lt;90</span></div>
-</div>
 
-<div class="card-d" style="font-weight:700;color:#fff;margin-top:14px">🆘 Калькулятор АД</div>
-<div class="ig">
-<div class="if"><div class="il">САД</div><input class="in" id="gb-s" type="number" oninput="gbR()"></div>
-<div class="if"><div class="il">ДАД</div><input class="in" id="gb-d" type="number" oninput="gbR()"></div>
-</div>
-<div class="res" id="gb-r"><div class="res-n" id="gb-n">—</div><div class="res-l" id="gb-l">Введите АД</div><div class="res-a" id="gb-a"></div></div>
-
-<div class="card-d" style="font-weight:700;color:#fff;margin-top:14px">⚠ Признаки ГК (поражение органов-мишеней)</div>
-<div class="info">Отметь, что есть у пациента — это определит тактику:</div>
-<div class="crit" onclick="gbT('a',this)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Энцефалопатия / неврологика<div class="crit-h">Сильная головная боль, нарушение сознания, очаговая симптоматика, судороги</div></div><div class="bd">!</div></div>
-<div class="crit" onclick="gbT('b',this)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Острая левожел. недостаточность<div class="crit-h">Отёк лёгких, удушье, ортопноэ, влажные хрипы</div></div><div class="bd">!</div></div>
-<div class="crit" onclick="gbT('c',this)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">ОКС / ИМ<div class="crit-h">Боль за грудиной, изменения ST на ЭКГ</div></div><div class="bd">!</div></div>
-<div class="crit" onclick="gbT('d',this)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Расслоение аорты<div class="crit-h">Кинжальная боль в груди/спине, асимметрия пульса</div></div><div class="bd">!</div></div>
-<div class="crit" onclick="gbT('e',this)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Острая почечная недостаточность<div class="crit-h">Олигурия, ↑креатинина</div></div><div class="bd">!</div></div>
-<div class="crit" onclick="gbT('f',this)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Эклампсия / преэклампсия<div class="crit-h">У беременных: судороги, протеинурия, отёки</div></div><div class="bd">!</div></div>
-<div class="crit" onclick="gbT('g',this)"><div class="chk"><span class="chk-i">✓</span></div><div class="crit-t">Кровоизлияния на глазном дне<div class="crit-h">Отёк соска зрит. нерва, ретинопатия</div></div><div class="bd">!</div></div>
-
-<div class="res" id="gb-k"><div class="res-n" id="gb-kn" style="font-size:18px">—</div><div class="res-l" id="gb-kl">Отметьте признаки</div><div class="res-a" id="gb-ka"></div></div>
-
-<div class="card-d" style="font-weight:700;color:#fff;margin-top:14px">🩺 Жалобы / симптомы</div>
-<div class="info">
-АГ часто <b>бессимптомна</b> и обнаруживается случайно. При жалобах — неспецифичны:<br>
-• Головная боль (чаще затылочная, по утрам)<br>
-• Головокружение, шум в ушах<br>
-• Сердцебиение, перебои<br>
-• Мелькание "мушек" перед глазами<br>
-• Носовые кровотечения<br>
-• Одышка при нагрузке<br><br>
-<b>При вторичной АГ</b> — симптомы основного заболевания:<br>
-• <b>СОАС:</b> храп, сонливость днём, утренние головные боли<br>
-• <b>Феохромоцитома:</b> пароксизмы АД, потливость, сердцебиение<br>
-• <b>Первич. гиперальдостеронизм:</b> слабость, полиурия<br>
-• <b>Гиперкортицизм:</b> лунообразное лицо, стрии, ожирение<br>
-• <b>Коарктация аорты:</b> холодные ноги, боль в ногах при нагрузке
-</div>
-
-<div class="card-d" style="font-weight:700;color:#fff;margin-top:14px">📐 Правила измерения АД</div>
-<div class="info">
-• Пациент в покое 5 мин, сидя<br>
-• Манжета на уровне сердца<br>
-• <b>Минимум 2 измерения с интервалом 1-2 мин</b><br>
-• Если разница &gt;10 мм — дополнительное измерение<br>
-• АД = среднее из последних двух<br>
-• На обеих руках при первом визите<br>
-• При ГК — <b>3-кратное измерение через 2 мин в покое</b>
-</div>
-
-<div class="card-d" style="font-weight:700;color:#fff;margin-top:14px">🧪 Лабораторная диагностика</div>
-<div class="info">
-<b>Обязательно всем:</b><br>
-• ОАК, ОАМ (альбумин в моче, осадок)<br>
-• Биохимия: креатинин, СКФ, K+, Na+, мочевая кислота, глюкоза, HbA1c<br>
-• Липиды: ОХС, ЛНП, ЛВП, ТГ<br>
-• ЭКГ (признаки ГЛЖ: индекс Соколова-Лайона &gt;35 мм)<br><br>
-<b>При ГК — дополнительно:</b><br>
-• Тропонин I/T (при подозрении на ОКС)<br>
-• NT-proBNP (при подозрении на ОСН)<br>
-• Фибриноген, ЛДГ, гаптоглобин<br>
-• Альбумин в моче<br>
-• ХГЧ у женщин фертильного возраста<br>
-• Анализ мочи на наркотики (метамфетамины, кокаин)<br><br>
-<b>Инструментально:</b><br>
-• Офтальмоскопия (глазное дно) — обязательно при ГК<br>
-• ЭХО-КГ, УЗИ почек<br>
-• КТ/МРТ головного мозга (при неврологике)<br>
-• КТ-ангиография аорты (при подозрении на расслоение)<br>
-• Прицельная рентгенография ОГК
-</div>
-
-<div class="card-d" style="font-weight:700;color:#fff;margin-top:14px">🚑 Лечение СМП</div>
-
-<div style="background:rgba(255,159,10,.08);border:1px solid rgba(255,159,10,.2);border-radius:12px;padding:12px;margin-bottom:8px;font-size:12px;color:rgba(255,255,255,.75);line-height:1.7">
-<b style="color:#ff9f0a">📍 Недостижение целевых цифр АД (БЕЗ ПОМ)</b><br>
-Резкий подъём АД без осложнений. <b>Не криз!</b><br><br>
-• 3-кратное измерение АД через 2 мин в покое<br>
-• Пациент сидя, успокоить<br>
-• <b>Каптоприл</b> 25 мг под язык (эффект 15-30 мин)<br>
-• или <b>Моксонидин</b> 0.4 мг под язык<br>
-• или <b>Нифедипин</b> 10 мг под язык (осторожно у пожилых!)<br>
-• Госпитализация НЕ обязательна<br>
-• Рекомендация — обратиться к врачу для коррекции терапии
-</div>
-
-<div style="background:rgba(255,69,58,.08);border:1px solid rgba(255,69,58,.2);border-radius:12px;padding:12px;margin-bottom:8px;font-size:12px;color:rgba(255,255,255,.75);line-height:1.7">
-<b style="color:#ff453a">🚨 ГИПЕРТОНИЧЕСКИЙ КРИЗ (с ПОМ)</b><br>
-Снижение АД должно быть в первые 15 мин от поступления, на 20-25% от исходного за 2 часа. <b>Препараты ВНУТРИВЕННО.</b><br><br>
-<b style="color:#ff453a">При злокачественной АГ:</b><br>
-• Среднее АД ↓ на 20-25% за несколько часов<br>
-• <b>Эналаприлат</b> 1.25 мг в/в медленно (1 мл)<br>
-• или <b>Урапидил</b> 25 мг в/в медленно<br><br>
-<b style="color:#ff453a">При гипертонической энцефалопатии:</b><br>
-• Немедленное ↓ среднего АД на 20-25%<br>
-• <b>Нитропруссид натрия</b> — препарат выбора (если есть)<br>
-• <b>Магнезия 25%</b> 5-10 мл в/в медленно<br>
-• <b>Эналаприлат</b> 1.25 мг в/в<br><br>
-<b style="color:#ff453a">При ОКС:</b><br>
-• Немедленное ↓ САД &lt;140 мм рт.ст.<br>
-• <b>Нитроглицерин</b> в/в инфузия (5-200 мкг/мин)<br>
-• <b>Метопролол</b> 5 мг в/в дробно (до 15 мг)<br>
-• См. протокол ОКС<br><br>
-<b style="color:#ff453a">При отёке лёгких:</b><br>
-• Немедленное ↓ САД &lt;140 мм рт.ст.<br>
-• <b>Фуросемид</b> 40-80 мг в/в струйно<br>
-• <b>Нитроглицерин</b> 0.5 мг под язык + в/в инфузия<br>
-• <b>Морфин 1%</b> 0.5-1 мл в/в<br>
-• Кислород, положение сидя, жгуты<br><br>
-<b style="color:#ff453a">При расслоении аорты:</b><br>
-• Немедленное ↓ САД &lt;120 и ЧСС &lt;60 уд/мин<br>
-• <b>Метопролол / Эсмолол</b> в/в (приоритет!)<br>
-• + <b>Нитропруссид</b> в/в после β-блокатора<br>
-• Срочно в кардиохирургию!<br><br>
-<b style="color:#ff453a">При эклампсии / преэклампсии:</b><br>
-• Немедленное ↓ САД &lt;160 и ДАД &lt;105<br>
-• <b>Магнезия 25%</b> 4-6 г в/в за 20 мин (приоритет!)<br>
-• <b>Нифедипин</b> 10 мг под язык<br>
-• <b>Метилдопа</b> внутрь<br>
-• <i>НЕ использовать иАПФ, БРА!</i><br><br>
-<b style="color:#ff453a">При инсульте:</b><br>
-• Решение о ↓АД — ИНДИВИДУАЛЬНО с неврологом!<br>
-• Не снижать АД до 185/110 (ишемический) / 180/100 (геморрагический)<br>
-• Резкое ↓АД может усилить ишемию мозга
-</div>
-
-<div style="background:rgba(255,159,10,.08);border:1px solid rgba(255,159,10,.2);border-radius:12px;padding:12px;margin-bottom:8px;font-size:12px;color:rgba(255,255,255,.75);line-height:1.7">
-<b style="color:#ff9f0a">⚠ Что НЕ делать:</b><br>
-• НЕ снижать АД быстро (риск ишемии органов!)<br>
-• НЕ снижать больше чем на 25% за 2 часа<br>
-• НЕ нифедипин в/в (резкое падение АД!)<br>
-• НЕ иАПФ/БРА при беременности<br>
-• НЕ β-блокаторы при бронхоспазме, брадикардии &lt;60, АВ-блокаде<br>
-• НЕ снижать АД при остром инсульте без невролога
-</div>
-
-<div class="card-d" style="font-weight:700;color:#fff;margin-top:14px">🏥 Препараты СМП — дозы</div>
-<div class="info">
-<b>Парентеральные (для криза):</b><br>
-• <b>Эналаприлат (Энап Р)</b> 1.25 мг (1 мл) в/в медленно — препарат выбора<br>
-• <b>Урапидил</b> 25 мг в/в (можно повторить через 5 мин)<br>
-• <b>Магнезия 25%</b> 5-10 мл в/в медленно (при энцефалопатии, эклампсии)<br>
-• <b>Фуросемид</b> 40-80 мг в/в (при отёке лёгких)<br>
-• <b>Нитроглицерин</b> 0.5 мг под язык × 3 каждые 5 мин (при ОКС, ОСН)<br>
-• <b>Метопролол</b> 5 мг в/в (при тахикардии, ОКС, расслоении)<br>
-• <b>Дроперидол</b> 2.5-5 мг в/в (при возбуждении)<br>
-• <b>Морфин 1%</b> 0.5-1 мл в/в (при отёке лёгких, ОКС)<br><br>
-<b>Сублингвальные:</b><br>
-• <b>Каптоприл</b> 25 мг — эффект 15-30 мин<br>
-• <b>Моксонидин</b> 0.4 мг<br>
-• <b>Нифедипин</b> 10 мг (осторожно у пожилых!)<br>
-• <b>Анаприлин</b> 20-40 мг (при тахикардии)
-</div>
-
-<div class="card-d" style="font-weight:700;color:#fff;margin-top:14px">🎯 Целевые уровни АД (плановая терапия)</div>
-<div class="info">
-• <b>Общая популяция:</b> &lt;130/80 мм рт.ст.<br>
-• <b>≥65 лет:</b> 130-139 / &lt;80<br>
-• <b>СД, ХБП, ИБС:</b> &lt;130/80<br>
-• <b>Беременность:</b> &lt;140/90<br>
-• <i>Не снижать ниже 120/70</i>
-</div>
-
-<div class="card-d" style="font-weight:700;color:#fff;margin-top:14px">💊 Группы препаратов (плановая терапия)</div>
-<div class="info">
-<b>Основные 5 групп (стартовая терапия):</b><br>
-1. <b>иАПФ</b> — лизиноприл, периндоприл, эналаприл<br>
-2. <b>БРА</b> — лозартан, валсартан, телмисартан, олмесартан<br>
-3. <b>БКК</b> — амлодипин, лерканидипин, нифедипин ретард<br>
-4. <b>β-блокаторы</b> — бисопролол, метопролол, небиволол<br>
-5. <b>Диуретики</b> — индапамид, гидрохлортиазид, хлорталидон<br><br>
-<b>Старт:</b> комбинация 2 препаратов в одной таблетке (иАПФ/БРА + БКК или диуретик).<br>
-<b>Если не достигается цель:</b> 3 препарата (иАПФ/БРА + БКК + диуретик).<br>
-<b>Резистентная АГ:</b> + спиронолактон 25-50 мг.
-</div>
-
-<div class="card-d" style="font-weight:700;color:#fff;margin-top:14px">📋 Стратификация риска</div>
-<div class="info">
-<b>Стадии АГ:</b><br>
-• <b>I стадия:</b> только повышение АД, без ПОМ<br>
-• <b>II стадия:</b> бессимптомное ПОМ (ГЛЖ, альбуминурия, ХБП C3, бляшки)<br>
-• <b>III стадия:</b> АКС (ИБС, инсульт, ХСН, ФП, ХБП C4-5, тяж. ретинопатия) или СД с ПОМ<br><br>
-<b>Категории риска:</b> низкий → умеренный → высокий → очень высокий → экстремальный.<br>
-Зависят от АД + факторов риска + ПОМ + АКС + СД.
-</div>
-
-<div class="card-d" style="font-weight:700;color:#fff;margin-top:14px">📌 Показания к госпитализации</div>
-<div class="info">
-<b>Экстренная:</b><br>
-• Гипертонический криз с ПОМ<br>
-• Подозрение на расслоение аорты<br>
-• ОКС, ОНМК, отёк лёгких на фоне ↑АД<br>
-• Эклампсия<br><br>
-<b>Плановая:</b><br>
-• Уточнение природы АГ (исключение вторичной)<br>
-• Оценка ПОМ, подбор терапии<br>
-• Резистентная АГ
-</div>
-
-<div class="kwr" style="margin-top:14px;font-size:11px"><b>⚠ Источник:</b> Клинические рекомендации "Артериальная гипертензия у взрослых" 2024, Российское кардиологическое общество (I10-I15)</div>
-</div>
-
-<div class="card" id="t-okp">
-<div class="card-t">📕 ОКС с подъёмом ST (STEMI)</div>
-<div class="card-d">Клин. реки РКО 2024 (I21). Реперфузионная терапия — основа лечения.</div>
-
-<div class="info"><b>Определение:</b> Тромботическая окклюзия крупной КА → стойкий подъём ST на ЭКГ. <b>Главная задача:</b> восстановить проходимость КА (реперфузия) — первичное ЧКВ или ТЛТ. <b>Окно:</b> до 12 часов от начала симптомов.</div>
-
-<div class="card-d" style="font-weight:700;color:#fff;margin-top:14px">🔍 ЭКГ-критерии STEMI</div>
-<div style="background:rgba(255,69,58,.08);border:1px solid rgba(255,69,58,.25);border-radius:12px;padding:12px;font-size:12px;color:rgba(255,255,255,.75);line-height:1.7;margin-bottom:8px">
-<b style="color:#ff453a">Подъёмы ST в точке J ≥ 0.1 мВ в 2 смежных отведениях</b><br>
-Исключения для V2-V3:<br>
-• Мужчины ≥40 лет: ≥0.2 мВ<br>
-• Мужчины &lt;40 лет: ≥0.25 мВ<br>
-• Женщины: ≥0.15 мВ<br>
-(при отсутствии ГЛЖ или блокады ЛНПГ)<br><br>
-<b style="color:#ff453a">ИЛИ впервые возникшая полная блокада ЛНПГ</b>
-</div>
-
-<div class="card-d" style="font-weight:700;color:#fff;margin-top:14px">⏱ Выбор стратегии реперфузии</div>
-<div class="info">
-<b>Первичное ЧКВ — приоритет</b> если время от диагноза до проводника в КА:<br>
-• ≤60 мин в "инвазивном" учреждении<br>
-• ≤90 мин при переводе из "неинвазивного"<br>
-• Общий лимит — <b>120 мин</b><br><br>
-<b>ТЛТ (тромболизис) — если ЧКВ невозможно в 120 мин:</b><br>
-• <b>Догоспитальная ТЛТ</b> — оптимально!<br>
-• Время от диагноза до иглы: &lt;10 мин<br>
-• Далее — фармакоинвазивная стратегия (ЧКВ через 2-24 часа после ТЛТ)<br><br>
-<b>В период 12-48 часов</b> — ЧКВ показано при продолжающейся ишемии, нестабильной гемодинамике, аритмиях.<br>
-<b>>48 часов и нет симптомов</b> — рутинная реперфузия НЕ рекомендуется.
-</div>
-
-<div class="card-d" style="font-weight:700;color:#fff;margin-top:14px">🚫 Противопоказания к ТЛТ</div>
-<div style="background:rgba(255,69,58,.06);border:1px solid rgba(255,69,58,.18);border-radius:12px;padding:12px;font-size:12px;color:rgba(255,255,255,.75);line-height:1.7;margin-bottom:8px">
-<b style="color:#ff453a">АБСОЛЮТНЫЕ:</b><br>
-• Геморрагический инсульт в анамнезе или ОНМК неизвестной этиологии<br>
-• Ишемический инсульт за последние 6 мес<br>
-• Опухоли, артериовенозные мальформации ЦНС<br>
-• Серьёзная травма / операция / травма головы / ЖКК — за последний месяц<br>
-• Геморрагические диатезы, кровотечение<br>
-• Расслоение аорты (подозрение или подтверждение)<br>
-• Пункция некомпрессируемых сосудов, биопсия печени, спинномозговая пункция — за 24 ч<br><br>
-<b style="color:#ff9f0a">ОТНОСИТЕЛЬНЫЕ:</b><br>
-• ТИА в последние 6 мес<br>
-• Приём пероральных антикоагулянтов<br>
-• Беременность / 1 нед после родов<br>
-• Рефрактерная АГ (САД>180 или ДАД>110)<br>
-• Тяжёлое заболевание печени<br>
-• Инфекционный эндокардит<br>
-• Травматичная или длительная СЛР<br>
-• Обострение ЯБ
-</div>
-
-<div class="card-d" style="font-weight:700;color:#fff;margin-top:14px">💉 Препараты для ТЛТ</div>
-<div class="info">
-<b>Тенектеплаза (ТНК-тПА)</b> — препарат выбора для догоспитальной ТЛТ:<br>
-• Болюс в/в, доза по весу:<br>
-• &lt;60 кг — 30 мг<br>
-• 60-69 кг — 35 мг<br>
-• 70-79 кг — 40 мг<br>
-• 80-89 кг — 45 мг<br>
-• ≥90 кг — 50 мг<br>
-• <b>Старше 75 лет — половинная доза!</b><br><br>
-<b>Алтеплаза (тПА)</b>:<br>
-• 15 мг болюс<br>
-• 0.75 мг/кг (макс 50 мг) за 30 мин<br>
-• 0.5 мг/кг (макс 35 мг) за 60 мин<br>
-• Общая доза макс 100 мг<br><br>
-<b>Стрептокиназа</b>:<br>
-• 1.5 млн ЕД за 30-60 мин в/в<br>
-• Чаще аллергические реакции, ↓АД<br>
-• Не использовать повторно
-</div>
-
-<div class="card-d" style="font-weight:700;color:#fff;margin-top:14px">🚑 Лечение СМП — пошагово</div>
-
-<div style="background:rgba(255,69,58,.08);border:1px solid rgba(255,69,58,.2);border-radius:12px;padding:12px;margin-bottom:8px;font-size:12px;color:rgba(255,255,255,.75);line-height:1.7">
-<b style="color:#ff453a">1️⃣ ЭКГ — НЕМЕДЛЕННО (≤10 мин!)</b><br>
-12 отведений + V3R, V4R, V7-V9 при подозрении на задний/правожел. ИМ<br><br>
-<b style="color:#ff453a">2️⃣ Обезболивание:</b><br>
-• <b>Нитроглицерин</b> 0.4-0.5 мг под язык или спрей — каждые 5 мин до 3 раз<br>
-• Контроль АД! НЕ при САД&lt;90, инфаркте ПЖ<br>
-• <b>Морфин</b> 2-4 мг в/в (10 мг развести в 10 мл NaCl)<br>
-• Повторять по 2-4 мг каждые 5-15 мин до купирования<br>
-• <i>Морфин ослабляет действие антиагрегантов!</i><br><br>
-<b style="color:#ff453a">3️⃣ Кислород ТОЛЬКО при SpO₂ &lt;90%</b><br>
-2-8 л/мин через носовые катетеры. <b>НЕ давать при SpO₂≥90%</b> — может увеличить повреждение миокарда!<br><br>
-<b style="color:#ff453a">4️⃣ Антиагреганты:</b><br>
-• <b>АСК (Аспирин)</b> 150-300 мг разжевать (если не было)<br>
-• <b>Клопидогрел</b> 300 мг внутрь (старше 75 лет — БЕЗ нагрузочной)<br>
-• Только при ТЛТ! При планируемом первичном ЧКВ — ингибиторы P2Y12 на догоспитальном этапе НЕ обязательны<br><br>
-<b style="color:#ff453a">5️⃣ Антикоагулянт:</b><br>
-• Лучший выбор для ТЛТ — <b>Эноксапарин натрия</b>:<br>
-• ≤75 лет: болюс 30 мг в/в + 1 мг/кг п/к<br>
-• &gt;75 лет: без болюса, 0.75 мг/кг п/к (макс 75 мг)<br>
-• Или <b>Гепарин натрия</b> — болюс 60 ЕД/кг в/в (макс 4000 ЕД) + инфузия<br>
-• Или <b>Фондапаринукс</b> 2.5 мг в/в, затем п/к<br><br>
-<b style="color:#ff453a">6️⃣ При выраженном возбуждении:</b><br>
-• <b>Диазепам</b> 5-10 мг в/в (пожилым — 2.5 мг)<br>
-• При делирии — <b>галоперидол</b> в/в<br><br>
-<b style="color:#ff453a">7️⃣ Транспортировка:</b><br>
-• В ЧКВ-центр СРОЧНО<br>
-• Готовность к дефибрилляции (ФЖ — основная причина ранней смерти)<br>
-• Вызов рентген-эндоваскулярной бригады заранее<br>
-• При остановке кровообращения → СЛР + дефибрилляция → после восстановления в ЧКВ-центр
-</div>
-
-<div class="card-d" style="font-weight:700;color:#fff;margin-top:14px">⚠ Осложнения морфина и их купирование</div>
-<div class="info">
-• <b>Гипотензия</b> → положение лёжа с поднятыми ногами + NaCl 0.9% в/в<br>
-• <b>Брадикардия + гипотензия</b> → <b>Атропин</b> 0.5-1.0 мг в/в<br>
-• <b>Тошнота, рвота</b> → <b>Метоклопрамид</b> 10 мг в/в<br>
-• <b>Угнетение дыхания</b> → <b>Налоксон</b> 0.1-0.2 мг в/в каждые 15 мин
-</div>
-
-<div class="card-d" style="font-weight:700;color:#fff;margin-top:14px">🏥 В стационаре</div>
-<div class="info">
-• <b>Первичное ЧКВ</b> — доступ через лучевую артерию<br>
-• Стент с лекарственным покрытием (СВЛ) нового поколения<br>
-• Двойная антитромбоцитарная терапия 12 мес:<br>
-&nbsp;&nbsp;— АСК 75-100 мг 1 р/сут<br>
-&nbsp;&nbsp;— Тикагрелор 90 мг 2 р/сут или Прасугрел 10 мг или Клопидогрел 75 мг<br>
-• Статины высокой интенсивности (аторвастатин 80 мг, розувастатин 40 мг)<br>
-• иАПФ или БРА<br>
-• β-блокаторы (при ФВ&lt;40% и/или ОСН)<br>
-• Антагонисты минералокортикоидов (при ФВ≤40% + СН/СД)
-</div>
-
-<div class="card-d" style="font-weight:700;color:#fff;margin-top:14px">🚨 При кардиогенном шоке</div>
-<div class="info">
-• Немедленная КГ + первичное ЧКВ независимо от времени<br>
-• Если ЧКВ невозможно за 120 мин → ТЛТ<br>
-• <b>Норадреналин</b> 2-20 мкг/мин (предпочтителен)<br>
-• <b>Добутамин</b> 2-20 мкг/кг/мин<br>
-• Инфузия NaCl осторожно<br>
-• ВАБК — при необходимости<br>
-• ИВЛ при ДН
-</div>
-
-<div class="kwr" style="margin-top:14px;font-size:11px"><b>⚠ Источник:</b> КР "Острый инфаркт миокарда с подъёмом сегмента ST электрокардиограммы" 2024, РКО (I21)</div>
-</div>
-
-<div class="card" id="t-okb">
-<div class="card-t">📕 ОКС без подъёма ST (NSTEMI/НС)</div>
-<div class="card-d">Клин. реки РКО 2024 (I20.0, I21.4). NSTEMI или нестабильная стенокардия.</div>
-
-<div class="info"><b>Определение:</b> Острая ишемия миокарда БЕЗ стойкого подъёма ST. По тропонину делится на:<br>
-• <b>NSTEMI</b> — повышение тропонина (диагноз ИМ)<br>
-• <b>Нестабильная стенокардия (НС)</b> — тропонин в норме<br><br>
-В отличие от STEMI — <b>ТЛТ НЕ показана!</b> Только КГ + ЧКВ по показаниям.</div>
-
-<div class="card-d" style="font-weight:700;color:#fff;margin-top:14px">🔍 ЭКГ при ОКСбпST</div>
-<div class="info">
-• <b>Депрессия ST</b> (горизонтальная или косонисходящая) ≥0.05 мВ в 2 смежных отведениях<br>
-• <b>Инверсия Т</b> ≥0.1 мВ в отведениях с преобладающим R<br>
-• Нормальная ЭКГ <b>не исключает</b> ОКСбпST!<br>
-• Повторная ЭКГ через 15-30 мин при сохранении симптомов
-</div>
-
-<div class="card-d" style="font-weight:700;color:#fff;margin-top:14px">🩸 Тропонины — главное</div>
-<div style="background:rgba(255,159,10,.08);border:1px solid rgba(255,159,10,.2);border-radius:12px;padding:12px;font-size:12px;color:rgba(255,255,255,.75);line-height:1.7;margin-bottom:8px">
-<b style="color:#ff9f0a">Высокочувствительные тропонины T или I:</b><br>
-• Результат в течение 60 мин от взятия<br>
-• Повторное взятие через 1 ч (алгоритм 0/1) или 2 ч (0/2) или 3 ч (0/3)<br>
-• Динамика — главное для подтверждения ИМ<br><br>
-<b>NSTEMI:</b> ↑тропонина &gt;99 перцентиля + динамика<br>
-<b>НС:</b> тропонин в норме при двукратном измерении
-</div>
-
-<div class="card-d" style="font-weight:700;color:#fff;margin-top:14px">📊 Стратификация риска — шкала GRACE</div>
-<div class="info">
-<b>Высокий риск (GRACE >140):</b><br>
-• <b>Ранняя инвазивная стратегия</b> (КГ + ЧКВ ≤24 ч)<br><br>
-<b>Очень высокий риск</b> (любое из):<br>
-• Нестабильная гемодинамика, кардиогенный шок<br>
-• Возвратная/рефрактерная боль на фоне терапии<br>
-• Жизнеугрожающие аритмии<br>
-• Острая СН<br>
-• Динамические изменения ST<br>
-→ <b>Немедленная (≤2 ч) КГ + ЧКВ</b><br><br>
-<b>Низкий риск (GRACE ≤140 и нет других факторов):</b><br>
-• Селективная инвазивная стратегия (стресс-тесты, КГ при положительном результате)
-</div>
-
-<div class="card-d" style="font-weight:700;color:#fff;margin-top:14px">🚑 Лечение СМП</div>
-
-<div style="background:rgba(10,132,255,.06);border:1px solid rgba(10,132,255,.18);border-radius:12px;padding:12px;margin-bottom:8px;font-size:12px;color:rgba(255,255,255,.75);line-height:1.7">
-<b style="color:#0a84ff">1️⃣ ЭКГ — НЕМЕДЛЕННО (≤10 мин)</b><br>
-12 отведений + при необходимости V7-V9<br><br>
-<b style="color:#0a84ff">2️⃣ Обезболивание (как при STEMI):</b><br>
-• <b>Нитроглицерин</b> 0.4-0.5 мг под язык × 3<br>
-• <b>Морфин</b> 2-4 мг в/в при сохранении боли<br><br>
-<b style="color:#0a84ff">3️⃣ Антиагреганты:</b><br>
-• <b>АСК</b> 150-300 мг разжевать<br>
-• <b>Клопидогрел</b> 300-600 мг — на догоспитальном этапе ТОЛЬКО при ясном диагнозе и плановом ЧКВ<br>
-• <i>При сомнениях в диагнозе — лучше отложить P2Y12 до КГ</i><br><br>
-<b style="color:#0a84ff">4️⃣ Антикоагулянт:</b><br>
-• <b>Фондапаринукс</b> 2.5 мг п/к — препарат выбора<br>
-• или <b>Эноксапарин</b> 1 мг/кг п/к<br>
-• или <b>Гепарин натрия</b> 60-70 ЕД/кг в/в болюс<br><br>
-<b style="color:#0a84ff">5️⃣ Кислород:</b><br>
-ТОЛЬКО при SpO₂ &lt;90%<br><br>
-<b style="color:#0a84ff">6️⃣ β-блокатор при тахикардии и сохранной ФВ:</b><br>
-• <b>Метопролол</b> 5 мг в/в дробно<br>
-• ПРОТИВОПОКАЗАН: брадикардия, АВ-блокада, шок, бронхоспазм<br><br>
-<b style="color:#0a84ff">7️⃣ Транспортировка:</b><br>
-• ВСЕ пациенты с подозрением на ОКСбпST — в стационар!<br>
-• При очень высоком риске → ЧКВ-центр немедленно<br>
-• Готовность к СЛР, дефибрилляции
-</div>
-
-<div class="card-d" style="font-weight:700;color:#fff;margin-top:14px">⚠ Чем NSTEMI отличается от STEMI</div>
-<div class="info">
-• <b>ТЛТ при NSTEMI ПРОТИВОПОКАЗАНА!</b> (нет доказательств пользы, ↑риск кровотечений)<br>
-• Время реперфузии менее критично — окно до 24 ч (или 2 ч при очень высоком риске)<br>
-• Возможна селективная стратегия (без рутинного ЧКВ)<br>
-• Прасугрел и тикагрелор предпочтительнее клопидогреля
-</div>
-
-<div class="card-d" style="font-weight:700;color:#fff;margin-top:14px">🧪 В стационаре — обследование</div>
-<div class="info">
-• Динамика высокочувствительного тропонина<br>
-• ЭКГ повторно при изменении симптомов<br>
-• ОАК, креатинин (для расчёта СКФ — важно для дозирования антикоагулянтов)<br>
-• Глюкоза, липиды<br>
-• ЭХО-КГ — оценка ФВ, гипокинезии<br>
-• КГ по показаниям<br>
-• <b>Шкала GRACE</b> — стратификация риска<br>
-• <b>Шкала CRUSADE</b> — оценка риска кровотечений
-</div>
-
-<div class="card-d" style="font-weight:700;color:#fff;margin-top:14px">💊 Постоянная терапия</div>
-<div class="info">
-• Двойная антитромбоцитарная терапия 12 мес (АСК + тикагрелор/прасугрел/клопидогрел)<br>
-• Статины высокой интенсивности<br>
-• иАПФ/БРА (особенно при ФВ&lt;40%, СД, ХСН)<br>
-• β-блокаторы<br>
-• Антагонисты МКР при ФВ≤40%<br>
-• ИПП для защиты слизистой
-</div>
-
-<div class="kwr" style="margin-top:14px;font-size:11px"><b>⚠ Источник:</b> КР "Острый коронарный синдром без подъёма сегмента ST" 2024, РКО (I20.0, I21.4)</div>
-</div>
-
-<div class="card" id="t-la">
-<div class="card-t">🧪 Анализы — Взрослые</div>
-<div class="card-d">Референсные значения по стандартам РФ. Краткие таблицы + калькулятор оценки с причинами отклонений.</div>
-
-<div class="info"><b>Источники норм:</b> Приказ Минздрава РФ № 36ан от 03.02.2015, КР РКО, РОТ, РГА, методические указания МЗ РФ. Референсные интервалы могут незначительно отличаться в разных лабораториях.</div>
-
-<div class="wt" style="margin-top:4px">📋 СПРАВОЧНЫЕ ТАБЛИЦЫ НОРМ</div>
-
-<div class="an-ref">
-<div class="an-ref-h">🩸 Общий анализ крови</div>
-<table class="an-ref-t"><thead><tr><th>Показатель</th><th>Норма</th><th>Ед.</th></tr></thead><tbody>
-<tr><td>Гемоглобин — М</td><td>130-160</td><td>г/л</td></tr>
-<tr><td>Гемоглобин — Ж</td><td>120-150</td><td>г/л</td></tr>
-<tr><td>Эритроциты — М</td><td>4.0-5.5</td><td>×10¹²/л</td></tr>
-<tr><td>Эритроциты — Ж</td><td>3.7-4.7</td><td>×10¹²/л</td></tr>
-<tr><td>Гематокрит — М</td><td>40-48</td><td>%</td></tr>
-<tr><td>Гематокрит — Ж</td><td>36-42</td><td>%</td></tr>
-<tr><td>MCV</td><td>80-100</td><td>фл</td></tr>
-<tr><td>MCH</td><td>27-34</td><td>пг</td></tr>
-<tr><td>MCHC</td><td>320-360</td><td>г/л</td></tr>
-<tr><td>Лейкоциты</td><td>4.0-9.0</td><td>×10⁹/л</td></tr>
-<tr><td>Нейтрофилы (с/я)</td><td>47-72</td><td>%</td></tr>
-<tr><td>Нейтрофилы (п/я)</td><td>1-6</td><td>%</td></tr>
-<tr><td>Лимфоциты</td><td>19-37</td><td>%</td></tr>
-<tr><td>Моноциты</td><td>3-11</td><td>%</td></tr>
-<tr><td>Эозинофилы</td><td>0.5-5</td><td>%</td></tr>
-<tr><td>Базофилы</td><td>0-1</td><td>%</td></tr>
-<tr><td>Тромбоциты</td><td>180-320</td><td>×10⁹/л</td></tr>
-<tr><td>СОЭ — М</td><td>2-15</td><td>мм/ч</td></tr>
-<tr><td>СОЭ — Ж</td><td>2-20</td><td>мм/ч</td></tr>
-<tr><td>Ретикулоциты</td><td>0.2-1.2</td><td>%</td></tr>
-</tbody></table>
-</div>
-
-<div class="an-ref">
-<div class="an-ref-h">💊 Биохимия — белок, ферменты</div>
-<table class="an-ref-t"><thead><tr><th>Показатель</th><th>Норма</th><th>Ед.</th></tr></thead><tbody>
-<tr><td>Общий белок</td><td>65-85</td><td>г/л</td></tr>
-<tr><td>Альбумин</td><td>35-50</td><td>г/л</td></tr>
-<tr><td>АЛТ — М</td><td>до 41</td><td>Ед/л</td></tr>
-<tr><td>АЛТ — Ж</td><td>до 33</td><td>Ед/л</td></tr>
-<tr><td>АСТ — М</td><td>до 40</td><td>Ед/л</td></tr>
-<tr><td>АСТ — Ж</td><td>до 32</td><td>Ед/л</td></tr>
-<tr><td>ГГТ — М</td><td>до 55</td><td>Ед/л</td></tr>
-<tr><td>ГГТ — Ж</td><td>до 38</td><td>Ед/л</td></tr>
-<tr><td>ЩФ</td><td>40-150</td><td>Ед/л</td></tr>
-<tr><td>ЛДГ</td><td>125-220</td><td>Ед/л</td></tr>
-<tr><td>КФК — М</td><td>до 195</td><td>Ед/л</td></tr>
-<tr><td>КФК — Ж</td><td>до 170</td><td>Ед/л</td></tr>
-<tr><td>КФК-МВ</td><td>до 24</td><td>Ед/л</td></tr>
-<tr><td>α-Амилаза</td><td>25-125</td><td>Ед/л</td></tr>
-<tr><td>Липаза</td><td>до 60</td><td>Ед/л</td></tr>
-<tr><td>Билирубин общий</td><td>5-21</td><td>мкмоль/л</td></tr>
-<tr><td>Билирубин прямой</td><td>до 5.1</td><td>мкмоль/л</td></tr>
-<tr><td>Билирубин непрямой</td><td>до 16.5</td><td>мкмоль/л</td></tr>
-</tbody></table>
-</div>
-
-<div class="an-ref">
-<div class="an-ref-h">🫘 Почечный комплекс / углеводы</div>
-<table class="an-ref-t"><thead><tr><th>Показатель</th><th>Норма</th><th>Ед.</th></tr></thead><tbody>
-<tr><td>Креатинин — М</td><td>74-110</td><td>мкмоль/л</td></tr>
-<tr><td>Креатинин — Ж</td><td>58-96</td><td>мкмоль/л</td></tr>
-<tr><td>Мочевина</td><td>2.5-8.3</td><td>ммоль/л</td></tr>
-<tr><td>Мочевая кислота — М</td><td>200-420</td><td>мкмоль/л</td></tr>
-<tr><td>Мочевая кислота — Ж</td><td>140-340</td><td>мкмоль/л</td></tr>
-<tr><td>СКФ (норма)</td><td>≥90</td><td>мл/мин/1.73м²</td></tr>
-<tr><td>Глюкоза натощак</td><td>3.3-5.5</td><td>ммоль/л</td></tr>
-<tr><td>Глюкоза (СД)</td><td>≥7.0</td><td>ммоль/л</td></tr>
-<tr><td>HbA1c</td><td>4.0-6.0</td><td>%</td></tr>
-<tr><td>HbA1c (цель СД)</td><td>≤7.0</td><td>%</td></tr>
-</tbody></table>
-</div>
-
-<div class="an-ref">
-<div class="an-ref-h">⚡ Электролиты и микроэлементы</div>
-<table class="an-ref-t"><thead><tr><th>Показатель</th><th>Норма</th><th>Ед.</th></tr></thead><tbody>
-<tr><td>Калий (K⁺)</td><td>3.5-5.1</td><td>ммоль/л</td></tr>
-<tr><td>Натрий (Na⁺)</td><td>136-145</td><td>ммоль/л</td></tr>
-<tr><td>Хлор (Cl⁻)</td><td>98-107</td><td>ммоль/л</td></tr>
-<tr><td>Кальций общий</td><td>2.15-2.55</td><td>ммоль/л</td></tr>
-<tr><td>Кальций ионизир.</td><td>1.15-1.27</td><td>ммоль/л</td></tr>
-<tr><td>Магний</td><td>0.66-1.07</td><td>ммоль/л</td></tr>
-<tr><td>Фосфор</td><td>0.81-1.45</td><td>ммоль/л</td></tr>
-<tr><td>Железо — М</td><td>11-31</td><td>мкмоль/л</td></tr>
-<tr><td>Железо — Ж</td><td>9-30</td><td>мкмоль/л</td></tr>
-<tr><td>Ферритин — М</td><td>30-400</td><td>нг/мл</td></tr>
-<tr><td>Ферритин — Ж</td><td>13-150</td><td>нг/мл</td></tr>
-</tbody></table>
-</div>
-
-<div class="an-ref">
-<div class="an-ref-h">🩸 Липидный профиль</div>
-<table class="an-ref-t"><thead><tr><th>Показатель</th><th>Норма</th><th>Ед.</th></tr></thead><tbody>
-<tr><td>Холестерин общий</td><td>&lt;5.0</td><td>ммоль/л</td></tr>
-<tr><td>ЛПНП (норма)</td><td>&lt;3.0</td><td>ммоль/л</td></tr>
-<tr><td>ЛПНП (↑риск ССЗ)</td><td>&lt;1.8</td><td>ммоль/л</td></tr>
-<tr><td>ЛПНП (оч. выс. риск)</td><td>&lt;1.4</td><td>ммоль/л</td></tr>
-<tr><td>ЛПВП — М</td><td>&gt;1.0</td><td>ммоль/л</td></tr>
-<tr><td>ЛПВП — Ж</td><td>&gt;1.2</td><td>ммоль/л</td></tr>
-<tr><td>Триглицериды</td><td>&lt;1.7</td><td>ммоль/л</td></tr>
-<tr><td>КА (индекс)</td><td>&lt;3.0</td><td>—</td></tr>
-</tbody></table>
-</div>
-
-<div class="an-ref">
-<div class="an-ref-h">🩺 Газы крови / КЩС</div>
-<table class="an-ref-t"><thead><tr><th>Показатель</th><th>Норма</th><th>Ед.</th></tr></thead><tbody>
-<tr><td>pH</td><td>7.35-7.45</td><td>—</td></tr>
-<tr><td>pCO₂</td><td>35-45</td><td>мм рт.ст.</td></tr>
-<tr><td>pO₂</td><td>80-100</td><td>мм рт.ст.</td></tr>
-<tr><td>HCO₃⁻</td><td>22-26</td><td>ммоль/л</td></tr>
-<tr><td>BE</td><td>−2 — +2</td><td>ммоль/л</td></tr>
-<tr><td>SpO₂</td><td>95-99</td><td>%</td></tr>
-<tr><td>Лактат</td><td>0.5-2.2</td><td>ммоль/л</td></tr>
-</tbody></table>
-</div>
-
-<div class="an-ref">
-<div class="an-ref-h">💉 Коагулограмма</div>
-<table class="an-ref-t"><thead><tr><th>Показатель</th><th>Норма</th><th>Ед.</th></tr></thead><tbody>
-<tr><td>ПТИ</td><td>80-105</td><td>%</td></tr>
-<tr><td>МНО (норма)</td><td>0.8-1.2</td><td>—</td></tr>
-<tr><td>МНО (варфарин)</td><td>2.0-3.0</td><td>—</td></tr>
-<tr><td>АЧТВ</td><td>25-35</td><td>сек</td></tr>
-<tr><td>ТВ</td><td>15-18</td><td>сек</td></tr>
-<tr><td>Фибриноген</td><td>2.0-4.0</td><td>г/л</td></tr>
-<tr><td>D-димер</td><td>&lt;500</td><td>нг/мл</td></tr>
-<tr><td>D-димер (возр-зав)</td><td>возраст×10</td><td>нг/мл</td></tr>
-</tbody></table>
-</div>
+<h2>МедШкалы СМП</h2>
 
-<div class="an-ref">
-<div class="an-ref-h">❤️ Кардиомаркеры / воспаление</div>
-<table class="an-ref-t"><thead><tr><th>Показатель</th><th>Норма</th><th>Ед.</th></tr></thead><tbody>
-<tr><td>Тропонин I (вчТн)</td><td>&lt;0.04</td><td>нг/мл</td></tr>
-<tr><td>Тропонин T</td><td>&lt;0.014</td><td>нг/мл</td></tr>
-<tr><td>NT-proBNP (норма)</td><td>&lt;125</td><td>пг/мл</td></tr>
-<tr><td>NT-proBNP (ОСН)</td><td>&gt;450 / &gt;900 / &gt;1800</td><td>пг/мл</td></tr>
-<tr><td>BNP</td><td>&lt;100</td><td>пг/мл</td></tr>
-<tr><td>СРБ</td><td>&lt;5.0</td><td>мг/л</td></tr>
-<tr><td>СРБ (выс. чувств.)</td><td>&lt;1.0</td><td>мг/л</td></tr>
-<tr><td>Прокальцитонин</td><td>&lt;0.5</td><td>нг/мл</td></tr>
-<tr><td>Прокальц. (сепсис)</td><td>&gt;2.0</td><td>нг/мл</td></tr>
-</tbody></table>
+<div>
+<button class="tab act" onclick="openTab('qs', this)">qSOFA</button>
+<button class="tab" onclick="openTab('gcs', this)">GCS</button>
+<button class="tab" onclick="openTab('bmi', this)">ИМТ</button>
+<button class="tab" onclick="openTab('shock', this)">Альговер</button>
 </div>
 
-<div class="an-ref">
-<div class="an-ref-h">🦋 Щитовидная железа / гормоны</div>
-<table class="an-ref-t"><thead><tr><th>Показатель</th><th>Норма</th><th>Ед.</th></tr></thead><tbody>
-<tr><td>ТТГ</td><td>0.4-4.0</td><td>мЕд/л</td></tr>
-<tr><td>Т4 свободный</td><td>9-22</td><td>пмоль/л</td></tr>
-<tr><td>Т3 свободный</td><td>2.6-5.7</td><td>пмоль/л</td></tr>
-<tr><td>АТ-ТПО</td><td>&lt;35</td><td>МЕ/мл</td></tr>
-<tr><td>Кортизол (утро)</td><td>140-635</td><td>нмоль/л</td></tr>
-<tr><td>Кортизол (вечер)</td><td>83-360</td><td>нмоль/л</td></tr>
-</tbody></table>
-</div>
+<!-- qSOFA -->
+<div class="card show" id="qs">
+<h3>qSOFA</h3>
 
-<div class="an-ref">
-<div class="an-ref-h">💧 Общий анализ мочи</div>
-<table class="an-ref-t"><thead><tr><th>Показатель</th><th>Норма</th><th>Ед.</th></tr></thead><tbody>
-<tr><td>Цвет</td><td>соломенно-жёлт.</td><td>—</td></tr>
-<tr><td>Прозрачность</td><td>прозрачная</td><td>—</td></tr>
-<tr><td>Уд. вес</td><td>1010-1025</td><td>—</td></tr>
-<tr><td>pH</td><td>5.0-7.0</td><td>—</td></tr>
-<tr><td>Белок</td><td>&lt;0.033 (0.14)</td><td>г/л</td></tr>
-<tr><td>Глюкоза</td><td>нет</td><td>—</td></tr>
-<tr><td>Кетоны</td><td>нет</td><td>—</td></tr>
-<tr><td>Лейкоциты — М</td><td>0-3 в п/з</td><td>—</td></tr>
-<tr><td>Лейкоциты — Ж</td><td>0-5 в п/з</td><td>—</td></tr>
-<tr><td>Эритроциты</td><td>0-2 в п/з</td><td>—</td></tr>
-<tr><td>Цилиндры</td><td>нет (гиал. ед.)</td><td>—</td></tr>
-<tr><td>Альбумин/креат.</td><td>&lt;30</td><td>мг/г</td></tr>
-</tbody></table>
-</div>
+<div class="crit" onclick="toggleCrit(this, 'rr')">ЧДД ≥22</div>
+<div class="crit" onclick="toggleCrit(this, 'sb')">АД ≤100</div>
+<div class="crit" onclick="toggleCrit(this, 'gc')">Сознание нарушено</div>
 
-<div class="wt" style="margin-top:18px">🔬 КАЛЬКУЛЯТОР С ПРИЧИНАМИ ОТКЛОНЕНИЙ</div>
-<div class="info">Введи значение анализа → получишь оценку (норма/повышено/понижено) с возможными причинами.</div>
-<div id="la-list"></div>
+<div class="res">Баллы: <span id="qsScore">0</span></div>
+<div id="qsText">Низкий риск</div>
 </div>
 
-<div class="card" id="t-ld">
-<div class="card-t">🧪 Анализы — Дети</div>
-<div class="card-d">Возрастные нормы (КР МЗ РФ, педиатрическая практика). Сначала таблицы, потом калькулятор.</div>
+<!-- GCS -->
+<div class="card" id="gcs">
+<h3>GCS</h3>
 
-<div class="info"><b>Источник:</b> Клинические рекомендации Союза педиатров России, Приказ МЗ РФ № 60н, "Педиатрия. Национальное руководство".</div>
+<select id="gE" onchange="calcGCS()">
+<option value="4">E4</option>
+<option value="3">E3</option>
+<option value="2">E2</option>
+<option value="1">E1</option>
+</select>
 
-<div class="wt" style="margin-top:4px">📋 ОАК — ВОЗРАСТНЫЕ НОРМЫ</div>
+<select id="gV" onchange="calcGCS()">
+<option value="5">V5</option>
+<option value="4">V4</option>
+<option value="3">V3</option>
+<option value="2">V2</option>
+<option value="1">V1</option>
+</select>
 
-<div class="an-ref">
-<div class="an-ref-h">Гемоглобин (г/л)</div>
-<table class="an-ref-t"><thead><tr><th>Возраст</th><th>Норма</th><th></th></tr></thead><tbody>
-<tr><td>0-3 дня</td><td>145-225</td><td>г/л</td></tr>
-<tr><td>1 неделя</td><td>135-215</td><td>г/л</td></tr>
-<tr><td>1 мес</td><td>100-180</td><td>г/л</td></tr>
-<tr><td>2-6 мес</td><td>95-140</td><td>г/л</td></tr>
-<tr><td>6-12 мес</td><td>105-140</td><td>г/л</td></tr>
-<tr><td>1-5 лет</td><td>110-140</td><td>г/л</td></tr>
-<tr><td>5-12 лет</td><td>115-145</td><td>г/л</td></tr>
-<tr><td>12-18 М</td><td>130-160</td><td>г/л</td></tr>
-<tr><td>12-18 Ж</td><td>120-160</td><td>г/л</td></tr>
-</tbody></table>
-</div>
-
-<div class="an-ref">
-<div class="an-ref-h">Лейкоциты (×10⁹/л)</div>
-<table class="an-ref-t"><thead><tr><th>Возраст</th><th>Норма</th><th></th></tr></thead><tbody>
-<tr><td>Новорожд.</td><td>9.0-30.0</td><td>×10⁹/л</td></tr>
-<tr><td>1 нед-1 мес</td><td>5.0-21.0</td><td>×10⁹/л</td></tr>
-<tr><td>1-12 мес</td><td>6.0-17.5</td><td>×10⁹/л</td></tr>
-<tr><td>1-3 года</td><td>6.0-17.0</td><td>×10⁹/л</td></tr>
-<tr><td>3-7 лет</td><td>5.5-15.5</td><td>×10⁹/л</td></tr>
-<tr><td>7-12 лет</td><td>4.5-13.5</td><td>×10⁹/л</td></tr>
-<tr><td>12-18 лет</td><td>4.5-11.0</td><td>×10⁹/л</td></tr>
-</tbody></table>
-</div>
+<select id="gM" onchange="calcGCS()">
+<option value="6">M6</option>
+<option value="5">M5</option>
+<option value="4">M4</option>
+<option value="3">M3</option>
+<option value="2">M2</option>
+<option value="1">M1</option>
+</select>
 
-<div class="an-ref">
-<div class="an-ref-h">Эритроциты / Тромбоциты / СОЭ</div>
-<table class="an-ref-t"><thead><tr><th>Показатель</th><th>Норма</th><th>Возраст</th></tr></thead><tbody>
-<tr><td>Эр. новорожд.</td><td>4.5-7.0</td><td>0-1 мес</td></tr>
-<tr><td>Эр. 1-12 мес</td><td>3.8-5.0</td><td>×10¹²/л</td></tr>
-<tr><td>Эр. 1-12 лет</td><td>3.7-5.2</td><td>×10¹²/л</td></tr>
-<tr><td>Эр. подростки</td><td>4.1-5.5</td><td>×10¹²/л</td></tr>
-<tr><td>Тромб. дети</td><td>180-400</td><td>×10⁹/л</td></tr>
-<tr><td>СОЭ 0-1 мес</td><td>0-2</td><td>мм/ч</td></tr>
-<tr><td>СОЭ 1 мес-1 год</td><td>3-10</td><td>мм/ч</td></tr>
-<tr><td>СОЭ старше года</td><td>5-15</td><td>мм/ч</td></tr>
-</tbody></table>
+<div class="res">Итого: <span id="gcsScore">15</span></div>
 </div>
 
-<div class="wt" style="margin-top:14px">📋 БИОХИМИЯ — ВОЗРАСТНЫЕ НОРМЫ</div>
+<!-- BMI -->
+<div class="card" id="bmi">
+<h3>ИМТ</h3>
 
-<div class="an-ref">
-<div class="an-ref-h">Креатинин / Мочевина / Глюкоза</div>
-<table class="an-ref-t"><thead><tr><th>Показатель / возраст</th><th>Норма</th><th>Ед.</th></tr></thead><tbody>
-<tr><td>Креат. новорожд.</td><td>27-88</td><td>мкмоль/л</td></tr>
-<tr><td>Креат. 1-12 мес</td><td>18-35</td><td>мкмоль/л</td></tr>
-<tr><td>Креат. 1-7 лет</td><td>27-62</td><td>мкмоль/л</td></tr>
-<tr><td>Креат. 7-14 лет</td><td>27-87</td><td>мкмоль/л</td></tr>
-<tr><td>Креат. 14-18 лет</td><td>44-88</td><td>мкмоль/л</td></tr>
-<tr><td>Мочевина 0-1 мес</td><td>1.4-4.3</td><td>ммоль/л</td></tr>
-<tr><td>Мочевина 1 мес-1 год</td><td>1.4-5.4</td><td>ммоль/л</td></tr>
-<tr><td>Мочевина старше 1 года</td><td>1.8-7.5</td><td>ммоль/л</td></tr>
-<tr><td>Глюкоза новорожд.</td><td>2.8-4.4</td><td>ммоль/л</td></tr>
-<tr><td>Глюкоза старше</td><td>3.3-5.5</td><td>ммоль/л</td></tr>
-</tbody></table>
-</div>
+<input id="height" placeholder="Рост см"><br><br>
+<input id="weight" placeholder="Вес кг"><br><br>
 
-<div class="an-ref">
-<div class="an-ref-h">Печёночные ферменты / билирубин</div>
-<table class="an-ref-t"><thead><tr><th>Показатель</th><th>Норма</th><th>Ед.</th></tr></thead><tbody>
-<tr><td>АЛТ дети</td><td>до 40</td><td>Ед/л</td></tr>
-<tr><td>АЛТ новорожд.</td><td>до 50</td><td>Ед/л</td></tr>
-<tr><td>АСТ дети</td><td>до 50</td><td>Ед/л</td></tr>
-<tr><td>АСТ новорожд.</td><td>до 70</td><td>Ед/л</td></tr>
-<tr><td>Билир. новорожд. 1-3 сут</td><td>до 200</td><td>мкмоль/л</td></tr>
-<tr><td>Билир. новорожд. 3-5 сут</td><td>до 256</td><td>мкмоль/л</td></tr>
-<tr><td>Билир. 1 мес+</td><td>3.4-17.1</td><td>мкмоль/л</td></tr>
-<tr><td>Общий белок 0-1 мес</td><td>46-70</td><td>г/л</td></tr>
-<tr><td>Общий белок 1-12 мес</td><td>55-75</td><td>г/л</td></tr>
-<tr><td>Общий белок старше</td><td>60-80</td><td>г/л</td></tr>
-<tr><td>Амилаза до 1 года</td><td>5-65</td><td>Ед/л</td></tr>
-<tr><td>Амилаза старше</td><td>25-125</td><td>Ед/л</td></tr>
-</tbody></table>
-</div>
+<button onclick="calcBMI()">Рассчитать</button>
 
-<div class="an-ref">
-<div class="an-ref-h">Электролиты у детей</div>
-<table class="an-ref-t"><thead><tr><th>Показатель</th><th>Норма</th><th>Ед.</th></tr></thead><tbody>
-<tr><td>Калий новорожд.</td><td>4.0-6.0</td><td>ммоль/л</td></tr>
-<tr><td>Калий 1-12 мес</td><td>4.1-5.3</td><td>ммоль/л</td></tr>
-<tr><td>Калий старше года</td><td>3.5-5.0</td><td>ммоль/л</td></tr>
-<tr><td>Натрий новорожд.</td><td>133-146</td><td>ммоль/л</td></tr>
-<tr><td>Натрий старше</td><td>136-145</td><td>ммоль/л</td></tr>
-<tr><td>Кальций новорожд.</td><td>1.9-2.6</td><td>ммоль/л</td></tr>
-<tr><td>Кальций 1 мес - 1 год</td><td>2.25-2.75</td><td>ммоль/л</td></tr>
-<tr><td>Кальций старше года</td><td>2.2-2.7</td><td>ммоль/л</td></tr>
-<tr><td>Хлор</td><td>96-107</td><td>ммоль/л</td></tr>
-<tr><td>Фосфор дети</td><td>1.45-1.78</td><td>ммоль/л</td></tr>
-<tr><td>Магний</td><td>0.7-1.05</td><td>ммоль/л</td></tr>
-</tbody></table>
+<div class="res">ИМТ: <span id="bmiRes">—</span></div>
+<div id="bmiText"></div>
 </div>
-
-<div class="wt" style="margin-top:18px">🔬 КАЛЬКУЛЯТОР</div>
-<div class="info">Выбери возрастную группу и введи значение для оценки.</div>
 
-<div class="gsec"><div class="gt">Возраст</div><select class="sl" id="ld-age" onchange="ldR()">
-<option value="0">Новорождённый (0-1 мес)</option>
-<option value="1">Грудной (1-12 мес)</option>
-<option value="2">Ранний (1-3 года)</option>
-<option value="3">Дошкольный (3-7 лет)</option>
-<option value="4">Школьный (7-12 лет)</option>
-<option value="5">Подросток (12-18 лет)</option>
-</select></div>
+<!-- Shock -->
+<div class="card" id="shock">
+<h3>Индекс Альговера</h3>
 
-<div id="ld-list"></div>
-</div>
+<input id="hr" placeholder="ЧСС"><br><br>
+<input id="sbp" placeholder="САД"><br><br>
 
-<div class="card" id="t-nr">
-<div class="card-t">Нормы детей</div>
-<div class="card-d">ЧСС · АД · ЧДД по возрасту.</div>
-<div class="itp">
-<div class="itp-r"><span class="itp-rng" style="min-width:75px">0-1 мес</span><span style="font-size:11px">ЧСС 120-160 · АД 60-80 · ЧДД 40-60</span></div>
-<div class="itp-r"><span class="itp-rng" style="min-width:75px">1-12 мес</span><span style="font-size:11px">ЧСС 100-140 · АД 70-95 · ЧДД 30-40</span></div>
-<div class="itp-r"><span class="itp-rng" style="min-width:75px">1-3 года</span><span style="font-size:11px">ЧСС 90-120 · АД 80-100 · ЧДД 25-30</span></div>
-<div class="itp-r"><span class="itp-rng" style="min-width:75px">3-7 лет</span><span style="font-size:11px">ЧСС 80-110 · АД 85-105 · ЧДД 20-25</span></div>
-<div class="itp-r"><span class="itp-rng" style="min-width:75px">7-12 лет</span><span style="font-size:11px">ЧСС 70-100 · АД 90-110 · ЧДД 18-22</span></div>
-<div class="itp-r"><span class="itp-rng" style="min-width:75px">12-15</span><span style="font-size:11px">ЧСС 60-90 · АД 100-120 · ЧДД 16-20</span></div>
-</div>
-</div>
+<button onclick="calcShock()">Рассчитать</button>
 
+<div class="res">Индекс: <span id="shockRes">—</span></div>
+<div id="shockText"></div>
 </div>
 
 <script>
-function g(id,btn){var c=document.getElementsByClassName('card');for(var i=0;i<c.length;i++)c[i].classList.remove('show');var t=document.getElementsByClassName('tab');for(var i=0;i<t.length;i++)t[i].classList.remove('act');var x=document.getElementById('t-'+id);if(x)x.classList.add('show');if(btn)btn.classList.add('act');try{if(id==='md')rM()}catch(e){}try{if(id==='sp')spR()}catch(e){}try{if(id==='inf')cI()}catch(e){}try{if(id==='kl')kR()}catch(e){}try{if(id==='pal')iP()}catch(e){}try{if(id==='tx')txR()}catch(e){}try{if(id==='op'&&typeof opR==='function')opR()}catch(e){}try{if(id==='gb'&&typeof gbR==='function')gbR()}catch(e){}try{if(id==='sh'&&typeof shC==='function')shC()}catch(e){}try{if(id==='la'&&typeof laR==='function')laR()}catch(e){}try{if(id==='ld'&&typeof ldR==='function')ldR()}catch(e){}window.scrollTo(0,0)}
 
-var qs={rr:0,sb:0,gc:0};
-function qt(k,e){qs[k]=qs[k]?0:1;e.classList.toggle('on',qs[k]);var s=qs.rr+qs.sb+qs.gc;var r=document.getElementById('qs-r');document.getElementById('qs-n').textContent=s;if(s>=2){r.className='res hi';document.getElementById('qs-l').textContent='Высокий риск'}else{r.className='res low';document.getElementById('qs-l').textContent='Низкий риск'}}
+// ================== ВКЛАДКИ ==================
+function openTab(id, el){
+  document.querySelectorAll('.card').forEach(c=>c.classList.remove('show'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('act'));
 
-function cN(){var rr=+document.getElementById('n-rr').value||0,sp=+document.getElementById('n-sp').value||0,sb=+document.getElementById('n-sb').value||0,hr=+document.getElementById('n-hr').value||0,t=+document.getElementById('n-tm').value||0;if(!rr&&!sp&&!sb&&!hr&&!t)return;var s=0;if(rr<=8)s+=3;else if(rr<=11)s+=1;else if(rr<=20)s+=0;else if(rr<=24)s+=2;else s+=3;if(sp<=91)s+=3;else if(sp<=93)s+=2;else if(sp<=95)s+=1;if(sb<=90)s+=3;else if(sb<=100)s+=2;else if(sb<=110)s+=1;else if(sb<=219)s+=0;else s+=3;if(hr<=40)s+=3;else if(hr<=50)s+=1;else if(hr<=90)s+=0;else if(hr<=110)s+=1;else if(hr<=130)s+=2;else s+=3;if(t<=35)s+=3;else if(t<=36)s+=1;else if(t<=38)s+=0;else if(t<=39)s+=1;else s+=2;document.getElementById('n-n').textContent=s;var r=document.getElementById('n-r');if(s<=4){r.className='res low';document.getElementById('n-l').textContent='Низкий'}else if(s<=6){r.className='res med';document.getElementById('n-l').textContent='Средний'}else{r.className='res hi';document.getElementById('n-l').textContent='ВЫСОКИЙ'}}
+  document.getElementById(id).classList.add('show');
+  el.classList.add('act');
+}
 
-function cG(){var e=+document.getElementById('ge').value,v=+document.getElementById('gv').value,m=+document.getElementById('gm').value,s=e+v+m;document.getElementById('g-n').textContent=s;var r=document.getElementById('g-r');if(s>=13){r.className='res low';document.getElementById('g-l').textContent='Ясное'}else if(s>=9){r.className='res med';document.getElementById('g-l').textContent='Умеренное'}else{r.className='res hi';document.getElementById('g-l').textContent='Кома'}}
+// ================== qSOFA ==================
+let qs = {rr:0, sb:0, gc:0};
 
-var wS=0;
-function wt(e,p){e.classList.toggle('on');wS+=e.classList.contains('on')?p:-p;document.getElementById('w-n').textContent=wS;var r=document.getElementById('w-r');if(wS>4){r.className='res hi';document.getElementById('w-l').textContent='Высокая'}else{r.className='res low';document.getElementById('w-l').textContent='Низкая'}}
+function toggleCrit(el, key){
+  el.classList.toggle('on');
+  qs[key] = el.classList.contains('on') ? 1 : 0;
 
-function cA(){var h=+document.getElementById('a-hr').value,s=+document.getElementById('a-sb').value;if(!h||!s)return;var i=(h/s).toFixed(2);document.getElementById('a-n').textContent=i;var r=document.getElementById('a-r');if(i<1){r.className='res low';document.getElementById('a-l').textContent='Норма'}else if(i<1.5){r.className='res med';document.getElementById('a-l').textContent='Средний шок'}else{r.className='res hi';document.getElementById('a-l').textContent='Тяжёлый шок'}}
+  let sum = qs.rr + qs.sb + qs.gc;
 
-var cs={f:0,a:0,s:0};
-function ct(k,e){cs[k]=cs[k]?0:1;e.classList.toggle('on',cs[k]);var n=cs.f+cs.a+cs.s;document.getElementById('c-n').textContent=n;var r=document.getElementById('c-r');if(n>=1){r.className='res hi';document.getElementById('c-l').textContent='Высокий риск'}else{r.className='res low';document.getElementById('c-l').textContent='Нет признаков'}}
+  qsScore.innerText = sum;
 
-var vS=0;
-function vt(e,p){e.classList.toggle('on');vS+=e.classList.contains('on')?p:-p;document.getElementById('av-n').textContent=vS;var r=document.getElementById('av-r');if(vS<=4){r.className='res low';document.getElementById('av-l').textContent='Маловероятен'}else if(vS<=6){r.className='res med';document.getElementById('av-l').textContent='Возможен'}else{r.className='res hi';document.getElementById('av-l').textContent='ВЕРОЯТЕН'}}
+  if(sum >= 2) qsText.innerText = "Высокий риск";
+  else if(sum === 1) qsText.innerText = "Средний риск";
+  else qsText.innerText = "Низкий риск";
+}
 
-function cV(){var w=+document.getElementById('vl-wt').value||0;if(!w){document.getElementById('vl-r').textContent='Введите вес';return}document.getElementById('vl-r').innerHTML='<b style="color:#0a84ff">Протективная вентиляция:</b><br>ДО 4 мл/кг: <b style="color:#30d158">'+Math.round(w*4)+' мл</b><br>ДО 6 мл/кг: <b style="color:#ffd60a">'+Math.round(w*6)+' мл</b><br>ДО 8 мл/кг: <b style="color:#ff9f0a">'+Math.round(w*8)+' мл</b><br>ЧД: 12-16/мин<br>ПДКВ: 5-8 см H₂O'}
+// ================== GCS ==================
+function calcGCS(){
+  let sum =
+    +gE.value +
+    +gV.value +
+    +gM.value;
 
-function cB(){var h=(+document.getElementById('b-h').value)/100,w=+document.getElementById('b-w').value;if(!h||!w)return;var b=(w/(h*h)).toFixed(1);document.getElementById('b-n').textContent=b;var r=document.getElementById('b-r');if(b<18.5){r.className='res med';document.getElementById('b-l').textContent='Дефицит'}else if(b<25){r.className='res low';document.getElementById('b-l').textContent='Норма'}else if(b<30){r.className='res med';document.getElementById('b-l').textContent='Избыточная'}else{r.className='res hi';document.getElementById('b-l').textContent='Ожирение'}}
+  gcsScore.innerText = sum;
+}
 
-var crI=null,crS=120,crC=1,crT=0;
-function cT(){if(crI){clearInterval(crI);crI=null;document.getElementById('cr-b').textContent='▶ ПРОДОЛЖИТЬ'}else{crI=setInterval(cTk,1000);document.getElementById('cr-b').textContent='⏸ ПАУЗА'}}
-function cTk(){crS--;crT++;if(crS<=0){crS=120;crC++;document.getElementById('cr-c').textContent='Цикл '+crC}var m=Math.floor(crS/60),s=crS%60;document.getElementById('cr-t').textContent=(m<10?'0':'')+m+':'+(s<10?'0':'')+s;var mn=Math.floor(crT/60);document.getElementById('cr-a').textContent=(mn>=3&&mn%2===1)?'💉 АДРЕНАЛИН!':''}
-function cZ(){clearInterval(crI);crI=null;crS=120;crC=1;crT=0;document.getElementById('cr-t').textContent='02:00';document.getElementById('cr-c').textContent='Цикл 1';document.getElementById('cr-a').textContent='';document.getElementById('cr-b').textContent='▶ СТАРТ'}
+// ================== BMI ==================
+function calcBMI(){
+  let h = height.value / 100;
+  let w = weight.value;
 
-var MEDS=[
-{n:'Нитроглицерин',c:'Нитрат',d:'0.5 мг под язык × 3 каждые 5 мин',i:'ОКС. АД>90!'},
-{n:'Аспирин',c:'Антиагрегант',d:'300-500 мг разжевать',i:'ОКС'},
-{n:'Адреналин',c:'Катехоламин',d:'1 мг в/в (СЛР); 0.5 мг в/м (анафилаксия)',i:'СЛР, анафилаксия'},
-{n:'Атропин',c:'М-холиноблокатор',d:'0.5-1 мг в/в',i:'Брадикардия, ФОС'},
-{n:'Магнезия 25%',c:'Антиаритмик',d:'4 г в/в за 20 мин',i:'Эклампсия'},
-{n:'Фуросемид',c:'Диуретик',d:'40-80 мг в/в',i:'Отёк лёгких'},
-{n:'Преднизолон',c:'ГКС',d:'60-120 мг в/в',i:'Анафилаксия, шок'},
-{n:'Дексаметазон',c:'ГКС',d:'4-16 мг в/в',i:'Отёк мозга'},
-{n:'Кеторол',c:'НПВП',d:'30 мг в/м',i:'Боль'},
-{n:'Анальгин',c:'НПВП',d:'500-1000 мг в/в МЕДЛЕННО',i:'Боль'},
-{n:'Но-шпа',c:'Спазмолитик',d:'2-4 мл в/в',i:'Колики'},
-{n:'Метоклопрамид',c:'Противорвотный',d:'10 мг в/в',i:'Рвота'},
-{n:'Налоксон',c:'Антагонист опиоидов',d:'0.4-2 мг в/в',i:'Передозировка'},
-{n:'Амиодарон',c:'Антиаритмик',d:'300 мг в/в при ФЖ/ЖТ',i:'Аритмии'},
-{n:'Допамин',c:'Катехоламин',d:'5-20 мкг/кг/мин',i:'Шок'},
-{n:'Тиамин (B1)',c:'Витамин',d:'100 мг в/м ДО глюкозы',i:'Вернике'},
-{n:'Супрастин',c:'H1-блокатор',d:'1-2 мл в/в',i:'Аллергия'},
-{n:'Димедрол',c:'H1-блокатор',d:'1-2 мл в/в',i:'Аллергия'}
-];
-function rM(){var h='';for(var i=0;i<MEDS.length;i++){var m=MEDS[i];h+='<div class="med"><div class="med-n">'+m.n+'</div><div class="med-c">'+m.c+'</div><div class="med-r"><b>Доза:</b>'+m.d+'</div><div class="med-r"><b>Показания:</b>'+m.i+'</div></div>'}document.getElementById('m-list').innerHTML=h}
+  if(!h || !w) return;
 
-var SP=[
-{n:'Адреналин',l:'Sol. Adrenalini',d:'1 мг/мл – 1 мл',r:'п/к, в/м, в/в'},
-{n:'Амиодарон',l:'Sol. Amiodaroni',d:'50 мг/мл – 3 мл',r:'в/в'},
-{n:'Аммиак',l:'Sol. Ammonii caustici',d:'100 мг/мл – 40 мл',r:'Наружно'},
-{n:'Анальгин',l:'Sol. Analgini',d:'500 мг/мл – 2 мл',r:'в/в, в/м'},
-{n:'Анаприлин',l:'Tab. Anaprilini',d:'40 мг',r:'Внутрь'},
-{n:'Аспаркам',l:'Sol. Asparcam',d:'5 мл',r:'в/в'},
-{n:'Атропин',l:'Sol. Atropini',d:'1 мг/мл – 1 мл',r:'в/в'},
-{n:'Аспирин',l:'Tab. Acidi acetylsalicylici',d:'500 мг',r:'Внутрь'},
-{n:'Гепарин',l:'Sol. Heparini',d:'5000 ЕД/мл',r:'в/в, п/к'},
-{n:'Глюкоза 40%',l:'Sol. Glucosae 40%',d:'10 мл',r:'в/в'},
-{n:'Глюкоза 5%',l:'Sol. Glucosae 5%',d:'250 мл',r:'в/в'},
-{n:'Дексаметазон',l:'Sol. Dexamethasoni',d:'4 мг/мл – 1 мл',r:'в/в, в/м'},
-{n:'Димедрол',l:'Sol. Dimedroli',d:'10 мг/мл – 1 мл',r:'в/м'},
-{n:'Допамин',l:'Sol. Dopamini',d:'40 мг/мл – 5 мл',r:'в/в'},
-{n:'Дроперидол',l:'Sol. Droperidoli',d:'2.5 мг/мл – 2 мл',r:'в/в'},
-{n:'Но-шпа (Дротаверин)',l:'Sol. Drotaverini',d:'20 мг/мл – 2 мл',r:'в/в, в/м'},
-{n:'Каптоприл',l:'Tab. Captoprili',d:'25 мг',r:'Внутрь, под язык'},
-{n:'Кеторолак',l:'Sol. Ketorolaci',d:'30 мг/мл – 1 мл',r:'в/в, в/м'},
-{n:'Кетопрофен',l:'Sol. Ketoprofeni',d:'50 мг/мл – 2 мл',r:'в/в, в/м'},
-{n:'Клопидогрел',l:'Tab. Clopidogreli',d:'75 мг',r:'Внутрь'},
-{n:'Лидокаин',l:'Sol. Lidocaini',d:'100 мг/мл – 2 мл',r:'в/в'},
-{n:'Магнезия 25%',l:'Sol. Magnesii sulfatis',d:'25% – 10 мл',r:'в/в'},
-{n:'Маннит',l:'Sol. Mannitoli',d:'15% – 400 мл',r:'в/в'},
-{n:'Метоклопрамид',l:'Sol. Metoclopramidi',d:'5 мг/мл – 2 мл',r:'в/в, в/м'},
-{n:'Метопролол',l:'Sol. Metoprololi',d:'1 мг/мл – 5 мл',r:'в/в'},
-{n:'Морфин',l:'Sol. Morphini',d:'10 мг/мл – 1 мл',r:'в/в'},
-{n:'Налоксон',l:'Sol. Naloxoni',d:'0.4 мг/мл – 1 мл',r:'в/в'},
-{n:'Натрия гидрокарбонат',l:'Sol. Natrii hydrocarbonatis',d:'40 мг/мл – 200 мл',r:'в/в'},
-{n:'Натрия тиосульфат',l:'Sol. Natrii thiosulfatis',d:'300 мг/мл – 10 мл',r:'в/в'},
-{n:'NaCl 0.9%',l:'Sol. Natrii chloridi',d:'0.9% – 200/400 мл',r:'в/в'},
-{n:'Нитроглицерин',l:'Tab. Nitroglycerini',d:'0.5 мг',r:'Подъязычно'},
-{n:'Нитроспрей',l:'Aer. Nitroglycerini',d:'0.4 мг/доза',r:'Подъязычно'},
-{n:'Новокаин',l:'Sol. Novocaini',d:'0.5% – 5 мл',r:'п/к, местно'},
-{n:'Новокаинамид',l:'Sol. Novocainamidi',d:'100 мг/мл – 5 мл',r:'в/в, в/м'},
-{n:'Норадреналин',l:'Sol. Norepinephrini',d:'2 мг/мл – 4 мл',r:'в/в'},
-{n:'Парацетамол',l:'Tab. Paracetamoli',d:'500 мг',r:'Внутрь'},
-{n:'Пиридоксин (B6)',l:'Sol. Pyridoxini',d:'50 мг/мл – 1 мл',r:'в/в, в/м'},
-{n:'Преднизолон',l:'Sol. Prednisoloni',d:'30 мг/мл – 1 мл',r:'в/в, в/м'},
-{n:'Пропофол',l:'Emulsi Propofoli',d:'10 мг/мл – 20 мл',r:'в/в'},
-{n:'Пульмикорт',l:'Susp. Pulmicort',d:'0.25 мг/мл – 2 мл',r:'Ингаляция'},
-{n:'Реамберин',l:'Sol. Reambern',d:'250 мл',r:'в/в'},
-{n:'Реополиглюкин',l:'Sol. Rheopolyglucini',d:'100 мг/мл – 200 мл',r:'в/в'},
-{n:'Рингер',l:'Sol. Ringer',d:'250 мл',r:'в/в'},
-{n:'Сальбутамол',l:'Aer. Salbutamoli',d:'0.1 мг/доза',r:'Ингаляция'},
-{n:'Сибазон (Реланиум)',l:'Sol. Sibazoni',d:'5 мг/мл – 2 мл',r:'в/в, в/м'},
-{n:'Супрастин',l:'Sol. Chloropyramini',d:'20 мг/мл – 1 мл',r:'в/в, в/м'},
-{n:'Тиамин (B1)',l:'Sol. Thiamini',d:'50 мг/мл – 1 мл',r:'в/в, в/м'},
-{n:'Трамадол',l:'Sol. Tramadoli',d:'50 мг/мл – 2 мл',r:'в/в, в/м'},
-{n:'Транексам',l:'Sol. Acidi tranexamici',d:'50 мг/мл – 5 мл',r:'в/в, в/м'},
-{n:'Унитиол',l:'Sol. Unithioli',d:'50 мг/мл – 5 мл',r:'в/м, п/к'},
-{n:'Фентанил',l:'Sol. Phentanyli',d:'50 мкг/мл – 2 мл',r:'в/в, в/м'},
-{n:'Фуросемид',l:'Sol. Furosemidi',d:'10 мг/мл – 2 мл',r:'в/в, в/м'},
-{n:'Цитофлавин',l:'Sol. Cytoflavin',d:'10 мл',r:'в/в'},
-{n:'Эуфиллин',l:'Sol. Aminophyllini',d:'24 мг/мл – 10 мл',r:'в/в'},
-{n:'Этамзилат',l:'Sol. Etamsylati',d:'125 мг/мл – 2 мл',r:'в/в, в/м'},
-{n:'Кетамин',l:'Sol. Ketamini',d:'50 мг/мл – 2 мл',r:'в/в, в/м'},
-{n:'Дексмедетомидин',l:'Sol. Dexmedetomidini',d:'100 мкг/мл – 2 мл',r:'в/в'}
-];
-function spR(){var q=(document.getElementById('sp-s').value||'').toLowerCase(),h='',n=0;for(var i=0;i<SP.length;i++){var d=SP[i];if(q&&d.n.toLowerCase().indexOf(q)===-1&&d.l.toLowerCase().indexOf(q)===-1)continue;h+='<div class="sp-item"><div class="sp-name">'+d.n+'</div><div class="sp-lat">'+d.l+'</div><div class="sp-row"><div class="sp-dose">'+d.d+'</div><div class="sp-route">'+d.r+'</div></div></div>';n++}if(n===0)h='<div style="text-align:center;padding:30px;color:rgba(255,255,255,.3)">Не найдено</div>';document.getElementById('sp-list').innerHTML=h}
+  let bmi = (w/(h*h)).toFixed(1);
+  bmiRes.innerText = bmi;
 
+  if(bmi < 18.5) bmiText.innerText = "Дефицит";
+  else if(bmi < 25) bmiText.innerText = "Норма";
+  else if(bmi < 30) bmiText.innerText = "Избыточный вес";
+  else bmiText.innerText = "Ожирение";
+}
 
-// ============ ИНФУЗОМАТ ============
-// Все концентрации в мг/мл, дозы → мг/мин
-// мл/час = (мг/мин × 60) / (мг/мл)
-// кап/мин = мл/час / 3 (1мл = 20кап, 20/60 = 1/3)
-var INF={
-  d:{cnc:0.8,u:'мкг/кг/мин',min:2,max:20,def:5,col:'d',
-     amp:'40 мг/мл × 5 мл = 200 мг',
-     mix:'200 мг + 250 мл NaCl 0.9% → 0.8 мг/мл',
-     eff:[{r:[2,5],t:'Низкая (2-5 мкг/кг/мин)',d:'Дофаминерг. эффект: ↑почечный кровоток'},
-          {r:[5,10],t:'Средняя (5-10 мкг/кг/мин)',d:'β1: ↑ЧСС, ↑сократимость. Кардиогенный шок'},
-          {r:[10,20],t:'Высокая (10-20 мкг/кг/мин)',d:'α1: вазоконстрикция, ↑АД'}],
-     warn:'Контроль ЭКГ, АД, диуреза'},
-  n:{cnc:0.032,u:'мкг/мин',min:2,max:30,def:8,col:'n',
-     amp:'2 мг/мл × 4 мл = 8 мг',
+// ================== SHOCK ==================
+function calcShock(){
+  let h = hr.value;
+  let s = sbp.value;
+
+  if(!h || !s) return;
+
+  let i = (h/s).toFixed(2);
+  shockRes.innerText = i;
+
+  if(i > 1) shockText.innerText = "Шок";
+  else if(i > 0.7) shockText.innerText = "Риск";
+  else shockText.innerText = "Норма";
+}
+
+</script>
+
+</body>
+</html>
